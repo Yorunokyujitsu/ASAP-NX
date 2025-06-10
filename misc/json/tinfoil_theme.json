@@ -1,0 +1,55 @@
+{
+  "color": "ffffffff",
+  "logo": "sdmc:/switch/tinfoil/themes/ASAP_EFR/logo.png",
+  "background": {
+    "color": "31313100",
+    "image": "sdmc:/switch/tinfoil/themes/ASAP_EFR/bg.jpg"
+  },
+  "selection": {
+    "color": "e29430ff",
+    "background": {
+      "color": "313131ff"
+    },
+    "border": {
+      "color": "e29430ff",
+      "width": 4
+    }
+  },
+  "menu": {
+    "selection": {
+      "color": "e9162fff",
+      "background": {
+        "color": "2a2a2aff"
+      },
+      "border": {
+        "color": "ffffffff",
+        "width": 4
+      }
+    },
+    "background": {
+      "color": "252525ff"
+    }
+  },
+  "border": {
+    "color": "e27330ff",
+    "width": 0
+  },
+  "progressBar": {
+    "color": "e27330ff",
+    "background": {
+      "color": "8a8a8aff"
+    },
+    "width": 1
+  },
+  "scrollBar": {
+    "color": "e27330ff",
+    "background": {
+      "color": "8a8a8aff"
+    },
+    "width": 1
+  },
+  "music": {
+    "url": "sdmc:/switch/tinfoil/themes/ASAP_EFR/music.mp3",
+    "volume": 10
+  }
+}
