@@ -35,7 +35,7 @@
             "======================================"
         ],
         "download": "https://github.com/Yorunokyujitsu/ASAP-NX/releases/latest/download/ASAP_Installer.zip",
-        "pack_ver": "2.0.0"
+        "pack_ver": "2.0.1"
     },
     "ASAP": {
         "description": [
@@ -70,8 +70,10 @@
             " - Sysmodules · Overlays              ",
             "   Not included.                    \n",
             " - Homebrews                          ",
-            "   ASAP-Updater, Daybreak, Haze,      ",
-            "   Reboot_to_payload                  ",
+            "   ASAP-Updater, Daybreak,            ",
+            "   Reboot_to_payload                \n",
+            " - EXE                                ",
+            "   ASAP-Installer, IMG2BMP            ",
             "--------------------------------------",
             "◇ Contents (Normal · 8GB RAM)      \n",
             " - Bootloader · Custom Firmware       ",
@@ -98,7 +100,9 @@
             " - Homebrews                          ",
             "   ASAP-Updater, AmiiboGenerator,     ",
             "   Daybreak, DBI, Linkalho, Tinfoil,  ",
-            "   Reboot_to_payload, sys-clk manager ",
+            "   Reboot_to_payload, sys-clk manager\n",
+            " - EXE                                ",
+            "   ASAP-Installer, IMG2BMP            ",
             "======================================"
         ],
         "changelog_txt": [
@@ -137,11 +141,12 @@
             " - EOS (loader.kip): 1.5.0 > 1.6.2\n",
             " - MissionControl: 0.12.0 > 0.13.2\n",
             " - NX-Fancontrol: 20.1.0 지원\n",
+            " - ovlloader: 1.0.8 > 1.1.1\n",
             " - SaltyNX: 1.2.0 > 1.3.0-prerelease.4\n",
-            " - sys-con: 1.5.0 > 1.5.3",
+            " - sys-con: 1.5.0 > 1.5.4",
             "------------------------------------------------------",
             "◆ Overlays\n",
-            " - Ultrahand: 1.8.5 > 1.8.9\n",
+            " - Ultrahand: 1.8.5 > 1.9.1\n",
             " - FPSLocker: 2.1.0 > 2.2.0-prerelease.5\n",
             " - Status-Monitor: 1.1.7a > 1.1.9\n",
             " - emuiibo, sys-clk-oc를 제외한 모든",
@@ -161,7 +166,8 @@
             "   재작업 및 링크 주소 변경.",
             "   ASAP 신규 버전 알림 추가.\n",
             " - DBI: 750 > 792\n",
-            " - Sphaira: 0.6.2 > 0.12.0",
+            " - Sphaira: 0.6.2 > 0.12.0\n",
+            " - Tinfoil: 19.0 > 20.0",
             "=============================="
         ],
         "changelog_url": "",
@@ -550,7 +556,7 @@
             "--------------------------------------",
             "◇ Contents                           ",
             "  : bootloader, switchroot, Gapps.zip,",
-            "    LineageOS_22.1.zip                ",
+            "    LineageOS_22.2.zip                ",
             "--------------------------------------",
             "◇ Prerequisites                      ",
             "  : Min 16 GB ~ Max 2 TB SD Card      ",
