@@ -19,9 +19,9 @@ HATS_VER="20.1.0-1.1"
 HATS_HASH="jg00nl589tml0gv"
 
 [latest_version]
-ultrahand_version=1.8.3
-tester_version=0510
-toolkit_version=1.6.0
-kip_version=1.6.0
-eos_version=1.1.4
+ultrahand_version=1.9.1
+tester_version=0610
+toolkit_version=1.6.2
+kip_version=1.6.2
+eos_version=1.1.5
 mtn_version=2.1.1
