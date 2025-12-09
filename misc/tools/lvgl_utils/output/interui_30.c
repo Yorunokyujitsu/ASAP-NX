@@ -22,7 +22,7 @@
 
 /***********************************************************************************
  * font/NotoSansKR-Bold.ttf 29 px Font in U+0020 ( ) .. U+ff54 (ｔ)  range with 8 bpp
- * Sparse font with only these characters:  !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~°·×èé℃ⒶⒷⒹⒻⓁⓂⓃⓅⓈⓊⓋ　가각간값같개거건검것게겠견결경계고공과관구권규균그근글금기까께끼나날남내낸냉너널넘넥년누는능니닙다단닫당대더덮데델도독동되된된될됨됩두듀드드득든등디따또뛰라락랍래램량러런레려력렬령로록롤롬료류륨르른를름리린립링마만맞매맷메면명모못무문뮤뮬므미및바반발방배백버번범법벗벤변별보복본볼부분불브블비빈사삭삽상색생샷서석선설성세섹셋션소속손송수순스슬습싀시식신실심십쓰쓸씁아안않알압았앞약어언얼업없었에엔여역연열영예오온올옮옵와완외요용우운움웃원월웨위유으은을음의이익인일읽잃임입잇있자작잔잘잠장재저적전점접정제조족존종좌주중즈증지진짜차찾채처청체초최추출충취측치카캐커컨케콘크클큽키킵타태택터텀테템톡통투트튼티팅파패퍼펌페평포폭폴품프플피필하한할함합해했행향현형호혹화확환활회효후ＢＣＤＥＦＧＨＩＪＫＬＯＱＲＴＵＶＷＸＹＺ
+ * Sparse font with only these characters:  !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~°·×èé℃ⒶⒷⒹⒻⓁⓂⓃⓅⓈⓊⓋ　가각간값같개거건검것게겠견결경계고공과관구권규균그근글금기까께끼나날남내낸냉너널넘넥년누는능니닙다단닫당대더덮데델도독동되된된될됨됩두듀듈드드득든등디따또뛰라락랍래램량러런레려력렬령로록롤롬료류륨르른를름리린립링마만맞매맷머메면명모못무문뮤뮬므미및바반발방배백버번범법벗벤변별보복본볼부분불브블비빈사삭삽상색생샷서석선설성세섹셋션소속손송수순스슬습싀시식신실심십쓰쓸씁아안않알압았앞약어언얼업없었에엔여역연열영예오온올옮옵와완외요용우운움웃원월웨위유으은을음의이익인일읽잃임입잇있자작잔잘잠장재저적전점접정제조족존종좌주중즈증지진짜차찾채처청체초최추출충취측치카캐커컨케콘크클큽키킵타태택터텀테템톡통투트튼티팅파패퍼펌페평포폭폴품프플피필하한할함합해했행향현형호혹화확환활회효후ＢＣＤＥＦＧＨＩＪＫＬＯＱＲＴＵＶＷＸＹＺ
 ***********************************************************************************/
 
 /*Store the image of the letters (glyph)*/
@@ -5821,6 +5821,38 @@ static const uint8_t interui_30_glyph_bitmap[] =
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //................... 
 
 
+  /*Unicode: U+b4c8 (듈) , Width: 19 */
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //................... 
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //................... 
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //................... 
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //................... 
+  0x00, 0x00, 0x00, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x00, 0x00, 0x00,  //................... 
+  0x00, 0x00, 0x00, 0xf2, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x36, 0x00, 0x00,  //...@@@@@@@@@@@@@... 
+  0x00, 0x00, 0x00, 0xf2, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x36, 0x00, 0x00,  //...@@@@@@@@@@@@@... 
+  0x00, 0x00, 0x00, 0xf2, 0xff, 0xd8, 0x2e, 0x2e, 0x2e, 0x2e, 0x2e, 0x2e, 0x2e, 0x2e, 0x2e, 0x2e, 0x08, 0x00, 0x00,  //...@@@............. 
+  0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x12, 0x00, 0x00,  //...@@@............. 
+  0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x5e, 0x00, 0x00,  //...@@@@@@@@@@@@@+.. 
+  0x00, 0x00, 0x00, 0xea, 0xf6, 0xf6, 0xf6, 0xf6, 0xf6, 0xf6, 0xf6, 0xf6, 0xf6, 0xf6, 0xf6, 0xf6, 0x5c, 0x00, 0x00,  //...@@@@@@@@@@@@@+.. 
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //................... 
+  0x26, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x6e,  //.@@@@@@@@@@@@@@@@@+ 
+  0x26, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x6e,  //.@@@@@@@@@@@@@@@@@+ 
+  0x06, 0x32, 0x32, 0x32, 0x32, 0xe6, 0xff, 0xff, 0x42, 0x32, 0x32, 0xca, 0xff, 0xff, 0x5e, 0x32, 0x32, 0x32, 0x14,  //.....@@@+..@@@+.... 
+  0x00, 0x00, 0x10, 0x82, 0x82, 0xff, 0xff, 0xff, 0x92, 0x82, 0x82, 0xff, 0xff, 0xff, 0xae, 0x82, 0x26, 0x00, 0x00,  //...%%@@@%%%@@@%%... 
+  0x00, 0x00, 0x22, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x4a, 0x00, 0x00,  //...@@@@@@@@@@@@@+.. 
+  0x00, 0x00, 0x12, 0x8e, 0x8e, 0x8e, 0x8e, 0x8e, 0x8e, 0x8e, 0x8e, 0x8e, 0x8e, 0xc0, 0xff, 0xff, 0x4a, 0x00, 0x00,  //...%%%%%%%%%%@@@+.. 
+  0x00, 0x00, 0x0c, 0x6a, 0x6a, 0x6a, 0x6a, 0x6a, 0x6a, 0x6a, 0x6a, 0x6a, 0x6a, 0xae, 0xff, 0xff, 0x4a, 0x00, 0x00,  //...++++++++++%@@+.. 
+  0x00, 0x00, 0x1e, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x4a, 0x00, 0x00,  //...@@@@@@@@@@@@@+.. 
+  0x00, 0x00, 0x1e, 0xff, 0xff, 0xd4, 0x82, 0x82, 0x82, 0x82, 0x82, 0x82, 0x82, 0x82, 0x82, 0x82, 0x26, 0x00, 0x00,  //...@@@%%%%%%%%%%... 
+  0x00, 0x00, 0x2a, 0xff, 0xff, 0xff, 0x5e, 0x5e, 0x5e, 0x5e, 0x5e, 0x5e, 0x5e, 0x5e, 0x5e, 0x5e, 0x4e, 0x00, 0x00,  //...@@@+++++++++++.. 
+  0x00, 0x00, 0x24, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xd2, 0x00, 0x00,  //...@@@@@@@@@@@@@@.. 
+  0x00, 0x00, 0x16, 0xb6, 0xb6, 0xb6, 0xb6, 0xb6, 0xb6, 0xb6, 0xb6, 0xb6, 0xb6, 0xb6, 0xb6, 0xb6, 0x96, 0x00, 0x00,  //...%%%%%%%%%%%%%%.. 
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //................... 
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //................... 
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //................... 
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //................... 
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //................... 
+
+
   /*Unicode: U+b4dc (드) , Width: 19 */
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //................... 
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //................... 
@@ -7163,6 +7195,38 @@ static const uint8_t interui_30_glyph_bitmap[] =
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //.................. 
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //.................. 
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //.................. 
+
+
+  /*Unicode: U+ba38 (머) , Width: 17 */
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //................. 
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //................. 
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //................. 
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //................. 
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x60, 0x9e, 0x9e, 0x1a,  //.............+%%. 
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x9a, 0xff, 0xff, 0x2a,  //.............%@@. 
+  0x5e, 0xe2, 0xe2, 0xe2, 0xe2, 0xe2, 0xe2, 0xe2, 0xe2, 0xbe, 0x00, 0x00, 0x00, 0x9a, 0xff, 0xff, 0x2a,  //+@@@@@@@@%...%@@. 
+  0x6a, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xd6, 0x00, 0x00, 0x00, 0x9a, 0xff, 0xff, 0x2a,  //+@@@@@@@@@...%@@. 
+  0x6a, 0xff, 0xff, 0x88, 0x4e, 0x4e, 0x4e, 0xf0, 0xff, 0xd6, 0x00, 0x00, 0x00, 0x9a, 0xff, 0xff, 0x2a,  //+@@%+++@@@...%@@. 
+  0x6a, 0xff, 0xff, 0x52, 0x00, 0x00, 0x00, 0xea, 0xff, 0xd6, 0x00, 0x00, 0x00, 0x9a, 0xff, 0xff, 0x2a,  //+@@+...@@@...%@@. 
+  0x6a, 0xff, 0xff, 0x52, 0x00, 0x00, 0x00, 0xea, 0xff, 0xd6, 0x00, 0x00, 0x00, 0x9a, 0xff, 0xff, 0x2a,  //+@@+...@@@...%@@. 
+  0x6a, 0xff, 0xff, 0x52, 0x00, 0x00, 0x00, 0xea, 0xff, 0xff, 0xe6, 0xe6, 0xe6, 0xff, 0xff, 0xff, 0x2a,  //+@@+...@@@@@@@@@. 
+  0x6a, 0xff, 0xff, 0x52, 0x00, 0x00, 0x00, 0xea, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x2a,  //+@@+...@@@@@@@@@. 
+  0x6a, 0xff, 0xff, 0x52, 0x00, 0x00, 0x00, 0xea, 0xff, 0xff, 0x56, 0x56, 0x56, 0xf2, 0xff, 0xff, 0x2a,  //+@@+...@@@+++@@@. 
+  0x6a, 0xff, 0xff, 0x52, 0x00, 0x00, 0x00, 0xea, 0xff, 0xd6, 0x00, 0x00, 0x00, 0x9a, 0xff, 0xff, 0x2a,  //+@@+...@@@...%@@. 
+  0x6a, 0xff, 0xff, 0x52, 0x00, 0x00, 0x00, 0xea, 0xff, 0xd6, 0x00, 0x00, 0x00, 0x9a, 0xff, 0xff, 0x2a,  //+@@+...@@@...%@@. 
+  0x6a, 0xff, 0xff, 0x5c, 0x0e, 0x0e, 0x0e, 0xec, 0xff, 0xd6, 0x00, 0x00, 0x00, 0x9a, 0xff, 0xff, 0x2a,  //+@@+...@@@...%@@. 
+  0x6a, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xd6, 0x00, 0x00, 0x00, 0x9a, 0xff, 0xff, 0x2a,  //+@@@@@@@@@...%@@. 
+  0x6a, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xd6, 0x00, 0x00, 0x00, 0x9a, 0xff, 0xff, 0x2a,  //+@@@@@@@@@...%@@. 
+  0x0c, 0x1e, 0x1e, 0x1e, 0x1e, 0x1e, 0x1e, 0x1e, 0x1e, 0x1a, 0x00, 0x00, 0x00, 0x9a, 0xff, 0xff, 0x2a,  //.............%@@. 
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x9a, 0xff, 0xff, 0x2a,  //.............%@@. 
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x9a, 0xff, 0xff, 0x2a,  //.............%@@. 
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x9a, 0xff, 0xff, 0x2a,  //.............%@@. 
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x88, 0xe2, 0xe2, 0x26,  //.............%@@. 
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //................. 
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //................. 
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //................. 
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //................. 
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //................. 
 
 
   /*Unicode: U+ba54 (메) , Width: 17 */
@@ -15290,296 +15354,298 @@ static const lv_font_glyph_dsc_t interui_30_glyph_dsc[] =
   {.w_px = 18,	.glyph_index = 90393},	/*Unicode: U+b429 (됩)*/
   {.w_px = 19,	.glyph_index = 90915},	/*Unicode: U+b450 (두)*/
   {.w_px = 19,	.glyph_index = 91466},	/*Unicode: U+b4c0 (듀)*/
-  {.w_px = 19,	.glyph_index = 92017},	/*Unicode: U+b4dc (드)*/
+  {.w_px = 19,	.glyph_index = 92017},	/*Unicode: U+b4c8 (듈)*/
   {.w_px = 19,	.glyph_index = 92568},	/*Unicode: U+b4dc (드)*/
-  {.w_px = 19,	.glyph_index = 93119},	/*Unicode: U+b4dd (득)*/
-  {.w_px = 19,	.glyph_index = 93670},	/*Unicode: U+b4e0 (든)*/
-  {.w_px = 19,	.glyph_index = 94221},	/*Unicode: U+b4f1 (등)*/
-  {.w_px = 15,	.glyph_index = 94772},	/*Unicode: U+b514 (디)*/
-  {.w_px = 18,	.glyph_index = 95207},	/*Unicode: U+b530 (따)*/
-  {.w_px = 19,	.glyph_index = 95729},	/*Unicode: U+b610 (또)*/
-  {.w_px = 18,	.glyph_index = 96280},	/*Unicode: U+b6f0 (뛰)*/
-  {.w_px = 18,	.glyph_index = 96802},	/*Unicode: U+b77c (라)*/
-  {.w_px = 18,	.glyph_index = 97324},	/*Unicode: U+b77d (락)*/
-  {.w_px = 18,	.glyph_index = 97846},	/*Unicode: U+b78d (랍)*/
-  {.w_px = 17,	.glyph_index = 98368},	/*Unicode: U+b798 (래)*/
-  {.w_px = 17,	.glyph_index = 98861},	/*Unicode: U+b7a8 (램)*/
-  {.w_px = 18,	.glyph_index = 99354},	/*Unicode: U+b7c9 (량)*/
-  {.w_px = 17,	.glyph_index = 99876},	/*Unicode: U+b7ec (러)*/
-  {.w_px = 17,	.glyph_index = 100369},	/*Unicode: U+b7f0 (런)*/
-  {.w_px = 17,	.glyph_index = 100862},	/*Unicode: U+b808 (레)*/
-  {.w_px = 17,	.glyph_index = 101355},	/*Unicode: U+b824 (려)*/
-  {.w_px = 17,	.glyph_index = 101848},	/*Unicode: U+b825 (력)*/
-  {.w_px = 17,	.glyph_index = 102341},	/*Unicode: U+b82c (렬)*/
-  {.w_px = 17,	.glyph_index = 102834},	/*Unicode: U+b839 (령)*/
-  {.w_px = 19,	.glyph_index = 103327},	/*Unicode: U+b85c (로)*/
-  {.w_px = 19,	.glyph_index = 103878},	/*Unicode: U+b85d (록)*/
-  {.w_px = 19,	.glyph_index = 104429},	/*Unicode: U+b864 (롤)*/
-  {.w_px = 19,	.glyph_index = 104980},	/*Unicode: U+b86c (롬)*/
-  {.w_px = 19,	.glyph_index = 105531},	/*Unicode: U+b8cc (료)*/
-  {.w_px = 19,	.glyph_index = 106082},	/*Unicode: U+b958 (류)*/
-  {.w_px = 19,	.glyph_index = 106633},	/*Unicode: U+b968 (륨)*/
-  {.w_px = 19,	.glyph_index = 107184},	/*Unicode: U+b974 (르)*/
-  {.w_px = 19,	.glyph_index = 107735},	/*Unicode: U+b978 (른)*/
-  {.w_px = 19,	.glyph_index = 108286},	/*Unicode: U+b97c (를)*/
-  {.w_px = 19,	.glyph_index = 108837},	/*Unicode: U+b984 (름)*/
-  {.w_px = 17,	.glyph_index = 109388},	/*Unicode: U+b9ac (리)*/
-  {.w_px = 17,	.glyph_index = 109881},	/*Unicode: U+b9b0 (린)*/
-  {.w_px = 17,	.glyph_index = 110374},	/*Unicode: U+b9bd (립)*/
-  {.w_px = 17,	.glyph_index = 110867},	/*Unicode: U+b9c1 (링)*/
-  {.w_px = 18,	.glyph_index = 111360},	/*Unicode: U+b9c8 (마)*/
-  {.w_px = 18,	.glyph_index = 111882},	/*Unicode: U+b9cc (만)*/
-  {.w_px = 18,	.glyph_index = 112404},	/*Unicode: U+b9de (맞)*/
-  {.w_px = 17,	.glyph_index = 112926},	/*Unicode: U+b9e4 (매)*/
-  {.w_px = 18,	.glyph_index = 113419},	/*Unicode: U+b9f7 (맷)*/
-  {.w_px = 17,	.glyph_index = 113941},	/*Unicode: U+ba54 (메)*/
-  {.w_px = 17,	.glyph_index = 114434},	/*Unicode: U+ba74 (면)*/
-  {.w_px = 17,	.glyph_index = 114927},	/*Unicode: U+ba85 (명)*/
-  {.w_px = 19,	.glyph_index = 115420},	/*Unicode: U+baa8 (모)*/
-  {.w_px = 19,	.glyph_index = 115971},	/*Unicode: U+babb (못)*/
-  {.w_px = 19,	.glyph_index = 116522},	/*Unicode: U+bb34 (무)*/
-  {.w_px = 19,	.glyph_index = 117073},	/*Unicode: U+bb38 (문)*/
-  {.w_px = 19,	.glyph_index = 117624},	/*Unicode: U+bba4 (뮤)*/
-  {.w_px = 19,	.glyph_index = 118175},	/*Unicode: U+bbac (뮬)*/
-  {.w_px = 19,	.glyph_index = 118726},	/*Unicode: U+bbc0 (므)*/
-  {.w_px = 16,	.glyph_index = 119277},	/*Unicode: U+bbf8 (미)*/
-  {.w_px = 17,	.glyph_index = 119741},	/*Unicode: U+bc0f (및)*/
-  {.w_px = 18,	.glyph_index = 120234},	/*Unicode: U+bc14 (바)*/
-  {.w_px = 18,	.glyph_index = 120756},	/*Unicode: U+bc18 (반)*/
-  {.w_px = 18,	.glyph_index = 121278},	/*Unicode: U+bc1c (발)*/
-  {.w_px = 18,	.glyph_index = 121800},	/*Unicode: U+bc29 (방)*/
-  {.w_px = 17,	.glyph_index = 122322},	/*Unicode: U+bc30 (배)*/
-  {.w_px = 17,	.glyph_index = 122815},	/*Unicode: U+bc31 (백)*/
-  {.w_px = 17,	.glyph_index = 123308},	/*Unicode: U+bc84 (버)*/
-  {.w_px = 17,	.glyph_index = 123801},	/*Unicode: U+bc88 (번)*/
-  {.w_px = 17,	.glyph_index = 124294},	/*Unicode: U+bc94 (범)*/
-  {.w_px = 17,	.glyph_index = 124787},	/*Unicode: U+bc95 (법)*/
-  {.w_px = 18,	.glyph_index = 125280},	/*Unicode: U+bc97 (벗)*/
-  {.w_px = 17,	.glyph_index = 125802},	/*Unicode: U+bca4 (벤)*/
-  {.w_px = 17,	.glyph_index = 126295},	/*Unicode: U+bcc0 (변)*/
-  {.w_px = 17,	.glyph_index = 126788},	/*Unicode: U+bcc4 (별)*/
-  {.w_px = 19,	.glyph_index = 127281},	/*Unicode: U+bcf4 (보)*/
-  {.w_px = 19,	.glyph_index = 127832},	/*Unicode: U+bcf5 (복)*/
-  {.w_px = 19,	.glyph_index = 128383},	/*Unicode: U+bcf8 (본)*/
-  {.w_px = 19,	.glyph_index = 128934},	/*Unicode: U+bcfc (볼)*/
-  {.w_px = 19,	.glyph_index = 129485},	/*Unicode: U+bd80 (부)*/
-  {.w_px = 19,	.glyph_index = 130036},	/*Unicode: U+bd84 (분)*/
-  {.w_px = 19,	.glyph_index = 130587},	/*Unicode: U+bd88 (불)*/
-  {.w_px = 19,	.glyph_index = 131138},	/*Unicode: U+be0c (브)*/
-  {.w_px = 19,	.glyph_index = 131689},	/*Unicode: U+be14 (블)*/
-  {.w_px = 16,	.glyph_index = 132240},	/*Unicode: U+be44 (비)*/
-  {.w_px = 17,	.glyph_index = 132704},	/*Unicode: U+be48 (빈)*/
-  {.w_px = 19,	.glyph_index = 133197},	/*Unicode: U+c0ac (사)*/
-  {.w_px = 19,	.glyph_index = 133748},	/*Unicode: U+c0ad (삭)*/
-  {.w_px = 19,	.glyph_index = 134299},	/*Unicode: U+c0bd (삽)*/
-  {.w_px = 19,	.glyph_index = 134850},	/*Unicode: U+c0c1 (상)*/
-  {.w_px = 18,	.glyph_index = 135401},	/*Unicode: U+c0c9 (색)*/
-  {.w_px = 18,	.glyph_index = 135923},	/*Unicode: U+c0dd (생)*/
-  {.w_px = 19,	.glyph_index = 136445},	/*Unicode: U+c0f7 (샷)*/
-  {.w_px = 18,	.glyph_index = 136996},	/*Unicode: U+c11c (서)*/
-  {.w_px = 18,	.glyph_index = 137518},	/*Unicode: U+c11d (석)*/
-  {.w_px = 18,	.glyph_index = 138040},	/*Unicode: U+c120 (선)*/
-  {.w_px = 18,	.glyph_index = 138562},	/*Unicode: U+c124 (설)*/
-  {.w_px = 18,	.glyph_index = 139084},	/*Unicode: U+c131 (성)*/
-  {.w_px = 18,	.glyph_index = 139606},	/*Unicode: U+c138 (세)*/
-  {.w_px = 18,	.glyph_index = 140128},	/*Unicode: U+c139 (섹)*/
-  {.w_px = 19,	.glyph_index = 140650},	/*Unicode: U+c14b (셋)*/
-  {.w_px = 18,	.glyph_index = 141201},	/*Unicode: U+c158 (션)*/
-  {.w_px = 19,	.glyph_index = 141723},	/*Unicode: U+c18c (소)*/
-  {.w_px = 19,	.glyph_index = 142274},	/*Unicode: U+c18d (속)*/
-  {.w_px = 19,	.glyph_index = 142825},	/*Unicode: U+c190 (손)*/
-  {.w_px = 19,	.glyph_index = 143376},	/*Unicode: U+c1a1 (송)*/
-  {.w_px = 19,	.glyph_index = 143927},	/*Unicode: U+c218 (수)*/
-  {.w_px = 19,	.glyph_index = 144478},	/*Unicode: U+c21c (순)*/
-  {.w_px = 19,	.glyph_index = 145029},	/*Unicode: U+c2a4 (스)*/
-  {.w_px = 19,	.glyph_index = 145580},	/*Unicode: U+c2ac (슬)*/
-  {.w_px = 19,	.glyph_index = 146131},	/*Unicode: U+c2b5 (습)*/
-  {.w_px = 18,	.glyph_index = 146682},	/*Unicode: U+c2c0 (싀)*/
-  {.w_px = 17,	.glyph_index = 147204},	/*Unicode: U+c2dc (시)*/
-  {.w_px = 18,	.glyph_index = 147697},	/*Unicode: U+c2dd (식)*/
-  {.w_px = 18,	.glyph_index = 148219},	/*Unicode: U+c2e0 (신)*/
-  {.w_px = 18,	.glyph_index = 148741},	/*Unicode: U+c2e4 (실)*/
-  {.w_px = 18,	.glyph_index = 149263},	/*Unicode: U+c2ec (심)*/
-  {.w_px = 18,	.glyph_index = 149785},	/*Unicode: U+c2ed (십)*/
-  {.w_px = 19,	.glyph_index = 150307},	/*Unicode: U+c4f0 (쓰)*/
-  {.w_px = 19,	.glyph_index = 150858},	/*Unicode: U+c4f8 (쓸)*/
-  {.w_px = 19,	.glyph_index = 151409},	/*Unicode: U+c501 (씁)*/
-  {.w_px = 19,	.glyph_index = 151960},	/*Unicode: U+c544 (아)*/
-  {.w_px = 18,	.glyph_index = 152511},	/*Unicode: U+c548 (안)*/
-  {.w_px = 18,	.glyph_index = 153033},	/*Unicode: U+c54a (않)*/
-  {.w_px = 18,	.glyph_index = 153555},	/*Unicode: U+c54c (알)*/
-  {.w_px = 18,	.glyph_index = 154077},	/*Unicode: U+c555 (압)*/
-  {.w_px = 18,	.glyph_index = 154599},	/*Unicode: U+c558 (았)*/
-  {.w_px = 18,	.glyph_index = 155121},	/*Unicode: U+c55e (앞)*/
-  {.w_px = 18,	.glyph_index = 155643},	/*Unicode: U+c57d (약)*/
-  {.w_px = 17,	.glyph_index = 156165},	/*Unicode: U+c5b4 (어)*/
-  {.w_px = 17,	.glyph_index = 156658},	/*Unicode: U+c5b8 (언)*/
-  {.w_px = 17,	.glyph_index = 157151},	/*Unicode: U+c5bc (얼)*/
-  {.w_px = 17,	.glyph_index = 157644},	/*Unicode: U+c5c5 (업)*/
-  {.w_px = 19,	.glyph_index = 158137},	/*Unicode: U+c5c6 (없)*/
-  {.w_px = 18,	.glyph_index = 158688},	/*Unicode: U+c5c8 (었)*/
-  {.w_px = 17,	.glyph_index = 159210},	/*Unicode: U+c5d0 (에)*/
-  {.w_px = 18,	.glyph_index = 159703},	/*Unicode: U+c5d4 (엔)*/
-  {.w_px = 17,	.glyph_index = 160225},	/*Unicode: U+c5ec (여)*/
-  {.w_px = 17,	.glyph_index = 160718},	/*Unicode: U+c5ed (역)*/
-  {.w_px = 17,	.glyph_index = 161211},	/*Unicode: U+c5f0 (연)*/
-  {.w_px = 17,	.glyph_index = 161704},	/*Unicode: U+c5f4 (열)*/
-  {.w_px = 17,	.glyph_index = 162197},	/*Unicode: U+c601 (영)*/
-  {.w_px = 17,	.glyph_index = 162690},	/*Unicode: U+c608 (예)*/
-  {.w_px = 19,	.glyph_index = 163183},	/*Unicode: U+c624 (오)*/
-  {.w_px = 19,	.glyph_index = 163734},	/*Unicode: U+c628 (온)*/
-  {.w_px = 19,	.glyph_index = 164285},	/*Unicode: U+c62c (올)*/
-  {.w_px = 19,	.glyph_index = 164836},	/*Unicode: U+c62e (옮)*/
-  {.w_px = 19,	.glyph_index = 165387},	/*Unicode: U+c635 (옵)*/
-  {.w_px = 19,	.glyph_index = 165938},	/*Unicode: U+c640 (와)*/
-  {.w_px = 19,	.glyph_index = 166489},	/*Unicode: U+c644 (완)*/
-  {.w_px = 18,	.glyph_index = 167040},	/*Unicode: U+c678 (외)*/
-  {.w_px = 19,	.glyph_index = 167562},	/*Unicode: U+c694 (요)*/
-  {.w_px = 19,	.glyph_index = 168113},	/*Unicode: U+c6a9 (용)*/
-  {.w_px = 19,	.glyph_index = 168664},	/*Unicode: U+c6b0 (우)*/
-  {.w_px = 19,	.glyph_index = 169215},	/*Unicode: U+c6b4 (운)*/
-  {.w_px = 19,	.glyph_index = 169766},	/*Unicode: U+c6c0 (움)*/
-  {.w_px = 19,	.glyph_index = 170317},	/*Unicode: U+c6c3 (웃)*/
-  {.w_px = 18,	.glyph_index = 170868},	/*Unicode: U+c6d0 (원)*/
-  {.w_px = 18,	.glyph_index = 171390},	/*Unicode: U+c6d4 (월)*/
-  {.w_px = 18,	.glyph_index = 171912},	/*Unicode: U+c6e8 (웨)*/
-  {.w_px = 18,	.glyph_index = 172434},	/*Unicode: U+c704 (위)*/
-  {.w_px = 19,	.glyph_index = 172956},	/*Unicode: U+c720 (유)*/
-  {.w_px = 19,	.glyph_index = 173507},	/*Unicode: U+c73c (으)*/
-  {.w_px = 19,	.glyph_index = 174058},	/*Unicode: U+c740 (은)*/
-  {.w_px = 19,	.glyph_index = 174609},	/*Unicode: U+c744 (을)*/
-  {.w_px = 19,	.glyph_index = 175160},	/*Unicode: U+c74c (음)*/
-  {.w_px = 18,	.glyph_index = 175711},	/*Unicode: U+c758 (의)*/
-  {.w_px = 16,	.glyph_index = 176233},	/*Unicode: U+c774 (이)*/
-  {.w_px = 17,	.glyph_index = 176697},	/*Unicode: U+c775 (익)*/
-  {.w_px = 17,	.glyph_index = 177190},	/*Unicode: U+c778 (인)*/
-  {.w_px = 17,	.glyph_index = 177683},	/*Unicode: U+c77c (일)*/
-  {.w_px = 17,	.glyph_index = 178176},	/*Unicode: U+c77d (읽)*/
-  {.w_px = 18,	.glyph_index = 178669},	/*Unicode: U+c783 (잃)*/
-  {.w_px = 17,	.glyph_index = 179191},	/*Unicode: U+c784 (임)*/
-  {.w_px = 17,	.glyph_index = 179684},	/*Unicode: U+c785 (입)*/
-  {.w_px = 17,	.glyph_index = 180177},	/*Unicode: U+c787 (잇)*/
-  {.w_px = 18,	.glyph_index = 180670},	/*Unicode: U+c788 (있)*/
-  {.w_px = 19,	.glyph_index = 181192},	/*Unicode: U+c790 (자)*/
-  {.w_px = 19,	.glyph_index = 181743},	/*Unicode: U+c791 (작)*/
-  {.w_px = 19,	.glyph_index = 182294},	/*Unicode: U+c794 (잔)*/
-  {.w_px = 19,	.glyph_index = 182845},	/*Unicode: U+c798 (잘)*/
-  {.w_px = 19,	.glyph_index = 183396},	/*Unicode: U+c7a0 (잠)*/
-  {.w_px = 19,	.glyph_index = 183947},	/*Unicode: U+c7a5 (장)*/
-  {.w_px = 18,	.glyph_index = 184498},	/*Unicode: U+c7ac (재)*/
-  {.w_px = 18,	.glyph_index = 185020},	/*Unicode: U+c800 (저)*/
-  {.w_px = 18,	.glyph_index = 185542},	/*Unicode: U+c801 (적)*/
-  {.w_px = 18,	.glyph_index = 186064},	/*Unicode: U+c804 (전)*/
-  {.w_px = 18,	.glyph_index = 186586},	/*Unicode: U+c810 (점)*/
-  {.w_px = 18,	.glyph_index = 187108},	/*Unicode: U+c811 (접)*/
-  {.w_px = 18,	.glyph_index = 187630},	/*Unicode: U+c815 (정)*/
-  {.w_px = 18,	.glyph_index = 188152},	/*Unicode: U+c81c (제)*/
-  {.w_px = 19,	.glyph_index = 188674},	/*Unicode: U+c870 (조)*/
-  {.w_px = 19,	.glyph_index = 189225},	/*Unicode: U+c871 (족)*/
-  {.w_px = 19,	.glyph_index = 189776},	/*Unicode: U+c874 (존)*/
-  {.w_px = 19,	.glyph_index = 190327},	/*Unicode: U+c885 (종)*/
-  {.w_px = 19,	.glyph_index = 190878},	/*Unicode: U+c88c (좌)*/
-  {.w_px = 19,	.glyph_index = 191429},	/*Unicode: U+c8fc (주)*/
-  {.w_px = 19,	.glyph_index = 191980},	/*Unicode: U+c911 (중)*/
-  {.w_px = 19,	.glyph_index = 192531},	/*Unicode: U+c988 (즈)*/
-  {.w_px = 19,	.glyph_index = 193082},	/*Unicode: U+c99d (증)*/
-  {.w_px = 17,	.glyph_index = 193633},	/*Unicode: U+c9c0 (지)*/
-  {.w_px = 17,	.glyph_index = 194126},	/*Unicode: U+c9c4 (진)*/
-  {.w_px = 19,	.glyph_index = 194619},	/*Unicode: U+c9dc (짜)*/
-  {.w_px = 19,	.glyph_index = 195170},	/*Unicode: U+cc28 (차)*/
-  {.w_px = 19,	.glyph_index = 195721},	/*Unicode: U+cc3e (찾)*/
-  {.w_px = 18,	.glyph_index = 196272},	/*Unicode: U+cc44 (채)*/
-  {.w_px = 18,	.glyph_index = 196794},	/*Unicode: U+cc98 (처)*/
-  {.w_px = 18,	.glyph_index = 197316},	/*Unicode: U+ccad (청)*/
-  {.w_px = 18,	.glyph_index = 197838},	/*Unicode: U+ccb4 (체)*/
-  {.w_px = 19,	.glyph_index = 198360},	/*Unicode: U+cd08 (초)*/
-  {.w_px = 18,	.glyph_index = 198911},	/*Unicode: U+cd5c (최)*/
-  {.w_px = 19,	.glyph_index = 199433},	/*Unicode: U+cd94 (추)*/
-  {.w_px = 19,	.glyph_index = 199984},	/*Unicode: U+cd9c (출)*/
-  {.w_px = 19,	.glyph_index = 200535},	/*Unicode: U+cda9 (충)*/
-  {.w_px = 18,	.glyph_index = 201086},	/*Unicode: U+cde8 (취)*/
-  {.w_px = 19,	.glyph_index = 201608},	/*Unicode: U+ce21 (측)*/
-  {.w_px = 17,	.glyph_index = 202159},	/*Unicode: U+ce58 (치)*/
-  {.w_px = 19,	.glyph_index = 202652},	/*Unicode: U+ce74 (카)*/
-  {.w_px = 18,	.glyph_index = 203203},	/*Unicode: U+ce90 (캐)*/
-  {.w_px = 18,	.glyph_index = 203725},	/*Unicode: U+cee4 (커)*/
-  {.w_px = 17,	.glyph_index = 204247},	/*Unicode: U+cee8 (컨)*/
-  {.w_px = 18,	.glyph_index = 204740},	/*Unicode: U+cf00 (케)*/
-  {.w_px = 19,	.glyph_index = 205262},	/*Unicode: U+cf58 (콘)*/
-  {.w_px = 19,	.glyph_index = 205813},	/*Unicode: U+d06c (크)*/
-  {.w_px = 19,	.glyph_index = 206364},	/*Unicode: U+d074 (클)*/
-  {.w_px = 19,	.glyph_index = 206915},	/*Unicode: U+d07d (큽)*/
-  {.w_px = 17,	.glyph_index = 207466},	/*Unicode: U+d0a4 (키)*/
-  {.w_px = 17,	.glyph_index = 207959},	/*Unicode: U+d0b5 (킵)*/
-  {.w_px = 18,	.glyph_index = 208452},	/*Unicode: U+d0c0 (타)*/
-  {.w_px = 17,	.glyph_index = 208974},	/*Unicode: U+d0dc (태)*/
-  {.w_px = 17,	.glyph_index = 209467},	/*Unicode: U+d0dd (택)*/
-  {.w_px = 17,	.glyph_index = 209960},	/*Unicode: U+d130 (터)*/
-  {.w_px = 17,	.glyph_index = 210453},	/*Unicode: U+d140 (텀)*/
-  {.w_px = 17,	.glyph_index = 210946},	/*Unicode: U+d14c (테)*/
-  {.w_px = 17,	.glyph_index = 211439},	/*Unicode: U+d15c (템)*/
-  {.w_px = 19,	.glyph_index = 211932},	/*Unicode: U+d1a1 (톡)*/
-  {.w_px = 19,	.glyph_index = 212483},	/*Unicode: U+d1b5 (통)*/
-  {.w_px = 19,	.glyph_index = 213034},	/*Unicode: U+d22c (투)*/
-  {.w_px = 19,	.glyph_index = 213585},	/*Unicode: U+d2b8 (트)*/
-  {.w_px = 19,	.glyph_index = 214136},	/*Unicode: U+d2bc (튼)*/
-  {.w_px = 17,	.glyph_index = 214687},	/*Unicode: U+d2f0 (티)*/
-  {.w_px = 17,	.glyph_index = 215180},	/*Unicode: U+d305 (팅)*/
-  {.w_px = 19,	.glyph_index = 215673},	/*Unicode: U+d30c (파)*/
-  {.w_px = 18,	.glyph_index = 216224},	/*Unicode: U+d328 (패)*/
-  {.w_px = 18,	.glyph_index = 216746},	/*Unicode: U+d37c (퍼)*/
-  {.w_px = 18,	.glyph_index = 217268},	/*Unicode: U+d38c (펌)*/
-  {.w_px = 18,	.glyph_index = 217790},	/*Unicode: U+d398 (페)*/
-  {.w_px = 18,	.glyph_index = 218312},	/*Unicode: U+d3c9 (평)*/
-  {.w_px = 19,	.glyph_index = 218834},	/*Unicode: U+d3ec (포)*/
-  {.w_px = 19,	.glyph_index = 219385},	/*Unicode: U+d3ed (폭)*/
-  {.w_px = 19,	.glyph_index = 219936},	/*Unicode: U+d3f4 (폴)*/
-  {.w_px = 19,	.glyph_index = 220487},	/*Unicode: U+d488 (품)*/
-  {.w_px = 19,	.glyph_index = 221038},	/*Unicode: U+d504 (프)*/
-  {.w_px = 19,	.glyph_index = 221589},	/*Unicode: U+d50c (플)*/
-  {.w_px = 18,	.glyph_index = 222140},	/*Unicode: U+d53c (피)*/
-  {.w_px = 17,	.glyph_index = 222662},	/*Unicode: U+d544 (필)*/
-  {.w_px = 19,	.glyph_index = 223155},	/*Unicode: U+d558 (하)*/
-  {.w_px = 19,	.glyph_index = 223706},	/*Unicode: U+d55c (한)*/
-  {.w_px = 19,	.glyph_index = 224257},	/*Unicode: U+d560 (할)*/
-  {.w_px = 19,	.glyph_index = 224808},	/*Unicode: U+d568 (함)*/
-  {.w_px = 19,	.glyph_index = 225359},	/*Unicode: U+d569 (합)*/
-  {.w_px = 18,	.glyph_index = 225910},	/*Unicode: U+d574 (해)*/
-  {.w_px = 19,	.glyph_index = 226432},	/*Unicode: U+d588 (했)*/
-  {.w_px = 18,	.glyph_index = 226983},	/*Unicode: U+d589 (행)*/
-  {.w_px = 19,	.glyph_index = 227505},	/*Unicode: U+d5a5 (향)*/
-  {.w_px = 18,	.glyph_index = 228056},	/*Unicode: U+d604 (현)*/
-  {.w_px = 18,	.glyph_index = 228578},	/*Unicode: U+d615 (형)*/
-  {.w_px = 19,	.glyph_index = 229100},	/*Unicode: U+d638 (호)*/
-  {.w_px = 19,	.glyph_index = 229651},	/*Unicode: U+d639 (혹)*/
-  {.w_px = 19,	.glyph_index = 230202},	/*Unicode: U+d654 (화)*/
-  {.w_px = 19,	.glyph_index = 230753},	/*Unicode: U+d655 (확)*/
-  {.w_px = 19,	.glyph_index = 231304},	/*Unicode: U+d658 (환)*/
-  {.w_px = 19,	.glyph_index = 231855},	/*Unicode: U+d65c (활)*/
-  {.w_px = 18,	.glyph_index = 232406},	/*Unicode: U+d68c (회)*/
-  {.w_px = 19,	.glyph_index = 232928},	/*Unicode: U+d6a8 (효)*/
-  {.w_px = 19,	.glyph_index = 233479},	/*Unicode: U+d6c4 (후)*/
-  {.w_px = 31,	.glyph_index = 234030},	/*Unicode: U+ff22 (Ｂ)*/
-  {.w_px = 28,	.glyph_index = 234929},	/*Unicode: U+ff23 (Ｃ)*/
-  {.w_px = 35,	.glyph_index = 235741},	/*Unicode: U+ff24 (Ｄ)*/
-  {.w_px = 26,	.glyph_index = 236756},	/*Unicode: U+ff25 (Ｅ)*/
-  {.w_px = 57,	.glyph_index = 237510},	/*Unicode: U+ff26 (Ｆ)*/
-  {.w_px = 48,	.glyph_index = 239163},	/*Unicode: U+ff27 (Ｇ)*/
-  {.w_px = 94,	.glyph_index = 240555},	/*Unicode: U+ff28 (Ｈ)*/
-  {.w_px = 52,	.glyph_index = 243281},	/*Unicode: U+ff29 (Ｉ)*/
-  {.w_px = 23,	.glyph_index = 244789},	/*Unicode: U+ff2a (Ｊ)*/
-  {.w_px = 65,	.glyph_index = 245456},	/*Unicode: U+ff2b (Ｋ)*/
-  {.w_px = 59,	.glyph_index = 247341},	/*Unicode: U+ff2c (Ｌ)*/
-  {.w_px = 19,	.glyph_index = 249052},	/*Unicode: U+ff2f (Ｏ)*/
-  {.w_px = 65,	.glyph_index = 249603},	/*Unicode: U+ff31 (Ｑ)*/
-  {.w_px = 59,	.glyph_index = 251488},	/*Unicode: U+ff32 (Ｒ)*/
-  {.w_px = 36,	.glyph_index = 253199},	/*Unicode: U+ff34 (Ｔ)*/
-  {.w_px = 56,	.glyph_index = 254243},	/*Unicode: U+ff35 (Ｕ)*/
-  {.w_px = 65,	.glyph_index = 255867},	/*Unicode: U+ff36 (Ｖ)*/
-  {.w_px = 45,	.glyph_index = 257752},	/*Unicode: U+ff37 (Ｗ)*/
-  {.w_px = 57,	.glyph_index = 259057},	/*Unicode: U+ff38 (Ｘ)*/
-  {.w_px = 17,	.glyph_index = 260710},	/*Unicode: U+ff39 (Ｙ)*/
-  {.w_px = 18,	.glyph_index = 261203},	/*Unicode: U+ff3a (Ｚ)*/
+  {.w_px = 19,	.glyph_index = 93119},	/*Unicode: U+b4dc (드)*/
+  {.w_px = 19,	.glyph_index = 93670},	/*Unicode: U+b4dd (득)*/
+  {.w_px = 19,	.glyph_index = 94221},	/*Unicode: U+b4e0 (든)*/
+  {.w_px = 19,	.glyph_index = 94772},	/*Unicode: U+b4f1 (등)*/
+  {.w_px = 15,	.glyph_index = 95323},	/*Unicode: U+b514 (디)*/
+  {.w_px = 18,	.glyph_index = 95758},	/*Unicode: U+b530 (따)*/
+  {.w_px = 19,	.glyph_index = 96280},	/*Unicode: U+b610 (또)*/
+  {.w_px = 18,	.glyph_index = 96831},	/*Unicode: U+b6f0 (뛰)*/
+  {.w_px = 18,	.glyph_index = 97353},	/*Unicode: U+b77c (라)*/
+  {.w_px = 18,	.glyph_index = 97875},	/*Unicode: U+b77d (락)*/
+  {.w_px = 18,	.glyph_index = 98397},	/*Unicode: U+b78d (랍)*/
+  {.w_px = 17,	.glyph_index = 98919},	/*Unicode: U+b798 (래)*/
+  {.w_px = 17,	.glyph_index = 99412},	/*Unicode: U+b7a8 (램)*/
+  {.w_px = 18,	.glyph_index = 99905},	/*Unicode: U+b7c9 (량)*/
+  {.w_px = 17,	.glyph_index = 100427},	/*Unicode: U+b7ec (러)*/
+  {.w_px = 17,	.glyph_index = 100920},	/*Unicode: U+b7f0 (런)*/
+  {.w_px = 17,	.glyph_index = 101413},	/*Unicode: U+b808 (레)*/
+  {.w_px = 17,	.glyph_index = 101906},	/*Unicode: U+b824 (려)*/
+  {.w_px = 17,	.glyph_index = 102399},	/*Unicode: U+b825 (력)*/
+  {.w_px = 17,	.glyph_index = 102892},	/*Unicode: U+b82c (렬)*/
+  {.w_px = 17,	.glyph_index = 103385},	/*Unicode: U+b839 (령)*/
+  {.w_px = 19,	.glyph_index = 103878},	/*Unicode: U+b85c (로)*/
+  {.w_px = 19,	.glyph_index = 104429},	/*Unicode: U+b85d (록)*/
+  {.w_px = 19,	.glyph_index = 104980},	/*Unicode: U+b864 (롤)*/
+  {.w_px = 19,	.glyph_index = 105531},	/*Unicode: U+b86c (롬)*/
+  {.w_px = 19,	.glyph_index = 106082},	/*Unicode: U+b8cc (료)*/
+  {.w_px = 19,	.glyph_index = 106633},	/*Unicode: U+b958 (류)*/
+  {.w_px = 19,	.glyph_index = 107184},	/*Unicode: U+b968 (륨)*/
+  {.w_px = 19,	.glyph_index = 107735},	/*Unicode: U+b974 (르)*/
+  {.w_px = 19,	.glyph_index = 108286},	/*Unicode: U+b978 (른)*/
+  {.w_px = 19,	.glyph_index = 108837},	/*Unicode: U+b97c (를)*/
+  {.w_px = 19,	.glyph_index = 109388},	/*Unicode: U+b984 (름)*/
+  {.w_px = 17,	.glyph_index = 109939},	/*Unicode: U+b9ac (리)*/
+  {.w_px = 17,	.glyph_index = 110432},	/*Unicode: U+b9b0 (린)*/
+  {.w_px = 17,	.glyph_index = 110925},	/*Unicode: U+b9bd (립)*/
+  {.w_px = 17,	.glyph_index = 111418},	/*Unicode: U+b9c1 (링)*/
+  {.w_px = 18,	.glyph_index = 111911},	/*Unicode: U+b9c8 (마)*/
+  {.w_px = 18,	.glyph_index = 112433},	/*Unicode: U+b9cc (만)*/
+  {.w_px = 18,	.glyph_index = 112955},	/*Unicode: U+b9de (맞)*/
+  {.w_px = 17,	.glyph_index = 113477},	/*Unicode: U+b9e4 (매)*/
+  {.w_px = 18,	.glyph_index = 113970},	/*Unicode: U+b9f7 (맷)*/
+  {.w_px = 17,	.glyph_index = 114492},	/*Unicode: U+ba38 (머)*/
+  {.w_px = 17,	.glyph_index = 114985},	/*Unicode: U+ba54 (메)*/
+  {.w_px = 17,	.glyph_index = 115478},	/*Unicode: U+ba74 (면)*/
+  {.w_px = 17,	.glyph_index = 115971},	/*Unicode: U+ba85 (명)*/
+  {.w_px = 19,	.glyph_index = 116464},	/*Unicode: U+baa8 (모)*/
+  {.w_px = 19,	.glyph_index = 117015},	/*Unicode: U+babb (못)*/
+  {.w_px = 19,	.glyph_index = 117566},	/*Unicode: U+bb34 (무)*/
+  {.w_px = 19,	.glyph_index = 118117},	/*Unicode: U+bb38 (문)*/
+  {.w_px = 19,	.glyph_index = 118668},	/*Unicode: U+bba4 (뮤)*/
+  {.w_px = 19,	.glyph_index = 119219},	/*Unicode: U+bbac (뮬)*/
+  {.w_px = 19,	.glyph_index = 119770},	/*Unicode: U+bbc0 (므)*/
+  {.w_px = 16,	.glyph_index = 120321},	/*Unicode: U+bbf8 (미)*/
+  {.w_px = 17,	.glyph_index = 120785},	/*Unicode: U+bc0f (및)*/
+  {.w_px = 18,	.glyph_index = 121278},	/*Unicode: U+bc14 (바)*/
+  {.w_px = 18,	.glyph_index = 121800},	/*Unicode: U+bc18 (반)*/
+  {.w_px = 18,	.glyph_index = 122322},	/*Unicode: U+bc1c (발)*/
+  {.w_px = 18,	.glyph_index = 122844},	/*Unicode: U+bc29 (방)*/
+  {.w_px = 17,	.glyph_index = 123366},	/*Unicode: U+bc30 (배)*/
+  {.w_px = 17,	.glyph_index = 123859},	/*Unicode: U+bc31 (백)*/
+  {.w_px = 17,	.glyph_index = 124352},	/*Unicode: U+bc84 (버)*/
+  {.w_px = 17,	.glyph_index = 124845},	/*Unicode: U+bc88 (번)*/
+  {.w_px = 17,	.glyph_index = 125338},	/*Unicode: U+bc94 (범)*/
+  {.w_px = 17,	.glyph_index = 125831},	/*Unicode: U+bc95 (법)*/
+  {.w_px = 18,	.glyph_index = 126324},	/*Unicode: U+bc97 (벗)*/
+  {.w_px = 17,	.glyph_index = 126846},	/*Unicode: U+bca4 (벤)*/
+  {.w_px = 17,	.glyph_index = 127339},	/*Unicode: U+bcc0 (변)*/
+  {.w_px = 17,	.glyph_index = 127832},	/*Unicode: U+bcc4 (별)*/
+  {.w_px = 19,	.glyph_index = 128325},	/*Unicode: U+bcf4 (보)*/
+  {.w_px = 19,	.glyph_index = 128876},	/*Unicode: U+bcf5 (복)*/
+  {.w_px = 19,	.glyph_index = 129427},	/*Unicode: U+bcf8 (본)*/
+  {.w_px = 19,	.glyph_index = 129978},	/*Unicode: U+bcfc (볼)*/
+  {.w_px = 19,	.glyph_index = 130529},	/*Unicode: U+bd80 (부)*/
+  {.w_px = 19,	.glyph_index = 131080},	/*Unicode: U+bd84 (분)*/
+  {.w_px = 19,	.glyph_index = 131631},	/*Unicode: U+bd88 (불)*/
+  {.w_px = 19,	.glyph_index = 132182},	/*Unicode: U+be0c (브)*/
+  {.w_px = 19,	.glyph_index = 132733},	/*Unicode: U+be14 (블)*/
+  {.w_px = 16,	.glyph_index = 133284},	/*Unicode: U+be44 (비)*/
+  {.w_px = 17,	.glyph_index = 133748},	/*Unicode: U+be48 (빈)*/
+  {.w_px = 19,	.glyph_index = 134241},	/*Unicode: U+c0ac (사)*/
+  {.w_px = 19,	.glyph_index = 134792},	/*Unicode: U+c0ad (삭)*/
+  {.w_px = 19,	.glyph_index = 135343},	/*Unicode: U+c0bd (삽)*/
+  {.w_px = 19,	.glyph_index = 135894},	/*Unicode: U+c0c1 (상)*/
+  {.w_px = 18,	.glyph_index = 136445},	/*Unicode: U+c0c9 (색)*/
+  {.w_px = 18,	.glyph_index = 136967},	/*Unicode: U+c0dd (생)*/
+  {.w_px = 19,	.glyph_index = 137489},	/*Unicode: U+c0f7 (샷)*/
+  {.w_px = 18,	.glyph_index = 138040},	/*Unicode: U+c11c (서)*/
+  {.w_px = 18,	.glyph_index = 138562},	/*Unicode: U+c11d (석)*/
+  {.w_px = 18,	.glyph_index = 139084},	/*Unicode: U+c120 (선)*/
+  {.w_px = 18,	.glyph_index = 139606},	/*Unicode: U+c124 (설)*/
+  {.w_px = 18,	.glyph_index = 140128},	/*Unicode: U+c131 (성)*/
+  {.w_px = 18,	.glyph_index = 140650},	/*Unicode: U+c138 (세)*/
+  {.w_px = 18,	.glyph_index = 141172},	/*Unicode: U+c139 (섹)*/
+  {.w_px = 19,	.glyph_index = 141694},	/*Unicode: U+c14b (셋)*/
+  {.w_px = 18,	.glyph_index = 142245},	/*Unicode: U+c158 (션)*/
+  {.w_px = 19,	.glyph_index = 142767},	/*Unicode: U+c18c (소)*/
+  {.w_px = 19,	.glyph_index = 143318},	/*Unicode: U+c18d (속)*/
+  {.w_px = 19,	.glyph_index = 143869},	/*Unicode: U+c190 (손)*/
+  {.w_px = 19,	.glyph_index = 144420},	/*Unicode: U+c1a1 (송)*/
+  {.w_px = 19,	.glyph_index = 144971},	/*Unicode: U+c218 (수)*/
+  {.w_px = 19,	.glyph_index = 145522},	/*Unicode: U+c21c (순)*/
+  {.w_px = 19,	.glyph_index = 146073},	/*Unicode: U+c2a4 (스)*/
+  {.w_px = 19,	.glyph_index = 146624},	/*Unicode: U+c2ac (슬)*/
+  {.w_px = 19,	.glyph_index = 147175},	/*Unicode: U+c2b5 (습)*/
+  {.w_px = 18,	.glyph_index = 147726},	/*Unicode: U+c2c0 (싀)*/
+  {.w_px = 17,	.glyph_index = 148248},	/*Unicode: U+c2dc (시)*/
+  {.w_px = 18,	.glyph_index = 148741},	/*Unicode: U+c2dd (식)*/
+  {.w_px = 18,	.glyph_index = 149263},	/*Unicode: U+c2e0 (신)*/
+  {.w_px = 18,	.glyph_index = 149785},	/*Unicode: U+c2e4 (실)*/
+  {.w_px = 18,	.glyph_index = 150307},	/*Unicode: U+c2ec (심)*/
+  {.w_px = 18,	.glyph_index = 150829},	/*Unicode: U+c2ed (십)*/
+  {.w_px = 19,	.glyph_index = 151351},	/*Unicode: U+c4f0 (쓰)*/
+  {.w_px = 19,	.glyph_index = 151902},	/*Unicode: U+c4f8 (쓸)*/
+  {.w_px = 19,	.glyph_index = 152453},	/*Unicode: U+c501 (씁)*/
+  {.w_px = 19,	.glyph_index = 153004},	/*Unicode: U+c544 (아)*/
+  {.w_px = 18,	.glyph_index = 153555},	/*Unicode: U+c548 (안)*/
+  {.w_px = 18,	.glyph_index = 154077},	/*Unicode: U+c54a (않)*/
+  {.w_px = 18,	.glyph_index = 154599},	/*Unicode: U+c54c (알)*/
+  {.w_px = 18,	.glyph_index = 155121},	/*Unicode: U+c555 (압)*/
+  {.w_px = 18,	.glyph_index = 155643},	/*Unicode: U+c558 (았)*/
+  {.w_px = 18,	.glyph_index = 156165},	/*Unicode: U+c55e (앞)*/
+  {.w_px = 18,	.glyph_index = 156687},	/*Unicode: U+c57d (약)*/
+  {.w_px = 17,	.glyph_index = 157209},	/*Unicode: U+c5b4 (어)*/
+  {.w_px = 17,	.glyph_index = 157702},	/*Unicode: U+c5b8 (언)*/
+  {.w_px = 17,	.glyph_index = 158195},	/*Unicode: U+c5bc (얼)*/
+  {.w_px = 17,	.glyph_index = 158688},	/*Unicode: U+c5c5 (업)*/
+  {.w_px = 19,	.glyph_index = 159181},	/*Unicode: U+c5c6 (없)*/
+  {.w_px = 18,	.glyph_index = 159732},	/*Unicode: U+c5c8 (었)*/
+  {.w_px = 17,	.glyph_index = 160254},	/*Unicode: U+c5d0 (에)*/
+  {.w_px = 18,	.glyph_index = 160747},	/*Unicode: U+c5d4 (엔)*/
+  {.w_px = 17,	.glyph_index = 161269},	/*Unicode: U+c5ec (여)*/
+  {.w_px = 17,	.glyph_index = 161762},	/*Unicode: U+c5ed (역)*/
+  {.w_px = 17,	.glyph_index = 162255},	/*Unicode: U+c5f0 (연)*/
+  {.w_px = 17,	.glyph_index = 162748},	/*Unicode: U+c5f4 (열)*/
+  {.w_px = 17,	.glyph_index = 163241},	/*Unicode: U+c601 (영)*/
+  {.w_px = 17,	.glyph_index = 163734},	/*Unicode: U+c608 (예)*/
+  {.w_px = 19,	.glyph_index = 164227},	/*Unicode: U+c624 (오)*/
+  {.w_px = 19,	.glyph_index = 164778},	/*Unicode: U+c628 (온)*/
+  {.w_px = 19,	.glyph_index = 165329},	/*Unicode: U+c62c (올)*/
+  {.w_px = 19,	.glyph_index = 165880},	/*Unicode: U+c62e (옮)*/
+  {.w_px = 19,	.glyph_index = 166431},	/*Unicode: U+c635 (옵)*/
+  {.w_px = 19,	.glyph_index = 166982},	/*Unicode: U+c640 (와)*/
+  {.w_px = 19,	.glyph_index = 167533},	/*Unicode: U+c644 (완)*/
+  {.w_px = 18,	.glyph_index = 168084},	/*Unicode: U+c678 (외)*/
+  {.w_px = 19,	.glyph_index = 168606},	/*Unicode: U+c694 (요)*/
+  {.w_px = 19,	.glyph_index = 169157},	/*Unicode: U+c6a9 (용)*/
+  {.w_px = 19,	.glyph_index = 169708},	/*Unicode: U+c6b0 (우)*/
+  {.w_px = 19,	.glyph_index = 170259},	/*Unicode: U+c6b4 (운)*/
+  {.w_px = 19,	.glyph_index = 170810},	/*Unicode: U+c6c0 (움)*/
+  {.w_px = 19,	.glyph_index = 171361},	/*Unicode: U+c6c3 (웃)*/
+  {.w_px = 18,	.glyph_index = 171912},	/*Unicode: U+c6d0 (원)*/
+  {.w_px = 18,	.glyph_index = 172434},	/*Unicode: U+c6d4 (월)*/
+  {.w_px = 18,	.glyph_index = 172956},	/*Unicode: U+c6e8 (웨)*/
+  {.w_px = 18,	.glyph_index = 173478},	/*Unicode: U+c704 (위)*/
+  {.w_px = 19,	.glyph_index = 174000},	/*Unicode: U+c720 (유)*/
+  {.w_px = 19,	.glyph_index = 174551},	/*Unicode: U+c73c (으)*/
+  {.w_px = 19,	.glyph_index = 175102},	/*Unicode: U+c740 (은)*/
+  {.w_px = 19,	.glyph_index = 175653},	/*Unicode: U+c744 (을)*/
+  {.w_px = 19,	.glyph_index = 176204},	/*Unicode: U+c74c (음)*/
+  {.w_px = 18,	.glyph_index = 176755},	/*Unicode: U+c758 (의)*/
+  {.w_px = 16,	.glyph_index = 177277},	/*Unicode: U+c774 (이)*/
+  {.w_px = 17,	.glyph_index = 177741},	/*Unicode: U+c775 (익)*/
+  {.w_px = 17,	.glyph_index = 178234},	/*Unicode: U+c778 (인)*/
+  {.w_px = 17,	.glyph_index = 178727},	/*Unicode: U+c77c (일)*/
+  {.w_px = 17,	.glyph_index = 179220},	/*Unicode: U+c77d (읽)*/
+  {.w_px = 18,	.glyph_index = 179713},	/*Unicode: U+c783 (잃)*/
+  {.w_px = 17,	.glyph_index = 180235},	/*Unicode: U+c784 (임)*/
+  {.w_px = 17,	.glyph_index = 180728},	/*Unicode: U+c785 (입)*/
+  {.w_px = 17,	.glyph_index = 181221},	/*Unicode: U+c787 (잇)*/
+  {.w_px = 18,	.glyph_index = 181714},	/*Unicode: U+c788 (있)*/
+  {.w_px = 19,	.glyph_index = 182236},	/*Unicode: U+c790 (자)*/
+  {.w_px = 19,	.glyph_index = 182787},	/*Unicode: U+c791 (작)*/
+  {.w_px = 19,	.glyph_index = 183338},	/*Unicode: U+c794 (잔)*/
+  {.w_px = 19,	.glyph_index = 183889},	/*Unicode: U+c798 (잘)*/
+  {.w_px = 19,	.glyph_index = 184440},	/*Unicode: U+c7a0 (잠)*/
+  {.w_px = 19,	.glyph_index = 184991},	/*Unicode: U+c7a5 (장)*/
+  {.w_px = 18,	.glyph_index = 185542},	/*Unicode: U+c7ac (재)*/
+  {.w_px = 18,	.glyph_index = 186064},	/*Unicode: U+c800 (저)*/
+  {.w_px = 18,	.glyph_index = 186586},	/*Unicode: U+c801 (적)*/
+  {.w_px = 18,	.glyph_index = 187108},	/*Unicode: U+c804 (전)*/
+  {.w_px = 18,	.glyph_index = 187630},	/*Unicode: U+c810 (점)*/
+  {.w_px = 18,	.glyph_index = 188152},	/*Unicode: U+c811 (접)*/
+  {.w_px = 18,	.glyph_index = 188674},	/*Unicode: U+c815 (정)*/
+  {.w_px = 18,	.glyph_index = 189196},	/*Unicode: U+c81c (제)*/
+  {.w_px = 19,	.glyph_index = 189718},	/*Unicode: U+c870 (조)*/
+  {.w_px = 19,	.glyph_index = 190269},	/*Unicode: U+c871 (족)*/
+  {.w_px = 19,	.glyph_index = 190820},	/*Unicode: U+c874 (존)*/
+  {.w_px = 19,	.glyph_index = 191371},	/*Unicode: U+c885 (종)*/
+  {.w_px = 19,	.glyph_index = 191922},	/*Unicode: U+c88c (좌)*/
+  {.w_px = 19,	.glyph_index = 192473},	/*Unicode: U+c8fc (주)*/
+  {.w_px = 19,	.glyph_index = 193024},	/*Unicode: U+c911 (중)*/
+  {.w_px = 19,	.glyph_index = 193575},	/*Unicode: U+c988 (즈)*/
+  {.w_px = 19,	.glyph_index = 194126},	/*Unicode: U+c99d (증)*/
+  {.w_px = 17,	.glyph_index = 194677},	/*Unicode: U+c9c0 (지)*/
+  {.w_px = 17,	.glyph_index = 195170},	/*Unicode: U+c9c4 (진)*/
+  {.w_px = 19,	.glyph_index = 195663},	/*Unicode: U+c9dc (짜)*/
+  {.w_px = 19,	.glyph_index = 196214},	/*Unicode: U+cc28 (차)*/
+  {.w_px = 19,	.glyph_index = 196765},	/*Unicode: U+cc3e (찾)*/
+  {.w_px = 18,	.glyph_index = 197316},	/*Unicode: U+cc44 (채)*/
+  {.w_px = 18,	.glyph_index = 197838},	/*Unicode: U+cc98 (처)*/
+  {.w_px = 18,	.glyph_index = 198360},	/*Unicode: U+ccad (청)*/
+  {.w_px = 18,	.glyph_index = 198882},	/*Unicode: U+ccb4 (체)*/
+  {.w_px = 19,	.glyph_index = 199404},	/*Unicode: U+cd08 (초)*/
+  {.w_px = 18,	.glyph_index = 199955},	/*Unicode: U+cd5c (최)*/
+  {.w_px = 19,	.glyph_index = 200477},	/*Unicode: U+cd94 (추)*/
+  {.w_px = 19,	.glyph_index = 201028},	/*Unicode: U+cd9c (출)*/
+  {.w_px = 19,	.glyph_index = 201579},	/*Unicode: U+cda9 (충)*/
+  {.w_px = 18,	.glyph_index = 202130},	/*Unicode: U+cde8 (취)*/
+  {.w_px = 19,	.glyph_index = 202652},	/*Unicode: U+ce21 (측)*/
+  {.w_px = 17,	.glyph_index = 203203},	/*Unicode: U+ce58 (치)*/
+  {.w_px = 19,	.glyph_index = 203696},	/*Unicode: U+ce74 (카)*/
+  {.w_px = 18,	.glyph_index = 204247},	/*Unicode: U+ce90 (캐)*/
+  {.w_px = 18,	.glyph_index = 204769},	/*Unicode: U+cee4 (커)*/
+  {.w_px = 17,	.glyph_index = 205291},	/*Unicode: U+cee8 (컨)*/
+  {.w_px = 18,	.glyph_index = 205784},	/*Unicode: U+cf00 (케)*/
+  {.w_px = 19,	.glyph_index = 206306},	/*Unicode: U+cf58 (콘)*/
+  {.w_px = 19,	.glyph_index = 206857},	/*Unicode: U+d06c (크)*/
+  {.w_px = 19,	.glyph_index = 207408},	/*Unicode: U+d074 (클)*/
+  {.w_px = 19,	.glyph_index = 207959},	/*Unicode: U+d07d (큽)*/
+  {.w_px = 17,	.glyph_index = 208510},	/*Unicode: U+d0a4 (키)*/
+  {.w_px = 17,	.glyph_index = 209003},	/*Unicode: U+d0b5 (킵)*/
+  {.w_px = 18,	.glyph_index = 209496},	/*Unicode: U+d0c0 (타)*/
+  {.w_px = 17,	.glyph_index = 210018},	/*Unicode: U+d0dc (태)*/
+  {.w_px = 17,	.glyph_index = 210511},	/*Unicode: U+d0dd (택)*/
+  {.w_px = 17,	.glyph_index = 211004},	/*Unicode: U+d130 (터)*/
+  {.w_px = 17,	.glyph_index = 211497},	/*Unicode: U+d140 (텀)*/
+  {.w_px = 17,	.glyph_index = 211990},	/*Unicode: U+d14c (테)*/
+  {.w_px = 17,	.glyph_index = 212483},	/*Unicode: U+d15c (템)*/
+  {.w_px = 19,	.glyph_index = 212976},	/*Unicode: U+d1a1 (톡)*/
+  {.w_px = 19,	.glyph_index = 213527},	/*Unicode: U+d1b5 (통)*/
+  {.w_px = 19,	.glyph_index = 214078},	/*Unicode: U+d22c (투)*/
+  {.w_px = 19,	.glyph_index = 214629},	/*Unicode: U+d2b8 (트)*/
+  {.w_px = 19,	.glyph_index = 215180},	/*Unicode: U+d2bc (튼)*/
+  {.w_px = 17,	.glyph_index = 215731},	/*Unicode: U+d2f0 (티)*/
+  {.w_px = 17,	.glyph_index = 216224},	/*Unicode: U+d305 (팅)*/
+  {.w_px = 19,	.glyph_index = 216717},	/*Unicode: U+d30c (파)*/
+  {.w_px = 18,	.glyph_index = 217268},	/*Unicode: U+d328 (패)*/
+  {.w_px = 18,	.glyph_index = 217790},	/*Unicode: U+d37c (퍼)*/
+  {.w_px = 18,	.glyph_index = 218312},	/*Unicode: U+d38c (펌)*/
+  {.w_px = 18,	.glyph_index = 218834},	/*Unicode: U+d398 (페)*/
+  {.w_px = 18,	.glyph_index = 219356},	/*Unicode: U+d3c9 (평)*/
+  {.w_px = 19,	.glyph_index = 219878},	/*Unicode: U+d3ec (포)*/
+  {.w_px = 19,	.glyph_index = 220429},	/*Unicode: U+d3ed (폭)*/
+  {.w_px = 19,	.glyph_index = 220980},	/*Unicode: U+d3f4 (폴)*/
+  {.w_px = 19,	.glyph_index = 221531},	/*Unicode: U+d488 (품)*/
+  {.w_px = 19,	.glyph_index = 222082},	/*Unicode: U+d504 (프)*/
+  {.w_px = 19,	.glyph_index = 222633},	/*Unicode: U+d50c (플)*/
+  {.w_px = 18,	.glyph_index = 223184},	/*Unicode: U+d53c (피)*/
+  {.w_px = 17,	.glyph_index = 223706},	/*Unicode: U+d544 (필)*/
+  {.w_px = 19,	.glyph_index = 224199},	/*Unicode: U+d558 (하)*/
+  {.w_px = 19,	.glyph_index = 224750},	/*Unicode: U+d55c (한)*/
+  {.w_px = 19,	.glyph_index = 225301},	/*Unicode: U+d560 (할)*/
+  {.w_px = 19,	.glyph_index = 225852},	/*Unicode: U+d568 (함)*/
+  {.w_px = 19,	.glyph_index = 226403},	/*Unicode: U+d569 (합)*/
+  {.w_px = 18,	.glyph_index = 226954},	/*Unicode: U+d574 (해)*/
+  {.w_px = 19,	.glyph_index = 227476},	/*Unicode: U+d588 (했)*/
+  {.w_px = 18,	.glyph_index = 228027},	/*Unicode: U+d589 (행)*/
+  {.w_px = 19,	.glyph_index = 228549},	/*Unicode: U+d5a5 (향)*/
+  {.w_px = 18,	.glyph_index = 229100},	/*Unicode: U+d604 (현)*/
+  {.w_px = 18,	.glyph_index = 229622},	/*Unicode: U+d615 (형)*/
+  {.w_px = 19,	.glyph_index = 230144},	/*Unicode: U+d638 (호)*/
+  {.w_px = 19,	.glyph_index = 230695},	/*Unicode: U+d639 (혹)*/
+  {.w_px = 19,	.glyph_index = 231246},	/*Unicode: U+d654 (화)*/
+  {.w_px = 19,	.glyph_index = 231797},	/*Unicode: U+d655 (확)*/
+  {.w_px = 19,	.glyph_index = 232348},	/*Unicode: U+d658 (환)*/
+  {.w_px = 19,	.glyph_index = 232899},	/*Unicode: U+d65c (활)*/
+  {.w_px = 18,	.glyph_index = 233450},	/*Unicode: U+d68c (회)*/
+  {.w_px = 19,	.glyph_index = 233972},	/*Unicode: U+d6a8 (효)*/
+  {.w_px = 19,	.glyph_index = 234523},	/*Unicode: U+d6c4 (후)*/
+  {.w_px = 31,	.glyph_index = 235074},	/*Unicode: U+ff22 (Ｂ)*/
+  {.w_px = 28,	.glyph_index = 235973},	/*Unicode: U+ff23 (Ｃ)*/
+  {.w_px = 35,	.glyph_index = 236785},	/*Unicode: U+ff24 (Ｄ)*/
+  {.w_px = 26,	.glyph_index = 237800},	/*Unicode: U+ff25 (Ｅ)*/
+  {.w_px = 57,	.glyph_index = 238554},	/*Unicode: U+ff26 (Ｆ)*/
+  {.w_px = 48,	.glyph_index = 240207},	/*Unicode: U+ff27 (Ｇ)*/
+  {.w_px = 94,	.glyph_index = 241599},	/*Unicode: U+ff28 (Ｈ)*/
+  {.w_px = 52,	.glyph_index = 244325},	/*Unicode: U+ff29 (Ｉ)*/
+  {.w_px = 23,	.glyph_index = 245833},	/*Unicode: U+ff2a (Ｊ)*/
+  {.w_px = 65,	.glyph_index = 246500},	/*Unicode: U+ff2b (Ｋ)*/
+  {.w_px = 59,	.glyph_index = 248385},	/*Unicode: U+ff2c (Ｌ)*/
+  {.w_px = 19,	.glyph_index = 250096},	/*Unicode: U+ff2f (Ｏ)*/
+  {.w_px = 65,	.glyph_index = 250647},	/*Unicode: U+ff31 (Ｑ)*/
+  {.w_px = 59,	.glyph_index = 252532},	/*Unicode: U+ff32 (Ｒ)*/
+  {.w_px = 36,	.glyph_index = 254243},	/*Unicode: U+ff34 (Ｔ)*/
+  {.w_px = 56,	.glyph_index = 255287},	/*Unicode: U+ff35 (Ｕ)*/
+  {.w_px = 65,	.glyph_index = 256911},	/*Unicode: U+ff36 (Ｖ)*/
+  {.w_px = 45,	.glyph_index = 258796},	/*Unicode: U+ff37 (Ｗ)*/
+  {.w_px = 57,	.glyph_index = 260101},	/*Unicode: U+ff38 (Ｘ)*/
+  {.w_px = 17,	.glyph_index = 261754},	/*Unicode: U+ff39 (Ｙ)*/
+  {.w_px = 18,	.glyph_index = 262247},	/*Unicode: U+ff3a (Ｚ)*/
 
 #endif
 };
@@ -15768,6 +15834,7 @@ static const uint32_t interui_30_unicode_list[] =
   0xb429, /*(됩)*/
   0xb450, /*(두)*/
   0xb4c0, /*(듀)*/
+  0xb4c8, /*(듈)*/
   0xb4dc, /*(드)*/
   0xb4dc, /*(드)*/
   0xb4dd, /*(득)*/
@@ -15810,6 +15877,7 @@ static const uint32_t interui_30_unicode_list[] =
   0xb9de, /*(맞)*/
   0xb9e4, /*(매)*/
   0xb9f7, /*(맷)*/
+  0xba38, /*(머)*/
   0xba54, /*(메)*/
   0xba74, /*(면)*/
   0xba85, /*(명)*/
@@ -16068,7 +16136,7 @@ lv_font_t interui_30 =
     .h_px = 29,				/*Font height in pixels*/
     .glyph_bitmap = interui_30_glyph_bitmap,	/*Bitmap of glyphs*/
     .glyph_dsc = interui_30_glyph_dsc,		/*Description of glyphs*/
-    .glyph_cnt = 471,			/*Number of glyphs in the font*/
+    .glyph_cnt = 473,			/*Number of glyphs in the font*/
     .unicode_list = interui_30_unicode_list,	/*List of unicode characters*/
     .get_bitmap = lv_font_get_bitmap_sparse,	/*Function pointer to get glyph's bitmap*/
     .get_width = lv_font_get_width_sparse,	/*Function pointer to get glyph's width*/
