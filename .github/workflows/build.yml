@@ -1,0 +1,170 @@
+name: ASAP Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_ver:
+        description: "ASAP Version"
+        required: false
+        default: ""
+      enable_main_build:
+        description: "Main Build"
+        required: false
+        default: "1"
+      enable_custom:
+        description: "Custom Patch"
+        required: false
+        default: "1"
+      enable_build_tools:
+        description: "Tools Build"
+        required: false
+        default: "0"
+
+jobs:
+  Build-ASAP:
+    if: ${{ github.event.inputs.enable_main_build == '' || github.event.inputs.enable_main_build == '1' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+
+    env:
+      ENABLE_CUSTOM: ${{ github.event.inputs.enable_custom }}
+
+    container:
+      image: devkitpro/devkita64:latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Set date
+        shell: bash
+        run: echo "MMDD=$(date +'%m%d')" >> "$GITHUB_ENV"
+
+      - name: Prepare environment
+        shell: bash
+        run: |
+          set -e
+          apt-get update
+          apt-get install -y --no-install-recommends \
+          git jq zip unzip rsync \
+          imagemagick python3 python3-pip \
+          curl wget libzstd-dev \
+          p7zip p7zip-full
+
+          if command -v 7z >/dev/null; then
+            echo "[OK] 7z found: $(command -v 7z)"
+          elif command -v 7zr >/dev/null; then
+            echo "[OK] 7zr found, aliasing to 7z"
+            ln -sf "$(command -v 7zr)" /usr/bin/7z
+          else
+            echo "[FATAL] No 7z/7zr available"
+            exit 1
+          fi
+
+          pip3 install --no-cache-dir --break-system-packages numpy pillow
+
+      - name: Set build version
+        shell: bash
+        if: ${{ github.event.inputs.build_ver != '' }}
+        run: |
+          echo "BUILD_VER=${{ github.event.inputs.build_ver }}" >> "$GITHUB_ENV"
+
+      - name: Define build paths
+        shell: bash
+        run: |
+          source misc/scripts/config/env.sh
+          echo "TOP_DIR=$TOP_DIR" >> "$GITHUB_ENV"
+          echo "APP_DIR=$APP_DIR" >> "$GITHUB_ENV"
+          echo "MISC_DIR=$MISC_DIR" >> "$GITHUB_ENV"
+          echo "DIST_DIR=$DIST_DIR" >> "$GITHUB_ENV"
+
+      - name: Clone repos
+        shell: bash
+        run: |
+          set -o pipefail
+          source misc/scripts/config/env.sh
+          bash misc/scripts/config/clone.sh | tee clone.log
+
+      - name: Custom patch
+        if: ${{ github.event.inputs.enable_custom == '1' }}
+        shell: bash
+        run: |
+          set -o pipefail
+          source misc/scripts/config/env.sh
+          bash misc/scripts/config/custom.sh | tee custom.log
+
+      - name: Build repos
+        shell: bash
+        run: |
+          set -o pipefail
+          source misc/scripts/config/env.sh
+          bash misc/scripts/config/make.sh 2>&1 | tee build.log
+
+      - name: Packaging
+        shell: bash
+        run: |
+          set -o pipefail
+          source misc/scripts/config/env.sh
+          bash misc/scripts/package.sh 2>&1 | tee package.log
+
+      - name: Upload packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: ASAP-${{ env.MMDD }}
+          path: dist/output/*.zip
+          retention-days: 1
+
+      - name: Upload logs
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ASAP_logs
+          path: "*.log"
+          retention-days: 1
+
+  Build-Tools:
+    runs-on: windows-latest
+    if: ${{ github.event.inputs.enable_build_tools == '1' }}
+
+    env:
+      ENABLE_BUILD_TOOLS: "1"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Prepare environment
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller requests Pillow \
+          psutil pywin32 py7zr packaging bs4
+
+      - name: Build tools
+        shell: bash
+        run: |
+          source misc/scripts/config/env.sh
+          bash misc/scripts/config/tools.sh 2>&1 | tee tools.log
+
+      - name: Upload tools
+        uses: actions/upload-artifact@v4
+        with:
+          name: ASAP-Tools
+          path: misc/tools/output/*
+          retention-days: 1
+
+      - name: Upload logs
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tools_logs
+          path: "tools.log"
+          retention-days: 1
