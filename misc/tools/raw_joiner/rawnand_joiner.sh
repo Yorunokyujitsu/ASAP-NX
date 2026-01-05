@@ -1,0 +1,1 @@
+cat rawnand.bin.* > rawnand.bin
