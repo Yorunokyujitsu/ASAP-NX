@@ -1,0 +1,182 @@
+[
+    {
+        "name": "900 mV",
+        "label": "900 mV",
+        "hex": "8403"
+    },
+    {
+        "name": "925 mV",
+        "label": "925 mV",
+        "hex": "9D03"
+    },
+    {
+        "name": "950 mV",
+        "label": "950 mV",
+        "hex": "B603"
+    },
+    {
+        "name": "975 mV",
+        "label": "975 mV",
+        "hex": "CF03"
+    },
+    {
+        "name": "1000 mV",
+        "label": "1000 mV",
+        "hex": "E803"
+    },
+    {
+        "name": "1025 mV",
+        "label": "1025 mV",
+        "hex": "0104"
+    },
+    {
+        "name": "1050 mV",
+        "label": "1050 mV",
+        "hex": "1A04"
+    },
+    {
+        "name": "1075 mV",
+        "label": "1075 mV",
+        "hex": "3304"
+    },
+    {
+        "name": "1100 mV",
+        "label": "1100 mV",
+        "hex": "4C04"
+    },
+    {
+        "name": "1105 mV",
+        "label": "1105 mV",
+        "hex": "5104"
+    },
+    {
+        "name": "1110 mV",
+        "label": "1110 mV",
+        "hex": "5604"
+    },
+    {
+        "name": "1115 mV",
+        "label": "1115 mV",
+        "hex": "5B04"
+    },
+    {
+        "name": "1120 mV",
+        "label": "1120 mV - 기본",
+        "hex": "6004"
+    },
+    {
+        "name": "1125 mV",
+        "label": "1125 mV",
+        "hex": "6504"
+    },
+    {
+        "name": "1130 mV",
+        "label": "1130 mV",
+        "hex": "6A04"
+    },
+    {
+        "name": "1135 mV",
+        "label": "1135 mV",
+        "hex": "6F04"
+    },
+    {
+        "name": "1140 mV",
+        "label": "1140 mV",
+        "hex": "7404"
+    },
+    {
+        "name": "1145 mV",
+        "label": "1145 mV",
+        "hex": "7904"
+    },
+    {
+        "name": "1150 mV",
+        "label": "1150 mV",
+        "hex": "7E04"
+    },
+    {
+        "name": "1155 mV",
+        "label": "1155 mV",
+        "hex": "8304"
+    },
+    {
+        "name": "1160 mV",
+        "label": "1160 mV",
+        "hex": "8804"
+    },
+    {
+        "name": "1165 mV",
+        "label": "1165 mV - 위험",
+        "hex": "8D04"
+    },
+    {
+        "name": "1170 mV",
+        "label": "1170 mV - 위험",
+        "hex": "9204"
+    },
+    {
+        "name": "1175 mV",
+        "label": "1175 mV - 위험",
+        "hex": "9704"
+    },
+    {
+        "name": "1180 mV",
+        "label": "1180 mV - 위험",
+        "hex": "9C04"
+    },
+    {
+        "name": "1185 mV",
+        "label": "1185 mV - 위험",
+        "hex": "A104"
+    },
+    {
+        "name": "1190 mV",
+        "label": "1190 mV - 위험",
+        "hex": "A604"
+    },
+    {
+        "name": "1195 mV",
+        "label": "1195 mV - 위험",
+        "hex": "AB04"
+    },
+    {
+        "name": "1200 mV",
+        "label": "1200 mV - 위험",
+        "hex": "B004"
+    },
+    {
+        "name": "1205 mV",
+        "label": "1205 mV - 위험",
+        "hex": "B504"
+    },
+    {
+        "name": "1210 mV",
+        "label": "1210 mV - 위험",
+        "hex": "BA04"
+    },
+    {
+        "name": "1215 mV",
+        "label": "1215 mV - 위험",
+        "hex": "BF04"
+    },
+    {
+        "name": "1220 mV",
+        "label": "1220 mV - 위험",
+        "hex": "C404"
+    },
+    {
+        "name": "1225 mV",
+        "label": "1225 mV - 위험",
+        "hex": "C904"
+    },
+    {
+        "name": "1230 mV",
+        "label": "1230 mV - 위험",
+        "hex": "CE04"
+    },
+    {
+        "name": "1235 mV",
+        "label": "1235 mV - 위험",
+        "hex": "D304"
+    }
+]

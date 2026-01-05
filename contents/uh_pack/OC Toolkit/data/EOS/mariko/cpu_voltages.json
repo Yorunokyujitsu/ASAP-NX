@@ -1,0 +1,67 @@
+[
+    {
+        "name": "1100 mV",
+        "label": "1100 mV",
+        "hex": "4C04"
+    },
+    {
+        "name": "1105 mV",
+        "label": "1105 mV",
+        "hex": "5104"
+    },
+    {
+        "name": "1110 mV",
+        "label": "1110 mV",
+        "hex": "5604"
+    },
+    {
+        "name": "1115 mV",
+        "label": "1115 mV",
+        "hex": "5B04"
+    },
+    {
+        "name": "1120 mV",
+        "label": "1120 mV - 기본",
+        "hex": "6004"
+    },
+    {
+        "name": "1125 mV",
+        "label": "1125 mV",
+        "hex": "6504"
+    },
+    {
+        "name": "1130 mV",
+        "label": "1130 mV",
+        "hex": "6A04"
+    },
+    {
+        "name": "1135 mV",
+        "label": "1135 mV",
+        "hex": "6F04"
+    },
+    {
+        "name": "1140 mV",
+        "label": "1140 mV",
+        "hex": "7404"
+    },
+    {
+        "name": "1145 mV",
+        "label": "1145 mV",
+        "hex": "7904"
+    },
+    {
+        "name": "1150 mV",
+        "label": "1150 mV",
+        "hex": "7E04"
+    },
+    {
+        "name": "1155 mV",
+        "label": "1155 mV",
+        "hex": "8304"
+    },
+    {
+        "name": "1160 mV",
+        "label": "1160 mV",
+        "hex": "8804"
+    }
+]

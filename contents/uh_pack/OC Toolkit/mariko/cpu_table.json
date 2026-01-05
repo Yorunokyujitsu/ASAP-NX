@@ -1,0 +1,27 @@
+[
+    {
+        "name": "자동",
+        "label": "자동 - 기본",
+        "hex": "00"
+    },
+    {
+        "name": "기본 테이블",
+        "label": "기본 테이블",
+        "hex": "01"
+    },
+    {
+        "name": "1581 MHz Tbreak",
+        "label": "1581 MHz Tbreak",
+        "hex": "02"
+    },
+    {
+        "name": "1683 MHz Tbreak",
+        "label": "1683 MHz Tbreak",
+        "hex": "04"
+    },
+    {
+        "name": "Helios Table",
+        "label": "Helios Table",
+        "hex": "05"
+    }
+]

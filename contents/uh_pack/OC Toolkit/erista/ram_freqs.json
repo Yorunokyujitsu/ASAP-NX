@@ -1,0 +1,147 @@
+[
+    {
+        "name": "1862 MHz - 기본",
+        "label": "1862 MHz",
+        "dec": "1862400"
+    },
+    {
+        "name": "1881 MHz",
+        "label": "1881 MHz",
+        "dec": "1881600"
+    },
+    {
+        "name": "1900 MHz",
+        "label": "1900 MHz",
+        "dec": "1900800"
+    },
+    {
+        "name": "1920 MHz",
+        "label": "1920 MHz",
+        "dec": "1920000"
+    },
+    {
+        "name": "1939 MHz",
+        "label": "1939 MHz",
+        "dec": "1939200"
+    },
+    {
+        "name": "1958 MHz",
+        "label": "1958 MHz",
+        "dec": "1958400"
+    },
+    {
+        "name": "1977 MHz",
+        "label": "1977 MHz",
+        "dec": "1977600"
+    },
+    {
+        "name": "1996 MHz",
+        "label": "1996 MHz",
+        "dec": "1996800"
+    },
+    {
+        "name": "2016 MHz",
+        "label": "2016 MHz",
+        "dec": "2016000"
+    },
+    {
+        "name": "2035 MHz",
+        "label": "2035 MHz",
+        "dec": "2035200"
+    },
+    {
+        "name": "2054 MHz",
+        "label": "2054 MHz",
+        "dec": "2054400"
+    },
+    {
+        "name": "2073 MHz",
+        "label": "2073 MHz",
+        "dec": "2073600"
+    },
+    {
+        "name": "2092 MHz",
+        "label": "2092 MHz",
+        "dec": "2092800"
+    },
+    {
+        "name": "2112 MHz",
+        "label": "2112 MHz",
+        "dec": "2112000"
+    },
+    {
+        "name": "2131 MHz",
+        "label": "2131 MHz",
+        "dec": "2131200"
+    },
+    {
+        "name": "2150 MHz",
+        "label": "2150 MHz",
+        "dec": "2150400"
+    },
+    {
+        "name": "2169 MHz",
+        "label": "2169 MHz",
+        "dec": "2169600"
+    },
+    {
+        "name": "2188 MHz",
+        "label": "2188 MHz",
+        "dec": "2188800"
+    },
+    {
+        "name": "2208 MHz",
+        "label": "2208 MHz",
+        "dec": "2208000"
+    },
+    {
+        "name": "2227 MHz",
+        "label": "2227 MHz",
+        "dec": "2227200"
+    },
+    {
+        "name": "2246 MHz",
+        "label": "2246 MHz",
+        "dec": "2246400"
+    },
+    {
+        "name": "2265 MHz",
+        "label": "2265 MHz",
+        "dec": "2265600"
+    },
+    {
+        "name": "2284 MHz",
+        "label": "2284 MHz",
+        "dec": "2284800"
+    },
+    {
+        "name": "2304 MHz",
+        "label": "2304 MHz",
+        "dec": "2304000"
+    },
+    {
+        "name": "2323 MHz",
+        "label": "2323 MHz",
+        "dec": "2323200"
+    },
+    {
+        "name": "2342 MHz",
+        "label": "2342 MHz",
+        "dec": "2342400"
+    },
+    {
+        "name": "2361 MHz",
+        "label": "2361 MHz",
+        "dec": "2361600"
+    },
+    {
+        "name": "2380 MHz",
+        "label": "2380 MHz",
+        "dec": "2380800"
+    },
+    {
+        "name": "2400 MHz",
+        "label": "2400 MHz",
+        "dec": "2400000"
+    }
+]

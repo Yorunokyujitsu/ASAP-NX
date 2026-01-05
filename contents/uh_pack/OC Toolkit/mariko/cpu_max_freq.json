@@ -1,0 +1,27 @@
+[
+    {
+        "name": "1963 MHz",
+        "label": "1963 MHz",
+        "hex": "02"
+    },
+    {
+        "name": "2397 MHz",
+        "label": "2397 MHz",
+        "hex": "00"
+    },
+    {
+        "name": "2499 MHz",
+        "label": "2499 MHz",
+        "hex": "03"
+    },
+    {
+        "name": "2601 MHz",
+        "label": "2601 MHz",
+        "hex": "01"
+    },
+    {
+        "name": "2703 MHz",
+        "label": "2703 MHz",
+        "hex": "4D"
+    }
+]

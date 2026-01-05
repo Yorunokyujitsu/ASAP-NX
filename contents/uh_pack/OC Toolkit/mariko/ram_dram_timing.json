@@ -1,0 +1,11 @@
+[
+    {
+        "name": "AUTO_ADJ",
+        "hex": "00"
+    },
+    {
+        "name": "AUTO_ADJ_HP",
+        "hex": "01"
+    }
+]
+

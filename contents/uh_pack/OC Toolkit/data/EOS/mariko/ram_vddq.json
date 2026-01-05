@@ -1,0 +1,112 @@
+[
+    {
+        "name": "Do not override",
+        "label": "설정 안 함",
+        "hex": "000000"
+    },
+    {
+        "name": "550 mV",
+        "label": "550 mV",
+        "hex": "706408"
+    },
+    {
+        "name": "555 mV",
+        "label": "555 mV",
+        "hex": "F87708"
+    },
+    {
+        "name": "560 mV",
+        "label": "560 mV",
+        "hex": "808B08"
+    },
+    {
+        "name": "565 mV",
+        "label": "565 mV",
+        "hex": "089F08"
+    },
+    {
+        "name": "570 mV",
+        "label": "570 mV",
+        "hex": "90B208"
+    },
+    {
+        "name": "575 mV",
+        "label": "575 mV",
+        "hex": "18C608"
+    },
+    {
+        "name": "580 mV",
+        "label": "580 mV",
+        "hex": "A0D908"
+    },
+    {
+        "name": "585 mV",
+        "label": "585 mV",
+        "hex": "28ED08"
+    },
+    {
+        "name": "590 mV",
+        "label": "590 mV",
+        "hex": "B00009"
+    },
+    {
+        "name": "595 mV",
+        "label": "595 mV",
+        "hex": "381409"
+    },
+    {
+        "name": "600 mV",
+        "label": "600 mV - 기본",
+        "hex": "C02709"
+    },
+    {
+        "name": "605 mV",
+        "label": "605 mV",
+        "hex": "483B09"
+    },
+    {
+        "name": "610 mV",
+        "label": "610 mV",
+        "hex": "D04E09"
+    },
+    {
+        "name": "615 mV",
+        "label": "615 mV",
+        "hex": "586209"
+    },
+    {
+        "name": "620 mV",
+        "label": "620 mV",
+        "hex": "E07509"
+    },
+    {
+        "name": "625 mV",
+        "label": "625 mV",
+        "hex": "688909"
+    },
+    {
+        "name": "630 mV",
+        "label": "630 mV",
+        "hex": "F09C09"
+    },
+    {
+        "name": "635 mV",
+        "label": "635 mV",
+        "hex": "78B009"
+    },
+    {
+        "name": "640 mV",
+        "label": "640 mV",
+        "hex": "00C409"
+    },
+    {
+        "name": "645 mV",
+        "label": "645 mV",
+        "hex": "88D709"
+    },
+    {
+        "name": "650 mV",
+        "label": "650 mV",
+        "hex": "10EB09"
+    }
+]
