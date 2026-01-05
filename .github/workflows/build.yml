@@ -3,10 +3,6 @@ name: ASAP Build
 on:
   workflow_dispatch:
     inputs:
-      verify_pw:
-        description: "Set config"
-        required: false
-        default: ""
       enable_main_build:
         description: "Main Build"
         required: false
@@ -69,9 +65,9 @@ jobs:
       - name: Set 7z password
         shell: bash
         run: |
-          if [[ -n "${{ github.event.inputs.verify_pw }}" ]]; then
-            echo "PW_VERIFY=${{ github.event.inputs.verify_pw }}" >> "$GITHUB_ENV"
-            echo "[INFO] PW_VERIFY set from workflow input"
+          if [[ -n "${{ secrets.PW_VERIFY }}" ]]; then
+            echo "PW_VERIFY=${{ secrets.PW_VERIFY }}" >> "$GITHUB_ENV"
+            echo "[INFO] PW_VERIFY set from secrets"
           else
             echo "PW_VERIFY=" >> "$GITHUB_ENV"
             echo "[INFO] PW_VERIFY is empty"
@@ -136,7 +132,7 @@ jobs:
 
     env:
       ENABLE_BUILD_TOOLS: "1"
-      PW_VERIFY: ${{ github.event.inputs.verify_pw }}
+      PW_VERIFY: ${{ secrets.PW_VERIFY }}
 
     steps:
       - name: Checkout
