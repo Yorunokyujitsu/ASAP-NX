@@ -5,12 +5,8 @@ current_hekate=6.4.2
 current_nyx=1.8.2
 
 [latest_version]
-msys2_version=latest
-python_version=3.14.2
-
-prod_key_set=21.0.0
 supported_hos=21.1.0
-tester_version=0105
+tester_version=0109
 eos_version=1.3.0
 kip_version=1.7.1
 
