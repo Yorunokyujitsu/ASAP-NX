@@ -1,4 +1,26 @@
 {
+    "changelog": {
+        "21.1.0": [
+            "Atmosphere: RetroArch, Tinfoil 등 일부 미지원 ABI 앱을 지원하도록 패치되었습니다.",
+            "",
+            "ATLAS: 1.1.2 → 1.1.3 (Lockpick RCM: 1.9.16 → 1.9.17)",
+            "",
+            "ovl-sysmodules: 1.4.6 → 1.4.7",
+            "",
+            "emuiibo: 최신 커밋으로 리빌드되었습니다.",
+            "",
+            "Status-Monitor: 1.3.2+r5 → 1.3.2+r6",
+            "",
+            "sys-clk: 2.0.1+r20 → 2.0.1+r21",
+            "",
+            "Extra Setting+: Moon 런처 생성기의 L4T(안드로이드, 리눅스) 항목에 세부 설정이 추가되었습니다.",
+            "",
+            "ASAP Updater: 1.0.2 → 1.0.3",
+            "토큰 문제로 유지·보수가 중단된 치트 DB를 우회하여 최신 Gbatemp.net 치트를 제공하도록 수정되었습니다.",
+            "",
+            "Sphaira: 최신 DBI-RU 및 Picofly 펌웨어를 제공하는 Github 메뉴가 추가되었습니다."
+        ]
+    },
     "cfws": {
         "asap": {
             "ASAP": "https://raw.githubusercontent.com/Yorunokyujitsu/ASAP-NX/main/output/ASAP.zip"
