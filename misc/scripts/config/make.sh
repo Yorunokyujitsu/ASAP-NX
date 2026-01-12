@@ -54,7 +54,41 @@ for entry in "${REPOS[@]}"; do
     echo
     continue
   fi
-  
+
+  # Works only with DBIPatcher forks derived from Yorunokyujitsu’s repository.
+  if [[ "$dest" == "DBIPatcher" ]]; then
+    source "$dir/config.txt"
+
+    DBI_PATCHER="$dir/bin/dbipatcher"
+    BLPT_DIR="$dir/translate/blueprints/blueprint.${ver}.txt"
+    LANG_DIR="$dir/translate/lang.${lang}.txt"
+    DBI_FILE="$dir/dbi/DBI.${ver}.ru.nro"
+
+    print_title "[BUILD] ${dest}"
+    make -C "$dir" -j"$(nproc)"
+    echo "${dest} build completed"
+    echo
+
+    mkdir -p "$dir/dist"
+
+    origin_url="$(git -C "$dir" remote get-url origin 2>/dev/null || true)"
+
+    if [[ "$origin_url" =~ github.com[:/]+Yorunokyujitsu/DBIPatcher(\.git)?$ ]]; then
+      sed -i '1438s|=[[:space:]]*.*|={0}-{1}  FW: {2}-{3}|' "${LANG_DIR}"
+    fi
+
+    "${DBI_PATCHER}" --patch "${BLPT_DIR}" --nro "${DBI_FILE}" \
+      --lang "${LANG_DIR}" --out "$dir/dist/DBI.nro"
+
+    if [[ "$origin_url" =~ github.com[:/]+Yorunokyujitsu/DBIPatcher(\.git)?$ ]]; then
+      cd "$dir" && python "./font/font_patch.py" "${lang}" "$dir/dist/DBI.nro"
+    fi
+
+    echo "${dest} patches DBI.nro"
+    echo
+    continue
+  fi
+
   # aio-switch-updater
   if [[ "$dest" == "aio-switch-updater" ]]; then
     print_title "[BUILD] ${dest}"

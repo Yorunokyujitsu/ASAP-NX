@@ -32,21 +32,22 @@ if [[ "${ENABLE_CUSTOM:-0}" == "1" ]]; then
     "Yorunokyujitsu/sphaira@test"
 
     # System modules and overlays
-    "ppkantorski/Ultrahand-Overlay@f634fe9"
-    "ppkantorski/EdiZon-Overlay@92136c2"
+    # Yorunokyujitsu/libultrahand@f053eaa
+    "ppkantorski/Ultrahand-Overlay@dac8007"
+    "ppkantorski/EdiZon-Overlay@835e2fd"
     "masagrator/FPSLocker@e887a22"
     "ppkantorski/NX-FanControl@4c3226e"
-    "ppkantorski/ovl-sysmodules@859a805"
+    "ppkantorski/ovl-sysmodules@73bb9cf"
     "masagrator/ReverseNX-RT@725eb27"
-    "ppkantorski/Status-Monitor-Overlay@f4c876f"
-    "ppkantorski/sys-clk@9acf792"
+    "ppkantorski/Status-Monitor-Overlay@7000377"
+    "ppkantorski/sys-clk@d6bc69d"
     "borntohonk/sys-patch"
 
     # Homebrews
     "Slluxx/AmiiboGenerator"
     "HamletDuFromage/aio-switch-updater=ASAP-Updater"
     "impeeza/linkalho"
-    "Yorunokyujitsu/DBIPatcher"
+    #"Yorunokyujitsu/DBIPatcher"
 
     # Local
     "__local__/LockPick"

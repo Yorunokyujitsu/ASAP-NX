@@ -231,6 +231,7 @@ package_asap() {
   cp "${APP_DIR}/linkalho/linkalho.nro" "${DIST_DIR}/switch/linkalho"
   cp "${APP_DIR}/AmiiboGenerator/AmiiboGenerator.nro" "${DIST_DIR}/switch/AmiiboGenerator"
   cp "${APP_DIR}/sphaira/build/Release/sphaira.nro" "${DIST_DIR}/switch/sphaira"
+  #cp "${APP_DIR}/DBIPatcher/dist/DBI.nro" "${DIST_DIR}/switch/DBI/DBI.845.nro"
   cp "${MISC_DIR}/ini/dbi.ini" "${DIST_DIR}/switch/DBI/dbi.config"
   cp "${MISC_DIR}/res/icons/logo.png" "${DIST_DIR}/switch/tinfoil/themes/ASAP_Custom"
   cp "${MISC_DIR}/res/screens/bg.png" "${DIST_DIR}/switch/tinfoil/themes/ASAP_Custom"
@@ -250,10 +251,7 @@ package_asap() {
 
   # Cleanup emuiibo lang.json
   find "${DIST_DIR}/emuiibo/overlay/lang" -maxdepth 1 -type f -name '*.json' \
-    ! -name 'en.json' ! -name 'ko.json' -delete
-
-  # temporary: tinfoil not support 21+
-  rm -rf "${DIST_DIR}/switch/tinfoil/tinfoil.nro"
+    ! -name 'en.json' ! -name 'ko.json' ! -name 'ja.json' -delete
 
   # ASAP.zip
   mkdir -p "${TOP_DIR}/ASAP"
