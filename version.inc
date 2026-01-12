@@ -6,14 +6,14 @@ current_nyx=1.8.2
 
 [latest_version]
 supported_hos=21.1.0
-tester_version=0109
+tester_version=0113
 eos_version=1.3.0
 kip_version=1.7.1
 
 hekate=6.4.2
 nyx=1.8.2
 atmosphere=1.10.1
-atlas=1.1.2
+atlas=1.1.3
 sys_patch=1.5.9
 missioncontrol=0.14.1
 nx_fancontrol=1.0.4
@@ -25,11 +25,11 @@ ultrahand=2.2.7
 edizon=1.0.15
 emuiibo=1.1.2
 fpslocker=3.2.3
-ovl_sysmodules=1.4.6
+ovl_sysmodules=1.4.7
 reversenx_rt=2.2.1
-statusmonitor=1.3.2+r5
-sys_clk=2.0.1+r20
-asap_updater=1.0.2
+statusmonitor=1.3.2+r6
+sys_clk=2.0.1+r21
+asap_updater=1.0.3
 amiibogenerator=2.1.2
 daybreak=1.0.1
 dbi=849
