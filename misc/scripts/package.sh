@@ -37,13 +37,18 @@ EMUIIBO_URL="$(gh_release_latest Yorunokyujitsu emuiibo emuiibo.zip)"
 OVLLDR_URL="$(gh_release_latest ppkantorski nx-ovlloader nx-ovlloader.zip)"
 DBI_KO_URL="$(gh_release_latest Yorunokyujitsu DBIPatcher DBI_ko.zip)"
 DBI_EN_URL="$(gh_release_latest Yorunokyujitsu DBIPatcher DBI_en.zip)"
+SALTYNX_URL="$(gh_release_latest masagrator SaltyNX SaltyNX.zip)"
 TINFOIL_URL="https://tinfoil.media/repo/Tinfoil%20Applet%20Mode%20%5B20.0%5D%5Bv2%5D.zip"
+AMIIBO_GEN_URL="$(gh_release_latest yusufakg AmiiboGenerator AmiiboGenerator.nro)"
 
 # Dynamic name zips URLs
 HEKATE_URL="$(gh_dynamic_name CTCaer hekate '^hekate_ctcaer.*\.zip$')"
+HEKATE_8GB_URL="$(gh_dynamic_name CTCaer hekate '^hekate_ctcaer.*__ram8GB\.bin$')"
 MISSIONCON_URL="$(gh_dynamic_name ndeadly MissionControl '^MissionControl.*\.zip$')"
-SALTYNX_URL="$(gh_dynamic_name masagrator SaltyNX '^SaltyNX.*\.zip$')"
 SYSCON_URL="$(gh_dynamic_name o0Zz sys-con '^sys-con.*\.zip$')"
+
+# Configure payload.bin naming for 8GB RAM support
+PAYLOAD_8GB="$(basename "$HEKATE_8GB_URL")"
 
 # Version
 BUILD_VER="${BUILD_VER:-$(date +'%m%d')}"
@@ -84,7 +89,7 @@ package_asap() {
   mkdir -p "${DIST_DIR}"/switch/{ASAP-Updater,DBI,linkalho,sphaira,tinfoil/themes/ASAP_Custom}
   mkdir -p "${DIST_DIR}/warmboot_mariko"
 
-  # Downloads
+  # Downloads ZIP
   download 5 -o "${DIST_DIR}/hekate.zip"              "${HEKATE_URL}"
   download 5 -o "${DIST_DIR}/sys-clk.zip"             "${EOS_URL}"
   download 5 -o "${DIST_DIR}/backup/kips/.OC/kip.zip" "${LDRKIP_URL}"
@@ -95,6 +100,9 @@ package_asap() {
   download 5 -o "${DIST_DIR}/sys-con.zip"             "${SYSCON_URL}"
   download 5 -o "${DIST_DIR}/tinfoil.zip"             "${TINFOIL_URL}"
   download 5 -o "${DIST_DIR}/switch/DBI/DBI.zip"      "${DBI_KO_URL}"
+
+  # Download file
+  download 5 -o "${DIST_DIR}/switch/AmiiboGenerator/AmiiboGenerator.nro" "${AMIIBO_GEN_URL}"
 
   # Extract
   unzip -oq "${DIST_DIR}/sys-clk.zip" "atmosphere/*" -d "${DIST_DIR}"
@@ -177,6 +185,8 @@ package_asap() {
        "${DIST_DIR}/config/MissionControl/missioncontrol_.ini"
   fi
 
+  touch "${DIST_DIR}/atmosphere/contents/010B6ECF3B30D000/flag"
+
   # Packaging
   AMS_DIR="${APP_DIR}/Atmosphere/out/nintendo_nx_arm64_armv8a/release/atmosphere-out"
   AMS_EXOSPHERE="${APP_DIR}/Atmosphere_8GB/exosphere/out/nintendo_nx_arm64_armv8a/release/exosphere.bin"
@@ -229,7 +239,6 @@ package_asap() {
   cp "${APP_DIR}/ASAP-Updater/ASAP-Updater.nro" "${DIST_DIR}/switch/ASAP-Updater/ASAP-Updater_.nro"
   cp "${APP_DIR}/ASAP-Updater/.ASAP-Updater.nro.star" "${DIST_DIR}/switch/ASAP-Updater"
   cp "${APP_DIR}/linkalho/linkalho.nro" "${DIST_DIR}/switch/linkalho"
-  cp "${APP_DIR}/AmiiboGenerator/AmiiboGenerator.nro" "${DIST_DIR}/switch/AmiiboGenerator"
   cp "${APP_DIR}/sphaira/build/Release/sphaira.nro" "${DIST_DIR}/switch/sphaira"
   #cp "${APP_DIR}/DBIPatcher/dist/DBI.nro" "${DIST_DIR}/switch/DBI/DBI.845.nro"
   cp "${MISC_DIR}/ini/dbi.ini" "${DIST_DIR}/switch/DBI/dbi.config"
@@ -306,6 +315,7 @@ package_origin() {
 
   # Downloads
   download 5 -o "${DIST_DIR}/hekate.zip" "${HEKATE_URL}"
+  download 5 -o "${DIST_DIR}/${PAYLOAD_8GB}" "${HEKATE_8GB_URL}"
   download 5 -o "${DIST_DIR}/DBI.zip"    "${DBI_EN_URL}"
 
   # Extract
@@ -360,8 +370,8 @@ package_origin() {
   # Packaging
   cp "${APP_DIR}/Atmosphere/out/nintendo_nx_arm64_armv8a/release/fusee.bin" "${DIST_DIR}/bootloader/payloads"
   cp "${APP_DIR}/hekate/output/nyx.bin" "${DIST_DIR}/bootloader/sys"
-  #cp "${APP_DIR}/hekate/output/hekate.bin" "${DIST_DIR}/bootloader/update.bin"
-  #cp "${APP_DIR}/hekate/output/hekate.bin" "${DIST_DIR}/payload.bin"
+  cp "${APP_DIR}/hekate/output/hekate.bin" "${DIST_DIR}/bootloader/update.bin"
+  cp "${APP_DIR}/hekate/output/hekate.bin" "${DIST_DIR}/payload.bin"
   cp "${APP_DIR}/nx-hbloader/hbl.nsp" "${DIST_DIR}/atmosphere"
   cp "${APP_DIR}/nx-hbmenu/nx-hbmenu.nro" "${DIST_DIR}/hbmenu.nro"
   cp "${APP_DIR}/TegraExplorer/output/TegraExplorer.bin" "${DIST_DIR}/bootloader/payloads"
@@ -376,7 +386,6 @@ package_origin() {
   mv "${DIST_DIR}/switch/reboot_to_payload.nro" "${DIST_DIR}/switch/Reboot_to_payload"
 
   # Remove download zip and files
-  #rm -f "${DIST_DIR}"/hekate_ctcaer_*.bin
   find "${DIST_DIR}" -type f -iname '*.zip' -delete
 
   (

@@ -20,20 +20,19 @@ if [[ "${ENABLE_CUSTOM:-0}" == "1" ]]; then
   # Custom On - ASAP
   REPOS+=(
     # Hekate / 8GB
-    "CTCaer/hekate"
-    "CTCaer/hekate=hekate_8GB"
+    "CTCaer/hekate@3af777f"
+    "CTCaer/hekate=hekate_8GB@3af777f"
 
     # Atmosphere / 8GB
-    "Atmosphere-NX/Atmosphere"
-    "Atmosphere-NX/Atmosphere=Atmosphere_8GB"
+    "Atmosphere-NX/Atmosphere@5056ab2"
+    "Atmosphere-NX/Atmosphere=Atmosphere_8GB@5056ab2"
 
     # Homebrew loader and Sphaira
     "switchbrew/nx-hbloader"
     "Yorunokyujitsu/sphaira@test"
 
-    # System modules and overlays
-    # Yorunokyujitsu/libultrahand@f053eaa
-    "ppkantorski/Ultrahand-Overlay@dac8007"
+    # System modules and overlays (latest libultrahand f053eaa)
+    "ppkantorski/Ultrahand-Overlay@77bd239"
     "ppkantorski/EdiZon-Overlay@835e2fd"
     "masagrator/FPSLocker@e887a22"
     "ppkantorski/NX-FanControl@4c3226e"
@@ -41,12 +40,11 @@ if [[ "${ENABLE_CUSTOM:-0}" == "1" ]]; then
     "masagrator/ReverseNX-RT@725eb27"
     "ppkantorski/Status-Monitor-Overlay@7000377"
     "ppkantorski/sys-clk@d6bc69d"
-    "borntohonk/sys-patch"
+    "borntohonk/sys-patch@6904ed6"
 
     # Homebrews
-    "Slluxx/AmiiboGenerator"
-    "HamletDuFromage/aio-switch-updater=ASAP-Updater"
-    "impeeza/linkalho"
+    "HamletDuFromage/aio-switch-updater=ASAP-Updater@3d38eaa"
+    "impeeza/linkalho@a34e7b0"
     #"Yorunokyujitsu/DBIPatcher"
 
     # Local

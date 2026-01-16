@@ -23,16 +23,16 @@ for entry in "${REPOS[@]}"; do
     continue
   fi
 
-  dest=""
-  if [[ "$spec" == *"="* ]]; then
-    dest="${spec#*=}"
-    spec="${spec%%=*}"
-  fi
-
   branch=""
   if [[ "$spec" == *"@"* ]]; then
     branch="${spec#*@}"
     spec="${spec%%@*}"
+  fi
+
+  dest=""
+  if [[ "$spec" == *"="* ]]; then
+    dest="${spec#*=}"
+    spec="${spec%%=*}"
   fi
 
   owner="${spec%%/*}"

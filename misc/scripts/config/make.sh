@@ -117,6 +117,15 @@ for entry in "${REPOS[@]}"; do
     continue
   fi
 
+  # MissionControl (make dist)
+  if [[ "$dest" == "MissionControl" ]]; then
+    print_title "[BUILD] ${dest}"
+    make -C "$dir" dist
+    echo "${dest} build completed"
+    echo
+    continue
+  fi
+
   # sphaira (cmake preset: Release, Dev)
   if [[ "$dest" == "sphaira" ]]; then
     print_title "[BUILD] ${dest}"
