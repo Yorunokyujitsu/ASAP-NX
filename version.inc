@@ -1,21 +1,21 @@
 [ASAP]
-supported_hos=21.1.0
+supported_hos=21.2.0
 current_version=
-current_hekate=6.4.2
-current_nyx=1.8.2
+current_hekate=6.5.0
+current_nyx=1.9.0
 
 [latest_version]
-supported_hos=21.1.0
-tester_version=0113
+supported_hos=21.2.0
+tester_version=0117
 eos_version=1.3.0
-kip_version=1.7.1
+kip_version=1.7.2
 
-hekate=6.4.2
-nyx=1.8.2
-atmosphere=1.10.1
-atlas=1.1.3
+hekate=6.5.0
+nyx=1.9.0
+atmosphere=1.10.2
+atlas=1.1.4
 sys_patch=1.5.9
-missioncontrol=0.14.1
+missioncontrol=0.14.2
 nx_fancontrol=1.0.4
 ovlloader=2.0.0
 saltynx=1.7.2
@@ -29,8 +29,8 @@ ovl_sysmodules=1.4.7
 reversenx_rt=2.2.1
 statusmonitor=1.3.2+r6
 sys_clk=2.0.1+r21
-asap_updater=1.0.3
-amiibogenerator=2.1.2
+asap_updater=1.0.4
+amiibogenerator=2.2.1
 daybreak=1.0.1
 dbi=849
 linkalho=2.0.2
