@@ -6,7 +6,6 @@
 * **[ASAP](https://raw.githubusercontent.com/Yorunokyujitsu/ASAP-NX/main/output/ASAP.zip)** - Korean-only Aio package for personal use.
 * **[ASAP-Installer](https://raw.githubusercontent.com/Yorunokyujitsu/ASAP-NX/main/output/tools/ASAP_Installer.zip)** - One-click easy CFW installer.
 * **[IMG2BMP](https://raw.githubusercontent.com/Yorunokyujitsu/ASAP-NX/main/output/tools/BMP_Converter.zip)** - BMP image converter for Hekate.
-* **[Custom Aio](https://raw.githubusercontent.com/Yorunokyujitsu/ASAP-NX/main/output/custom.zip)** - User customized Aio package.
 <br>
 
 > [!IMPORTANT]
@@ -36,8 +35,8 @@ Final build artifacts and logs are uploaded as GitHub Actions Artifacts.<br><br>
 
 **A custom all-in-one package can be configured for personal use.**
 > [!TIP]
-> Modify the [REPOS](https://github.com/Yorunokyujitsu/ASAP-NX/blob/main/misc/scripts/repos.sh#L56) entries to match the desired setup.<br>
-> Adjust [package_origin](https://github.com/Yorunokyujitsu/ASAP-NX/blob/main/misc/scripts/package.sh#L304) to collect build outputs from the customized repos.<br>
+> Modify the [REPOS](https://github.com/Yorunokyujitsu/ASAP-NX/blob/main/misc/scripts/repos.sh#L55) entries to match the desired setup.<br>
+> Adjust [package_origin](https://github.com/Yorunokyujitsu/ASAP-NX/blob/main/misc/scripts/package.sh#L313) to collect build outputs from the customized repos.<br>
 > In the [Actions tab](https://github.com/Yorunokyujitsu/ASAP-NX/actions/workflows/build.yml), set only `Main Build` to true, then run `Run workflow`.
 
 <br>
@@ -61,7 +60,7 @@ Final build artifacts and logs are uploaded as GitHub Actions Artifacts.<br><br>
 > **halop** - Clock-patched [loader.kip management tools](https://github.com/halop/OC_Toolkit).<br>
 > **ppkantorski** - [Overlay menu](https://github.com/ppkantorski/Ultrahand-Overlay), [loader](https://github.com/ppkantorski/nx-ovlloader), and various forked apps [[1]](https://github.com/ppkantorski/nx-ovlreloader), [[2]](https://github.com/ppkantorski/ovl-sysmodules), [[3]](https://github.com/ppkantorski/Status-Monitor-Overlay), [[4]](https://github.com/ppkantorski/sys-clk).<br>
 > **XorTroll** and **yusufakg** - [Homebrew](https://github.com/yusufakg/AmiiboGenerator) and [system module](https://github.com/XorTroll/emuiibo) for managing virtual amiibo.<br>
-> **rdmrocha** - Tool for managing NNID linking and unlinking.<br>
+> **rdmrocha**, **impeeza** - Tool for managing NNID linking and unlinking.<br>
 > **duckbill** and **Morce3232** - DBI and [translation patch tools](https://github.com/Morce3232/DBIPatcher).<br>
-> **HamletDuFromage** - Homebrew for [updating CFW, Cheats, L4T, and Firmware](https://github.com/HamletDuFromage/aio-switch-updater).
-
+> **HamletDuFromage** - Homebrew for [updating CFW, Cheats, L4T, and Firmware](https://github.com/HamletDuFromage/aio-switch-updater).<br>
+> **Google Fonts** - [NotoSans KR](https://fonts.google.com/noto/specimen/Noto+Sans+KR), [Cascadia Mono](https://fonts.google.com/specimen/Cascadia+Mono).
