@@ -1,0 +1,193 @@
+
+===========================
+    [1/3] Extract NX.7z    
+===========================
+
+
+[INFO] Extracting /d/a/ASAP-NX/ASAP-NX/contents/NX.7z
+Extracted NX.7z
+
+
+===============================
+    [2/3] Build IMG2BMP.exe    
+===============================
+
+
+753 INFO: PyInstaller: 6.19.0, contrib hooks: 2026.1
+753 INFO: Python: 3.11.9
+761 INFO: Platform: Windows-10-10.0.26100-SP0
+761 INFO: Python environment: C:\hostedtoolcache\windows\Python\3.11.9\x64
+763 INFO: wrote D:\a\ASAP-NX\ASAP-NX\misc\tools\img_converter\hekate_res\IMG2BMP.spec
+819 INFO: Removing temporary files and cleaning cache in C:\Users\runneradmin\AppData\Local\pyinstaller
+821 INFO: Module search paths (PYTHONPATH):
+['C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Scripts\\pyinstaller.exe',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\python311.zip',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\DLLs',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\win32',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\win32\\lib',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\Pythonwin',
+ 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\img_converter\\hekate_res']
+1087 INFO: checking Analysis
+1087 INFO: Building Analysis because Analysis-00.toc is non existent
+1087 INFO: Looking for Python shared library...
+1087 INFO: Using Python shared library: C:\hostedtoolcache\windows\Python\3.11.9\x64\python311.dll
+1087 INFO: Running Analysis Analysis-00.toc
+1087 INFO: Target bytecode optimization level: 0
+1087 INFO: Initializing module dependency graph...
+1089 INFO: Initializing module graph hook caches...
+1107 INFO: Analyzing modules for base_library.zip ...
+2270 INFO: Processing standard module hook 'hook-heapq.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+2570 INFO: Processing standard module hook 'hook-encodings.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+4836 INFO: Processing standard module hook 'hook-pickle.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+7176 INFO: Caching module dependency graph...
+7214 INFO: Analyzing D:\a\ASAP-NX\ASAP-NX\misc\tools\img_converter\hekate_res\con2bmp.py
+7225 INFO: Processing standard module hook 'hook-PIL.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+7326 INFO: Processing standard module hook 'hook-PIL.Image.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+7635 INFO: Processing standard module hook 'hook-xml.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+7654 INFO: Processing standard module hook 'hook-xml.etree.cElementTree.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+7809 INFO: Processing standard module hook 'hook-PIL.ImageFilter.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+8033 INFO: Processing module hooks (post-graph stage)...
+8287 INFO: Processing standard module hook 'hook-PIL.SpiderImagePlugin.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+8780 INFO: Performing binary vs. data reclassification (1 entries)
+8782 INFO: Looking for ctypes DLLs
+8792 INFO: Analyzing run-time hooks ...
+8792 INFO: Including run-time hook 'pyi_rth_inspect.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+8798 INFO: Creating base_library.zip...
+8818 INFO: Looking for dynamic libraries
+8932 INFO: Extra DLL search directories (AddDllDirectory): []
+8932 INFO: Extra DLL search directories (PATH): []
+10113 INFO: Warnings written to D:\a\ASAP-NX\ASAP-NX\misc\tools\img_converter\hekate_res\build\IMG2BMP\warn-IMG2BMP.txt
+10145 INFO: Graph cross-reference written to D:\a\ASAP-NX\ASAP-NX\misc\tools\img_converter\hekate_res\build\IMG2BMP\xref-IMG2BMP.html
+10161 INFO: checking PYZ
+10161 INFO: Building PYZ because PYZ-00.toc is non existent
+10161 INFO: Building PYZ (ZlibArchive) D:\a\ASAP-NX\ASAP-NX\misc\tools\img_converter\hekate_res\build\IMG2BMP\PYZ-00.pyz
+10399 INFO: Building PYZ (ZlibArchive) D:\a\ASAP-NX\ASAP-NX\misc\tools\img_converter\hekate_res\build\IMG2BMP\PYZ-00.pyz completed successfully.
+10413 INFO: checking PKG
+10413 INFO: Building PKG because PKG-00.toc is non existent
+10413 INFO: Building PKG (CArchive) IMG2BMP.pkg
+14223 INFO: Building PKG (CArchive) IMG2BMP.pkg completed successfully.
+14225 INFO: Bootloader C:\hostedtoolcache\windows\Python\3.11.9\x64\Lib\site-packages\PyInstaller\bootloader\Windows-64bit-intel\runw.exe
+14225 INFO: checking EXE
+14225 INFO: Building EXE because EXE-00.toc is non existent
+14225 INFO: Building EXE from EXE-00.toc
+14225 INFO: Copying bootloader EXE to D:\a\ASAP-NX\ASAP-NX\misc\tools\output\IMG2BMP.exe
+14227 INFO: Copying icon to EXE
+14229 INFO: Copying 0 resources to EXE
+14229 INFO: Embedding manifest in EXE
+14231 INFO: Appending PKG archive to EXE
+14239 INFO: Fixing EXE headers
+14340 INFO: Building EXE from EXE-00.toc completed successfully.
+14342 INFO: Build complete! The results are available in: D:\a\ASAP-NX\ASAP-NX\misc\tools\output
+
+IMG2BMP build completed
+
+
+============================
+    [3/3] Build ASAP.exe    
+============================
+
+
+111 INFO: PyInstaller: 6.19.0, contrib hooks: 2026.1
+111 INFO: Python: 3.11.9
+119 INFO: Platform: Windows-10-10.0.26100-SP0
+119 INFO: Python environment: C:\hostedtoolcache\windows\Python\3.11.9\x64
+121 INFO: wrote D:\a\ASAP-NX\ASAP-NX\misc\tools\installer\ASAP.spec
+123 INFO: Removing temporary files and cleaning cache in C:\Users\runneradmin\AppData\Local\pyinstaller
+123 INFO: Module search paths (PYTHONPATH):
+['C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Scripts\\pyinstaller.exe',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\python311.zip',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\DLLs',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\win32',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\win32\\lib',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\Pythonwin',
+ 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer']
+347 INFO: Appending 'datas' from .spec
+349 INFO: checking Analysis
+349 INFO: Building Analysis because Analysis-00.toc is non existent
+349 INFO: Looking for Python shared library...
+349 INFO: Using Python shared library: C:\hostedtoolcache\windows\Python\3.11.9\x64\python311.dll
+349 INFO: Running Analysis Analysis-00.toc
+349 INFO: Target bytecode optimization level: 0
+349 INFO: Initializing module dependency graph...
+351 INFO: Initializing module graph hook caches...
+366 INFO: Analyzing modules for base_library.zip ...
+993 INFO: Processing standard module hook 'hook-encodings.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+1597 INFO: Processing standard module hook 'hook-heapq.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+2853 INFO: Processing standard module hook 'hook-pickle.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+4208 INFO: Caching module dependency graph...
+4244 INFO: Analyzing D:\a\ASAP-NX\ASAP-NX\misc\tools\installer\main.py
+4283 INFO: Processing standard module hook 'hook-_ctypes.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+4371 INFO: Processing pre-find-module-path hook 'hook-tkinter.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks\\pre_find_module_path'
+4372 INFO: TclTkInfo: initializing cached Tcl/Tk info...
+6001 INFO: Processing standard module hook 'hook-_tkinter.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+6053 INFO: Processing standard module hook 'hook-PIL.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+6138 INFO: Processing standard module hook 'hook-PIL.Image.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+6438 INFO: Processing standard module hook 'hook-xml.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+6454 INFO: Processing standard module hook 'hook-xml.etree.cElementTree.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+6601 INFO: Processing standard module hook 'hook-PIL.ImageFilter.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+6819 INFO: Processing pre-safe-import-module hook 'hook-packaging.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+6819 INFO: SetuptoolsInfo: initializing cached setuptools info...
+8700 INFO: Processing pre-safe-import-module hook 'hook-typing_extensions.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+8972 INFO: Processing standard module hook 'hook-multiprocessing.util.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+9967 INFO: Processing standard module hook 'hook-urllib3.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+10046 INFO: Processing pre-safe-import-module hook 'hook-backports.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+10052 INFO: Processing standard module hook 'hook-backports.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+10882 INFO: Processing standard module hook 'hook-charset_normalizer.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+10999 INFO: Processing standard module hook 'hook-certifi.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+11162 INFO: Processing standard module hook 'hook-platform.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+11203 INFO: Processing standard module hook 'hook-psutil.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+11411 INFO: Processing pre-safe-import-module hook 'hook-importlib_metadata.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+11455 INFO: Processing standard module hook 'hook-Cryptodome.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+12191 INFO: Processing standard module hook 'hook-pywintypes.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+12379 INFO: Processing pre-safe-import-module hook 'hook-win32com.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\pre_safe_import_module'
+12451 INFO: Processing standard module hook 'hook-win32com.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+12453 INFO: Processing standard module hook 'hook-pythoncom.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+12916 INFO: Processing module hooks (post-graph stage)...
+13231 INFO: Processing standard module hook 'hook-PIL.SpiderImagePlugin.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+13300 INFO: Processing standard module hook 'hook-_tkinter.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+13316 INFO: Performing binary vs. data reclassification (995 entries)
+14949 INFO: Looking for ctypes DLLs
+15051 INFO: Analyzing run-time hooks ...
+15055 INFO: Including run-time hook 'pyi_rth_inspect.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+15057 INFO: Including run-time hook 'pyi_rth_pkgutil.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+15059 INFO: Including run-time hook 'pyi_rth_multiprocessing.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+15061 INFO: Including run-time hook 'pyi_rth_pywintypes.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\rthooks'
+15061 INFO: Including run-time hook 'pyi_rth_pythoncom.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\rthooks'
+15061 INFO: Including run-time hook 'pyi_rth__tkinter.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+15089 INFO: Creating base_library.zip...
+15108 INFO: Looking for dynamic libraries
+15442 INFO: Extra DLL search directories (AddDllDirectory): []
+15442 INFO: Extra DLL search directories (PATH): []
+16645 INFO: Warnings written to D:\a\ASAP-NX\ASAP-NX\misc\tools\installer\build\ASAP\warn-ASAP.txt
+16695 INFO: Graph cross-reference written to D:\a\ASAP-NX\ASAP-NX\misc\tools\installer\build\ASAP\xref-ASAP.html
+16734 INFO: checking PYZ
+16734 INFO: Building PYZ because PYZ-00.toc is non existent
+16736 INFO: Building PYZ (ZlibArchive) D:\a\ASAP-NX\ASAP-NX\misc\tools\installer\build\ASAP\PYZ-00.pyz
+17251 INFO: Building PYZ (ZlibArchive) D:\a\ASAP-NX\ASAP-NX\misc\tools\installer\build\ASAP\PYZ-00.pyz completed successfully.
+17277 INFO: checking PKG
+17277 INFO: Building PKG because PKG-00.toc is non existent
+17277 INFO: Building PKG (CArchive) ASAP.pkg
+24002 INFO: Building PKG (CArchive) ASAP.pkg completed successfully.
+24024 INFO: Bootloader C:\hostedtoolcache\windows\Python\3.11.9\x64\Lib\site-packages\PyInstaller\bootloader\Windows-64bit-intel\runw.exe
+24024 INFO: checking EXE
+24024 INFO: Building EXE because EXE-00.toc is non existent
+24024 INFO: Building EXE from EXE-00.toc
+24024 INFO: Copying bootloader EXE to D:\a\ASAP-NX\ASAP-NX\misc\tools\output\ASAP.exe
+24028 INFO: Copying icon to EXE
+24030 INFO: Copying version information to EXE
+24034 INFO: Copying 0 resources to EXE
+24034 INFO: Embedding manifest in EXE
+24036 INFO: Appending PKG archive to EXE
+24052 INFO: Fixing EXE headers
+24196 INFO: Building EXE from EXE-00.toc completed successfully.
+24216 INFO: Build complete! The results are available in: D:\a\ASAP-NX\ASAP-NX\misc\tools\output
+
+ASAP-Installer build completed
+
+Done

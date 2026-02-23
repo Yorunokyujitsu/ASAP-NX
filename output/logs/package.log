@@ -1,0 +1,848 @@
+
+=======================
+    Packaging: ASAP    
+=======================
+
+
+[INFO] The ASAP version has been set
+Converted: 1280x720 True Color + Alpha BMP
+[GET] https://github.com/CTCaer/hekate/releases/download/v6.5.1/hekate_ctcaer_6.5.1_Nyx_1.9.1.zip
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100  870k  100  870k    0     0  6327k      0 --:--:-- --:--:-- --:--:-- 6327k
+[GET] https://github.com/halop/OC_Toolkit_SC_EOS/releases/latest/download/sys-clk.zip
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100 3265k  100 3265k    0     0  18.2M      0 --:--:-- --:--:-- --:--:-- 18.2M
+[GET] https://github.com/halop/OC_Toolkit_SC_EOS/releases/latest/download/kip.zip
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100  109k  100  109k    0     0   544k      0 --:--:-- --:--:-- --:--:--  544k
+[GET] https://github.com/Yorunokyujitsu/emuiibo/releases/latest/download/emuiibo.zip
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100  616k  100  616k    0     0  2897k      0 --:--:-- --:--:-- --:--:-- 2897k
+[GET] https://github.com/ndeadly/MissionControl/releases/download/v0.14.2/MissionControl-0.14.2-master-e8d4623c.zip
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100  171k  100  171k    0     0  1230k      0 --:--:-- --:--:-- --:--:-- 1230k
+[GET] https://github.com/ppkantorski/nx-ovlloader/releases/latest/download/nx-ovlloader.zip
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100 86543  100 86543    0     0   393k      0 --:--:-- --:--:-- --:--:--  393k
+[GET] https://github.com/masagrator/SaltyNX/releases/latest/download/SaltyNX.zip
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  222k  100  222k    0     0  1023k      0 --:--:-- --:--:-- --:--:-- 15.5M
+[GET] https://github.com/o0Zz/sys-con/releases/download/1.6.2/sys-con-1.6.2.zip
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100  486k  100  486k    0     0  3232k      0 --:--:-- --:--:-- --:--:-- 3232k
+[GET] https://tinfoil.media/repo/Tinfoil%20Applet%20Mode%20%5B20.0%5D%5Bv2%5D.zip
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 19.9M  100 19.9M    0     0   175M      0 --:--:-- --:--:-- --:--:--  176M
+[GET] https://github.com/Yorunokyujitsu/DBIPatcher/releases/latest/download/DBI_ko.zip
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100 4808k  100 4808k    0     0  13.8M      0 --:--:-- --:--:-- --:--:-- 13.8M
+[GET] https://github.com/yusufakg/AmiiboGenerator/releases/latest/download/AmiiboGenerator.nro
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100 1548k  100 1548k    0     0  6750k      0 --:--:-- --:--:-- --:--:-- 6750k
+[GET] https://github.com/Yorunokyujitsu/sphaira/releases/latest/download/sphaira.nro
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100 3722k  100 3722k    0     0  8021k      0 --:--:-- --:--:-- --:--:-- 8021k
+Archive:  /__w/ASAP-NX/ASAP-NX/dist/backup/kips/.OC/kip.zip
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/backup/kips/.OC/loader.kip  
+Archive:  /__w/ASAP-NX/ASAP-NX/dist/switch/DBI/DBI.zip
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/switch/DBI/DBI.nro  
+Archive:  /__w/ASAP-NX/ASAP-NX/dist/missioncontrol.zip
+   creating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/contents/010000000000bd00/
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/contents/010000000000bd00/exefs.nsp  
+   creating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/contents/010000000000bd00/flags/
+ extracting: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/contents/010000000000bd00/flags/boot2.flag  
+ extracting: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/contents/010000000000bd00/mitm.lst  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/contents/010000000000bd00/toolbox.json  
+   creating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/
+   creating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/bluetooth_patches/
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/bluetooth_patches/08601CC4C629F981F92CE3A53C2633FB46DDEA00.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/bluetooth_patches/144B678306269E3D5245497373C09866D2BB8997.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/bluetooth_patches/1494B3B0E7AA4234ED20F6A5EEA60620522C68DD.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/bluetooth_patches/1F66DEC82762261430EE292541FB42F5C4E10AA5.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/bluetooth_patches/2C0A323887EF342C448A72DDCC4CD737A298CD46.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/bluetooth_patches/2CAAD3898B7B2F01DF66480EDD919C6A26735EC9.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/bluetooth_patches/2FB16085E21E54B90E88ED2F98CCC850334E128E.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/bluetooth_patches/3714A43B8F9608D08E15067AB1D9CE8E68FE56BC.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/bluetooth_patches/4F57845D1DC166A46C42D5AF45164196DC7CD198.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/bluetooth_patches/532B667232B3992A0A3D007AA85E4944C4138D15.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/bluetooth_patches/63C4312A5D74B29DFC3DA25B6E3E4825575D23C9.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/bluetooth_patches/68C915388537833D1AC9F3920708A1A0FF73E35A.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/bluetooth_patches/6FCF8BF53C10AA346555D74EC602FE53BF3BD88E.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/bluetooth_patches/874B8CD62BF6715648382BBADB70790558FB3F35.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/bluetooth_patches/8C2A437B9890F6DA0FC3B17442B10E7C6FCDA6AA.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/bluetooth_patches/935E9D4099CE74FC162915E7CA4952E64FAD6671.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/bluetooth_patches/9480B34033289645E7924E99F467CCB9B4632A5D.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/bluetooth_patches/9E95C91568327AD850AC0C2246F1078DE72B28F9.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/bluetooth_patches/A3278455B3EC297F0CE6CD629183EC86376EE0DC.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/bluetooth_patches/A5E6C2D20334CC787617A15BFB9F53F2DABA3E41.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/bluetooth_patches/B58A6445D7C724D6285EB3922FE6BBAACDA33EB3.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/bluetooth_patches/BF43446888D1182FF37420B6762EB1136DE45947.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/bluetooth_patches/CCE16D29FE9BCB44AC40BB1703D586FE467496CE.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/bluetooth_patches/CF0C34FC10F75EB2DAFB302FAA3E0C188621B2AD.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/bluetooth_patches/DBCA0074043CA7E74E9C58A84ACD7A3058968528.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/bluetooth_patches/DE1AC63A4A0B77CCEA606CF15B62AA587EB9CACC.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/bluetooth_patches/E9A6DBF13FE4A6833606A834C7BA1B44F4DDD60F.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/bluetooth_patches/F013FF4FC88A8376A6F3C401485C0718E1B5E148.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/bluetooth_patches/F3DCA5480F0523699683C0D16B7C51C6394897AF.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/bluetooth_patches/FEE47E024FC9C62838FF1A476DE243DCE673DA7E.ips  
+   creating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/btm_patches/
+ extracting: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/btm_patches/0A2E87DB96AC17AC6260A878D215A20D9EDF0917.ips  
+ extracting: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/btm_patches/14F4527DDB0C367055C384E2DAD037B3996664FE.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/btm_patches/18D29F36EFBD14C6187F1E337749326DBC6BB205.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/btm_patches/1D460F761919B94522A10B3EB98F4EC75FBDBC4F.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/btm_patches/29B9122754BCEE48E4225933979F233939A49CF2.ips  
+ extracting: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/btm_patches/344A9B35C77BF85392AFE04B38701D1EB0BD41CF.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/btm_patches/37B45CA18B0D5E1768119971677690857A185AAB.ips  
+ extracting: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/btm_patches/38FD02642C00EB3EDD3625728EA308C3B3CDF4B4.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/btm_patches/3B03D2FF7700627216F3562340991844C957F457.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/btm_patches/479F51DAD54016A7F68CFCB521F5D3E37B2855B2.ips  
+ extracting: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/btm_patches/4B92BF76660CCD6DE63528EFDE37147BA5997B09.ips  
+ extracting: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/btm_patches/4BBB2B9942C1DA04BBFB4933AA2E350BB88F3C14.ips  
+ extracting: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/btm_patches/52E5D19BDDF49586901BA4CF869723BCA222AAEC.ips  
+ extracting: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/btm_patches/58518E8DDEB26A678AD332B3C8D772C24F2B0636.ips  
+ extracting: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/btm_patches/5B1ED394A7DD3910E5B375F3C90B13505347AB0A.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/btm_patches/5C60D97B9800074FE755847EE2380477A751BDAE.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/btm_patches/65AFEE4DCE1AB795540D204AF5D20AAF83C68A82.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/btm_patches/6DC55293131192B617564C62732CC2CF445BD248.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/btm_patches/702DADCB98BF9D965F570BCB6A6480C00AC536FB.ips  
+ extracting: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/btm_patches/A0542C24E727081A6A63208700C9CE2952B6914C.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/btm_patches/A27AE05114E0A17160A8C74BE8472F8EE6ABB273.ips  
+ extracting: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/btm_patches/ADB4B59EFF92BC8D10F28F87FD9C13666213EE53.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/btm_patches/B517E72EBBE1EB0223C3DF26E0017F727F9AD776.ips  
+ extracting: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/btm_patches/BEB8B07DA484E04B326001799DBE53D53D0B5D52.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/btm_patches/C35EF7937BD7C91FDC66F2E983D39388988364AF.ips  
+ extracting: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/btm_patches/F4D4976A1E1E6F498F6824151C11C6AA9EF81375.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/btm_patches/F5FC951E3AB69B6FBE6250B7B73D22B3F75EDE28.ips  
+ extracting: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/btm_patches/F9A63D3E811CAE0F06495124042CE7F951CE505B.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/btm_patches/FE1CFC6CE0B8F5A3C779ED67C9EF8C08DE959AE9.ips  
+   creating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/hid_patches/
+ extracting: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/hid_patches/0ABCF878B3E22287ABD15F1F73B365DB26A4E124.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/hid_patches/0F02EFFAEF77015948F635C1559FC32507074451.ips  
+ extracting: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/hid_patches/12DB6C7DF6BF40BC02695C611EC46F458504A5AD.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/hid_patches/1780B569DE805B4E9AFBCC366D93BB313DCBA67E.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/hid_patches/296FB63B038723955A5EEE4720C3E17BF49B5ECC.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/hid_patches/2ABBA006E9E162C1EF0A28E6477725F2836FFEC9.ips  
+ extracting: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/hid_patches/403978CD2BC64E4ACB3BF1A5E556F582BFC3498B.ips  
+ extracting: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/hid_patches/453AF9911A69ED566732A7AF2BF54B0B50BC3255.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/hid_patches/47BCA8366FC3D4C9E86592E8FC42485989E69CCB.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/hid_patches/6AC68185D4597477D9AD8A2EBE014733F2BCB104.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/hid_patches/74480E653551A0415F90CD61E4B851C60E71E674.ips  
+ extracting: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/hid_patches/8BDBD223E61D122E98CDBFC77C231BBB5CBE56E3.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/hid_patches/98EB0277ADFC171F79765FCC8A56674AE39B08FC.ips  
+ extracting: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/hid_patches/9A1F471859D99957A81B2FC21169EE4DBC191734.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/hid_patches/A2F71DB9568A864B8AC81AC79E2735A53A9CD291.ips  
+ extracting: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/hid_patches/ACA9C5D9BF1A0558251E6D2FE2D0CA4DFE7B90AC.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/hid_patches/AE8B325431ED958F335615EBA5312870A92978CB.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/hid_patches/B5D1C5A111EB89E72F2EBF93D1343DFD7BF4E421.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/hid_patches/BBEE6C2C132C849BC313B0E38732D91B9C45FBFD.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/hid_patches/C5FCB68A301FD160FF5209C54175AC51D69750BC.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/hid_patches/CA1A12452AF8789F5D03BF2A70260CE80D7DA5C4.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/hid_patches/CEE923637C0797454FBE98A64F63D2B9F39B62FC.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/hid_patches/CFCBD39A38FC2E8FC1273B4B5BF7C619FA93579E.ips  
+ extracting: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/hid_patches/D7E71B92FAFD5E6D670F36593D98DC30AD15A24F.ips  
+ extracting: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/hid_patches/E5139E8D47BE57C31DA97FCFBB66472416D60BD1.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/hid_patches/FA528960A4ED9B4C408D2667BFE7C8BCD80E1FE2.ips  
+   creating: /__w/ASAP-NX/ASAP-NX/dist/config/MissionControl/
+   creating: /__w/ASAP-NX/ASAP-NX/dist/config/MissionControl/controllers/
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/config/MissionControl/missioncontrol.ini.template  
+Archive:  /__w/ASAP-NX/ASAP-NX/dist/ovlloader.zip
+   creating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/contents/420000000007E51B/
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/contents/420000000007E51B/exefs.nsp  
+   creating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/contents/420000000007E51A/
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/contents/420000000007E51A/exefs.nsp  
+   creating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/contents/420000000007E51A/flags/
+ extracting: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/contents/420000000007E51A/flags/boot2.flag  
+   creating: /__w/ASAP-NX/ASAP-NX/dist/switch/Ultrahand-Reload/
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/switch/Ultrahand-Reload/Ultrahand-Reload.nro  
+Archive:  /__w/ASAP-NX/ASAP-NX/dist/emuiibo.zip
+   creating: /__w/ASAP-NX/ASAP-NX/dist/emuiibo/
+   creating: /__w/ASAP-NX/ASAP-NX/dist/emuiibo/overlay/
+   creating: /__w/ASAP-NX/ASAP-NX/dist/emuiibo/overlay/lang/
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/emuiibo/overlay/lang/en.json  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/emuiibo/overlay/lang/it.json  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/emuiibo/overlay/lang/fr.json  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/emuiibo/overlay/lang/ko.json  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/emuiibo/overlay/lang/de.json  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/emuiibo/overlay/lang/ru.json  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/emuiibo/overlay/lang/zh-Hant.json  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/emuiibo/overlay/lang/pt-BR.json  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/emuiibo/overlay/lang/es.json  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/emuiibo/overlay/lang/zh-Hans.json  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/emuiibo/overlay/lang/ja.json  
+   creating: /__w/ASAP-NX/ASAP-NX/dist/switch/.overlays/
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/switch/.overlays/emuiibo.ovl  
+   creating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/contents/0100000000000352/
+   creating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/contents/0100000000000352/flags/
+ extracting: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/contents/0100000000000352/flags/boot2.flag  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/contents/0100000000000352/exefs.nsp  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/contents/0100000000000352/toolbox.json  
+Archive:  /__w/ASAP-NX/ASAP-NX/dist/saltynx.zip
+   creating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/contents/0000000000534C56/
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/contents/0000000000534C56/exefs.nsp  
+   creating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/contents/0000000000534C56/flags/
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/contents/0000000000534C56/flags/boot2.flag  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/contents/0000000000534C56/toolbox.json  
+   creating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/SaltyNX_Fixes/
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/SaltyNX_Fixes/053ABE9494B5397AE818B3721DE50995.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/SaltyNX_Fixes/10C14AD346AE02E32AA52A9030A3A87B98D89642000000000000000000000000.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/SaltyNX_Fixes/66A8EB853DE90A1AF13D19DA575E339B.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/SaltyNX_Fixes/C4D1BCED9D8C5B813295345B7F9FDF97.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/SaltyNX_Fixes/ECF4B91AF1B669ECD92829F25E4B530EE48985FA000000000000000000000000.ips  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/exefs_patches/SaltyNX_Fixes/IDs.txt  
+   creating: /__w/ASAP-NX/ASAP-NX/dist/SaltySD/
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/SaltySD/exceptions.txt  
+   creating: /__w/ASAP-NX/ASAP-NX/dist/SaltySD/flags/
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/SaltySD/flags/log.flag  
+   creating: /__w/ASAP-NX/ASAP-NX/dist/SaltySD/patches/
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/SaltySD/saltysd_bootstrap.elf  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/SaltySD/saltysd_bootstrap32_3k.elf  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/SaltySD/saltysd_bootstrap32_5k.elf  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/SaltySD/saltysd_core.elf  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/SaltySD/saltysd_core32.elf  
+Archive:  /__w/ASAP-NX/ASAP-NX/dist/sys-con.zip
+   creating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/contents/690000000000000D/
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/contents/690000000000000D/exefs.nsp  
+   creating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/contents/690000000000000D/flags/
+ extracting: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/contents/690000000000000D/flags/boot2.flag  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/atmosphere/contents/690000000000000D/toolbox.json  
+   creating: /__w/ASAP-NX/ASAP-NX/dist/config/sys-con/
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/config/sys-con/config.ini  
+Archive:  /__w/ASAP-NX/ASAP-NX/dist/tinfoil.zip
+   creating: /__w/ASAP-NX/ASAP-NX/dist/switch/tinfoil/db/
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/switch/tinfoil/db/cheats.json  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/switch/tinfoil/db/titles.US.en.json  
+   creating: /__w/ASAP-NX/ASAP-NX/dist/switch/tinfoil/licenses/
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/switch/tinfoil/licenses/hactool.license  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/switch/tinfoil/licenses/libnx.license  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/switch/tinfoil/licenses/libstratosphere.dmnt.license  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/switch/tinfoil/licenses/nlohmann.json.license  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/switch/tinfoil/licenses/nxmtpserver.license  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/switch/tinfoil/socket.json  
+  inflating: /__w/ASAP-NX/ASAP-NX/dist/switch/tinfoil/tinfoil.nro  
+  adding: boot.ini (deflated 15%)
+  adding: backup/ (stored 0%)
+  adding: backup/keys/ (stored 0%)
+  adding: backup/keys/PartialAesKeyCrack/ (stored 0%)
+  adding: backup/keys/PartialAesKeyCrack/PartialAesKeyCrackRunner.bat (deflated 33%)
+  adding: backup/kips/ (stored 0%)
+  adding: backup/kips/.OC/ (stored 0%)
+  adding: backup/kips/.OC/loader.kip (deflated 59%)
+  adding: bootloader/ (stored 0%)
+  adding: bootloader/update.te (deflated 77%)
+  adding: bootloader/sys/ (stored 0%)
+  adding: bootloader/sys/thk.bin (deflated 9%)
+  adding: bootloader/sys/nyx.bin (deflated 48%)
+  adding: bootloader/sys/l4t/ (stored 0%)
+  adding: bootloader/sys/l4t/mtc_tbl_b01.bin (deflated 97%)
+  adding: bootloader/sys/l4t/sc7exit.bin (deflated 49%)
+  adding: bootloader/sys/l4t/bpmpfw_b01.bin (deflated 48%)
+  adding: bootloader/sys/l4t/sc7exit_b01.bin (deflated 7%)
+  adding: bootloader/sys/l4t/sc7entry.bin (deflated 33%)
+  adding: bootloader/sys/l4t/bpmpfw.bin (deflated 29%)
+  adding: bootloader/sys/emummc.kipm (deflated 81%)
+  adding: bootloader/sys/libsys_lp0.bso (deflated 52%)
+  adding: bootloader/sys/libsys_minerva.bso (deflated 81%)
+  adding: bootloader/sys/res.pak (deflated 89%)
+  adding: bootloader/payloads/ (stored 0%)
+  adding: bootloader/payloads/ATLAS.bin (deflated 39%)
+  adding: bootloader/payloads/auto_lockpick.bin (deflated 16%)
+  adding: bootloader/payloads/fusee.bin (deflated 13%)
+  adding: bootloader/res/ (stored 0%)
+  adding: bootloader/res/asap.bmp (deflated 97%)
+  adding: bootloader/update.bin (deflated 18%)
+  adding: bootloader/ini/ (stored 0%)
+  adding: bootloader/ini/ams_cfw.ini (deflated 21%)
+  adding: bootloader/ini/aio_update.ini (deflated 19%)
+  adding: bootloader/ini/ams_wbfix.ini (deflated 13%)
+  adding: bootloader/hekate_ipl.ini (deflated 22%)
+  adding: emuiibo/ (stored 0%)
+  adding: emuiibo/overlay/ (stored 0%)
+  adding: emuiibo/overlay/lang/ (stored 0%)
+  adding: emuiibo/overlay/lang/en.json (deflated 83%)
+  adding: emuiibo/overlay/lang/ko.json (deflated 79%)
+  adding: emuiibo/overlay/lang/ja.json (deflated 79%)
+  adding: SaltySD/ (stored 0%)
+  adding: SaltySD/saltysd_core.elf (deflated 58%)
+  adding: SaltySD/flags/ (stored 0%)
+  adding: SaltySD/flags/log.flag (stored 0%)
+  adding: SaltySD/patches/ (stored 0%)
+  adding: SaltySD/exceptions.txt (stored 0%)
+  adding: SaltySD/saltysd_bootstrap32_3k.elf (deflated 84%)
+  adding: SaltySD/saltysd_bootstrap32_5k.elf (deflated 84%)
+  adding: SaltySD/saltysd_core32.elf (deflated 52%)
+  adding: SaltySD/saltysd_bootstrap.elf (deflated 70%)
+  adding: boot.dat (deflated 1%)
+  adding: warmboot_mariko/ (stored 0%)
+  adding: warmboot_mariko/wb_16.bin (deflated 7%)
+  adding: warmboot_mariko/wb_15.bin (deflated 7%)
+  adding: warmboot_mariko/wb_14.bin (deflated 7%)
+  adding: switch/ (stored 0%)
+  adding: switch/linkalho/ (stored 0%)
+  adding: switch/linkalho/linkalho.nro (deflated 58%)
+  adding: switch/tinfoil/ (stored 0%)
+  adding: switch/tinfoil/db/ (stored 0%)
+  adding: switch/tinfoil/db/titles.US.en.json (deflated 0%)
+  adding: switch/tinfoil/db/cheats.json (deflated 0%)
+  adding: switch/tinfoil/licenses/ (stored 0%)
+  adding: switch/tinfoil/licenses/hactool.license (deflated 38%)
+  adding: switch/tinfoil/licenses/nlohmann.json.license (deflated 42%)
+  adding: switch/tinfoil/licenses/nxmtpserver.license (deflated 65%)
+  adding: switch/tinfoil/licenses/libnx.license (deflated 38%)
+  adding: switch/tinfoil/licenses/libstratosphere.dmnt.license (deflated 38%)
+  adding: switch/tinfoil/themes/ (stored 0%)
+  adding: switch/tinfoil/themes/ASAP_Custom/ (stored 0%)
+  adding: switch/tinfoil/themes/ASAP_Custom/settings.json (deflated 71%)
+  adding: switch/tinfoil/themes/ASAP_Custom/bg.png (deflated 85%)
+  adding: switch/tinfoil/themes/ASAP_Custom/logo.png (stored 0%)
+  adding: switch/tinfoil/options.json (deflated 64%)
+  adding: switch/tinfoil/socket.json (deflated 52%)
+  adding: switch/tinfoil/tinfoil.nro (deflated 57%)
+  adding: switch/sphaira/ (stored 0%)
+  adding: switch/sphaira/sphaira.nro (deflated 54%)
+  adding: switch/Daybreak/ (stored 0%)
+  adding: switch/Daybreak/daybreak.nro (deflated 51%)
+  adding: switch/.overlays/ (stored 0%)
+  adding: switch/.overlays/ovlSysmodules.ovl (deflated 53%)
+  adding: switch/.overlays/NX-FanControl.ovl (deflated 56%)
+  adding: switch/.overlays/ovlmenu.ovl (deflated 53%)
+  adding: switch/.overlays/sys-clk-overlay.ovl (deflated 53%)
+  adding: switch/.overlays/emuiibo.ovl (deflated 58%)
+  adding: switch/.overlays/ReverseNX-RT-ovl.ovl (deflated 58%)
+  adding: switch/.overlays/ovlEdiZon.ovl (deflated 53%)
+  adding: switch/.overlays/sys-patch-overlay.ovl (deflated 57%)
+  adding: switch/.overlays/FPSLocker.ovl (deflated 53%)
+  adding: switch/.overlays/Status-Monitor-Overlay.ovl (deflated 52%)
+  adding: switch/AmiiboGenerator/ (stored 0%)
+  adding: switch/AmiiboGenerator/AmiiboGenerator.nro (deflated 55%)
+  adding: switch/Ultrahand-Reload/ (stored 0%)
+  adding: switch/Ultrahand-Reload/Ultrahand-Reload.nro (deflated 38%)
+  adding: switch/.packages/ (stored 0%)
+  adding: switch/.packages/.offload/ (stored 0%)
+  adding: switch/.packages/.offload/ram_expansion/ (stored 0%)
+  adding: switch/.packages/.offload/ram_expansion/fusee_8gb.bin (deflated 13%)
+  adding: switch/.packages/.offload/ram_expansion/hekate_8gb.bin (deflated 18%)
+  adding: switch/.packages/config.ini (stored 0%)
+  adding: switch/.packages/Quick Guide+/ (stored 0%)
+  adding: switch/.packages/Quick Guide+/global_err.ini (deflated 62%)
+  adding: switch/.packages/Quick Guide+/err_code.ini (deflated 70%)
+  adding: switch/.packages/Quick Guide+/frequent_err.ini (deflated 50%)
+  adding: switch/.packages/Quick Guide+/package.ini (deflated 64%)
+  adding: switch/.packages/Quick Guide+/module_err.ini (deflated 72%)
+  adding: switch/.packages/Extra Setting+/ (stored 0%)
+  adding: switch/.packages/Extra Setting+/boot_package.ini (deflated 74%)
+  adding: switch/.packages/Extra Setting+/sphaira.ini (deflated 58%)
+  adding: switch/.packages/Extra Setting+/cfw_settings.ini (deflated 81%)
+  adding: switch/.packages/Extra Setting+/json/ (stored 0%)
+  adding: switch/.packages/Extra Setting+/json/default_nand.json (deflated 32%)
+  adding: switch/.packages/Extra Setting+/json/hb_applet_icon.json (deflated 40%)
+  adding: switch/.packages/Extra Setting+/json/hb_applet_override.json (deflated 61%)
+  adding: switch/.packages/Extra Setting+/json/install_nand.json (deflated 28%)
+  adding: switch/.packages/Extra Setting+/json/ram_oc_erista.json (deflated 78%)
+  adding: switch/.packages/Extra Setting+/json/auto_hos_off.json (deflated 35%)
+  adding: switch/.packages/Extra Setting+/json/am_fps.json (deflated 51%)
+  adding: switch/.packages/Extra Setting+/json/ram_oc_mariko.json (deflated 83%)
+  adding: switch/.packages/Extra Setting+/json/am_key_frame.json (deflated 68%)
+  adding: switch/.packages/Extra Setting+/json/ubuntu_version.json (deflated 46%)
+  adding: switch/.packages/Extra Setting+/json/l4t_reboot.json (deflated 26%)
+  adding: switch/.packages/Extra Setting+/json/am_bitrate.json (deflated 63%)
+  adding: switch/.packages/Extra Setting+/json/enable.json (deflated 35%)
+  adding: switch/.packages/Extra Setting+/package.ini (deflated 74%)
+  adding: switch/.packages/Extra Setting+/moon_launcher.ini (deflated 80%)
+  adding: switch/.packages/System Clock+/ (stored 0%)
+  adding: switch/.packages/System Clock+/boot_package.ini (deflated 14%)
+  adding: switch/.packages/System Clock+/package.ini (deflated 81%)
+  adding: switch/.packages/OC Toolkit/ (stored 0%)
+  adding: switch/.packages/OC Toolkit/preset_micron.ini (deflated 87%)
+  adding: switch/.packages/OC Toolkit/timing_presets.ini (deflated 43%)
+  adding: switch/.packages/OC Toolkit/boot_package.ini (deflated 87%)
+  adding: switch/.packages/OC Toolkit/backup.ini (deflated 92%)
+  adding: switch/.packages/OC Toolkit/mariko/ (stored 0%)
+  adding: switch/.packages/OC Toolkit/mariko/cpu_table.json (deflated 71%)
+  adding: switch/.packages/OC Toolkit/mariko/gpu_vmin_sys.json (deflated 91%)
+  adding: switch/.packages/OC Toolkit/mariko/ram_freqs.json (deflated 88%)
+  adding: switch/.packages/OC Toolkit/mariko/gpu_uv.json (deflated 65%)
+  adding: switch/.packages/OC Toolkit/mariko/ram_dvb_table.json (deflated 82%)
+  adding: switch/.packages/OC Toolkit/mariko/ram_trrd.json (deflated 84%)
+  adding: switch/.packages/OC Toolkit/mariko/gpu_volt_offset.json (deflated 83%)
+  adding: switch/.packages/OC Toolkit/mariko/gpu_speedo.json (deflated 88%)
+  adding: switch/.packages/OC Toolkit/mariko/ram_trtw.json (deflated 83%)
+  adding: switch/.packages/OC Toolkit/mariko/cpu_uv.json (deflated 83%)
+  adding: switch/.packages/OC Toolkit/mariko/gpu_vmin.json (deflated 90%)
+  adding: switch/.packages/OC Toolkit/mariko/ram_trefi.json (deflated 80%)
+  adding: switch/.packages/OC Toolkit/mariko/cpu_low_vmin.json (deflated 84%)
+  adding: switch/.packages/OC Toolkit/mariko/ram_trfc.json (deflated 85%)
+  adding: switch/.packages/OC Toolkit/mariko/cpu_high_uv.json (deflated 85%)
+  adding: switch/.packages/OC Toolkit/mariko/cpu_max_freq.json (deflated 76%)
+  adding: switch/.packages/OC Toolkit/mariko/ram_trcd.json (deflated 83%)
+  adding: switch/.packages/OC Toolkit/mariko/ram_twtr.json (deflated 86%)
+  adding: switch/.packages/OC Toolkit/mariko/ram_trp.json (deflated 83%)
+  adding: switch/.packages/OC Toolkit/mariko/ram_tras.json (deflated 85%)
+  adding: switch/.packages/OC Toolkit/mariko/ram_dram_timing.json (deflated 56%)
+  adding: switch/.packages/OC Toolkit/mariko/cpu_boost_clock.json (deflated 78%)
+  adding: switch/.packages/OC Toolkit/mariko/cpu_high_vmin.json (deflated 87%)
+  adding: switch/.packages/OC Toolkit/timings.ini (deflated 76%)
+  adding: switch/.packages/OC Toolkit/preset_samsung.ini (deflated 89%)
+  adding: switch/.packages/OC Toolkit/json/ (stored 0%)
+  adding: switch/.packages/OC Toolkit/json/mv.json (deflated 74%)
+  adding: switch/.packages/OC Toolkit/json/cpu_max_freq_index.json (deflated 23%)
+  adding: switch/.packages/OC Toolkit/json/speedo.json (deflated 75%)
+  adding: switch/.packages/OC Toolkit/json/ram_dvb_index.json (deflated 31%)
+  adding: switch/.packages/OC Toolkit/json/cpu_table.json (deflated 20%)
+  adding: switch/.packages/OC Toolkit/json/gpu_dvfs_offset_dec.json (deflated 65%)
+  adding: switch/.packages/OC Toolkit/json/voltage_offset_index.json (deflated 58%)
+  adding: switch/.packages/OC Toolkit/json/voltage_limit.json (deflated 76%)
+  adding: switch/.packages/OC Toolkit/json/voltage_offset.json (deflated 69%)
+  adding: switch/.packages/OC Toolkit/json/vmin.json (deflated 73%)
+  adding: switch/.packages/OC Toolkit/json/max_clocks.json (deflated 71%)
+  adding: switch/.packages/OC Toolkit/json/ram_dvb.json (deflated 64%)
+  adding: switch/.packages/OC Toolkit/json/vdd2.json (deflated 65%)
+  adding: switch/.packages/OC Toolkit/json/gpu_dvfs_offset.json (deflated 83%)
+  adding: switch/.packages/OC Toolkit/json/vddq.json (deflated 68%)
+  adding: switch/.packages/OC Toolkit/json/gpu_uv_m.json (deflated 17%)
+  adding: switch/.packages/OC Toolkit/json/numbers.json (deflated 61%)
+  adding: switch/.packages/OC Toolkit/json/gpu_dvfs_offset_info.json (deflated 69%)
+  adding: switch/.packages/OC Toolkit/json/gpu_dvfs_offset_index.json (deflated 65%)
+  adding: switch/.packages/OC Toolkit/json/gpu_uv_e.json (deflated 19%)
+  adding: switch/.packages/OC Toolkit/json/vmin_dec.json (deflated 75%)
+  adding: switch/.packages/OC Toolkit/json/gpu_dvfs.json (deflated 57%)
+  adding: switch/.packages/OC Toolkit/json/dram.json (deflated 42%)
+  adding: switch/.packages/OC Toolkit/json/ram_model.json (deflated 60%)
+  adding: switch/.packages/OC Toolkit/json/coefficients.json (deflated 67%)
+  adding: switch/.packages/OC Toolkit/json/version.json (deflated 61%)
+  adding: switch/.packages/OC Toolkit/json/cpu_max_clock_m.json (deflated 35%)
+  adding: switch/.packages/OC Toolkit/json/high_freq_uv.json (deflated 43%)
+  adding: switch/.packages/OC Toolkit/oc_guide/ (stored 0%)
+  adding: switch/.packages/OC Toolkit/oc_guide/cpu.ini (deflated 66%)
+  adding: switch/.packages/OC Toolkit/oc_guide/sheets.ini (deflated 73%)
+  adding: switch/.packages/OC Toolkit/oc_guide/gpu.ini (deflated 58%)
+  adding: switch/.packages/OC Toolkit/oc_guide/ram.ini (deflated 58%)
+  adding: switch/.packages/OC Toolkit/data/ (stored 0%)
+  adding: switch/.packages/OC Toolkit/data/SC/ (stored 0%)
+  adding: switch/.packages/OC Toolkit/data/SC/info.ini (deflated 78%)
+  adding: switch/.packages/OC Toolkit/data/SC/mariko/ (stored 0%)
+  adding: switch/.packages/OC Toolkit/data/SC/mariko/gpu_uv3_e.json (deflated 90%)
+  adding: switch/.packages/OC Toolkit/data/SC/mariko/cpu_voltages.json (deflated 88%)
+  adding: switch/.packages/OC Toolkit/data/SC/mariko/gpu_uv3.json (deflated 90%)
+  adding: switch/.packages/OC Toolkit/data/SC/mariko/ram_vddq.json (deflated 88%)
+  adding: switch/.packages/OC Toolkit/data/SC/mariko/gpu_vmax.json (deflated 89%)
+  adding: switch/.packages/OC Toolkit/data/SC/mariko/ram_vdd2.json (deflated 85%)
+  adding: switch/.packages/OC Toolkit/data/SC/custom_table.ini (deflated 93%)
+  adding: switch/.packages/OC Toolkit/data/SC/update.ini (deflated 84%)
+  adding: switch/.packages/OC Toolkit/data/SC/backup_info.ini (deflated 79%)
+  adding: switch/.packages/OC Toolkit/data/SC/erista/ (stored 0%)
+  adding: switch/.packages/OC Toolkit/data/SC/erista/gpu_uv3_e.json (deflated 89%)
+  adding: switch/.packages/OC Toolkit/data/SC/erista/gpu_uv3.json (deflated 89%)
+  adding: switch/.packages/OC Toolkit/data/SC/erista/ram_vdd2.json (deflated 85%)
+  adding: switch/.packages/OC Toolkit/data/EOS/ (stored 0%)
+  adding: switch/.packages/OC Toolkit/data/EOS/info.ini (deflated 77%)
+  adding: switch/.packages/OC Toolkit/data/EOS/mariko/ (stored 0%)
+  adding: switch/.packages/OC Toolkit/data/EOS/mariko/gpu_uv3_e.json (deflated 90%)
+  adding: switch/.packages/OC Toolkit/data/EOS/mariko/cpu_voltages.json (deflated 84%)
+  adding: switch/.packages/OC Toolkit/data/EOS/mariko/gpu_uv3.json (deflated 89%)
+  adding: switch/.packages/OC Toolkit/data/EOS/mariko/ram_vddq.json (deflated 83%)
+  adding: switch/.packages/OC Toolkit/data/EOS/mariko/gpu_vmax.json (deflated 83%)
+  adding: switch/.packages/OC Toolkit/data/EOS/mariko/ram_vdd2.json (deflated 80%)
+  adding: switch/.packages/OC Toolkit/data/EOS/custom_table.ini (deflated 92%)
+  adding: switch/.packages/OC Toolkit/data/EOS/update.ini (deflated 84%)
+  adding: switch/.packages/OC Toolkit/data/EOS/backup_info.ini (deflated 78%)
+  adding: switch/.packages/OC Toolkit/data/EOS/erista/ (stored 0%)
+  adding: switch/.packages/OC Toolkit/data/EOS/erista/gpu_uv3_e.json (deflated 89%)
+  adding: switch/.packages/OC Toolkit/data/EOS/erista/gpu_uv3.json (deflated 89%)
+  adding: switch/.packages/OC Toolkit/data/EOS/erista/ram_vdd2.json (deflated 81%)
+  adding: switch/.packages/OC Toolkit/package.ini (deflated 81%)
+  adding: switch/.packages/OC Toolkit/backup_labels.txt (deflated 8%)
+  adding: switch/.packages/OC Toolkit/system-settings.ini (deflated 71%)
+  adding: switch/.packages/OC Toolkit/preset_hynix.ini (deflated 83%)
+  adding: switch/.packages/OC Toolkit/erista/ (stored 0%)
+  adding: switch/.packages/OC Toolkit/erista/ram_freqs.json (deflated 86%)
+  adding: switch/.packages/OC Toolkit/erista/gpu_uv.json (deflated 61%)
+  adding: switch/.packages/OC Toolkit/erista/ram_dvb_table.json (deflated 80%)
+  adding: switch/.packages/OC Toolkit/erista/cpu_voltages.json (deflated 84%)
+  adding: switch/.packages/OC Toolkit/erista/cpu_uv.json (deflated 79%)
+  adding: switch/.packages/OC Toolkit/erista/gpu_vmin.json (deflated 90%)
+  adding: switch/.packages/OC Toolkit/erista/cpu_low_vmin.json (deflated 74%)
+  adding: switch/.packages/OC Toolkit/erista/ram_trfc.json (deflated 82%)
+  adding: switch/.packages/OC Toolkit/erista/cpu_boost_clock.json (deflated 73%)
+  adding: switch/.packages/OC Toolkit/preset_default.ini (deflated 74%)
+  adding: switch/ASAP-Updater/ (stored 0%)
+  adding: switch/ASAP-Updater/ASAP-Updater_.nro (deflated 58%)
+  adding: switch/ASAP-Updater/.ASAP-Updater.nro.star (stored 0%)
+  adding: switch/Reboot2payload/ (stored 0%)
+  adding: switch/Reboot2payload/reboot_to_payload.nro (deflated 58%)
+  adding: switch/DBI/ (stored 0%)
+  adding: switch/DBI/dbi.config (deflated 56%)
+  adding: switch/DBI/DBI.nro (deflated 46%)
+  adding: payload.bin (deflated 18%)
+  adding: config/ (stored 0%)
+  adding: config/ftpsrv/ (stored 0%)
+  adding: config/ftpsrv/config_.ini (deflated 59%)
+  adding: config/sys-clk/ (stored 0%)
+  adding: config/sys-clk/config_.ini (deflated 41%)
+  adding: config/ultrahand/ (stored 0%)
+  adding: config/ultrahand/overlays.ini (deflated 51%)
+  adding: config/ultrahand/packages.ini (deflated 20%)
+  adding: config/ultrahand/ram_4gb.ini (stored 0%)
+  adding: config/ultrahand/sounds/ (stored 0%)
+  adding: config/ultrahand/sounds/exit.wav (deflated 2%)
+  adding: config/ultrahand/sounds/off.wav (deflated 14%)
+  adding: config/ultrahand/sounds/tick.wav (stored 0%)
+  adding: config/ultrahand/sounds/wall.wav (stored 0%)
+  adding: config/ultrahand/sounds/settings.wav (deflated 13%)
+  adding: config/ultrahand/sounds/enter.wav (deflated 3%)
+  adding: config/ultrahand/sounds/move.wav (deflated 10%)
+  adding: config/ultrahand/sounds/on.wav (deflated 17%)
+  adding: config/sphaira/ (stored 0%)
+  adding: config/sphaira/config_.ini (deflated 38%)
+  adding: config/MissionControl/ (stored 0%)
+  adding: config/MissionControl/controllers/ (stored 0%)
+  adding: config/MissionControl/missioncontrol_.ini (deflated 57%)
+  adding: config/sys-con/ (stored 0%)
+  adding: config/sys-con/config_.ini (deflated 75%)
+  adding: atmosphere/ (stored 0%)
+  adding: atmosphere/exefs_patches/ (stored 0%)
+  adding: atmosphere/exefs_patches/SaltyNX_Fixes/ (stored 0%)
+  adding: atmosphere/exefs_patches/SaltyNX_Fixes/ECF4B91AF1B669ECD92829F25E4B530EE48985FA000000000000000000000000.ips (stored 0%)
+  adding: atmosphere/exefs_patches/SaltyNX_Fixes/053ABE9494B5397AE818B3721DE50995.ips (stored 0%)
+  adding: atmosphere/exefs_patches/SaltyNX_Fixes/10C14AD346AE02E32AA52A9030A3A87B98D89642000000000000000000000000.ips (stored 0%)
+  adding: atmosphere/exefs_patches/SaltyNX_Fixes/66A8EB853DE90A1AF13D19DA575E339B.ips (stored 0%)
+  adding: atmosphere/exefs_patches/SaltyNX_Fixes/IDs.txt (deflated 55%)
+  adding: atmosphere/exefs_patches/SaltyNX_Fixes/C4D1BCED9D8C5B813295345B7F9FDF97.ips (stored 0%)
+  adding: atmosphere/exefs_patches/btm_patches/ (stored 0%)
+  adding: atmosphere/exefs_patches/btm_patches/38FD02642C00EB3EDD3625728EA308C3B3CDF4B4.ips (stored 0%)
+  adding: atmosphere/exefs_patches/btm_patches/6DC55293131192B617564C62732CC2CF445BD248.ips (deflated 35%)
+  adding: atmosphere/exefs_patches/btm_patches/ADB4B59EFF92BC8D10F28F87FD9C13666213EE53.ips (stored 0%)
+  adding: atmosphere/exefs_patches/btm_patches/1D460F761919B94522A10B3EB98F4EC75FBDBC4F.ips (deflated 24%)
+  adding: atmosphere/exefs_patches/btm_patches/4BBB2B9942C1DA04BBFB4933AA2E350BB88F3C14.ips (stored 0%)
+  adding: atmosphere/exefs_patches/btm_patches/14F4527DDB0C367055C384E2DAD037B3996664FE.ips (stored 0%)
+  adding: atmosphere/exefs_patches/btm_patches/C35EF7937BD7C91FDC66F2E983D39388988364AF.ips (deflated 7%)
+  adding: atmosphere/exefs_patches/btm_patches/A27AE05114E0A17160A8C74BE8472F8EE6ABB273.ips (deflated 7%)
+  adding: atmosphere/exefs_patches/btm_patches/479F51DAD54016A7F68CFCB521F5D3E37B2855B2.ips (deflated 24%)
+  adding: atmosphere/exefs_patches/btm_patches/F4D4976A1E1E6F498F6824151C11C6AA9EF81375.ips (stored 0%)
+  adding: atmosphere/exefs_patches/btm_patches/FE1CFC6CE0B8F5A3C779ED67C9EF8C08DE959AE9.ips (deflated 7%)
+  adding: atmosphere/exefs_patches/btm_patches/702DADCB98BF9D965F570BCB6A6480C00AC536FB.ips (deflated 31%)
+  adding: atmosphere/exefs_patches/btm_patches/29B9122754BCEE48E4225933979F233939A49CF2.ips (deflated 14%)
+  adding: atmosphere/exefs_patches/btm_patches/BEB8B07DA484E04B326001799DBE53D53D0B5D52.ips (stored 0%)
+  adding: atmosphere/exefs_patches/btm_patches/344A9B35C77BF85392AFE04B38701D1EB0BD41CF.ips (stored 0%)
+  adding: atmosphere/exefs_patches/btm_patches/58518E8DDEB26A678AD332B3C8D772C24F2B0636.ips (stored 0%)
+  adding: atmosphere/exefs_patches/btm_patches/52E5D19BDDF49586901BA4CF869723BCA222AAEC.ips (stored 0%)
+  adding: atmosphere/exefs_patches/btm_patches/65AFEE4DCE1AB795540D204AF5D20AAF83C68A82.ips (deflated 27%)
+  adding: atmosphere/exefs_patches/btm_patches/F9A63D3E811CAE0F06495124042CE7F951CE505B.ips (stored 0%)
+  adding: atmosphere/exefs_patches/btm_patches/F5FC951E3AB69B6FBE6250B7B73D22B3F75EDE28.ips (deflated 31%)
+  adding: atmosphere/exefs_patches/btm_patches/18D29F36EFBD14C6187F1E337749326DBC6BB205.ips (deflated 7%)
+  adding: atmosphere/exefs_patches/btm_patches/37B45CA18B0D5E1768119971677690857A185AAB.ips (deflated 24%)
+  adding: atmosphere/exefs_patches/btm_patches/5C60D97B9800074FE755847EE2380477A751BDAE.ips (deflated 7%)
+  adding: atmosphere/exefs_patches/btm_patches/A0542C24E727081A6A63208700C9CE2952B6914C.ips (stored 0%)
+  adding: atmosphere/exefs_patches/btm_patches/5B1ED394A7DD3910E5B375F3C90B13505347AB0A.ips (stored 0%)
+  adding: atmosphere/exefs_patches/btm_patches/B517E72EBBE1EB0223C3DF26E0017F727F9AD776.ips (deflated 33%)
+  adding: atmosphere/exefs_patches/btm_patches/4B92BF76660CCD6DE63528EFDE37147BA5997B09.ips (stored 0%)
+  adding: atmosphere/exefs_patches/btm_patches/0A2E87DB96AC17AC6260A878D215A20D9EDF0917.ips (stored 0%)
+  adding: atmosphere/exefs_patches/btm_patches/3B03D2FF7700627216F3562340991844C957F457.ips (deflated 7%)
+  adding: atmosphere/exefs_patches/bluetooth_patches/ (stored 0%)
+  adding: atmosphere/exefs_patches/bluetooth_patches/1F66DEC82762261430EE292541FB42F5C4E10AA5.ips (deflated 8%)
+  adding: atmosphere/exefs_patches/bluetooth_patches/A3278455B3EC297F0CE6CD629183EC86376EE0DC.ips (deflated 6%)
+  adding: atmosphere/exefs_patches/bluetooth_patches/3714A43B8F9608D08E15067AB1D9CE8E68FE56BC.ips (deflated 22%)
+  adding: atmosphere/exefs_patches/bluetooth_patches/DBCA0074043CA7E74E9C58A84ACD7A3058968528.ips (deflated 22%)
+  adding: atmosphere/exefs_patches/bluetooth_patches/935E9D4099CE74FC162915E7CA4952E64FAD6671.ips (deflated 22%)
+  adding: atmosphere/exefs_patches/bluetooth_patches/144B678306269E3D5245497373C09866D2BB8997.ips (deflated 32%)
+  adding: atmosphere/exefs_patches/bluetooth_patches/E9A6DBF13FE4A6833606A834C7BA1B44F4DDD60F.ips (deflated 23%)
+  adding: atmosphere/exefs_patches/bluetooth_patches/874B8CD62BF6715648382BBADB70790558FB3F35.ips (deflated 8%)
+  adding: atmosphere/exefs_patches/bluetooth_patches/BF43446888D1182FF37420B6762EB1136DE45947.ips (deflated 23%)
+  adding: atmosphere/exefs_patches/bluetooth_patches/8C2A437B9890F6DA0FC3B17442B10E7C6FCDA6AA.ips (deflated 22%)
+  adding: atmosphere/exefs_patches/bluetooth_patches/CF0C34FC10F75EB2DAFB302FAA3E0C188621B2AD.ips (deflated 22%)
+  adding: atmosphere/exefs_patches/bluetooth_patches/1494B3B0E7AA4234ED20F6A5EEA60620522C68DD.ips (deflated 4%)
+  adding: atmosphere/exefs_patches/bluetooth_patches/4F57845D1DC166A46C42D5AF45164196DC7CD198.ips (deflated 8%)
+  adding: atmosphere/exefs_patches/bluetooth_patches/2CAAD3898B7B2F01DF66480EDD919C6A26735EC9.ips (deflated 21%)
+  adding: atmosphere/exefs_patches/bluetooth_patches/6FCF8BF53C10AA346555D74EC602FE53BF3BD88E.ips (deflated 22%)
+  adding: atmosphere/exefs_patches/bluetooth_patches/FEE47E024FC9C62838FF1A476DE243DCE673DA7E.ips (deflated 23%)
+  adding: atmosphere/exefs_patches/bluetooth_patches/A5E6C2D20334CC787617A15BFB9F53F2DABA3E41.ips (deflated 21%)
+  adding: atmosphere/exefs_patches/bluetooth_patches/B58A6445D7C724D6285EB3922FE6BBAACDA33EB3.ips (deflated 23%)
+  adding: atmosphere/exefs_patches/bluetooth_patches/2C0A323887EF342C448A72DDCC4CD737A298CD46.ips (deflated 23%)
+  adding: atmosphere/exefs_patches/bluetooth_patches/CCE16D29FE9BCB44AC40BB1703D586FE467496CE.ips (deflated 21%)
+  adding: atmosphere/exefs_patches/bluetooth_patches/9E95C91568327AD850AC0C2246F1078DE72B28F9.ips (deflated 21%)
+  adding: atmosphere/exefs_patches/bluetooth_patches/68C915388537833D1AC9F3920708A1A0FF73E35A.ips (deflated 24%)
+  adding: atmosphere/exefs_patches/bluetooth_patches/9480B34033289645E7924E99F467CCB9B4632A5D.ips (deflated 21%)
+  adding: atmosphere/exefs_patches/bluetooth_patches/08601CC4C629F981F92CE3A53C2633FB46DDEA00.ips (deflated 23%)
+  adding: atmosphere/exefs_patches/bluetooth_patches/2FB16085E21E54B90E88ED2F98CCC850334E128E.ips (deflated 6%)
+  adding: atmosphere/exefs_patches/bluetooth_patches/63C4312A5D74B29DFC3DA25B6E3E4825575D23C9.ips (deflated 28%)
+  adding: atmosphere/exefs_patches/bluetooth_patches/DE1AC63A4A0B77CCEA606CF15B62AA587EB9CACC.ips (deflated 8%)
+  adding: atmosphere/exefs_patches/bluetooth_patches/F013FF4FC88A8376A6F3C401485C0718E1B5E148.ips (deflated 21%)
+  adding: atmosphere/exefs_patches/bluetooth_patches/F3DCA5480F0523699683C0D16B7C51C6394897AF.ips (deflated 6%)
+  adding: atmosphere/exefs_patches/bluetooth_patches/532B667232B3992A0A3D007AA85E4944C4138D15.ips (deflated 23%)
+  adding: atmosphere/exefs_patches/hid_patches/ (stored 0%)
+  adding: atmosphere/exefs_patches/hid_patches/74480E653551A0415F90CD61E4B851C60E71E674.ips (deflated 59%)
+  adding: atmosphere/exefs_patches/hid_patches/CFCBD39A38FC2E8FC1273B4B5BF7C619FA93579E.ips (deflated 57%)
+  adding: atmosphere/exefs_patches/hid_patches/98EB0277ADFC171F79765FCC8A56674AE39B08FC.ips (deflated 59%)
+  adding: atmosphere/exefs_patches/hid_patches/C5FCB68A301FD160FF5209C54175AC51D69750BC.ips (deflated 58%)
+  adding: atmosphere/exefs_patches/hid_patches/CA1A12452AF8789F5D03BF2A70260CE80D7DA5C4.ips (deflated 58%)
+  adding: atmosphere/exefs_patches/hid_patches/E5139E8D47BE57C31DA97FCFBB66472416D60BD1.ips (stored 0%)
+  adding: atmosphere/exefs_patches/hid_patches/BBEE6C2C132C849BC313B0E38732D91B9C45FBFD.ips (deflated 59%)
+  adding: atmosphere/exefs_patches/hid_patches/403978CD2BC64E4ACB3BF1A5E556F582BFC3498B.ips (stored 0%)
+  adding: atmosphere/exefs_patches/hid_patches/8BDBD223E61D122E98CDBFC77C231BBB5CBE56E3.ips (stored 0%)
+  adding: atmosphere/exefs_patches/hid_patches/2ABBA006E9E162C1EF0A28E6477725F2836FFEC9.ips (deflated 58%)
+  adding: atmosphere/exefs_patches/hid_patches/453AF9911A69ED566732A7AF2BF54B0B50BC3255.ips (stored 0%)
+  adding: atmosphere/exefs_patches/hid_patches/B5D1C5A111EB89E72F2EBF93D1343DFD7BF4E421.ips (deflated 57%)
+  adding: atmosphere/exefs_patches/hid_patches/6AC68185D4597477D9AD8A2EBE014733F2BCB104.ips (deflated 57%)
+  adding: atmosphere/exefs_patches/hid_patches/FA528960A4ED9B4C408D2667BFE7C8BCD80E1FE2.ips (deflated 58%)
+  adding: atmosphere/exefs_patches/hid_patches/ACA9C5D9BF1A0558251E6D2FE2D0CA4DFE7B90AC.ips (stored 0%)
+  adding: atmosphere/exefs_patches/hid_patches/CEE923637C0797454FBE98A64F63D2B9F39B62FC.ips (deflated 59%)
+  adding: atmosphere/exefs_patches/hid_patches/AE8B325431ED958F335615EBA5312870A92978CB.ips (deflated 58%)
+  adding: atmosphere/exefs_patches/hid_patches/0F02EFFAEF77015948F635C1559FC32507074451.ips (deflated 59%)
+  adding: atmosphere/exefs_patches/hid_patches/296FB63B038723955A5EEE4720C3E17BF49B5ECC.ips (deflated 57%)
+  adding: atmosphere/exefs_patches/hid_patches/A2F71DB9568A864B8AC81AC79E2735A53A9CD291.ips (deflated 59%)
+  adding: atmosphere/exefs_patches/hid_patches/0ABCF878B3E22287ABD15F1F73B365DB26A4E124.ips (stored 0%)
+  adding: atmosphere/exefs_patches/hid_patches/D7E71B92FAFD5E6D670F36593D98DC30AD15A24F.ips (stored 0%)
+  adding: atmosphere/exefs_patches/hid_patches/47BCA8366FC3D4C9E86592E8FC42485989E69CCB.ips (deflated 58%)
+  adding: atmosphere/exefs_patches/hid_patches/9A1F471859D99957A81B2FC21169EE4DBC191734.ips (stored 0%)
+  adding: atmosphere/exefs_patches/hid_patches/1780B569DE805B4E9AFBCC366D93BB313DCBA67E.ips (deflated 57%)
+  adding: atmosphere/exefs_patches/hid_patches/12DB6C7DF6BF40BC02695C611EC46F458504A5AD.ips (stored 0%)
+  adding: atmosphere/spl/ (stored 0%)
+  adding: atmosphere/spl/spl.nsp (deflated 20%)
+  adding: atmosphere/package3 (deflated 82%)
+  adding: atmosphere/stratosphere.romfs (deflated 23%)
+  adding: atmosphere/config/ (stored 0%)
+  adding: atmosphere/config/override_config.ini (deflated 34%)
+  adding: atmosphere/config/system_settings.ini (deflated 67%)
+  adding: atmosphere/config/version.inc (deflated 16%)
+  adding: atmosphere/config/stratosphere.ini (stored 0%)
+  adding: atmosphere/config/exosphere.ini (deflated 37%)
+  adding: atmosphere/config/exosphere_.bin (deflated 14%)
+  adding: atmosphere/hbl_html/ (stored 0%)
+  adding: atmosphere/hbl_html/accessible-urls/ (stored 0%)
+  adding: atmosphere/hbl_html/accessible-urls/accessible-urls.txt (stored 0%)
+  adding: atmosphere/hosts/ (stored 0%)
+  adding: atmosphere/hosts/emummc.txt (deflated 32%)
+  adding: atmosphere/contents/ (stored 0%)
+  adding: atmosphere/contents/00FF0000636C6BFF/ (stored 0%)
+  adding: atmosphere/contents/00FF0000636C6BFF/flags/ (stored 0%)
+  adding: atmosphere/contents/00FF0000636C6BFF/flags/boot2.flag (stored 0%)
+  adding: atmosphere/contents/00FF0000636C6BFF/exefs.nsp (deflated 23%)
+  adding: atmosphere/contents/420000000007E51A/ (stored 0%)
+  adding: atmosphere/contents/420000000007E51A/flags/ (stored 0%)
+  adding: atmosphere/contents/420000000007E51A/flags/boot2.flag (stored 0%)
+  adding: atmosphere/contents/420000000007E51A/exefs.nsp (deflated 23%)
+  adding: atmosphere/contents/00FF0000B378D640/ (stored 0%)
+  adding: atmosphere/contents/00FF0000B378D640/flags/ (stored 0%)
+  adding: atmosphere/contents/00FF0000B378D640/flags/boot2.flag (stored 0%)
+  adding: atmosphere/contents/00FF0000B378D640/exefs.nsp (deflated 24%)
+  adding: atmosphere/contents/010B6ECF3B30D000/ (stored 0%)
+  adding: atmosphere/contents/010B6ECF3B30D000/flag (stored 0%)
+  adding: atmosphere/contents/010B6ECF3B30D000/clup (deflated 79%)
+  adding: atmosphere/contents/010B6ECF3B30D000/tools/ (stored 0%)
+  adding: atmosphere/contents/010B6ECF3B30D000/tools/itb (deflated 37%)
+  adding: atmosphere/contents/010B6ECF3B30D000/tools/ptb (deflated 38%)
+  adding: atmosphere/contents/010B6ECF3B30D000/tools/htb (deflated 38%)
+  adding: atmosphere/contents/010000000000bd00/ (stored 0%)
+  adding: atmosphere/contents/010000000000bd00/flags/ (stored 0%)
+  adding: atmosphere/contents/010000000000bd00/flags/boot2.flag (stored 0%)
+  adding: atmosphere/contents/010000000000bd00/exefs.nsp (deflated 23%)
+  adding: atmosphere/contents/010000000000bd00/mitm.lst (stored 0%)
+  adding: atmosphere/contents/010000000000bd00/toolbox.json (deflated 16%)
+  adding: atmosphere/contents/690000000000000D/ (stored 0%)
+  adding: atmosphere/contents/690000000000000D/flags/ (stored 0%)
+  adding: atmosphere/contents/690000000000000D/flags/boot2.flag (stored 0%)
+  adding: atmosphere/contents/690000000000000D/exefs.nsp (deflated 23%)
+  adding: atmosphere/contents/690000000000000D/toolbox.json (deflated 20%)
+  adding: atmosphere/contents/420000000000000B_/ (stored 0%)
+  adding: atmosphere/contents/420000000000000B_/flags/ (stored 0%)
+  adding: atmosphere/contents/420000000000000B_/flags/boot2.flag (stored 0%)
+  adding: atmosphere/contents/420000000000000B_/exefs.nsp (deflated 20%)
+  adding: atmosphere/contents/0000000000534C56/ (stored 0%)
+  adding: atmosphere/contents/0000000000534C56/flags/ (stored 0%)
+  adding: atmosphere/contents/0000000000534C56/flags/boot2.flag (stored 0%)
+  adding: atmosphere/contents/0000000000534C56/exefs.nsp (deflated 23%)
+  adding: atmosphere/contents/0000000000534C56/toolbox.json (deflated 25%)
+  adding: atmosphere/contents/0100000000000352/ (stored 0%)
+  adding: atmosphere/contents/0100000000000352/flags/ (stored 0%)
+  adding: atmosphere/contents/0100000000000352/flags/boot2.flag (stored 0%)
+  adding: atmosphere/contents/0100000000000352/exefs.nsp (deflated 20%)
+  adding: atmosphere/contents/0100000000000352/toolbox.json (deflated 26%)
+  adding: atmosphere/contents/420000000007E51B/ (stored 0%)
+  adding: atmosphere/contents/420000000007E51B/exefs.nsp (deflated 23%)
+  adding: bootloader/ (stored 0%)
+  adding: bootloader/sys/ (stored 0%)
+  adding: bootloader/sys/thk.bin (deflated 9%)
+  adding: bootloader/sys/nyx.bin (deflated 48%)
+  adding: bootloader/sys/l4t/ (stored 0%)
+  adding: bootloader/sys/l4t/mtc_tbl_b01.bin (deflated 97%)
+  adding: bootloader/sys/l4t/sc7exit.bin (deflated 49%)
+  adding: bootloader/sys/l4t/bpmpfw_b01.bin (deflated 48%)
+  adding: bootloader/sys/l4t/sc7exit_b01.bin (deflated 7%)
+  adding: bootloader/sys/l4t/sc7entry.bin (deflated 33%)
+  adding: bootloader/sys/l4t/bpmpfw.bin (deflated 29%)
+  adding: bootloader/sys/emummc.kipm (deflated 81%)
+  adding: bootloader/sys/libsys_lp0.bso (deflated 52%)
+  adding: bootloader/sys/libsys_minerva.bso (deflated 81%)
+  adding: bootloader/sys/res.pak (deflated 89%)
+  adding: bootloader/payloads/ (stored 0%)
+  adding: bootloader/payloads/ATLAS.bin (deflated 39%)
+  adding: bootloader/payloads/fusee.bin (deflated 13%)
+  adding: bootloader/update.bin (deflated 18%)
+  adding: switch/ (stored 0%)
+  adding: switch/.packages/ (stored 0%)
+  adding: switch/.packages/.offload/ (stored 0%)
+  adding: switch/.packages/.offload/ram_expansion/ (stored 0%)
+  adding: switch/.packages/.offload/ram_expansion/hekate_4gb.bin (deflated 18%)
+  adding: switch/.packages/.offload/ram_expansion/fusee_8gb.bin (deflated 13%)
+  adding: switch/.packages/.offload/ram_expansion/hekate_8gb.bin (deflated 18%)
+  adding: payload.bin (deflated 18%)
+  adding: atmosphere/ (stored 0%)
+  adding: atmosphere/package3 (deflated 82%)
+  adding: atmosphere/stratosphere.romfs (deflated 23%)
+  adding: atmosphere/config/ (stored 0%)
+  adding: atmosphere/config/version.inc (deflated 16%)
+  adding: atmosphere/config/exosphere_.bin (deflated 14%)
+  adding: switch/ (stored 0%)
+  adding: switch/.overlays/ (stored 0%)
+  adding: switch/.overlays/sys-clk-overlay.ovl (deflated 53%)
+  adding: switch/.packages/ (stored 0%)
+  adding: switch/.packages/OC Toolkit/ (stored 0%)
+  adding: switch/.packages/OC Toolkit/preset_micron.ini (deflated 87%)
+  adding: switch/.packages/OC Toolkit/timing_presets.ini (deflated 43%)
+  adding: switch/.packages/OC Toolkit/boot_package.ini (deflated 87%)
+  adding: switch/.packages/OC Toolkit/backup.ini (deflated 92%)
+  adding: switch/.packages/OC Toolkit/mariko/ (stored 0%)
+  adding: switch/.packages/OC Toolkit/mariko/cpu_table.json (deflated 71%)
+  adding: switch/.packages/OC Toolkit/mariko/gpu_vmin_sys.json (deflated 91%)
+  adding: switch/.packages/OC Toolkit/mariko/ram_freqs.json (deflated 88%)
+  adding: switch/.packages/OC Toolkit/mariko/gpu_uv.json (deflated 65%)
+  adding: switch/.packages/OC Toolkit/mariko/ram_dvb_table.json (deflated 82%)
+  adding: switch/.packages/OC Toolkit/mariko/ram_trrd.json (deflated 84%)
+  adding: switch/.packages/OC Toolkit/mariko/gpu_volt_offset.json (deflated 83%)
+  adding: switch/.packages/OC Toolkit/mariko/gpu_speedo.json (deflated 88%)
+  adding: switch/.packages/OC Toolkit/mariko/ram_trtw.json (deflated 83%)
+  adding: switch/.packages/OC Toolkit/mariko/cpu_uv.json (deflated 83%)
+  adding: switch/.packages/OC Toolkit/mariko/gpu_vmin.json (deflated 90%)
+  adding: switch/.packages/OC Toolkit/mariko/ram_trefi.json (deflated 80%)
+  adding: switch/.packages/OC Toolkit/mariko/cpu_low_vmin.json (deflated 84%)
+  adding: switch/.packages/OC Toolkit/mariko/ram_trfc.json (deflated 85%)
+  adding: switch/.packages/OC Toolkit/mariko/cpu_high_uv.json (deflated 85%)
+  adding: switch/.packages/OC Toolkit/mariko/cpu_max_freq.json (deflated 76%)
+  adding: switch/.packages/OC Toolkit/mariko/ram_trcd.json (deflated 83%)
+  adding: switch/.packages/OC Toolkit/mariko/ram_twtr.json (deflated 86%)
+  adding: switch/.packages/OC Toolkit/mariko/ram_trp.json (deflated 83%)
+  adding: switch/.packages/OC Toolkit/mariko/ram_tras.json (deflated 85%)
+  adding: switch/.packages/OC Toolkit/mariko/ram_dram_timing.json (deflated 56%)
+  adding: switch/.packages/OC Toolkit/mariko/cpu_boost_clock.json (deflated 78%)
+  adding: switch/.packages/OC Toolkit/mariko/cpu_high_vmin.json (deflated 87%)
+  adding: switch/.packages/OC Toolkit/timings.ini (deflated 76%)
+  adding: switch/.packages/OC Toolkit/preset_samsung.ini (deflated 89%)
+  adding: switch/.packages/OC Toolkit/json/ (stored 0%)
+  adding: switch/.packages/OC Toolkit/json/mv.json (deflated 74%)
+  adding: switch/.packages/OC Toolkit/json/cpu_max_freq_index.json (deflated 23%)
+  adding: switch/.packages/OC Toolkit/json/speedo.json (deflated 75%)
+  adding: switch/.packages/OC Toolkit/json/ram_dvb_index.json (deflated 31%)
+  adding: switch/.packages/OC Toolkit/json/cpu_table.json (deflated 20%)
+  adding: switch/.packages/OC Toolkit/json/gpu_dvfs_offset_dec.json (deflated 65%)
+  adding: switch/.packages/OC Toolkit/json/voltage_offset_index.json (deflated 58%)
+  adding: switch/.packages/OC Toolkit/json/voltage_limit.json (deflated 76%)
+  adding: switch/.packages/OC Toolkit/json/voltage_offset.json (deflated 69%)
+  adding: switch/.packages/OC Toolkit/json/vmin.json (deflated 73%)
+  adding: switch/.packages/OC Toolkit/json/max_clocks.json (deflated 71%)
+  adding: switch/.packages/OC Toolkit/json/ram_dvb.json (deflated 64%)
+  adding: switch/.packages/OC Toolkit/json/vdd2.json (deflated 65%)
+  adding: switch/.packages/OC Toolkit/json/gpu_dvfs_offset.json (deflated 83%)
+  adding: switch/.packages/OC Toolkit/json/vddq.json (deflated 68%)
+  adding: switch/.packages/OC Toolkit/json/gpu_uv_m.json (deflated 17%)
+  adding: switch/.packages/OC Toolkit/json/numbers.json (deflated 61%)
+  adding: switch/.packages/OC Toolkit/json/gpu_dvfs_offset_info.json (deflated 69%)
+  adding: switch/.packages/OC Toolkit/json/gpu_dvfs_offset_index.json (deflated 65%)
+  adding: switch/.packages/OC Toolkit/json/gpu_uv_e.json (deflated 19%)
+  adding: switch/.packages/OC Toolkit/json/vmin_dec.json (deflated 75%)
+  adding: switch/.packages/OC Toolkit/json/gpu_dvfs.json (deflated 57%)
+  adding: switch/.packages/OC Toolkit/json/dram.json (deflated 42%)
+  adding: switch/.packages/OC Toolkit/json/ram_model.json (deflated 60%)
+  adding: switch/.packages/OC Toolkit/json/coefficients.json (deflated 67%)
+  adding: switch/.packages/OC Toolkit/json/version.json (deflated 61%)
+  adding: switch/.packages/OC Toolkit/json/cpu_max_clock_m.json (deflated 35%)
+  adding: switch/.packages/OC Toolkit/json/high_freq_uv.json (deflated 43%)
+  adding: switch/.packages/OC Toolkit/oc_guide/ (stored 0%)
+  adding: switch/.packages/OC Toolkit/oc_guide/cpu.ini (deflated 66%)
+  adding: switch/.packages/OC Toolkit/oc_guide/sheets.ini (deflated 73%)
+  adding: switch/.packages/OC Toolkit/oc_guide/gpu.ini (deflated 58%)
+  adding: switch/.packages/OC Toolkit/oc_guide/ram.ini (deflated 58%)
+  adding: switch/.packages/OC Toolkit/data/ (stored 0%)
+  adding: switch/.packages/OC Toolkit/data/SC/ (stored 0%)
+  adding: switch/.packages/OC Toolkit/data/SC/info.ini (deflated 78%)
+  adding: switch/.packages/OC Toolkit/data/SC/mariko/ (stored 0%)
+  adding: switch/.packages/OC Toolkit/data/SC/mariko/gpu_uv3_e.json (deflated 90%)
+  adding: switch/.packages/OC Toolkit/data/SC/mariko/cpu_voltages.json (deflated 88%)
+  adding: switch/.packages/OC Toolkit/data/SC/mariko/gpu_uv3.json (deflated 90%)
+  adding: switch/.packages/OC Toolkit/data/SC/mariko/ram_vddq.json (deflated 88%)
+  adding: switch/.packages/OC Toolkit/data/SC/mariko/gpu_vmax.json (deflated 89%)
+  adding: switch/.packages/OC Toolkit/data/SC/mariko/ram_vdd2.json (deflated 85%)
+  adding: switch/.packages/OC Toolkit/data/SC/custom_table.ini (deflated 93%)
+  adding: switch/.packages/OC Toolkit/data/SC/update.ini (deflated 84%)
+  adding: switch/.packages/OC Toolkit/data/SC/backup_info.ini (deflated 79%)
+  adding: switch/.packages/OC Toolkit/data/SC/erista/ (stored 0%)
+  adding: switch/.packages/OC Toolkit/data/SC/erista/gpu_uv3_e.json (deflated 89%)
+  adding: switch/.packages/OC Toolkit/data/SC/erista/gpu_uv3.json (deflated 89%)
+  adding: switch/.packages/OC Toolkit/data/SC/erista/ram_vdd2.json (deflated 85%)
+  adding: switch/.packages/OC Toolkit/data/EOS/ (stored 0%)
+  adding: switch/.packages/OC Toolkit/data/EOS/info.ini (deflated 77%)
+  adding: switch/.packages/OC Toolkit/data/EOS/mariko/ (stored 0%)
+  adding: switch/.packages/OC Toolkit/data/EOS/mariko/gpu_uv3_e.json (deflated 90%)
+  adding: switch/.packages/OC Toolkit/data/EOS/mariko/cpu_voltages.json (deflated 84%)
+  adding: switch/.packages/OC Toolkit/data/EOS/mariko/gpu_uv3.json (deflated 89%)
+  adding: switch/.packages/OC Toolkit/data/EOS/mariko/ram_vddq.json (deflated 83%)
+  adding: switch/.packages/OC Toolkit/data/EOS/mariko/gpu_vmax.json (deflated 83%)
+  adding: switch/.packages/OC Toolkit/data/EOS/mariko/ram_vdd2.json (deflated 80%)
+  adding: switch/.packages/OC Toolkit/data/EOS/custom_table.ini (deflated 92%)
+  adding: switch/.packages/OC Toolkit/data/EOS/update.ini (deflated 84%)
+  adding: switch/.packages/OC Toolkit/data/EOS/backup_info.ini (deflated 78%)
+  adding: switch/.packages/OC Toolkit/data/EOS/erista/ (stored 0%)
+  adding: switch/.packages/OC Toolkit/data/EOS/erista/gpu_uv3_e.json (deflated 89%)
+  adding: switch/.packages/OC Toolkit/data/EOS/erista/gpu_uv3.json (deflated 89%)
+  adding: switch/.packages/OC Toolkit/data/EOS/erista/ram_vdd2.json (deflated 81%)
+  adding: switch/.packages/OC Toolkit/package.ini (deflated 81%)
+  adding: switch/.packages/OC Toolkit/backup_labels.txt (deflated 8%)
+  adding: switch/.packages/OC Toolkit/system-settings.ini (deflated 71%)
+  adding: switch/.packages/OC Toolkit/preset_hynix.ini (deflated 83%)
+  adding: switch/.packages/OC Toolkit/erista/ (stored 0%)
+  adding: switch/.packages/OC Toolkit/erista/ram_freqs.json (deflated 86%)
+  adding: switch/.packages/OC Toolkit/erista/gpu_uv.json (deflated 61%)
+  adding: switch/.packages/OC Toolkit/erista/ram_dvb_table.json (deflated 80%)
+  adding: switch/.packages/OC Toolkit/erista/cpu_voltages.json (deflated 84%)
+  adding: switch/.packages/OC Toolkit/erista/cpu_uv.json (deflated 79%)
+  adding: switch/.packages/OC Toolkit/erista/gpu_vmin.json (deflated 90%)
+  adding: switch/.packages/OC Toolkit/erista/cpu_low_vmin.json (deflated 74%)
+  adding: switch/.packages/OC Toolkit/erista/ram_trfc.json (deflated 82%)
+  adding: switch/.packages/OC Toolkit/erista/cpu_boost_clock.json (deflated 73%)
+  adding: switch/.packages/OC Toolkit/preset_default.ini (deflated 74%)
+  adding: atmosphere/ (stored 0%)
+  adding: atmosphere/contents/ (stored 0%)
+  adding: atmosphere/contents/00FF0000636C6BFF/ (stored 0%)
+  adding: atmosphere/contents/00FF0000636C6BFF/flags/ (stored 0%)
+  adding: atmosphere/contents/00FF0000636C6BFF/flags/boot2.flag (stored 0%)
+  adding: atmosphere/contents/00FF0000636C6BFF/exefs.nsp (deflated 23%)
+ASAP Build Completed
