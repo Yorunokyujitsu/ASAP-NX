@@ -1,0 +1,13 @@
+diff --git a/source/main.c b/source/main.c
+index 78e4502..16c9d27 100644
+--- a/source/main.c
++++ b/source/main.c
+@@ -3,7 +3,7 @@
+ #include <fcntl.h>
+ #include <unistd.h>
+ 
+-#define DEFAULT_NRO "sdmc:/hbmenu.nro"
++#define DEFAULT_NRO "sdmc:/switch/sphaira/sphaira.nro"
+ 
+ const char g_noticeText[] =
+     "nx-hbloader " VERSION "\0"

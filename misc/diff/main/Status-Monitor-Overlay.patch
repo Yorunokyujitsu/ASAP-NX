@@ -1,0 +1,2192 @@
+diff --git a/source/Utils.hpp b/source/Utils.hpp
+index c66ef2f..f65b73e 100644
+--- a/source/Utils.hpp
++++ b/source/Utils.hpp
+@@ -61,7 +61,7 @@ constexpr const char* teslaConfigIniPath = "sdmc:/config/tesla/config.ini";
+ 
+ std::string filename;
+ std::string filepath;
+-std::string keyCombo = "ZL+ZR+DDOWN"; // default Ultrahand Menu combo
++std::string keyCombo = "L+DDOWN+RSTICK"; // default Ultrahand Menu combo
+ 
+ //Misc2
+ MmuRequest nvdecRequest;
+@@ -1519,20 +1519,19 @@ ALWAYS_INLINE void GetConfigSettings(MiniSettings* settings) {
+     settings->showFullResolution = true;
+     settings->showFanPercentage = true;
+     settings->useDynamicColors = true;
+-    settings->showFullCPU = false;
+-    settings->showSOCVoltage = false;
+-    settings->showVDDQ = false;
++    settings->showSOCVoltage = true;
++    settings->showVDDQ = true;
+     settings->showVDD2 = true;
+-    settings->decimalVDD2 = false;
++    settings->decimalVDD2 = true;
+     settings->showDTC = true;
+     settings->useDTCSymbol = true;
+-    settings->dtcFormat = "%m-%d-%Y%H:%M:%S";//"%Y-%m-%d %I:%M:%S %p";
+-    settings->handheldFontSize = 15;
+-    settings->dockedFontSize = 15;
++    settings->dtcFormat = "%Y년 %m월 %d일%p %I:%M:%S";//"%Y-%m-%d %I:%M:%S %p";
++    settings->handheldFontSize = 13;
++    settings->dockedFontSize = 13;
+     settings->spacing = 8;
+     convertStrToRGBA4444("#0009", &(settings->backgroundColor));
+     convertStrToRGBA4444("#000F", &(settings->focusBackgroundColor));
+-    convertStrToRGBA4444("#888F", &(settings->separatorColor));
++    convertStrToRGBA4444("#2DFF", &(settings->separatorColor));
+     convertStrToRGBA4444("#2DFF", &(settings->catColor));
+     convertStrToRGBA4444("#FFFF", &(settings->textColor));
+     settings->show = "DTC+BAT+CPU+GPU+RAM+TMP+FPS+RES";
+@@ -1819,21 +1818,21 @@ ALWAYS_INLINE void GetConfigSettings(MicroSettings* settings) {
+     settings->showFullResolution = false;
+     settings->showSOCVoltage = true;
+     settings->useDynamicColors = true;
+-    settings->showVDDQ = false;
++    settings->showVDDQ = true;
+     settings->showVDD2 = true;
+     settings->decimalVDD2 = false;
+     settings->showDTC = true;
+     settings->useDTCSymbol = true;
+-    settings->dtcFormat = "%H:%M:%S";//"%Y-%m-%d %I:%M:%S %p";
++    settings->dtcFormat = "%p %I:%M";//"%Y-%m-%d %I:%M:%S %p";
+     settings->invertBatteryDisplay = false;
+-    settings->handheldFontSize = 15;
+-    settings->dockedFontSize = 15;
++    settings->handheldFontSize = 13;
++    settings->dockedFontSize = 13;
+     settings->alignTo = 1; // CENTER
+     convertStrToRGBA4444("#0009", &(settings->backgroundColor));
+-    convertStrToRGBA4444("#888F", &(settings->separatorColor));
++    convertStrToRGBA4444("#2DFF", &(settings->separatorColor));
+     convertStrToRGBA4444("#2DFF", &(settings->catColor));
+     convertStrToRGBA4444("#FFFF", &(settings->textColor));
+-    settings->show = "FPS+CPU+GPU+RAM+SOC+BAT+DTC";
++    settings->show = "FPS+CPU+GPU+RAM+TMP+DTC+BAT";
+     settings->showRAMLoad = true;
+     settings->setPosBottom = false;
+     settings->disableScreenshots = false;
+@@ -2063,11 +2062,11 @@ ALWAYS_INLINE void GetConfigSettings(MicroSettings* settings) {
+ 
+ ALWAYS_INLINE void GetConfigSettings(FpsCounterSettings* settings) {
+     // Initialize defaults
+-    settings->handheldFontSize = 40;
+-    settings->dockedFontSize = 40;
++    settings->handheldFontSize = 20;
++    settings->dockedFontSize = 20;
+     convertStrToRGBA4444("#0009", &(settings->backgroundColor));
+     convertStrToRGBA4444("#000F", &(settings->focusBackgroundColor));
+-    convertStrToRGBA4444("#8CFF", &(settings->textColor));
++    convertStrToRGBA4444("#0FFF", &(settings->textColor));
+     //settings->setPos = 0;
+     settings->refreshRate = 30;
+     settings->useIntegerCounter = false;
+@@ -2199,7 +2198,7 @@ ALWAYS_INLINE void GetConfigSettings(FpsGraphSettings* settings) {
+     //settings->setPos = 0;
+     convertStrToRGBA4444("#0009", &(settings->backgroundColor));
+     convertStrToRGBA4444("#000F", &(settings->focusBackgroundColor));
+-    convertStrToRGBA4444("#888C", &(settings->fpsColor));
++    convertStrToRGBA4444("#4444", &(settings->fpsColor));
+     convertStrToRGBA4444("#2DFF", &(settings->borderColor));
+     convertStrToRGBA4444("#8888", &(settings->dashedLineColor));
+     convertStrToRGBA4444("#FFFF", &(settings->maxFPSTextColor));
+@@ -2209,7 +2208,7 @@ ALWAYS_INLINE void GetConfigSettings(FpsGraphSettings* settings) {
+     convertStrToRGBA4444("#0C0F", &(settings->perfectLineColor));
+ 
+     convertStrToRGBA4444("#FFFF", &(settings->textColor));
+-    convertStrToRGBA4444("#0F0F", &(settings->catColor));
++    convertStrToRGBA4444("#2DFF", &(settings->catColor));
+ 
+     settings->refreshRate = 30;
+     settings->useDynamicColors = true;
+@@ -2350,8 +2349,8 @@ ALWAYS_INLINE void GetConfigSettings(FullSettings* settings) {
+     settings->useDynamicColors = true;
+     settings->disableScreenshots = false;
+     convertStrToRGBA4444("#888F", &(settings->separatorColor));
+-    convertStrToRGBA4444("#8FFF", &(settings->catColor1));
+-    convertStrToRGBA4444("#8CFF", &(settings->catColor2));
++    convertStrToRGBA4444("#2DFF", &(settings->catColor1));
++    convertStrToRGBA4444("#FFFF", &(settings->catColor2));
+     convertStrToRGBA4444("#FFFF", &(settings->textColor));
+ 
+     // Open and read file efficiently
+@@ -2483,7 +2482,7 @@ ALWAYS_INLINE void GetConfigSettings(ResolutionSettings* settings) {
+     // Initialize defaults
+     convertStrToRGBA4444("#0009", &(settings->backgroundColor));
+     convertStrToRGBA4444("#000F", &(settings->focusBackgroundColor));
+-    convertStrToRGBA4444("#8FFF", &(settings->catColor));
++    convertStrToRGBA4444("#2DFF", &(settings->catColor));
+     //convertStrToRGBA4444("#8CFF", &(settings->catColor2));
+     convertStrToRGBA4444("#FFFF", &(settings->textColor));
+     settings->refreshRate = 10;
+diff --git a/source/main.cpp b/source/main.cpp
+index ca87a6f..1a37c08 100755
+--- a/source/main.cpp
++++ b/source/main.cpp
+@@ -31,7 +31,7 @@ static std::string lastSelectedItem;
+ //
+ //        list->addItem(new tsl::elm::CategoryHeader("FPS"));
+ //
+-//        auto* comFPSGraph = new tsl::elm::ListItem("Graph");
++//        auto* comFPSGraph = new tsl::elm::ListItem("그래프");
+ //        comFPSGraph->setClickListener([](uint64_t keys) {
+ //            if (keys & KEY_A) {
+ //                tsl::swapTo<com_FPSGraph>();
+@@ -41,7 +41,7 @@ static std::string lastSelectedItem;
+ //        });
+ //        list->addItem(comFPSGraph);
+ //
+-//        auto* comFPSCounter = new tsl::elm::ListItem("Counter");
++//        auto* comFPSCounter = new tsl::elm::ListItem("카운터");
+ //        comFPSCounter->setClickListener([](uint64_t keys) {
+ //            if (keys & KEY_A) {
+ //                tsl::swapTo<com_FPS>();
+@@ -51,7 +51,7 @@ static std::string lastSelectedItem;
+ //        });
+ //        list->addItem(comFPSCounter);
+ //
+-//        tsl::elm::HeaderOverlayFrame* rootFrame = new tsl::elm::HeaderOverlayFrame("Status Monitor", "Modes");
++//        tsl::elm::HeaderOverlayFrame* rootFrame = new tsl::elm::HeaderOverlayFrame("상태 모니터", "모드");
+ //        rootFrame->setContent(list);
+ //
+ //        return rootFrame;
+@@ -92,9 +92,9 @@ public:
+         
+         auto* list = new tsl::elm::List();
+ 
+-        list->addItem(new tsl::elm::CategoryHeader("Other"));
++        list->addItem(new tsl::elm::CategoryHeader("기타"));
+ 
+-        auto* Battery = new tsl::elm::ListItem("Battery/Charger");
++        auto* Battery = new tsl::elm::ListItem("배터리충전");
+         Battery->disableClickAnimation();
+         Battery->setClickListener([](uint64_t keys) {
+             if (keys & KEY_A) {
+@@ -105,7 +105,7 @@ public:
+         });
+         list->addItem(Battery);
+ 
+-        auto* Misc = new tsl::elm::ListItem("Miscellaneous");
++        auto* Misc = new tsl::elm::ListItem("기타");
+         Misc->disableClickAnimation();
+         Misc->setClickListener([](uint64_t keys) {
+             if (keys & KEY_A) {
+@@ -117,7 +117,7 @@ public:
+         list->addItem(Misc);
+ 
+         //if (SaltySD) {
+-        //    auto* Res = new tsl::elm::ListItem("Game Resolutions");
++        //    auto* Res = new tsl::elm::ListItem("게임 해상도");
+         //    Res->setClickListener([](uint64_t keys) {
+         //        if (keys & KEY_A) {
+         //            tsl::swapTo<ResolutionsOverlay>();
+@@ -128,7 +128,7 @@ public:
+         //    list->addItem(Res);
+         //}
+         //tsl::elm::g_disableMenuCacheOnReturn.store(true, std::memory_order_release);
+-        tsl::elm::HeaderOverlayFrame* rootFrame = new tsl::elm::HeaderOverlayFrame("Status Monitor", "Modes");
++        tsl::elm::HeaderOverlayFrame* rootFrame = new tsl::elm::HeaderOverlayFrame("상태 모니터", "모드");
+         if (!lastSelectedItem.empty()) {
+             list->jumpToItem(lastSelectedItem);
+         }
+@@ -181,9 +181,9 @@ public:
+         auto* list = new tsl::elm::List();
+         
+         //list->addItem(new tsl::elm::CategoryHeader("Modes " + ult::DIVIDER_SYMBOL + " \uE0E0 Enter " + ult::DIVIDER_SYMBOL + " \uE0E3 Configure"));
+-        list->addItem(new tsl::elm::CategoryHeader("Modes " + ult::DIVIDER_SYMBOL + " \uE0E3 Configure"));
++        list->addItem(new tsl::elm::CategoryHeader("모드 " + ult::DIVIDER_SYMBOL + " \uE0E3 설정"));
+ 
+-        auto* Full = new tsl::elm::ListItem("Full");
++        auto* Full = new tsl::elm::ListItem("전체");
+         Full->enableShortHoldKey();
+         Full->disableClickAnimation();
+         Full->setClickListener([](uint64_t keys) {
+@@ -196,7 +196,7 @@ public:
+                 triggerRumbleClick.store(true, std::memory_order_release);
+                 triggerSettingsSound.store(true, std::memory_order_release);
+                 // Launch configurator for Mini mode
+-                tsl::swapTo<ConfiguratorOverlay>("Full");
++                tsl::swapTo<ConfiguratorOverlay>("전체");
+                 return true;
+             }
+             return false;
+@@ -228,7 +228,7 @@ public:
+             }
+         }
+         if (fileExist) {
+-            auto* Mini = new tsl::elm::ListItem("Mini");
++            auto* Mini = new tsl::elm::ListItem("팝업창");
+             Mini->enableShortHoldKey();
+             Mini->disableClickAnimation();
+             Mini->setClickListener([](uint64_t keys) {
+@@ -241,14 +241,14 @@ public:
+                     triggerRumbleClick.store(true, std::memory_order_release);
+                     triggerSettingsSound.store(true, std::memory_order_release);
+                     // Launch configurator for Mini mode
+-                    tsl::swapTo<ConfiguratorOverlay>("Mini");
++                    tsl::swapTo<ConfiguratorOverlay>("팝업창");
+                     return true;
+                 }
+                 return false;
+             });
+             list->addItem(Mini);
+ 
+-            auto* Micro = new tsl::elm::ListItem("Micro");
++            auto* Micro = new tsl::elm::ListItem("상태바");
+             Micro->enableShortHoldKey();
+             Micro->disableClickAnimation();
+             Micro->setClickListener([](uint64_t keys) {
+@@ -261,7 +261,7 @@ public:
+                     triggerRumbleClick.store(true, std::memory_order_release);
+                     triggerSettingsSound.store(true, std::memory_order_release);
+                     // Launch configurator for Micro mode
+-                    tsl::swapTo<ConfiguratorOverlay>("Micro");
++                    tsl::swapTo<ConfiguratorOverlay>("상태바");
+                     return true;
+                 }
+                 return false;
+@@ -280,7 +280,7 @@ public:
+             //});
+             //list->addItem(Graphs);
+ 
+-            auto* comFPSGraph = new tsl::elm::ListItem("FPS Graph");
++            auto* comFPSGraph = new tsl::elm::ListItem("FPS 그래프");
+             comFPSGraph->enableShortHoldKey();
+             comFPSGraph->disableClickAnimation();
+             comFPSGraph->setClickListener([](uint64_t keys) {
+@@ -300,14 +300,14 @@ public:
+                     triggerRumbleClick.store(true, std::memory_order_release);
+                     triggerSettingsSound.store(true, std::memory_order_release);
+                     // Launch configurator for Micro mode
+-                    tsl::swapTo<ConfiguratorOverlay>("FPS Graph");
++                    tsl::swapTo<ConfiguratorOverlay>("FPS 그래프");
+                     return true;
+                 }
+                 return false;
+             });
+             list->addItem(comFPSGraph);
+ 
+-            auto* comFPSCounter = new tsl::elm::ListItem("FPS Counter");
++            auto* comFPSCounter = new tsl::elm::ListItem("FPS 카운터");
+             comFPSCounter->enableShortHoldKey();
+             comFPSCounter->disableClickAnimation();
+             comFPSCounter->setClickListener([](uint64_t keys) {
+@@ -327,14 +327,14 @@ public:
+                     triggerRumbleClick.store(true, std::memory_order_release);
+                     triggerSettingsSound.store(true, std::memory_order_release);
+                     // Launch configurator for Micro mode
+-                    tsl::swapTo<ConfiguratorOverlay>("FPS Counter");
++                    tsl::swapTo<ConfiguratorOverlay>("FPS 카운터");
+                     return true;
+                 }
+                 return false;
+             });
+             list->addItem(comFPSCounter);
+ 
+-            auto* Res = new tsl::elm::ListItem("Game Resolutions");
++            auto* Res = new tsl::elm::ListItem("게임 해상도");
+             Res->enableShortHoldKey();
+             Res->disableClickAnimation();
+             Res->setClickListener([](uint64_t keys) {
+@@ -353,7 +353,7 @@ public:
+                     triggerRumbleClick.store(true, std::memory_order_release);
+                     triggerSettingsSound.store(true, std::memory_order_release);
+                     // Launch configurator for Micro mode
+-                    tsl::swapTo<ConfiguratorOverlay>("Game Resolutions");
++                    tsl::swapTo<ConfiguratorOverlay>("게임 해상도");
+                     return true;
+                 }
+                 return false;
+@@ -361,7 +361,7 @@ public:
+             list->addItem(Res);
+ 
+         }
+-        auto* Other = new tsl::elm::ListItem("Other");
++        auto* Other = new tsl::elm::ListItem("기타");
+         Other->disableClickAnimation();
+         Other->setValue(ult::DROPDOWN_SYMBOL);
+         Other->setClickListener([](uint64_t keys) {
+@@ -382,7 +382,7 @@ public:
+ 
+ 
+         //list->disableCaching();
+-        tsl::elm::HeaderOverlayFrame* rootFrame = new tsl::elm::HeaderOverlayFrame("Status Monitor", APP_VERSION);
++        tsl::elm::HeaderOverlayFrame* rootFrame = new tsl::elm::HeaderOverlayFrame("상태 모니터", APP_VERSION);
+         rootFrame->setContent(list);
+ 
+         return rootFrame;
+diff --git a/source/modes/Battery.hpp b/source/modes/Battery.hpp
+index c700a64..cdbed44 100644
+--- a/source/modes/Battery.hpp
++++ b/source/modes/Battery.hpp
+@@ -43,106 +43,106 @@ public:
+             static constexpr u16 Y_OFFSET = 40;
+             static constexpr u16 X_OFFSET = 20;
+             static const u16 LABEL_X = 20 + X_OFFSET;
+-            static const u16 VALUE_X = 240+ X_OFFSET;
+-            static const u16 START_Y = 155 + Y_OFFSET;
+-            static constexpr u16 LINE_HEIGHT = 18;
++            static const u16 VALUE_X = 180+ X_OFFSET;
++            static const u16 START_Y = 145 + Y_OFFSET;
++            static constexpr u16 LINE_HEIGHT = 20;
+             static constexpr u8 FONT_SIZE = 18;
+-            static const tsl::Color LABEL_COLOR_1= settings.catColor1;
+-            static const tsl::Color LABEL_COLOR_2 = settings.catColor2;
+-            static const tsl::Color VALUE_COLOR = settings.textColor;
++            static const tsl::Color LABEL_COLOR_1= renderer->a(tsl::stmSectionColor);
++            static const tsl::Color LABEL_COLOR_2 = renderer->a(tsl::stmTextColor);
++            static const tsl::Color VALUE_COLOR = renderer->a(tsl::stmTextColor);
+             
+-            renderer->drawString("Battery Stats", false, LABEL_X, 120 + Y_OFFSET, 20, LABEL_COLOR_1);
++            renderer->drawString("배터리 상태", false, LABEL_X, 105 + Y_OFFSET, 20, LABEL_COLOR_1);
+             
+             u16 currentY = START_Y;
+             
+             // Actual Capacity
+-            renderer->drawString("Actual Capacity", false, LABEL_X, currentY, FONT_SIZE, LABEL_COLOR_2);
++            renderer->drawString(" 실제 용량:", false, LABEL_X, currentY, FONT_SIZE, LABEL_COLOR_2);
+             renderer->drawString(actualCapacity_c, false, VALUE_X, currentY, FONT_SIZE, VALUE_COLOR);
+             currentY += LINE_HEIGHT;
+             
+             // Designed Capacity
+-            renderer->drawString("Designed Capacity", false, LABEL_X, currentY, FONT_SIZE, LABEL_COLOR_2);
++            renderer->drawString(" 설계 용량:", false, LABEL_X, currentY, FONT_SIZE, LABEL_COLOR_2);
+             renderer->drawString(designedCapacity_c, false, VALUE_X, currentY, FONT_SIZE, VALUE_COLOR);
+             currentY += LINE_HEIGHT;
+             
+             // Temperature
+-            renderer->drawString("Temperature", false, LABEL_X, currentY, FONT_SIZE, LABEL_COLOR_2);
++            renderer->drawString(" 현재 온도:", false, LABEL_X, currentY, FONT_SIZE, LABEL_COLOR_2);
+             renderer->drawString(batteryTemp_c, false, VALUE_X, currentY, FONT_SIZE, VALUE_COLOR);
+             currentY += LINE_HEIGHT;
+             
+             // Raw Charge
+-            renderer->drawString("Raw Charge", false, LABEL_X, currentY, FONT_SIZE, LABEL_COLOR_2);
++            renderer->drawString(" 현재 잔량:", false, LABEL_X, currentY, FONT_SIZE, LABEL_COLOR_2);
+             renderer->drawString(rawCharge_c, false, VALUE_X, currentY, FONT_SIZE, VALUE_COLOR);
+             currentY += LINE_HEIGHT;
+             
+             // Age
+-            renderer->drawString("Age", false, LABEL_X, currentY, FONT_SIZE, LABEL_COLOR_2);
++            renderer->drawString(" 예상 수명:", false, LABEL_X, currentY, FONT_SIZE, LABEL_COLOR_2);
+             renderer->drawString(batteryAge_c, false, VALUE_X, currentY, FONT_SIZE, VALUE_COLOR);
+             currentY += LINE_HEIGHT;
+             
+             // Voltage
+-            renderer->drawString("Voltage", false, LABEL_X, currentY, FONT_SIZE, LABEL_COLOR_2);
++            renderer->drawString(" 현재 전압:", false, LABEL_X, currentY, FONT_SIZE, LABEL_COLOR_2);
+             renderer->drawString(voltageAvg_c, false, VALUE_X, currentY, FONT_SIZE, VALUE_COLOR);
+             currentY += LINE_HEIGHT;
+             
+             // Current Flow
+-            renderer->drawString("Current Flow", false, LABEL_X, currentY, FONT_SIZE, LABEL_COLOR_2);
++            renderer->drawString(" 현재 전류:", false, LABEL_X, currentY, FONT_SIZE, LABEL_COLOR_2);
+             renderer->drawString(currentFlow_c, false, VALUE_X, currentY, FONT_SIZE, VALUE_COLOR);
+             currentY += LINE_HEIGHT;
+             
+             // Power Flow
+-            renderer->drawString("Power Flow", false, LABEL_X, currentY, FONT_SIZE, LABEL_COLOR_2);
++            renderer->drawString(" 소비 전력:", false, LABEL_X, currentY, FONT_SIZE, LABEL_COLOR_2);
+             renderer->drawString(powerFlow_c, false, VALUE_X, currentY, FONT_SIZE, VALUE_COLOR);
+             currentY += LINE_HEIGHT;
+             
+             // Remaining Time
+-            renderer->drawString("Remaining Time", false, LABEL_X, currentY, FONT_SIZE, LABEL_COLOR_2);
++            renderer->drawString(" 잔여 시간:", false, LABEL_X, currentY, FONT_SIZE, LABEL_COLOR_2);
+             renderer->drawString(remainingTime_c, false, VALUE_X, currentY, FONT_SIZE, VALUE_COLOR);
+             currentY += LINE_HEIGHT;
+             
+             // Charger-specific fields (only shown when charger is connected)
+             if (isChargerConnected) {
+                 currentY += 3*LINE_HEIGHT;
+-                renderer->drawString("Charger Stats", false, LABEL_X, currentY, 20, LABEL_COLOR_1);
++                renderer->drawString("충전 상태", false, LABEL_X, currentY, 20, LABEL_COLOR_1);
+                 currentY += 2*LINE_HEIGHT;
+                 // Input Current Limit
+-                renderer->drawString("Input Current Limit", false, LABEL_X, currentY, FONT_SIZE, LABEL_COLOR_2);
++                renderer->drawString(" 입력 전류 제한:", false, LABEL_X, currentY, FONT_SIZE, LABEL_COLOR_2);
+                 renderer->drawString(inputCurrentLimit_c, false, VALUE_X, currentY, FONT_SIZE, VALUE_COLOR);
+                 currentY += LINE_HEIGHT;
+                 
+                 // VBUS Current Limit
+-                renderer->drawString("VBUS Current Limit", false, LABEL_X, currentY, FONT_SIZE, LABEL_COLOR_2);
++                renderer->drawString(" VBUS 전류 제한:", false, LABEL_X, currentY, FONT_SIZE, LABEL_COLOR_2);
+                 renderer->drawString(vbusCurrentLimit_c, false, VALUE_X, currentY, FONT_SIZE, VALUE_COLOR);
+                 currentY += LINE_HEIGHT;
+                 
+                 // Charge Voltage Limit
+-                renderer->drawString("Voltage Limit", false, LABEL_X, currentY, FONT_SIZE, LABEL_COLOR_2);
++                renderer->drawString(" 충전 전압 제한:", false, LABEL_X, currentY, FONT_SIZE, LABEL_COLOR_2);
+                 renderer->drawString(chargeVoltageLimit_c, false, VALUE_X, currentY, FONT_SIZE, VALUE_COLOR);
+                 currentY += LINE_HEIGHT;
+                 
+                 // Charge Current Limit
+-                renderer->drawString("Current Limit", false, LABEL_X, currentY, FONT_SIZE, LABEL_COLOR_2);
++                renderer->drawString(" 충전 전류 제한:", false, LABEL_X, currentY, FONT_SIZE, LABEL_COLOR_2);
+                 renderer->drawString(chargeCurrentLimit_c, false, VALUE_X, currentY, FONT_SIZE, VALUE_COLOR);
+                 currentY += LINE_HEIGHT;
+                 
+                 // Charger Type
+-                renderer->drawString("Type", false, LABEL_X, currentY, FONT_SIZE, LABEL_COLOR_2);
++                renderer->drawString(" 충전 타입:", false, LABEL_X, currentY, FONT_SIZE, LABEL_COLOR_2);
+                 renderer->drawString(chargerType_c, false, VALUE_X, currentY, FONT_SIZE, VALUE_COLOR);
+                 currentY += LINE_HEIGHT;
+                 
+                 // Charger Max Voltage
+-                renderer->drawString("Max Voltage", false, LABEL_X, currentY, FONT_SIZE, LABEL_COLOR_2);
++                renderer->drawString(" 충전 최대 전압:", false, LABEL_X, currentY, FONT_SIZE, LABEL_COLOR_2);
+                 renderer->drawString(chargerMaxVoltage_c, false, VALUE_X, currentY, FONT_SIZE, VALUE_COLOR);
+                 currentY += LINE_HEIGHT;
+                 
+                 // Charger Max Current
+-                renderer->drawString("Max Current", false, LABEL_X, currentY, FONT_SIZE, LABEL_COLOR_2);
++                renderer->drawString(" 충전 최대 전류:", false, LABEL_X, currentY, FONT_SIZE, LABEL_COLOR_2);
+                 renderer->drawString(chargerMaxCurrent_c, false, VALUE_X, currentY, FONT_SIZE, VALUE_COLOR);
+             }
+         });
+ 
+         //tsl::elm::g_disableMenuCacheOnReturn.store(true, std::memory_order_release);
+-        tsl::elm::HeaderOverlayFrame* rootFrame = new tsl::elm::HeaderOverlayFrame("Status Monitor", APP_VERSION, true);
++        tsl::elm::HeaderOverlayFrame* rootFrame = new tsl::elm::HeaderOverlayFrame("상태 모니터", APP_VERSION, true);
+         rootFrame->setContent(Status);
+ 
+         return rootFrame;
+@@ -174,9 +174,9 @@ public:
+         snprintf(batteryTemp_c, sizeof(batteryTemp_c), "%.1f\u00B0C", (float)_batteryChargeInfoFields.BatteryTemperature / 1000);
+         snprintf(rawCharge_c, sizeof(rawCharge_c), "%.1f%%", (float)_batteryChargeInfoFields.RawBatteryCharge / 1000);
+         snprintf(batteryAge_c, sizeof(batteryAge_c), "%.1f%%", (float)_batteryChargeInfoFields.BatteryAge / 1000);
+-        snprintf(voltageAvg_c, sizeof(voltageAvg_c), "%.0f mV (%ds)", batVoltageAvg, batteryFiltered ? 45 : 5);
+-        snprintf(currentFlow_c, sizeof(currentFlow_c), "%+.0f mA (%ss)", batCurrentAvg, batteryFiltered ? "11.25" : "5");
+-        snprintf(powerFlow_c, sizeof(powerFlow_c), "%+.3f W%s", PowerConsumption, batteryFiltered ? "" : " (5s)");
++        snprintf(voltageAvg_c, sizeof(voltageAvg_c), "%.0f mV (%d초 평균)", batVoltageAvg, batteryFiltered ? 45 : 5);
++        snprintf(currentFlow_c, sizeof(currentFlow_c), "%+.0f mA (%s초 평균)", batCurrentAvg, batteryFiltered ? "11.25" : "5");
++        snprintf(powerFlow_c, sizeof(powerFlow_c), "%+.3f W%s", PowerConsumption, batteryFiltered ? "" : " (5초 평균)");
+         snprintf(remainingTime_c, sizeof(remainingTime_c), "%s", tempBatTimeEstimate);
+ 
+         if (isChargerConnected) {
+diff --git a/source/modes/Configurator.hpp b/source/modes/Configurator.hpp
+index 52aa7a9..6d51413 100644
+--- a/source/modes/Configurator.hpp
++++ b/source/modes/Configurator.hpp
+@@ -85,11 +85,11 @@ private:
+ public:
+     AlphaSelector(const std::string& mode, const std::string& key, const std::string& displayTitle) 
+         : modeName(mode), colorKey(key), title(displayTitle) {
+-            isMiniMode = (mode == "Mini");
+-            isMicroMode = (mode == "Micro");
+-            isFPSCounterMode = (mode == "FPS Counter");
+-            isFPSGraphMode = (mode == "FPS Graph");
+-            isGameResolutionsMode = (mode == "Game Resolutions");
++            isMiniMode = (mode == "팝업창");
++            isMicroMode = (mode == "상태바");
++            isFPSCounterMode = (mode == "FPS 카운터");
++            isFPSGraphMode = (mode == "FPS 그래프");
++            isGameResolutionsMode = (mode == "게임 해상도");
+         }
+     ~AlphaSelector() {
+         lastSelectedListItem = nullptr;
+@@ -115,7 +115,7 @@ public:
+         
+         // Alpha options
+         static const std::vector<std::pair<std::string, char>> alphaOptions = {
+-            {"Transparent", '0'},
++            {"투명", '0'},
+             {"10%", '1'},
+             {"20%", '3'},
+             {"30%", '4'},
+@@ -125,7 +125,7 @@ public:
+             {"70%", 'B'},
+             {"80%", 'C'},
+             {"90%", 'E'},
+-            {"Opaque", 'F'}
++            {"불투명", 'F'}
+         };
+         
+         for (const auto& option : alphaOptions) {
+@@ -157,7 +157,7 @@ public:
+         
+         list->jumpToItem("", ult::CHECKMARK_SYMBOL, false);
+         
+-        tsl::elm::OverlayFrame* rootFrame = new tsl::elm::OverlayFrame("Status Monitor", "Alpha");
++        tsl::elm::OverlayFrame* rootFrame = new tsl::elm::OverlayFrame("상태 모니터", "투명도");
+         rootFrame->setContent(list);
+         return rootFrame;
+     }
+@@ -181,31 +181,33 @@ public:
+ // Define available DTC format options
+ static const std::vector<std::pair<std::string, std::string>> dtcFormats = {
+     // Special
+-    {"Pretty", "%a, %b %d"+ult::DIVIDER_SYMBOL+"%I:%M %p"},
+-    {"Compact", "%Y%m%d"+ult::DIVIDER_SYMBOL+"%H:%M:%S"},
+-    {"FileSafe", "%Y-%m-%d"+ult::DIVIDER_SYMBOL+"%H-%M-%S"},
+-    {"Day+Time", "%a"+ult::DIVIDER_SYMBOL+"%H:%M"},
++    {"요일, 월 일시:분 12시간제", "%a, %b %d"+ult::DIVIDER_SYMBOL+"%I:%M %p"},
++    {"연월일시:분:초", "%Y%m%d"+ult::DIVIDER_SYMBOL+"%H:%M:%S"},
++    {"연-월-일시-분-초", "%Y-%m-%d"+ult::DIVIDER_SYMBOL+"%H-%M-%S"},
++    {"요일시:분", "%a"+ult::DIVIDER_SYMBOL+"%H:%M"},
+ 
+     // Datetime (default included here)
+-    {"Date+Time(s)", "%m-%d-%Y"+ult::DIVIDER_SYMBOL+"%H:%M:%S"},           // default
+-    {"Date+Time AM/PM", "%m-%d-%Y"+ult::DIVIDER_SYMBOL+"%I:%M %p"},
+-    {"Date+Time(s) AM/PM", "%m-%d-%Y"+ult::DIVIDER_SYMBOL+"%I:%M:%S %p"},
+-    {"Date+Time EU", "%d/%m/%Y"+ult::DIVIDER_SYMBOL+"%H:%M"},
+-    {"Date+Time EU AM/PM", "%d/%m/%Y"+ult::DIVIDER_SYMBOL+"%I:%M %p"},
+-    {"Date+Time(s) EU AM/PM", "%d/%m/%Y"+ult::DIVIDER_SYMBOL+"%I:%M:%S %p"},
+-    {"Date+Time ISO", "%Y-%m-%dT"+ult::DIVIDER_SYMBOL+"%H:%M:%S"},
++    {"월-일-년시:분:초", "%m-%d-%Y"+ult::DIVIDER_SYMBOL+"%H:%M:%S"},
++    {"월-일-년시:분 12시간제", "%m-%d-%Y"+ult::DIVIDER_SYMBOL+"%I:%M %p"},
++    {"월-일-년시:분:초 12시간제", "%m-%d-%Y"+ult::DIVIDER_SYMBOL+"%I:%M:%S %p"},
++    {"일/월/년시:분", "%d/%m/%Y"+ult::DIVIDER_SYMBOL+"%H:%M"},
++    {"일/월/년시:분 12시간제", "%d/%m/%Y"+ult::DIVIDER_SYMBOL+"%I:%M %p"},
++    {"일/월/년시:분:초 12시간제", "%d/%m/%Y"+ult::DIVIDER_SYMBOL+"%I:%M:%S %p"},
++    {"연-월-일시:분:초", "%Y-%m-%dT"+ult::DIVIDER_SYMBOL+"%H:%M:%S"},
++    {"연 월 일12시간제 시:분:초", "%Y년 %m월 %d일"+ult::DIVIDER_SYMBOL+"%p %I:%M:%S"},           // default
+ 
+     // Time only
+-    {"Time 24h", "%H:%M"},
+-    {"Time AM/PM", "%I:%M %p"},
+-    {"Time(s) 24h", "%H:%M:%S"},
+-    {"Time(s) AM/PM", "%I:%M:%S %p"},
++    {"시:분", "%H:%M"},
++    {"시:분 12시간제", "%I:%M %p"},
++    {"시:분:초", "%H:%M:%S"},
++    {"시:분:초 12시간제", "%I:%M:%S %p"},
++    {"12시간제 시:분", "%p %I:%M"},
+ 
+     // Date only
+-    {"Date US", "%m-%d-%Y"},
+-    {"Date EU", "%d/%m/%Y"},
+-    {"Date ISO", "%Y-%m-%d"},
+-    {"Date Short", "%m/%d/%y"}
++    {"월-일-년", "%m-%d-%Y"},
++    {"일/월/년", "%d/%m/%Y"},
++    {"연-월-일", "%Y-%m-%d"},
++    {"월/일/년", "%m/%d/%y"}
+ };
+ 
+ // DTC Format Configuration (Mini/Micro only)
+@@ -217,8 +219,8 @@ private:
+     
+ public:
+     DTCFormatConfig(const std::string& mode) : modeName(mode) {
+-        isMiniMode = (mode == "Mini");
+-        isMicroMode = (mode == "Micro");
++        isMiniMode = (mode == "팝업창");
++        isMicroMode = (mode == "상태바");
+     }
+     ~DTCFormatConfig() {
+         lastSelectedListItem = nullptr;
+@@ -226,14 +228,14 @@ public:
+     
+     virtual tsl::elm::Element* createUI() override {
+         auto* list = new tsl::elm::List();
+-        list->addItem(new tsl::elm::CategoryHeader("DTC Format"));
++        list->addItem(new tsl::elm::CategoryHeader("시간"));
+ 
+         const std::string section = isMiniMode ? "mini" : "micro";
+         std::string currentValue = ult::parseValueFromIniSection(configIniPath, section, "dtc_format");
+         
+         // Handle default values
+         if (currentValue.empty()) {
+-            currentValue = isMiniMode ? "%m-%d-%Y"+ult::DIVIDER_SYMBOL+"%H:%M:%S" : "%H:%M:%S";
++            currentValue = isMiniMode ? "%Y년 %m월 %d일"+ult::DIVIDER_SYMBOL+"%p %I:%M:%S" : "%p %I:%M";
+         }
+         
+         
+@@ -262,7 +264,7 @@ public:
+         // Jump to currently selected item
+         list->jumpToItem("", ult::CHECKMARK_SYMBOL, false);
+         
+-        tsl::elm::OverlayFrame* rootFrame = new tsl::elm::OverlayFrame("Status Monitor", "DTC Format");
++        tsl::elm::OverlayFrame* rootFrame = new tsl::elm::OverlayFrame("상태 모니터", "시간");
+         rootFrame->setContent(list);
+         return rootFrame;
+     }
+@@ -295,33 +297,33 @@ private:
+     
+ public:
+     TogglesConfig(const std::string& mode) : modeName(mode) {
+-        isMiniMode = (mode == "Mini");
+-        isMicroMode = (mode == "Micro");
+-        isFullMode = (mode == "Full");
+-        isFPSGraphMode = (mode == "FPS Graph");
+-        isGameResolutionsMode = (mode == "Game Resolutions");
+-        isFPSCounterMode = (mode == "FPS Counter");
++        isMiniMode = (mode == "팝업창");
++        isMicroMode = (mode == "상태바");
++        isFullMode = (mode == "전체");
++        isFPSGraphMode = (mode == "FPS 그래프");
++        isGameResolutionsMode = (mode == "게임 해상도");
++        isFPSCounterMode = (mode == "FPS 카운터");
+     }
+     
+     virtual tsl::elm::Element* createUI() override {
+         auto* list = new tsl::elm::List();
+-        list->addItem(new tsl::elm::CategoryHeader("Toggles"));
++        list->addItem(new tsl::elm::CategoryHeader("토글"));
+         
+         if (isFPSGraphMode) {
+             // FPS Graph: show_info and disable_screenshots
+-            auto* showInfo = new tsl::elm::ToggleListItem("Info", getCurrentShowInfo());
++            auto* showInfo = new tsl::elm::ToggleListItem("정보 표시", getCurrentShowInfo());
+             showInfo->setStateChangedListener([this](bool state) {
+                 ult::setIniFileValue(configIniPath, "fps-graph", "show_info", state ? "true" : "false");
+             });
+             list->addItem(showInfo);
+ 
+-            auto* dynamicColors = new tsl::elm::ToggleListItem("Use Dynamic Colors", getCurrentUseDynamicColors());
++            auto* dynamicColors = new tsl::elm::ToggleListItem("동적 색상 활성화", getCurrentUseDynamicColors());
+             dynamicColors->setStateChangedListener([this](bool state) {
+                 ult::setIniFileValue(configIniPath, "fps-graph", "use_dynamic_colors", state ? "true" : "false");
+             });
+             list->addItem(dynamicColors);
+ 
+-            auto* disableScreenshots = new tsl::elm::ToggleListItem("Disable Screenshots", getCurrentDisableScreenshots("fps-graph"));
++            auto* disableScreenshots = new tsl::elm::ToggleListItem("스크린샷 비활성화", getCurrentDisableScreenshots("fps-graph"));
+             disableScreenshots->setStateChangedListener([this](bool state) {
+                 ult::setIniFileValue(configIniPath, "fps-graph", "disable_screenshots", state ? "true" : "false");
+             });
+@@ -329,49 +331,49 @@ public:
+             
+         } else if (isFullMode) {
+             // Full mode: specific full toggles
+-            auto* realFreqs = new tsl::elm::ToggleListItem("Real Freqs", getCurrentShowRealFreqs());
++            auto* realFreqs = new tsl::elm::ToggleListItem("실제 주파수 표시", getCurrentShowRealFreqs());
+             realFreqs->setStateChangedListener([this](bool state) {
+                 ult::setIniFileValue(configIniPath, "full", "show_real_freqs", state ? "true" : "false");
+             });
+             list->addItem(realFreqs);
+             
+-            auto* showDeltas = new tsl::elm::ToggleListItem("Deltas", getCurrentShowDeltas());
++            auto* showDeltas = new tsl::elm::ToggleListItem("상세 표시", getCurrentShowDeltas());
+             showDeltas->setStateChangedListener([this](bool state) {
+                 ult::setIniFileValue(configIniPath, "full", "show_deltas", state ? "true" : "false");
+             });
+             list->addItem(showDeltas);
+             
+-            auto* targetFreqs = new tsl::elm::ToggleListItem("Target Freqs", getCurrentShowTargetFreqs());
++            auto* targetFreqs = new tsl::elm::ToggleListItem("목표 주파수 표시", getCurrentShowTargetFreqs());
+             targetFreqs->setStateChangedListener([this](bool state) {
+                 ult::setIniFileValue(configIniPath, "full", "show_target_freqs", state ? "true" : "false");
+             });
+             list->addItem(targetFreqs);
+             
+-            auto* showFPS = new tsl::elm::ToggleListItem("FPS", getCurrentShowFPS());
++            auto* showFPS = new tsl::elm::ToggleListItem("FPS 표시", getCurrentShowFPS());
+             showFPS->setStateChangedListener([this](bool state) {
+                 ult::setIniFileValue(configIniPath, "full", "show_fps", state ? "true" : "false");
+             });
+             list->addItem(showFPS);
+             
+-            auto* showRES = new tsl::elm::ToggleListItem("RES", getCurrentShowRES());
++            auto* showRES = new tsl::elm::ToggleListItem("해상도 표시", getCurrentShowRES());
+             showRES->setStateChangedListener([this](bool state) {
+                 ult::setIniFileValue(configIniPath, "full", "show_res", state ? "true" : "false");
+             });
+             list->addItem(showRES);
+             
+-            auto* showRDSD = new tsl::elm::ToggleListItem("Read Speed", getCurrentShowRDSD());
++            auto* showRDSD = new tsl::elm::ToggleListItem("읽기 속도 표시", getCurrentShowRDSD());
+             showRDSD->setStateChangedListener([this](bool state) {
+                 ult::setIniFileValue(configIniPath, "full", "show_read_speed", state ? "true" : "false");
+             });
+             list->addItem(showRDSD);
+ 
+-            auto* dynamicColors = new tsl::elm::ToggleListItem("Use Dynamic Colors", getCurrentUseDynamicColors());
++            auto* dynamicColors = new tsl::elm::ToggleListItem("동적 색상 활성화", getCurrentUseDynamicColors());
+             dynamicColors->setStateChangedListener([this](bool state) {
+                 ult::setIniFileValue(configIniPath, "fps-graph", "use_dynamic_colors", state ? "true" : "false");
+             });
+             list->addItem(dynamicColors);
+ 
+-            auto* disableScreenshots = new tsl::elm::ToggleListItem("Disable Screenshots", getCurrentDisableScreenshots("full"));
++            auto* disableScreenshots = new tsl::elm::ToggleListItem("스크린샷 비활성화", getCurrentDisableScreenshots("full"));
+             disableScreenshots->setStateChangedListener([this](bool state) {
+                 ult::setIniFileValue(configIniPath, "full", "disable_screenshots", state ? "true" : "false");
+             });
+@@ -382,57 +384,57 @@ public:
+             const std::string section = isMiniMode ? "mini" : "micro";
+             
+             if (isMiniMode) {
+-                auto* showLabels = new tsl::elm::ToggleListItem("Labels", getCurrentShowLabels());
++                auto* showLabels = new tsl::elm::ToggleListItem("라벨 표시", getCurrentShowLabels());
+                 showLabels->setStateChangedListener([this, section](bool state) {
+                     ult::setIniFileValue(configIniPath, section, "show_labels", state ? "true" : "false");
+                 });
+                 list->addItem(showLabels);
+             }
+ 
+-            auto* realFreqs = new tsl::elm::ToggleListItem("Real Frequencies", getCurrentRealFreqs());
++            auto* realFreqs = new tsl::elm::ToggleListItem("실제 주파수", getCurrentRealFreqs());
+             realFreqs->setStateChangedListener([this, section](bool state) {
+                 ult::setIniFileValue(configIniPath, section, "real_freqs", state ? "true" : "false");
+             });
+             list->addItem(realFreqs);
+             
+-            auto* realVolts = new tsl::elm::ToggleListItem("Real Voltages", getCurrentRealVolts());
++            auto* realVolts = new tsl::elm::ToggleListItem("실제 전압", getCurrentRealVolts());
+             realVolts->setStateChangedListener([this, section](bool state) {
+                 ult::setIniFileValue(configIniPath, section, "real_volts", state ? "true" : "false");
+             });
+             list->addItem(realVolts);
+             
+-            auto* showFullCPU = new tsl::elm::ToggleListItem("Full CPU", getCurrentShowFullCPU());
++            auto* showFullCPU = new tsl::elm::ToggleListItem("CPU 표시", getCurrentShowFullCPU());
+             showFullCPU->setStateChangedListener([this, section](bool state) {
+                 ult::setIniFileValue(configIniPath, section, "show_full_cpu", state ? "true" : "false");
+             });
+             list->addItem(showFullCPU);
+             
+-            auto* showVDDQ = new tsl::elm::ToggleListItem("VDDQ", getCurrentShowVDDQ());
++            auto* showVDDQ = new tsl::elm::ToggleListItem("VDDQ 표시", getCurrentShowVDDQ());
+             showVDDQ->setStateChangedListener([this, section](bool state) {
+                 ult::setIniFileValue(configIniPath, section, "show_vddq", state ? "true" : "false");
+             });
+             list->addItem(showVDDQ);
+ 
+-            auto* showVDD2 = new tsl::elm::ToggleListItem("VDD2", getCurrentShowVDD2());
++            auto* showVDD2 = new tsl::elm::ToggleListItem("VDD2 표시", getCurrentShowVDD2());
+             showVDD2->setStateChangedListener([this, section](bool state) {
+                 ult::setIniFileValue(configIniPath, section, "show_vdd2", state ? "true" : "false");
+             });
+             list->addItem(showVDD2);
+ 
+-            auto* showFullRes = new tsl::elm::ToggleListItem("Full Resolution", getCurrentShowFullRes());
++            auto* showFullRes = new tsl::elm::ToggleListItem("전체 해상도 표시", getCurrentShowFullRes());
+             showFullRes->setStateChangedListener([this, section](bool state) {
+                 ult::setIniFileValue(configIniPath, section, "show_full_res", state ? "true" : "false");
+             });
+             list->addItem(showFullRes);
+             
+-            auto* socVoltage = new tsl::elm::ToggleListItem("SOC Voltage", getCurrentShowSOCVoltage());
++            auto* socVoltage = new tsl::elm::ToggleListItem("SoC 전압 표시", getCurrentShowSOCVoltage());
+             socVoltage->setStateChangedListener([this, section](bool state) {
+                 ult::setIniFileValue(configIniPath, section, "show_soc_voltage", state ? "true" : "false");
+             });
+             list->addItem(socVoltage);
+ 
+             if (isMiniMode) {
+-                auto* ramLoadCPUGPU = new tsl::elm::ToggleListItem("RAM Load CPU/GPU", getCurrentShowRAMLoadCPUGPU());
++                auto* ramLoadCPUGPU = new tsl::elm::ToggleListItem("RAM 로드율 CPU/GPU 부하", getCurrentShowRAMLoadCPUGPU());
+                 ramLoadCPUGPU->setStateChangedListener([this, section](bool state) {
+                     ult::setIniFileValue(configIniPath, section, "show_RAM_load_CPU_GPU", state ? "true" : "false");
+                 });
+@@ -440,32 +442,32 @@ public:
+             }
+ 
+             if (isMiniMode || isMicroMode) {
+-                auto* invertBatteryDisplay = new tsl::elm::ToggleListItem("Invert Battery Display", getCurrentInvertBatteryDisplay());
++                auto* invertBatteryDisplay = new tsl::elm::ToggleListItem("배터리 표시 반전", getCurrentInvertBatteryDisplay());
+                 invertBatteryDisplay->setStateChangedListener([this, section](bool state) {
+                     ult::setIniFileValue(configIniPath, section, "invert_battery_display", state ? "true" : "false");
+                 });
+                 list->addItem(invertBatteryDisplay);
+             }
+             
+-            auto* dtcSymbol = new tsl::elm::ToggleListItem("Use DTC Symbol", getCurrentUseDTCSymbol());
++            auto* dtcSymbol = new tsl::elm::ToggleListItem("시간 아이콘 사용", getCurrentUseDTCSymbol());
+             dtcSymbol->setStateChangedListener([this, section](bool state) {
+                 ult::setIniFileValue(configIniPath, section, "use_dtc_symbol", state ? "true" : "false");
+             });
+             list->addItem(dtcSymbol);
+ 
+-            auto* dynamicColors = new tsl::elm::ToggleListItem("Use Dynamic Colors", getCurrentUseDynamicColors());
++            auto* dynamicColors = new tsl::elm::ToggleListItem("동적 색상 활성화", getCurrentUseDynamicColors());
+             dynamicColors->setStateChangedListener([this, section](bool state) {
+                 ult::setIniFileValue(configIniPath, section, "use_dynamic_colors", state ? "true" : "false");
+             });
+             list->addItem(dynamicColors);
+ 
+-            auto* disableScreenshots = new tsl::elm::ToggleListItem("Disable Screenshots", getCurrentDisableScreenshots(section));
++            auto* disableScreenshots = new tsl::elm::ToggleListItem("스크린샷 비활성화", getCurrentDisableScreenshots(section));
+             disableScreenshots->setStateChangedListener([this, section](bool state) {
+                 ult::setIniFileValue(configIniPath, section, "disable_screenshots", state ? "true" : "false");
+             });
+             list->addItem(disableScreenshots);
+ 
+-            auto* sleepExit = new tsl::elm::ToggleListItem("Sleep Exit", getCurrentSleepExit(section));
++            auto* sleepExit = new tsl::elm::ToggleListItem("슬립 시 종료", getCurrentSleepExit(section));
+             sleepExit->setStateChangedListener([this, section](bool state) {
+                 ult::setIniFileValue(configIniPath, section, "sleep_exit", state ? "true" : "false");
+             });
+@@ -473,7 +475,7 @@ public:
+             
+         } else if (isGameResolutionsMode) {
+             // Game Resolutions mode: only disable_screenshots
+-            auto* disableScreenshots = new tsl::elm::ToggleListItem("Disable Screenshots", getCurrentDisableScreenshots("game_resolutions"));
++            auto* disableScreenshots = new tsl::elm::ToggleListItem("스크린샷 비활성화", getCurrentDisableScreenshots("game_resolutions"));
+             disableScreenshots->setStateChangedListener([this](bool state) {
+                 ult::setIniFileValue(configIniPath, "game_resolutions", "disable_screenshots", state ? "true" : "false");
+             });
+@@ -481,14 +483,14 @@ public:
+             
+         } else if (isFPSCounterMode) {
+             // FPS Counter mode: only disable_screenshots
+-            auto* integerCounter = new tsl::elm::ToggleListItem("Use Integer Counter", getCurrentUseIntegerCounter("fps-counter"));
++            auto* integerCounter = new tsl::elm::ToggleListItem("정수 카운터 사용", getCurrentUseIntegerCounter("fps-counter"));
+             integerCounter->setStateChangedListener([this](bool state) {
+                 ult::setIniFileValue(configIniPath, "fps-counter", "use_integer_counter", state ? "true" : "false");
+             });
+             list->addItem(integerCounter);
+ 
+             // FPS Counter mode: only disable_screenshots
+-            auto* disableScreenshots = new tsl::elm::ToggleListItem("Disable Screenshots", getCurrentDisableScreenshots("fps-counter"));
++            auto* disableScreenshots = new tsl::elm::ToggleListItem("스크린샷 비활성화", getCurrentDisableScreenshots("fps-counter"));
+             disableScreenshots->setStateChangedListener([this](bool state) {
+                 ult::setIniFileValue(configIniPath, "fps-counter", "disable_screenshots", state ? "true" : "false");
+             });
+@@ -502,7 +504,7 @@ public:
+             jumpItemExactMatch = false;
+         }
+ 
+-        tsl::elm::OverlayFrame* rootFrame = new tsl::elm::OverlayFrame("Status Monitor", "Configuration");
++        tsl::elm::OverlayFrame* rootFrame = new tsl::elm::OverlayFrame("상태 모니터", "설정");
+         rootFrame->setContent(list);
+         return rootFrame;
+     }
+@@ -701,12 +703,12 @@ private:
+     
+ public:
+     RefreshRateConfig(const std::string& mode) : modeName(mode) {
+-        isMiniMode = (mode == "Mini");
+-        isMicroMode = (mode == "Micro");
+-        isFullMode = (mode == "Full");
+-        isGameResolutionsMode = (mode == "Game Resolutions");
+-        isFPSCounterMode = (mode == "FPS Counter");
+-        isFPSGraphMode = (mode == "FPS Graph");
++        isMiniMode = (mode == "팝업창");
++        isMicroMode = (mode == "상태바");
++        isFullMode = (mode == "전체");
++        isGameResolutionsMode = (mode == "게임 해상도");
++        isFPSCounterMode = (mode == "FPS 카운터");
++        isFPSGraphMode = (mode == "FPS 그래프");
+         
+         std::string section;
+         if (isMiniMode) section = "mini";
+@@ -727,7 +729,7 @@ public:
+     
+     virtual tsl::elm::Element* createUI() override {
+         auto* list = new tsl::elm::List();
+-        list->addItem(new tsl::elm::CategoryHeader("Refresh Rate"));
++        list->addItem(new tsl::elm::CategoryHeader("새로고침 빈도"));
+ 
+         static const std::vector<int> rates = {1, 2, 3, 5, 10, 15, 30, 60};
+         for (int rate : rates) {
+@@ -760,7 +762,7 @@ public:
+         
+         list->jumpToItem("", ult::CHECKMARK_SYMBOL, false);
+ 
+-        tsl::elm::OverlayFrame* rootFrame = new tsl::elm::OverlayFrame("Status Monitor", "Configuration");
++        tsl::elm::OverlayFrame* rootFrame = new tsl::elm::OverlayFrame("상태 모니터", "설정");
+         rootFrame->setContent(list);
+         return rootFrame;
+     }
+@@ -798,7 +800,7 @@ public:
+     
+     virtual tsl::elm::Element* createUI() override {
+         auto* list = new tsl::elm::List();
+-        list->addItem(new tsl::elm::CategoryHeader("Frame Padding"));
++        list->addItem(new tsl::elm::CategoryHeader("팝업 프레임 여백"));
+ 
+         static const std::vector<int> paddingValues = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
+         for (int padding : paddingValues) {
+@@ -823,7 +825,7 @@ public:
+         
+         list->jumpToItem("", ult::CHECKMARK_SYMBOL, false);
+ 
+-        tsl::elm::OverlayFrame* rootFrame = new tsl::elm::OverlayFrame("Status Monitor", "Configuration");
++        tsl::elm::OverlayFrame* rootFrame = new tsl::elm::OverlayFrame("상태 모니터", "설정");
+         rootFrame->setContent(list);
+         return rootFrame;
+     }
+@@ -857,12 +859,12 @@ private:
+ public:
+     FontSizeSelector(const std::string& mode, const std::string& type) 
+         : modeName(mode), fontType(type) {
+-            isMiniMode = (mode == "Mini");
+-            isMicroMode = (mode == "Micro");
+-            isFPSCounterMode = (mode == "FPS Counter");
++            isMiniMode = (mode == "팝업창");
++            isMicroMode = (mode == "상태바");
++            isFPSCounterMode = (mode == "FPS 카운터");
+             title = fontType;
+             title[0] = std::toupper(title[0]);
+-            title += " Font Size";
++            title += " 글자 크기";
+         }
+     ~FontSizeSelector() {
+         lastSelectedListItem = nullptr;
+@@ -879,7 +881,7 @@ public:
+         
+         const std::string keyName = fontType + "_font_size";
+         const std::string currentValue = ult::parseValueFromIniSection(configIniPath, section, keyName);
+-        int defaultSize = isFPSCounterMode ? 40 : 15;
++        int defaultSize = isFPSCounterMode ? 20 : 13;
+         const int currentSize = currentValue.empty() ? defaultSize : atoi(currentValue.c_str());
+         
+         // Font size range depends on mode
+@@ -911,7 +913,7 @@ public:
+         
+         list->jumpToItem("", ult::CHECKMARK_SYMBOL, false);
+         
+-        tsl::elm::OverlayFrame* rootFrame = new tsl::elm::OverlayFrame("Status Monitor", "Font Sizes");
++        tsl::elm::OverlayFrame* rootFrame = new tsl::elm::OverlayFrame("상태 모니터", "글자 크기");
+         rootFrame->setContent(list);
+         return rootFrame;
+     }
+@@ -941,14 +943,14 @@ private:
+     
+ public:
+     FontSizeConfig(const std::string& mode) : modeName(mode) {
+-        isMiniMode = (mode == "Mini");
+-        isMicroMode = (mode == "Micro");
+-        isFPSCounterMode = (mode == "FPS Counter");
++        isMiniMode = (mode == "팝업창");
++        isMicroMode = (mode == "상태바");
++        isFPSCounterMode = (mode == "FPS 카운터");
+     }
+     
+     virtual tsl::elm::Element* createUI() override {
+         auto* list = new tsl::elm::List();
+-        list->addItem(new tsl::elm::CategoryHeader("Font Sizes"));
++        list->addItem(new tsl::elm::CategoryHeader("글자 크기"));
+         
+         std::string section;
+         if (isMiniMode) section = "mini";
+@@ -958,11 +960,11 @@ public:
+         const std::string handheldValue = ult::parseValueFromIniSection(configIniPath, section, "handheld_font_size");
+         const std::string dockedValue = ult::parseValueFromIniSection(configIniPath, section, "docked_font_size");
+         
+-        int defaultSize = isFPSCounterMode ? 40 : 15;
++        int defaultSize = isFPSCounterMode ? 20 : 13;
+         const int handheldSize = handheldValue.empty() ? defaultSize : atoi(handheldValue.c_str());
+         const int dockedSize = dockedValue.empty() ? defaultSize : atoi(dockedValue.c_str());
+         
+-        auto* handheldItem = new tsl::elm::ListItem("Handheld Font Size");
++        auto* handheldItem = new tsl::elm::ListItem("휴대모드");
+         handheldItem->setValue(std::to_string(handheldSize) + " pt");
+         handheldItem->setClickListener([this, handheldItem](uint64_t keys) {
+             if (keys & KEY_A) {
+@@ -974,7 +976,7 @@ public:
+         });
+         list->addItem(handheldItem);
+         
+-        auto* dockedItem = new tsl::elm::ListItem("Docked Font Size");
++        auto* dockedItem = new tsl::elm::ListItem("독 모드");
+         dockedItem->setValue(std::to_string(dockedSize) + " pt");
+         dockedItem->setClickListener([this, dockedItem](uint64_t keys) {
+             if (keys & KEY_A) {
+@@ -986,7 +988,7 @@ public:
+         });
+         list->addItem(dockedItem);
+         
+-        tsl::elm::OverlayFrame* rootFrame = new tsl::elm::OverlayFrame("Status Monitor", "Configuration");
++        tsl::elm::OverlayFrame* rootFrame = new tsl::elm::OverlayFrame("상태 모니터", "설정");
+         rootFrame->setContent(list);
+         list->jumpToItem(jumpItemName, jumpItemValue, jumpItemExactMatch);
+         {
+@@ -1027,12 +1029,12 @@ private:
+ public:
+     ColorSelector(const std::string& mode, const std::string& title, const std::string& key, const std::string& def) 
+         : modeName(mode), modeTitle(title), colorKey(key), defaultValue(def) {
+-            isMiniMode = (mode == "Mini");
+-            isMicroMode = (mode == "Micro");
+-            isFullMode = (mode == "Full");
+-            isGameResolutionsMode = (mode == "Game Resolutions");
+-            isFPSCounterMode = (mode == "FPS Counter");
+-            isFPSGraphMode = (mode == "FPS Graph");
++            isMiniMode = (mode == "팝업창");
++            isMicroMode = (mode == "상태바");
++            isFullMode = (mode == "전체");
++            isGameResolutionsMode = (mode == "게임 해상도");
++            isFPSCounterMode = (mode == "FPS 카운터");
++            isFPSGraphMode = (mode == "FPS 그래프");
+             
+             // Determine if this is a background color or text-based color
+             isBackgroundColor = (key == "background_color" || key == "focus_background_color" || 
+@@ -1069,54 +1071,54 @@ public:
+         // Updated colors list with comprehensive color palette
+         static const std::vector<std::pair<std::string, std::string>> colors = {
+             // Grays & Basics
+-            {"Black", "#000F"},
+-            {"Dark Gray", "#333F"},
+-            {"Gray", "#444F"},
+-            {"Light Gray", "#888F"},
+-            {"Silver", "#CCCF"},
+-            {"White", "#FFFF"},
++            {"검정색", "#000F"},
++            {"진회색", "#333F"},
++            {"회색", "#444F"},
++            {"연회색", "#888F"},
++            {"은색", "#CCCF"},
++            {"흰색", "#FFFF"},
+             
+             // Reds
+-            {"Dark Red", "#800F"},
+-            {"Red", "#F00F"},
+-            {"Light Red", "#F88F"},
+-            {"Pink", "#F8AF"},
++            {"진홍색", "#800F"},
++            {"빨간색", "#F00F"},
++            {"주홍색", "#F88F"},
++            {"분홍색", "#F8AF"},
+             
+             // Greens
+-            {"Dark Green", "#080F"},
+-            {"Green", "#0F0F"},
+-            {"Lime Green", "#0C0F"},
+-            {"Light Green", "#8F8F"},
++            {"초록색", "#080F"},
++            {"네온색", "#0F0F"},
++            {"라임색", "#0C0F"},
++            {"연두색", "#8F8F"},
+             
+             // Blues
+-            {"Dark Blue", "#003F"},
+-            {"Blue", "#00FF"},
+-            {"Light Blue", "#2DFF"},
+-            {"Sky Blue", "#8CFF"},
++            {"진청색", "#003F"},
++            {"파란색", "#00FF"},
++            {"하늘색", "#2DFF"},
++            {"담청색", "#8CFF"},
+             
+             // Purples
+-            {"Dark Purple", "#808F"},
+-            {"Purple", "#80FF"},
+-            {"Light Purple", "#C8FF"},
+-            {"Violet", "#A0FF"},
++            {"자주색", "#808F"},
++            {"청자색", "#80FF"},
++            {"연보라색", "#C8FF"},
++            {"보라색", "#A0FF"},
+             
+             // Yellows & Oranges
+-            {"Orange", "#F80F"},
+-            {"Yellow", "#FF0F"},
+-            {"Light Yellow", "#FFCF"},
++            {"주황색", "#F80F"},
++            {"노란색", "#FF0F"},
++            {"크림색", "#FFCF"},
+             
+             // Cyans & Teals
+-            {"Teal", "#088F"},
+-            {"Cyan", "#0FFF"},
+-            {"Light Cyan", "#8FFF"},
++            {"암청색", "#088F"},
++            {"청록색", "#0FFF"},
++            {"옥색", "#8FFF"},
+             
+             // Magentas & Pinks
+-            {"Magenta", "#F0FF"},
+-            {"Hot Pink", "#F8CF"},
++            {"마젠타", "#F0FF"},
++            {"핫핑크", "#F8CF"},
+             
+             // Browns
+-            {"Brown", "#840F"},
+-            {"Light Brown", "#A86F"}
++            {"갈색", "#840F"},
++            {"베이지", "#A86F"}
+         };
+         
+         std::string _jumpItemValue;
+@@ -1198,7 +1200,7 @@ public:
+         }
+         list->jumpToItem("", _jumpItemValue, false);
+         
+-        tsl::elm::OverlayFrame* rootFrame = new tsl::elm::OverlayFrame("Status Monitor", "Colors");
++        tsl::elm::OverlayFrame* rootFrame = new tsl::elm::OverlayFrame("상태 모니터", "색상");
+         rootFrame->setContent(list);
+         return rootFrame;
+     }
+@@ -1231,12 +1233,12 @@ private:
+     
+ public:
+     ColorConfig(const std::string& mode) : modeName(mode) {
+-        isMiniMode = (mode == "Mini");
+-        isMicroMode = (mode == "Micro");
+-        isFullMode = (mode == "Full");
+-        isGameResolutionsMode = (mode == "Game Resolutions");
+-        isFPSCounterMode = (mode == "FPS Counter");
+-        isFPSGraphMode = (mode == "FPS Graph");
++        isMiniMode = (mode == "팝업창");
++        isMicroMode = (mode == "상태바");
++        isFullMode = (mode == "전체");
++        isGameResolutionsMode = (mode == "게임 해상도");
++        isFPSCounterMode = (mode == "FPS 카운터");
++        isFPSGraphMode = (mode == "FPS 그래프");
+         
+         // Full mode should never access color configuration
+         //if (isFullMode) {
+@@ -1247,7 +1249,7 @@ public:
+     
+     virtual tsl::elm::Element* createUI() override {
+         auto* list = new tsl::elm::List();
+-        list->addItem(new tsl::elm::CategoryHeader("Colors"));
++        list->addItem(new tsl::elm::CategoryHeader("색상"));
+         
+         auto getCurrentColor = [this](const std::string& key, const std::string& def) {
+             std::string section;
+@@ -1272,54 +1274,54 @@ public:
+             // Map of hex colors to names (RGB only, no alpha)
+             static const std::map<std::string, std::string> colorNames = {
+                 // Grays & Basics
+-                {"#000", "Black"},
+-                {"#333", "Dark Gray"},
+-                {"#444", "Gray"},
+-                {"#888", "Light Gray"},
+-                {"#CCC", "Silver"},
+-                {"#FFF", "White"},
++                {"#000", "검정색"},
++                {"#333", "진회색"},
++                {"#444", "회색"},
++                {"#888", "연회색"},
++                {"#CCC", "은색"},
++                {"#FFF", "흰색"},
+                 
+                 // Reds
+-                {"#800", "Dark Red"},
+-                {"#F00", "Red"},
+-                {"#F88", "Light Red"},
+-                {"#F8A", "Pink"},
++                {"#800", "진홍색"},
++                {"#F00", "빨간색"},
++                {"#F88", "주홍색"},
++                {"#F8A", "분홍색"},
+                 
+                 // Greens
+-                {"#080", "Dark Green"},
+-                {"#0F0", "Green"},
+-                {"#0C0", "Lime Green"},
+-                {"#8F8", "Light Green"},
++                {"#080", "초록색"},
++                {"#0F0", "네온색"},
++                {"#0C0", "라임색"},
++                {"#8F8", "연두색"},
+                 
+                 // Blues
+-                {"#003", "Dark Blue"},
+-                {"#00F", "Blue"},
+-                {"#2DF", "Light Blue"},
+-                {"#8CF", "Sky Blue"},
++                {"#003", "진청색"},
++                {"#00F", "파란색"},
++                {"#2DF", "하늘색"},
++                {"#8CF", "담청색"},
+                 
+                 // Purples
+-                {"#808", "Dark Purple"},
+-                {"#80F", "Purple"},
+-                {"#C8F", "Light Purple"},
+-                {"#A0F", "Violet"},
++                {"#808", "자주색"},
++                {"#80F", "청자색"},
++                {"#C8F", "연보라색"},
++                {"#A0F", "보라색"},
+                 
+                 // Yellows & Oranges
+-                {"#F80", "Orange"},
+-                {"#FF0", "Yellow"},
+-                {"#FFC", "Light Yellow"},
++                {"#F80", "주황색"},
++                {"#FF0", "노란색"},
++                {"#FFC", "크림색"},
+                 
+                 // Cyans & Teals
+-                {"#088", "Teal"},
+-                {"#0FF", "Cyan"},
+-                {"#8FF", "Light Cyan"},
++                {"#088", "암청색"},
++                {"#0FF", "청록색"},
++                {"#8FF", "옥색"},
+                 
+                 // Magentas & Pinks
+-                {"#F0F", "Magenta"},
+-                {"#F8C", "Hot Pink"},
++                {"#F0F", "마젠타"},
++                {"#F8C", "핫핑크"},
+                 
+                 // Browns
+-                {"#840", "Brown"},
+-                {"#A86", "Light Brown"}
++                {"#840", "갈색"},
++                {"#A86", "베이지"}
+             };
+             
+             auto it = colorNames.find(rgb);
+@@ -1327,8 +1329,8 @@ public:
+                 // Special case for black/transparent disambiguation
+                 if (rgb == "#000" && hexColor.length() == 5) {
+                     char alpha = hexColor[4];
+-                    if (alpha == '0') return "Transparent";
+-                    else return "Black";
++                    if (alpha == '0') return "투명";
++                    else return "검정색";
+                 }
+                 return it->second;
+             }
+@@ -1358,7 +1360,7 @@ public:
+         
+         if (!isFullMode) {
+             // Background Color (all modes)
+-            auto* bgColor = new tsl::elm::ListItem("Background Color");
++            auto* bgColor = new tsl::elm::ListItem("배경 색상");
+             std::string bgDefault = "#0009";
+             std::string bgCurrentColor = getCurrentColor("background_color", bgDefault);
+             // Display color name instead of hex
+@@ -1366,7 +1368,7 @@ public:
+             bgColor->setClickListener([this, bgColor, bgDefault](uint64_t keys) {
+                 if (keys & KEY_A) {
+                     tsl::shiftItemFocus(bgColor);
+-                    tsl::changeTo<ColorSelector>(modeName, "Background Color", "background_color", bgDefault);
++                    tsl::changeTo<ColorSelector>(modeName, "배경 색상", "background_color", bgDefault);
+                     return true;
+                 }
+                 return false;
+@@ -1374,12 +1376,12 @@ public:
+             list->addItem(bgColor);
+             
+             // Background Alpha (new)
+-            auto* bgAlpha = new tsl::elm::ListItem("Background Alpha");
++            auto* bgAlpha = new tsl::elm::ListItem("배경 투명도");
+             bgAlpha->setValue(getAlphaPercentage(bgCurrentColor));
+             bgAlpha->setClickListener([this, bgAlpha](uint64_t keys) {
+                 if (keys & KEY_A) {
+                     tsl::shiftItemFocus(bgAlpha);
+-                    tsl::changeTo<AlphaSelector>(modeName, "background_color", "Background Alpha");
++                    tsl::changeTo<AlphaSelector>(modeName, "background_color", "배경 투명도");
+                     return true;
+                 }
+                 return false;
+@@ -1388,13 +1390,13 @@ public:
+         
+             if (isMiniMode || isFPSCounterMode || isFPSGraphMode || isGameResolutionsMode) {
+                 // Mini mode: has focus background
+-                auto* focusBgColor = new tsl::elm::ListItem("Focus Color");
++                auto* focusBgColor = new tsl::elm::ListItem("포커싱 색상");
+                 std::string focusCurrentColor = getCurrentColor("focus_background_color", "#000F");
+                 focusBgColor->setValue(getColorName(focusCurrentColor));
+                 focusBgColor->setClickListener([this, focusBgColor](uint64_t keys) {
+                     if (keys & KEY_A) {
+                         tsl::shiftItemFocus(focusBgColor);
+-                        tsl::changeTo<ColorSelector>(modeName, "Focus Color", "focus_background_color", "#000F");
++                        tsl::changeTo<ColorSelector>(modeName, "포커싱 색상", "focus_background_color", "#000F");
+                         return true;
+                     }
+                     return false;
+@@ -1402,12 +1404,12 @@ public:
+                 list->addItem(focusBgColor);
+                 
+                 // Focus Alpha (new)
+-                auto* focusAlpha = new tsl::elm::ListItem("Focus Alpha");
++                auto* focusAlpha = new tsl::elm::ListItem("포커싱 투명도");
+                 focusAlpha->setValue(getAlphaPercentage(focusCurrentColor));
+                 focusAlpha->setClickListener([this, focusAlpha](uint64_t keys) {
+                     if (keys & KEY_A) {
+                         tsl::shiftItemFocus(focusAlpha);
+-                        tsl::changeTo<AlphaSelector>(modeName, "focus_background_color", "Focus Alpha");
++                        tsl::changeTo<AlphaSelector>(modeName, "focus_background_color", "포커싱 투명도");
+                         return true;
+                     }
+                     return false;
+@@ -1417,14 +1419,14 @@ public:
+         }
+ 
+         // Text Color (all modes)
+-        auto* textColor = new tsl::elm::ListItem("Text Color");
++        auto* textColor = new tsl::elm::ListItem("글자 색상");
+         std::string textCurrentColor = getCurrentColor("text_color", "#FFFF");
+         // Display color name for text colors
+         textColor->setValue(getColorName(textCurrentColor));
+         textColor->setClickListener([this, textColor](uint64_t keys) {
+             if (keys & KEY_A) {
+                 tsl::shiftItemFocus(textColor);
+-                tsl::changeTo<ColorSelector>(modeName, "Text Color", "text_color", "#FFFF");
++                tsl::changeTo<ColorSelector>(modeName, "글자 색상", "text_color", "#FFFF");
+                 return true;
+             }
+             return false;
+@@ -1441,12 +1443,12 @@ public:
+             };
+             
+             // Game Resolutions: only category color (no separator)
+-            auto* catColor = new tsl::elm::ListItem("Category Color");
+-            catColor->setValue(getColorName(getCurrentColor("cat_color", "#0F0F")));
++            auto* catColor = new tsl::elm::ListItem("카테고리 색상");
++            catColor->setValue(getColorName(getCurrentColor("cat_color", "#2DFF")));
+             catColor->setClickListener([this, catColor](uint64_t keys) {
+                 if (keys & KEY_A) {
+                     tsl::shiftItemFocus(catColor);
+-                    tsl::changeTo<ColorSelector>(modeName, "Category Color", "cat_color", "#0F0F");
++                    tsl::changeTo<ColorSelector>(modeName, "카테고리 색상", "cat_color", "#2DFF");
+                     return true;
+                 }
+                 return false;
+@@ -1454,18 +1456,18 @@ public:
+             list->addItem(catColor);
+ 
+             static const std::vector<ColorSetting> fpsGraphColors = {
+-                {"FPS Counter", "fps_counter_color", "#888C", true},      // background type
+-                {"Border", "border_color", "#2DFF", false},               // text type
+-                {"Dashed Line", "dashed_line_color", "#8888", true},      // background type
+-                {"Max FPS Text", "max_fps_text_color", "#FFFF", false},   // text type
+-                {"Min FPS Text", "min_fps_text_color", "#FFFF", false},   // text type
+-                {"Main Line", "main_line_color", "#FFFF", false},         // text type
+-                {"Rounded Line", "rounded_line_color", "#F0FF", false},   // text type
+-                {"Perfect Line", "perfect_line_color", "#0C0F", false}    // text type
++                {"FPS 카운터", "fps_counter_color", "#4444", true},      // background type
++                {"테두리", "border_color", "#2DFF", false},               // text type
++                {"점선", "dashed_line_color", "#8888", true},      // background type
++                {"최대 FPS", "max_fps_text_color", "#FFFF", false},   // text type
++                {"최소 FPS", "min_fps_text_color", "#FFFF", false},   // text type
++                {"실시간 FPS 선", "main_line_color", "#FFFF", false},         // text type
++                {"부드러운 선", "rounded_line_color", "#F0FF", false},   // text type
++                {"목표선", "perfect_line_color", "#0C0F", false}    // text type
+             };
+             
+             for (const auto& color : fpsGraphColors) {
+-                auto* colorItem = new tsl::elm::ListItem(color.name + " Color");
++                auto* colorItem = new tsl::elm::ListItem(color.name + " 색상");
+                 const std::string currentVal = getCurrentColor(color.key, color.defaultVal);
+                 
+                 if (color.isBackgroundType) {
+@@ -1488,12 +1490,12 @@ public:
+                 
+                 // Add alpha selector for background-type colors
+                 if (color.isBackgroundType) {
+-                    auto* alphaItem = new tsl::elm::ListItem(color.name + " Alpha");
++                    auto* alphaItem = new tsl::elm::ListItem(color.name + " 투명도");
+                     alphaItem->setValue(getAlphaPercentage(currentVal));
+                     alphaItem->setClickListener([this, alphaItem, color](uint64_t keys) {
+                         if (keys & KEY_A) {
+                             tsl::shiftItemFocus(alphaItem);
+-                            tsl::changeTo<AlphaSelector>(modeName, color.key, color.name + " Alpha");
++                            tsl::changeTo<AlphaSelector>(modeName, color.key, color.name + " 투명도");
+                             return true;
+                         }
+                         return false;
+@@ -1503,65 +1505,65 @@ public:
+             }
+ 
+         } else if (isFullMode) {
+-            auto* catColor1 = new tsl::elm::ListItem("Category Color 1");
++            auto* catColor1 = new tsl::elm::ListItem("카테고리 색상 1");
+             // Display color name for category colors
+-            catColor1->setValue(getColorName(getCurrentColor("cat_color_1", "#8FFF")));
++            catColor1->setValue(getColorName(getCurrentColor("cat_color_1", "#2DFF")));
+             catColor1->setClickListener([this, catColor1](uint64_t keys) {
+                 if (keys & KEY_A) {
+                     tsl::shiftItemFocus(catColor1);
+-                    tsl::changeTo<ColorSelector>(modeName, "Category Color 1", "cat_color_1", "#8FFF");
++                    tsl::changeTo<ColorSelector>(modeName, "카테고리 색상 1", "cat_color_1", "#2DFF");
+                     return true;
+                 }
+                 return false;
+             });
+             list->addItem(catColor1);
+ 
+-            auto* catColor2 = new tsl::elm::ListItem("Category Color 2");
++            auto* catColor2 = new tsl::elm::ListItem("카테고리 색상 2");
+             // Display color name for category colors
+-            catColor2->setValue(getColorName(getCurrentColor("cat_color_2", "#2DFF")));
++            catColor2->setValue(getColorName(getCurrentColor("cat_color_2", "#FFFF")));
+             catColor2->setClickListener([this, catColor2](uint64_t keys) {
+                 if (keys & KEY_A) {
+                     tsl::shiftItemFocus(catColor2);
+-                    tsl::changeTo<ColorSelector>(modeName, "Category Color 2", "cat_color_2", "#2DFF");
++                    tsl::changeTo<ColorSelector>(modeName, "카테고리 색상 2", "cat_color_2", "#FFFF");
+                     return true;
+                 }
+                 return false;
+             });
+             list->addItem(catColor2);
+     
+-            auto* sepColor = new tsl::elm::ListItem("Separator Color");
++            auto* sepColor = new tsl::elm::ListItem("구분선 색상");
+             // Display color name for separator colors
+             sepColor->setValue(getColorName(getCurrentColor("separator_color", "#888F")));
+             sepColor->setClickListener([this, sepColor](uint64_t keys) {
+                 if (keys & KEY_A) {
+                     tsl::shiftItemFocus(sepColor);
+-                    tsl::changeTo<ColorSelector>(modeName, "Separator Color", "separator_color", "#888F");
++                    tsl::changeTo<ColorSelector>(modeName, "구분선 색상", "separator_color", "#888F");
+                     return true;
+                 }
+                 return false;
+             });
+             list->addItem(sepColor);
+         } else if (isMiniMode) {
+-            auto* catColor = new tsl::elm::ListItem("Category Color");
++            auto* catColor = new tsl::elm::ListItem("카테고리 색상");
+             // Display color name for category colors
+             catColor->setValue(getColorName(getCurrentColor("cat_color", "#2DFF")));
+             catColor->setClickListener([this, catColor](uint64_t keys) {
+                 if (keys & KEY_A) {
+                     tsl::shiftItemFocus(catColor);
+-                    tsl::changeTo<ColorSelector>(modeName, "Category Color", "cat_color", "#2DFF");
++                    tsl::changeTo<ColorSelector>(modeName, "카테고리 색상", "cat_color", "#2DFF");
+                     return true;
+                 }
+                 return false;
+             });
+             list->addItem(catColor);
+     
+-            auto* sepColor = new tsl::elm::ListItem("Separator Color");
++            auto* sepColor = new tsl::elm::ListItem("구분선 색상");
+             // Display color name for separator colors
+             sepColor->setValue(getColorName(getCurrentColor("separator_color", "#888F")));
+             sepColor->setClickListener([this, sepColor](uint64_t keys) {
+                 if (keys & KEY_A) {
+                     tsl::shiftItemFocus(sepColor);
+-                    tsl::changeTo<ColorSelector>(modeName, "Separator Color", "separator_color", "#888F");
++                    tsl::changeTo<ColorSelector>(modeName, "구분선 색상", "separator_color", "#888F");
+                     return true;
+                 }
+                 return false;
+@@ -1569,12 +1571,12 @@ public:
+             list->addItem(sepColor);
+             
+         } else if (isMicroMode) {
+-            auto* catColor = new tsl::elm::ListItem("Category Color");
++            auto* catColor = new tsl::elm::ListItem("카테고리 색상");
+             catColor->setValue(getColorName(getCurrentColor("cat_color", "#2DFF")));
+             catColor->setClickListener([this, catColor](uint64_t keys) {
+                 if (keys & KEY_A) {
+                     tsl::shiftItemFocus(catColor);
+-                    tsl::changeTo<ColorSelector>(modeName, "Category Color", "cat_color", "#2DFF");
++                    tsl::changeTo<ColorSelector>(modeName, "카테고리 색상", "cat_color", "#2DFF");
+                     return true;
+                 }
+                 return false;
+@@ -1582,12 +1584,12 @@ public:
+             list->addItem(catColor);
+             
+             // Micro mode: separator and category colors (no focus background like Mini)
+-            auto* sepColor = new tsl::elm::ListItem("Separator Color");
++            auto* sepColor = new tsl::elm::ListItem("구분선 색상");
+             sepColor->setValue(getColorName(getCurrentColor("separator_color", "#888F")));
+             sepColor->setClickListener([this, sepColor](uint64_t keys) {
+                 if (keys & KEY_A) {
+                     tsl::shiftItemFocus(sepColor);
+-                    tsl::changeTo<ColorSelector>(modeName, "Separator Color", "separator_color", "#888F");
++                    tsl::changeTo<ColorSelector>(modeName, "구분선 색상", "separator_color", "#888F");
+                     return true;
+                 }
+                 return false;
+@@ -1597,12 +1599,12 @@ public:
+             
+         } else if (isGameResolutionsMode) {
+             // Game Resolutions: only category color (no separator)
+-            auto* catColor = new tsl::elm::ListItem("Category Color");
++            auto* catColor = new tsl::elm::ListItem("카테고리 색상");
+             catColor->setValue(getColorName(getCurrentColor("cat_color", "#2DFF")));
+             catColor->setClickListener([this, catColor](uint64_t keys) {
+                 if (keys & KEY_A) {
+                     tsl::shiftItemFocus(catColor);
+-                    tsl::changeTo<ColorSelector>(modeName, "Category Color", "cat_color", "#2DFF");
++                    tsl::changeTo<ColorSelector>(modeName, "카테고리 색상", "cat_color", "#2DFF");
+                     return true;
+                 }
+                 return false;
+@@ -1620,7 +1622,7 @@ public:
+         }
+         
+         //list->disableCaching();
+-        tsl::elm::OverlayFrame* rootFrame = new tsl::elm::OverlayFrame("Status Monitor", "Configuration");
++        tsl::elm::OverlayFrame* rootFrame = new tsl::elm::OverlayFrame("상태 모니터", "설정");
+         rootFrame->setContent(list);
+         return rootFrame;
+     }
+@@ -1647,20 +1649,20 @@ private:
+     
+ public:
+     ShowConfig(const std::string& mode) : modeName(mode) {
+-        isMiniMode = (mode == "Mini");
+-        isMicroMode = (mode == "Micro");
++        isMiniMode = (mode == "팝업창");
++        isMicroMode = (mode == "상태바");
+     }
+     
+     virtual tsl::elm::Element* createUI() override {
+         auto* list = new tsl::elm::List();
+-        list->addItem(new tsl::elm::CategoryHeader("Elements " + ult::DIVIDER_SYMBOL + " \uE0E3 Move Down " + ult::DIVIDER_SYMBOL + " \uE0E2 Move Up"));
++        list->addItem(new tsl::elm::CategoryHeader("구성 " + ult::DIVIDER_SYMBOL + " \uE0E3 아래로 " + ult::DIVIDER_SYMBOL + " \uE0E2 위로"));
+ 
+         const std::string section = isMiniMode ? "mini" : "micro";
+         std::string showValue = ult::parseValueFromIniSection(configIniPath, section, "show");
+         std::string orderValue = ult::parseValueFromIniSection(configIniPath, section, "element_order");
+         
+         if (showValue.empty()) {
+-            showValue = isMiniMode ? "DTC+BAT+CPU+GPU+RAM+TMP+FPS+RES" : "FPS+CPU+GPU+RAM+SOC+BAT+DTC";
++            showValue = isMiniMode ? "DTC+BAT+CPU+GPU+RAM+TMP+FPS+RES" : "FPS+CPU+GPU+RAM+TMP+DTC+BAT";
+         }
+         convertToUpper(showValue);
+         
+@@ -1815,7 +1817,7 @@ public:
+             jumpItemExactMatch = false;
+         }
+         
+-        tsl::elm::OverlayFrame* rootFrame = new tsl::elm::OverlayFrame("Status Monitor", "Configuration");
++        tsl::elm::OverlayFrame* rootFrame = new tsl::elm::OverlayFrame("상태 모니터", "설정");
+         rootFrame->setContent(list);
+         return rootFrame;
+     }
+@@ -1872,21 +1874,21 @@ private:
+     
+ public:
+     ConfiguratorOverlay(const std::string& mode) : modeName(mode) {
+-        isMiniMode = (mode == "Mini");
+-        isMicroMode = (mode == "Micro");
+-        isFullMode = (mode == "Full");
+-        isGameResolutionsMode = (mode == "Game Resolutions");
+-        isFPSCounterMode = (mode == "FPS Counter");
+-        isFPSGraphMode = (mode == "FPS Graph");
++        isMiniMode = (mode == "팝업창");
++        isMicroMode = (mode == "상태바");
++        isFullMode = (mode == "전체");
++        isGameResolutionsMode = (mode == "게임 해상도");
++        isFPSCounterMode = (mode == "FPS 카운터");
++        isFPSGraphMode = (mode == "FPS 그래프");
+     }
+     
+     virtual tsl::elm::Element* createUI() override {
+         auto* list = new tsl::elm::List();
+-        list->addItem(new tsl::elm::CategoryHeader("Configuration"));
++        list->addItem(new tsl::elm::CategoryHeader("설정"));
+         
+         // 5. Elements (Mini/Micro only)
+         if (isMiniMode || isMicroMode) {
+-            auto* showSettings = new tsl::elm::ListItem("Elements");
++            auto* showSettings = new tsl::elm::ListItem("구성");
+             showSettings->setValue(ult::DROPDOWN_SYMBOL);
+             showSettings->setClickListener([this, showSettings](uint64_t keys) {
+                 if (keys & KEY_A) {
+@@ -1901,7 +1903,7 @@ public:
+ 
+         // 3. Toggles (All modes)
+         //if (isMiniMode || isMicroMode || isFullMode || isFPSGraphMode) {
+-        auto* toggles = new tsl::elm::ListItem("Toggles");
++        auto* toggles = new tsl::elm::ListItem("토글");
+         toggles->setValue(ult::DROPDOWN_SYMBOL);
+         toggles->setClickListener([this, toggles](uint64_t keys) {
+             if (keys & KEY_A) {
+@@ -1916,7 +1918,7 @@ public:
+ 
+         // 2. Colors (not Full mode - it has no color settings)
+         //if (!isFullMode) {
+-        auto* colors = new tsl::elm::ListItem("Colors");
++        auto* colors = new tsl::elm::ListItem("색상");
+         colors->setValue(ult::DROPDOWN_SYMBOL);
+         colors->setClickListener([this, colors](uint64_t keys) {
+             if (keys & KEY_A) {
+@@ -1932,7 +1934,7 @@ public:
+         
+         // 4. Font Sizes (Mini/Micro/FPS Counter only)
+         if (isMiniMode || isMicroMode || isFPSCounterMode) {
+-            auto* fontSizes = new tsl::elm::ListItem("Font Sizes");
++            auto* fontSizes = new tsl::elm::ListItem("글자 크기");
+             fontSizes->setValue(ult::DROPDOWN_SYMBOL);
+             fontSizes->setClickListener([this, fontSizes](uint64_t keys) {
+                 if (keys & KEY_A) {
+@@ -1946,7 +1948,7 @@ public:
+         }
+         
+         // 1. Refresh Rate (all modes)
+-        auto* refreshRate = new tsl::elm::ListItem("Refresh Rate");
++        auto* refreshRate = new tsl::elm::ListItem("새로고침 빈도");
+         refreshRate->setValue(std::to_string(getCurrentRefreshRate()) + " Hz");
+         refreshRate->setClickListener([this, refreshRate](uint64_t keys) {
+             if (keys & KEY_A) {
+@@ -1960,7 +1962,7 @@ public:
+         
+         // 6. DTC Format (Mini/Micro only) - NEW ADDITION
+         if (isMiniMode || isMicroMode) {
+-            auto* dtcFormat = new tsl::elm::ListItem("DTC Format");
++            auto* dtcFormat = new tsl::elm::ListItem("시간");
+             dtcFormat->setValue(getCurrentDTCFormat());
+             dtcFormat->setClickListener([this, dtcFormat](uint64_t keys) {
+                 if (keys & KEY_A) {
+@@ -1975,7 +1977,7 @@ public:
+ 
+         // 7. Frame Padding (Mini only) - NEW ADDITION
+         if (isMiniMode || isGameResolutionsMode || isFPSCounterMode || isFPSGraphMode) {
+-            auto* framePadding = new tsl::elm::ListItem("Frame Padding");
++            auto* framePadding = new tsl::elm::ListItem("팝업 프레임 여백");
+             framePadding->setValue(std::to_string(getCurrentFramePadding()) + " px");
+             framePadding->setClickListener([this, framePadding](uint64_t keys) {
+                 if (keys & KEY_A) {
+@@ -1991,7 +1993,7 @@ public:
+         // 7. Mode-specific positioning settings
+         if (isMicroMode) {
+             // Text Alignment for Micro
+-            auto* textAlign = new tsl::elm::ListItem("Text Alignment");
++            auto* textAlign = new tsl::elm::ListItem("정렬");
+             textAlign->setValue(getCurrentTextAlign());
+             textAlign->setClickListener([this, textAlign](uint64_t keys) {
+                 if (keys & KEY_A) {
+@@ -2004,7 +2006,7 @@ public:
+             list->addItem(textAlign);
+ 
+             // Vertical Position for Micro (Top/Bottom only)
+-            auto* layerPos = new tsl::elm::ListItem("Vertical Position");
++            auto* layerPos = new tsl::elm::ListItem("세로 위치");
+             layerPos->setValue(getCurrentLayerPosBottom());
+             layerPos->setClickListener([this, layerPos](uint64_t keys) {
+                 if (keys & KEY_A) {
+@@ -2018,7 +2020,7 @@ public:
+             
+         } else if (isFullMode) {
+             // Horizontal Position for Full (Left/Right only)
+-            auto* layerPos = new tsl::elm::ListItem("Horizontal Position");
++            auto* layerPos = new tsl::elm::ListItem("가로 위치");
+             layerPos->setValue(getCurrentLayerPosRight());
+             layerPos->setClickListener([this, layerPos](uint64_t keys) {
+                 if (keys & KEY_A) {
+@@ -2032,7 +2034,7 @@ public:
+             
+         //} else if (isGameResolutionsMode || isFPSCounterMode || isFPSGraphMode) {
+         //    // Both horizontal and vertical positioning
+-        //    auto* layerPosH = new tsl::elm::ListItem("Horizontal Position");
++        //    auto* layerPosH = new tsl::elm::ListItem("가로 위치");
+         //    layerPosH->setValue(getCurrentLayerPosRight());
+         //    layerPosH->setClickListener([this, layerPosH](uint64_t keys) {
+         //        if (keys & KEY_A) {
+@@ -2044,7 +2046,7 @@ public:
+         //    });
+         //    list->addItem(layerPosH);
+         //    
+-        //    auto* layerPosV = new tsl::elm::ListItem("Vertical Position");
++        //    auto* layerPosV = new tsl::elm::ListItem("세로 위치");
+         //    layerPosV->setValue(getCurrentLayerPosBottom());
+         //    layerPosV->setClickListener([this, layerPosV](uint64_t keys) {
+         //        if (keys & KEY_A) {
+@@ -2064,7 +2066,7 @@ public:
+             jumpItemExactMatch = false;
+         }
+         
+-        tsl::elm::OverlayFrame* rootFrame = new tsl::elm::OverlayFrame("Status Monitor", modeName);
++        tsl::elm::OverlayFrame* rootFrame = new tsl::elm::OverlayFrame("상태 모니터", modeName);
+         rootFrame->setContent(list);
+         return rootFrame;
+     }
+@@ -2103,7 +2105,7 @@ private:
+             
+             // Handle defaults properly
+             if (value.empty()) {
+-                value = isMiniMode ? "%m-%d-%Y"+ult::DIVIDER_SYMBOL+"%H:%M:%S" : "%H:%M:%S";
++                value = isMiniMode ? "%Y년 %m월 %d일"+ult::DIVIDER_SYMBOL+"%p %I:%M:%S" : "%p %I:%M";
+             }
+             
+             // Convert format string to display name
+@@ -2137,9 +2139,9 @@ private:
+         if (isMicroMode) {
+             std::string value = ult::parseValueFromIniSection(configIniPath, "micro", "text_align");
+             convertToUpper(value);
+-            if (value == "LEFT") return "Left";
+-            if (value == "RIGHT") return "Right";
+-            return "Center";
++            if (value == "LEFT") return "왼쪽";
++            if (value == "RIGHT") return "오른쪽";
++            return "가운데";
+         }
+         return "";
+     }
+@@ -2156,13 +2158,13 @@ private:
+         
+         if (isFullMode) {
+             // Full mode: only Left and Right allowed
+-            if (value == "RIGHT") return "Right";
+-            return "Left";
++            if (value == "RIGHT") return "오른쪽";
++            return "왼쪽";
+         } else {
+             // Other modes: allow Center
+-            if (value == "RIGHT") return "Right";
+-            if (value == "CENTER") return "Center";
+-            return "Left";
++            if (value == "RIGHT") return "오른쪽";
++            if (value == "CENTER") return "가운데";
++            return "왼쪽";
+         }
+     }
+ 
+@@ -2178,13 +2180,13 @@ private:
+         
+         if (isMicroMode) {
+             // Micro mode: only Top and Bottom allowed
+-            if (value == "BOTTOM") return "Bottom";
+-            return "Top";
++            if (value == "BOTTOM") return "하단";
++            return "상단";
+         } else {
+             // Other modes: allow Center
+-            if (value == "BOTTOM") return "Bottom";
+-            if (value == "CENTER") return "Center";
+-            return "Top";
++            if (value == "BOTTOM") return "하단";
++            if (value == "CENTER") return "가운데";
++            return "상단";
+         }
+     }
+     
+@@ -2192,12 +2194,13 @@ private:
+         if (isMicroMode) {
+             const std::string current = getCurrentTextAlign();
+             std::string next;
+-            if (current == "Left") next = "Center";
+-            else if (current == "Center") next = "Right";
+-            else if (current == "Right") next = "Left";
+-            else next = "Center";
++            if (current == "왼쪽") next = "가운데";
++            else if (current == "가운데") next = "오른쪽";
++            else if (current == "오른쪽") next = "왼쪽";
++            else next = "가운데";
+             
+-            ult::setIniFileValue(configIniPath, "micro", "text_align", next);
++            const std::string value = (next == "오른쪽") ? "right" : (next == "가운데") ? "center" : "left";
++            ult::setIniFileValue(configIniPath, "micro", "text_align", value);
+             return next;
+         }
+         return "";
+@@ -2215,16 +2218,16 @@ private:
+         
+         if (isFullMode) {
+             // Full mode: only Left and Right
+-            if (current == "Left") next = "Right";
+-            else next = "Left";
++            if (current == "왼쪽") next = "오른쪽";
++            else next = "왼쪽";
+         } else {
+             // Other modes: Left -> Center -> Right -> Left
+-            if (current == "Left") next = "Center";
+-            else if (current == "Center") next = "Right";
+-            else next = "Left";
++            if (current == "왼쪽") next = "가운데";
++            else if (current == "가운데") next = "오른쪽";
++            else next = "왼쪽";
+         }
+         
+-        const std::string value = (next == "Right") ? "right" : (next == "Center" ? "center" : "left");
++        const std::string value = (next == "오른쪽") ? "right" : (next == "가운데" ? "center" : "left");
+         ult::setIniFileValue(configIniPath, section, "layer_width_align", value);
+         return next;
+     }
+@@ -2241,16 +2244,16 @@ private:
+         
+         if (isMicroMode) {
+             // Micro mode: only Top and Bottom
+-            if (current == "Top") next = "Bottom";
+-            else next = "Top";
++            if (current == "상단") next = "하단";
++            else next = "상단";
+         } else {
+             // Other modes: Top -> Center -> Bottom -> Top
+-            if (current == "Top") next = "Center";
+-            else if (current == "Center") next = "Bottom";
+-            else next = "Top";
++            if (current == "상단") next = "가운데";
++            else if (current == "가운데") next = "하단";
++            else next = "상단";
+         }
+         
+-        const std::string value = (next == "Bottom") ? "bottom" : (next == "Center" ? "center" : "top");
++        const std::string value = (next == "하단") ? "bottom" : (next == "가운데" ? "center" : "top");
+         ult::setIniFileValue(configIniPath, section, "layer_height_align", value);
+         return next;
+     }
+diff --git a/source/modes/FPS_Graph.hpp b/source/modes/FPS_Graph.hpp
+index 8b7c381..d548a16 100644
+--- a/source/modes/FPS_Graph.hpp
++++ b/source/modes/FPS_Graph.hpp
+@@ -445,7 +445,7 @@ public:
+                 renderer->drawString(RAM_Load_c, false, value_x, startY + lineHeight * 2+2*SPACING, fontSize, settings.textColor);
+                 
+                 // Line 3: SOC (with gradient color)
+-                renderer->drawString("SOC", false, info_x, startY + lineHeight * 3+3*SPACING, fontSize, settings.catColor);
++                renderer->drawString("SoC", false, info_x, startY + lineHeight * 3+3*SPACING, fontSize, settings.catColor);
+                 renderer->drawString(SOC_TEMP_c, false, value_x, startY + lineHeight * 3+3*SPACING, fontSize, socColor);
+                 
+                 // Line 4: PCB (with gradient color)
+@@ -453,7 +453,7 @@ public:
+                 renderer->drawString(PCB_TEMP_c, false, value_x, startY + lineHeight * 4+4*SPACING, fontSize, pcbColor);
+                 
+                 // Line 5: SKIN (with gradient color)
+-                renderer->drawString("Skin", false, info_x, startY + lineHeight * 5+5*SPACING, fontSize, settings.catColor);
++                renderer->drawString("SKIN", false, info_x, startY + lineHeight * 5+5*SPACING, fontSize, settings.catColor);
+                 renderer->drawString(SKIN_TEMP_c, false, value_x, startY + lineHeight * 5+5*SPACING, fontSize, skinColor);
+             }
+         });
+diff --git a/source/modes/Full.hpp b/source/modes/Full.hpp
+index 239d6f8..447b118 100644
+--- a/source/modes/Full.hpp
++++ b/source/modes/Full.hpp
+@@ -123,15 +123,15 @@ public:
+                 if (realCPU_Hz && settings.showRealFreqs) {
+                     height_offset = 162;
+                 }
+-                renderer->drawString("CPU Usage", false, COMMON_MARGIN, 120, 20, (settings.catColor1));
++                renderer->drawString("CPU", false, COMMON_MARGIN, 120, 20, renderer->a(tsl::stmSectionColor));
+                 if (settings.showTargetFreqs) {
+                     //static auto targetFreqWidth = renderer->getTextDimensions("Target Frequency: ", false, 15).first;
+-                    renderer->drawString("Target Frequency", false, COMMON_MARGIN, height_offset, 15, (settings.catColor2));
++                    renderer->drawString(" 목표 주파수 :", false, COMMON_MARGIN, height_offset, 15, (settings.catColor2));
+                     renderer->drawString(CPU_Hz_c, false, COMMON_MARGIN + valueOffset, height_offset, 15, (settings.textColor));
+                 }
+                 if (realCPU_Hz && settings.showRealFreqs) {
+                     //static auto realFreqWidth = renderer->getTextDimensions("Real Frequency: ", false, 15).first;
+-                    renderer->drawString("Real Frequency", false, COMMON_MARGIN, height_offset - 15, 15, (settings.catColor2));
++                    renderer->drawString(" 실제 주파수 :", false, COMMON_MARGIN, height_offset - 15, 15, (settings.catColor2));
+                     renderer->drawString(RealCPU_Hz_c, false, COMMON_MARGIN + valueOffset, height_offset - 15, 15, (settings.textColor));
+                     if (settings.showDeltas && settings.showTargetFreqs) {
+                         renderer->drawString(DeltaCPU_c, false, COMMON_MARGIN +  deltaOffset, height_offset - 7, 15, (settings.textColor));
+@@ -145,22 +145,22 @@ public:
+                 }
+                 
+                 // CPU Core labels and values
+-                static auto core0Width = renderer->getTextDimensions("Core 0  ", false, 15).first;
+-                static auto core1Width = renderer->getTextDimensions("Core 1  ", false, 15).first;
+-                static auto core2Width = renderer->getTextDimensions("Core 2  ", false, 15).first;
+-                static auto core3Width = renderer->getTextDimensions("Core 3  ", false, 15).first;
++                static auto core0Width = renderer->getTextDimensions(" 0 코어 :  ", false, 15).first;
++                static auto core1Width = renderer->getTextDimensions(" 1 코어 :  ", false, 15).first;
++                static auto core2Width = renderer->getTextDimensions(" 2 코어 :  ", false, 15).first;
++                static auto core3Width = renderer->getTextDimensions(" 3 코어 :  ", false, 15).first;
+                 
+                 const uint32_t core_height = height_offset + 30;
+-                renderer->drawString("Core 0  ", false, COMMON_MARGIN, core_height, 15, (settings.catColor2));
++                renderer->drawString(" 0 코어 :  ", false, COMMON_MARGIN, core_height, 15, (settings.catColor2));
+                 renderer->drawString(CPU_Core0_c, false, COMMON_MARGIN + core0Width, core_height, 15, (settings.textColor));
+                 
+-                renderer->drawString("Core 1  ", false, COMMON_MARGIN, core_height + 15, 15, (settings.catColor2));
++                renderer->drawString(" 1 코어 :  ", false, COMMON_MARGIN, core_height + 15, 15, (settings.catColor2));
+                 renderer->drawString(CPU_Core1_c, false, COMMON_MARGIN + core1Width, core_height + 15, 15, (settings.textColor));
+                 
+-                renderer->drawString("Core 2  ", false, COMMON_MARGIN, core_height + 30, 15, (settings.catColor2));
++                renderer->drawString(" 2 코어 :  ", false, COMMON_MARGIN, core_height + 30, 15, (settings.catColor2));
+                 renderer->drawString(CPU_Core2_c, false, COMMON_MARGIN + core2Width, core_height + 30, 15, (settings.textColor));
+                 
+-                renderer->drawString("Core 3  ", false, COMMON_MARGIN, core_height + 45, 15, (settings.catColor2));
++                renderer->drawString(" 3 코어 :  ", false, COMMON_MARGIN, core_height + 45, 15, (settings.catColor2));
+                 renderer->drawString(CPU_Core3_c, false, COMMON_MARGIN + core3Width, core_height + 45, 15, (settings.textColor));
+             }
+             
+@@ -172,16 +172,16 @@ public:
+                     height_offset = 327-8;
+                 }
+ 
+-                renderer->drawString("GPU Usage", false, COMMON_MARGIN, 285-8, 20, (settings.catColor1));
++                renderer->drawString("GPU", false, COMMON_MARGIN, 285-8, 20, renderer->a(tsl::stmSectionColor));
+                 if (R_SUCCEEDED(clkrstCheck) || R_SUCCEEDED(pcvCheck)) {
+                     if (settings.showTargetFreqs) { 
+                         //static auto targetFreqWidth = renderer->getTextDimensions("Target Frequency: ", false, 15).first;
+-                        renderer->drawString("Target Frequency", false, COMMON_MARGIN, height_offset, 15, (settings.catColor2));
++                        renderer->drawString(" 목표 주파수 :", false, COMMON_MARGIN, height_offset, 15, (settings.catColor2));
+                         renderer->drawString(GPU_Hz_c, false, COMMON_MARGIN + valueOffset, height_offset, 15, (settings.textColor));
+                     }
+                     if (realCPU_Hz && settings.showRealFreqs) {
+                         //static auto realFreqWidth = renderer->getTextDimensions("Real Frequency: ", false, 15).first;
+-                        renderer->drawString("Real Frequency", false, COMMON_MARGIN, height_offset - 15, 15, (settings.catColor2));
++                        renderer->drawString(" 실제 주파수 :", false, COMMON_MARGIN, height_offset - 15, 15, (settings.catColor2));
+                         renderer->drawString(RealGPU_Hz_c, false, COMMON_MARGIN + valueOffset, height_offset - 15, 15, (settings.textColor));
+                         if (settings.showDeltas && settings.showTargetFreqs) {
+                             renderer->drawString(DeltaGPU_c, false, COMMON_MARGIN +  deltaOffset, height_offset - 7, 15, (settings.textColor));
+@@ -196,7 +196,7 @@ public:
+                 }
+                 if (R_SUCCEEDED(nvCheck)) {
+                     //static auto loadWidth = renderer->getTextDimensions("Load: ", false, 15).first;
+-                    renderer->drawString("Load", false, COMMON_MARGIN, height_offset + 15, 15, (settings.catColor2));
++                    renderer->drawString(" 로드율 :", false, COMMON_MARGIN, height_offset + 15, 15, (settings.catColor2));
+                     renderer->drawString(GPU_Load_c, false, COMMON_MARGIN + valueOffset, height_offset + 15, 15, (settings.textColor));
+                 }
+                 
+@@ -212,16 +212,16 @@ public:
+                     height_offset += 7;
+                 }
+ 
+-                renderer->drawString("RAM Usage", false, COMMON_MARGIN, 375, 20, (settings.catColor1));
++                renderer->drawString("RAM", false, COMMON_MARGIN, 375, 20, renderer->a(tsl::stmSectionColor));
+                 if (R_SUCCEEDED(clkrstCheck) || R_SUCCEEDED(pcvCheck)) {
+                     if (settings.showTargetFreqs) {
+                         //static auto targetFreqWidth = renderer->getTextDimensions("Target Frequency: ", false, 15).first;
+-                        renderer->drawString("Target Frequency", false, COMMON_MARGIN, height_offset, 15, (settings.catColor2));
++                        renderer->drawString(" 목표 주파수 :", false, COMMON_MARGIN, height_offset, 15, (settings.catColor2));
+                         renderer->drawString(RAM_Hz_c, false, COMMON_MARGIN + valueOffset, height_offset, 15, (settings.textColor));
+                     }
+                     if (realRAM_Hz && settings.showRealFreqs) {
+                         //static auto realFreqWidth = renderer->getTextDimensions("Real Frequency: ", false, 15).first;
+-                        renderer->drawString("Real Frequency", false, COMMON_MARGIN, height_offset - 15, 15, (settings.catColor2));
++                        renderer->drawString(" 실제 주파수 :", false, COMMON_MARGIN, height_offset - 15, 15, (settings.catColor2));
+                         renderer->drawString(RealRAM_Hz_c, false, COMMON_MARGIN + valueOffset, height_offset - 15, 15, (settings.textColor));
+                         if (settings.showDeltas && settings.showTargetFreqs) {
+                             renderer->drawString(DeltaRAM_c, false, COMMON_MARGIN +  deltaOffset, height_offset - 7, 15, (settings.textColor));
+@@ -236,13 +236,13 @@ public:
+                     if (R_SUCCEEDED(sysclkCheck)) {
+                         static std::vector<std::string> ramLoadColoredChars = {"CPU", "GPU"};
+                         //static auto loadLabelWidth = renderer->getTextDimensions("Load: ", false, 15).first;
+-                        renderer->drawString("Load", false, COMMON_MARGIN, height_offset+15, 15, (settings.catColor2));
++                        renderer->drawString(" 로드율 :", false, COMMON_MARGIN, height_offset+15, 15, (settings.catColor2));
+                         renderer->drawStringWithColoredSections(RAM_load_c, false, ramLoadColoredChars, COMMON_MARGIN + valueOffset, height_offset+15, 15, (settings.textColor), settings.catColor2);
+                     }
+                 }
+                 if (R_SUCCEEDED(Hinted)) {
+                     //static auto textWidth = renderer->getTextDimensions("Total \nApplication \nApplet \nSystem \nSystem Unsafe ", false, 15).first;
+-                    renderer->drawString("Total\nApplication\nApplet\nSystem\nSystem Unsafe", false, COMMON_MARGIN, height_offset + 40, 15, (settings.catColor2));
++                    renderer->drawString(" 종합 : \n 타이틀 : \n 애플릿 : \n 시스템 : \n Unsafe : ", false, COMMON_MARGIN, height_offset + 40, 15, (settings.catColor2));
+                     renderer->drawString(RAM_var_compressed_c, false, COMMON_MARGIN + valueOffset, height_offset + 40, 15, (settings.textColor));
+                     renderer->drawString(RAM_percentage_var_compressed_c, false, ramPercentageOffset, height_offset + 40, 15, (settings.textColor));
+                 }
+@@ -250,17 +250,17 @@ public:
+             
+             ///Thermal
+             if (R_SUCCEEDED(i2cCheck) || R_SUCCEEDED(tcCheck) || R_SUCCEEDED(pwmCheck)) {
+-                renderer->drawString("Board", false, 20, 550+2, 20, (settings.catColor1));
++                renderer->drawString("메인 보드", false, 20, 550+2, 20, renderer->a(tsl::stmSectionColor));
+                 if (R_SUCCEEDED(i2cCheck)) {
+-                    renderer->drawString("Battery Power Flow", false, COMMON_MARGIN, 575+2, 15, (settings.catColor2));
++                    renderer->drawString(" 소비 전력 :", false, COMMON_MARGIN, 575+2, 15, (settings.catColor2));
+                     renderer->drawStringWithColoredSections(BatteryDraw_c, false, specialChars, COMMON_MARGIN + valueOffset, 575+2, 15, (settings.textColor), settings.separatorColor);
+                 }
+                 if (R_SUCCEEDED(pwmCheck)) {
+-                    renderer->drawString("Fan Rotation Level", false, COMMON_MARGIN, 590+2, 15, (settings.catColor2));
++                    renderer->drawString(" 팬 커브 :", false, COMMON_MARGIN, 590+2, 15, (settings.catColor2));
+                     renderer->drawString(Rotation_SpeedLevel_c, false, COMMON_MARGIN + valueOffset, 590+2, 15, (settings.textColor));
+                 }
+                 if (R_SUCCEEDED(i2cCheck) || R_SUCCEEDED(tcCheck)) {
+-                    static auto socLabelWidth = renderer->getTextDimensions("SOC  ", false, 15).first;
++                    static auto socLabelWidth = renderer->getTextDimensions("SoC  ", false, 15).first;
+                     static auto pcbLabelWidth = renderer->getTextDimensions("PCB  ", false, 15).first;
+                     static auto maxLabelWidth = std::max(socLabelWidth, pcbLabelWidth);
+                     static auto skinLabelWidth = renderer->getTextDimensions("Skin  ", false, 15).first;
+@@ -270,11 +270,11 @@ public:
+                     const tsl::Color pcbColor = settings.useDynamicColors ? tsl::GradientColor(PCB_temperatureF) : settings.textColor;
+                     const tsl::Color skinColor = settings.useDynamicColors ? tsl::GradientColor(static_cast<float>(skin_temperaturemiliC) / 1000.0f) : settings.textColor;
+                     
+-                    renderer->drawString("Temperatures", false, COMMON_MARGIN, 605+2, 15, (settings.catColor2));
++                    renderer->drawString(" 온도 :", false, COMMON_MARGIN, 605+2, 15, (settings.catColor2));
+                     
+                     // SOC - starts at valueOffset next to "Temperatures"
+                     uint32_t current_x = COMMON_MARGIN + valueOffset;
+-                    renderer->drawString("SOC  ", false, current_x, 605+2, 15, (settings.catColor2));
++                    renderer->drawString("SoC  ", false, current_x, 605+2, 15, (settings.catColor2));
+                     current_x += maxLabelWidth;
+                     renderer->drawString(SOC_temperature_c, false, current_x, 605+2, 15, socColor);
+                     
+@@ -296,33 +296,33 @@ public:
+             if (GameRunning) {
+                 const uint32_t width_offset = valueOffset;
+                 if (settings.showFPS || settings.showRES || settings.showRDSD) {
+-                    renderer->drawString("Game", false, COMMON_MARGIN + width_offset, 185+12, 20, (settings.catColor1));
++                    renderer->drawString("게임", false, COMMON_MARGIN + width_offset, 185+12, 20, renderer->a(tsl::stmSectionColor));
+                 }
+                 uint32_t height = 210+12;
+                 if (settings.showFPS == true) {
+-                    static auto pfpsWidth = renderer->getTextDimensions("PFPS  ", false, 15).first;
+-                    static auto fpsWidth = renderer->getTextDimensions("FPS  ", false, 15).first;
++                    static auto pfpsWidth = renderer->getTextDimensions(" PFPS :  ", false, 15).first;
++                    static auto fpsWidth = renderer->getTextDimensions(" FPS :  ", false, 15).first;
+                     
+-                    renderer->drawString("PFPS  ", false, COMMON_MARGIN + width_offset, height, 15, (settings.catColor2));
++                    renderer->drawString(" PFPS :  ", false, COMMON_MARGIN + width_offset, height, 15, (settings.catColor2));
+                     renderer->drawString(PFPS_value_c, false, COMMON_MARGIN + width_offset + pfpsWidth, height, 15, (settings.textColor));
+                     
+                     // Calculate position for "FPS " label - add some spacing
+                     const uint32_t fps_x_offset = COMMON_MARGIN + width_offset + pfpsWidth + renderer->getTextDimensions(PFPS_value_c, false, 15).first + 15;
+-                    renderer->drawString("FPS  ", false, fps_x_offset, height, 15, (settings.catColor2));
++                    renderer->drawString(" FPS :  ", false, fps_x_offset, height, 15, (settings.catColor2));
+                     renderer->drawString(FPS_value_c, false, fps_x_offset + fpsWidth, height, 15, (settings.textColor));
+                     
+                     height += 15;
+                 }
+                 if ((settings.showRES == true) && NxFps && SharedMemoryUsed && (NxFps -> API >= 1)) {
+-                    static auto resLabelWidth = renderer->getTextDimensions("Resolutions  ", false, 15).first;
+-                    renderer->drawString("Resolutions  ", false, COMMON_MARGIN + width_offset, height, 15, (settings.catColor2));
++                    static auto resLabelWidth = renderer->getTextDimensions(" 해상도 :  ", false, 15).first;
++                    renderer->drawString(" 해상도 :  ", false, COMMON_MARGIN + width_offset, height, 15, (settings.catColor2));
+                     
+                     renderer->drawStringWithColoredSections(Resolutions_c, false, specialChars, COMMON_MARGIN + width_offset + resLabelWidth, height, 15, (settings.textColor), settings.separatorColor);
+                     height += 15;
+                 }
+                 if (settings.showRDSD == true) {
+-                    static auto readLabelWidth = renderer->getTextDimensions("Read Speed  ", false, 15).first;
+-                    renderer->drawString("Read Speed  ", false, COMMON_MARGIN + width_offset, height, 15, (settings.catColor2));
++                    static auto readLabelWidth = renderer->getTextDimensions(" 읽기 속도 :  ", false, 15).first;
++                    renderer->drawString(" 읽기 속도 :  ", false, COMMON_MARGIN + width_offset, height, 15, (settings.catColor2));
+                     renderer->drawString(readSpeed_c, false, COMMON_MARGIN + width_offset + readLabelWidth, height, 15, (settings.textColor));
+                 }
+             }
+@@ -330,7 +330,7 @@ public:
+             //renderer->drawStringWithColoredSections(message, false, KEY_SYMBOLS, 30, 693, 23,  a(tsl::bottomTextColor), a(tsl::buttonColor));
+             
+ 
+-            static const auto pressWidth = renderer->getTextDimensions("Press ", false, 23).first;
++            static const auto pressWidth = renderer->getTextDimensions("메인 메뉴:  ", false, 23).first;
+             static const auto keyComboWidth = renderer->getTextDimensions(formattedKeyCombo.c_str(), false, 23).first;
+             
+             static constexpr u16 baseX = 30;
+@@ -338,16 +338,16 @@ public:
+             static constexpr u8 fontSize = 23;
+ 
+             // Draw "Press "
+-            renderer->drawString("Press ", false, baseX, baseY, fontSize, (tsl::bottomTextColor));
++            renderer->drawString("메인 메뉴:  ", false, baseX, baseY, fontSize, (tsl::bottomTextColor));
+             
+             // Draw formatted key combo with colored sections
+             renderer->drawStringWithColoredSections(formattedKeyCombo, false, KEY_SYMBOLS, baseX + pressWidth, baseY, fontSize, (tsl::bottomTextColor), (tsl::buttonColor));
+             
+             // Draw " to Exit"
+-            renderer->drawString(" to Exit", false, baseX + pressWidth + keyComboWidth, baseY, fontSize, (tsl::bottomTextColor));
++            renderer->drawString("", false, baseX + pressWidth + keyComboWidth, baseY, fontSize, (tsl::bottomTextColor));
+         });
+         
+-        auto rootFrame = new tsl::elm::HeaderOverlayFrame("Status Monitor", APP_VERSION);
++        auto rootFrame = new tsl::elm::HeaderOverlayFrame("상태 모니터", APP_VERSION);
+         rootFrame->setContent(Status);
+ 
+         return rootFrame;
+@@ -567,8 +567,8 @@ public:
+                 old_res[1] = std::make_pair(m_resolutionOutput[1].width, m_resolutionOutput[1].height);
+             }
+             if (settings.showRDSD == true && GameRunning && NxFps) {
+-                if ((NxFps -> readSpeedPerSecond) != 0.f) snprintf(readSpeed_c, sizeof(readSpeed_c), "%.2f MiB/s", (NxFps -> readSpeedPerSecond) / 1048576.f);
+-                else snprintf(readSpeed_c, sizeof(readSpeed_c), "n/d");
++                if ((NxFps -> readSpeedPerSecond) != 0.f) snprintf(readSpeed_c, sizeof(readSpeed_c), "%.2f MiB/초", (NxFps -> readSpeedPerSecond) / 1048576.f);
++                else snprintf(readSpeed_c, sizeof(readSpeed_c), "확인 불가");
+             }
+         }
+         else if (!GameRunning && resolutionLookup != 0) {
+diff --git a/source/modes/Mini.hpp b/source/modes/Mini.hpp
+index d1a10dc..14ab9b8 100644
+--- a/source/modes/Mini.hpp
++++ b/source/modes/Mini.hpp
+@@ -525,7 +525,7 @@ public:
+                         flags |= 4;
+                     } else if (key == "SOC" && !(flags & 8)) {
+                         shouldAdd = true;
+-                        labelText = "SOC";
++                        labelText = "SoC";
+                         flags |= 8;
+                     } else if (key == "TMP" && !(flags & 16)) {
+                         shouldAdd = true;
+@@ -720,7 +720,7 @@ public:
+                 const int baseY = currentY + frameOffsetY + clippingOffsetY;
+                 
+                 if (settings.useDynamicColors) {
+-                    if (labelIndex < labelLines.size() && labelLines[labelIndex] == "SOC") {
++                    if (labelIndex < labelLines.size() && labelLines[labelIndex] == "SoC") {
+                         // SOC temperature rendering with gradient
+                         const size_t degreesPos = currentLine.find("°");
+                         if (degreesPos != std::string::npos) {
+diff --git a/source/modes/Misc.hpp b/source/modes/Misc.hpp
+index 0bac6be..c472e3f 100644
+--- a/source/modes/Misc.hpp
++++ b/source/modes/Misc.hpp
+@@ -74,55 +74,55 @@ public:
+ 
+             ///DSP
+             if (R_SUCCEEDED(audsnoopCheck)) {
+-                renderer->drawString(DSP_Load_c, false, X_OFFSET, 120, 20, (settings.textColor));
++                renderer->drawString(DSP_Load_c, false, X_OFFSET, 120, 20, renderer->a(tsl::stmTextColor));
+             }
+ 
+             //Multimedia engines
+             if (R_SUCCEEDED(nvdecCheck | nvencCheck | nvjpgCheck)) {
+-                renderer->drawString("Multimedia Clock Rates", false, X_OFFSET, 165, 20, (settings.catColor1));
++                renderer->drawString("멀티미디어 클럭 속도", false, X_OFFSET, 165, 20, renderer->a(tsl::stmSectionColor));
+                 
+                 u16 currentY = 185;
+                 
+                 if (R_SUCCEEDED(nvdecCheck)) {
+-                    renderer->drawString("NVDEC", false, X_OFFSET+15, currentY, 15, (settings.catColor2));
+-                    renderer->drawString(NVDEC_value_c, false, NV_VALUE_X, currentY, 15, (settings.textColor));
++                    renderer->drawString("NVDEC :", false, X_OFFSET+15, currentY, 15, renderer->a(tsl::stmTextColor));
++                    renderer->drawString(NVDEC_value_c, false, NV_VALUE_X, currentY, 15, renderer->a(tsl::stmTextColor));
+                     currentY += 15;
+                 }
+                 if (R_SUCCEEDED(nvencCheck)) {
+-                    renderer->drawString("NVENC", false, X_OFFSET+15, currentY, 15, (settings.catColor2));
+-                    renderer->drawString(NVENC_value_c, false, NV_VALUE_X, currentY, 15, (settings.textColor));
++                    renderer->drawString("NVENC :", false, X_OFFSET+15, currentY, 15, renderer->a(tsl::stmTextColor));
++                    renderer->drawString(NVENC_value_c, false, NV_VALUE_X, currentY, 15, renderer->a(tsl::stmTextColor));
+                     currentY += 15;
+                 }
+                 if (R_SUCCEEDED(nvjpgCheck)) {
+-                    renderer->drawString("NVJPG", false, X_OFFSET+15, currentY, 15, (settings.catColor2));
+-                    renderer->drawString(NVJPG_value_c, false, NV_VALUE_X, currentY, 15, (settings.textColor));
++                    renderer->drawString("NVJPG  :", false, X_OFFSET+15, currentY, 15, renderer->a(tsl::stmTextColor));
++                    renderer->drawString(NVJPG_value_c, false, NV_VALUE_X, currentY, 15, renderer->a(tsl::stmTextColor));
+                 }
+             }
+ 
+             if (R_SUCCEEDED(nifmCheck)) {
+-                renderer->drawString("Network", false, X_OFFSET, 255, 20, (settings.catColor1));
++                renderer->drawString("네트워크", false, X_OFFSET, 255, 20, renderer->a(tsl::stmSectionColor));
+                 if (!Nifm_internet_rc) {
+                     if (NifmConnectionType == NifmInternetConnectionType_WiFi) {
+-                        renderer->drawString("Type: Wi-Fi", false, X_OFFSET, 280, 18, (settings.catColor2));
++                        renderer->drawString("타입 :  Wi-Fi", false, X_OFFSET+15, 280, 18, renderer->a(tsl::stmTextColor));
+                         if (!Nifm_profile_rc) {
+                             if (Nifm_showpass)
+-                                renderer->drawString(Nifm_pass, false, X_OFFSET, 305, 15, (settings.textColor));
++                                renderer->drawString(Nifm_pass, false, X_OFFSET+15, 305, 15, renderer->a(tsl::stmSectionColor));
+                             else
+-                                renderer->drawString("Press Y to show password", false, X_OFFSET, 305, 15, (settings.textColor));
++                                renderer->drawString(" 패스워드 확인", false, X_OFFSET+15, 305, 15, renderer->a(tsl::stmSectionColor));
+                         }
+                     }
+                     else if (NifmConnectionType == NifmInternetConnectionType_Ethernet)
+-                        renderer->drawString("Type: Ethernet", false, X_OFFSET, 280, 18, (settings.textColor));
++                        renderer->drawString("타입 :  이더넷", false, X_OFFSET+15, 280, 17, renderer->a(tsl::stmTextColor));
+                 }
+                 else
+-                    renderer->drawString("Type: Not connected", false, X_OFFSET, 280, 18, (settings.textColor));
++                    renderer->drawString("타입 :  연결 없음", false, X_OFFSET+15, 280, 17, renderer->a(tsl::stmTextColor));
+             }
+ 
+             
+         });
+         
+         //tsl::elm::g_disableMenuCacheOnReturn.store(true, std::memory_order_release);
+-        tsl::elm::HeaderOverlayFrame* rootFrame = new tsl::elm::HeaderOverlayFrame("Status Monitor", APP_VERSION, true);
++        tsl::elm::HeaderOverlayFrame* rootFrame = new tsl::elm::HeaderOverlayFrame("상태 모니터", APP_VERSION, true);
+         rootFrame->setContent(Status);
+         
+         return rootFrame;
+@@ -130,7 +130,7 @@ public:
+ 
+     virtual void update() override {
+ 
+-        snprintf(DSP_Load_c, sizeof DSP_Load_c, "DSP usage: %u%%", DSP_Load_u);
++        snprintf(DSP_Load_c, sizeof DSP_Load_c, "DSP   :  %u%%", DSP_Load_u);
+         
+         // Format just the values for NV clocks
+         snprintf(NVDEC_value_c, sizeof(NVDEC_value_c), "%.1f MHz", (float)NVDEC_Hz / 1000000);
+diff --git a/source/modes/Resolutions.hpp b/source/modes/Resolutions.hpp
+index 856e70e..e98ce0a 100644
+--- a/source/modes/Resolutions.hpp
++++ b/source/modes/Resolutions.hpp
+@@ -285,9 +285,9 @@ public:
+         
+                 int xOffset = 10;
+                 int yOffset = 10;
+-                renderer->drawString("Depth", false, xOffset + final_base_x + 20, yOffset + final_base_y + 20, 20, settings.catColor);
++                renderer->drawString("심도", false, xOffset + final_base_x + 20, yOffset + final_base_y + 20, 20, settings.catColor);
+                 renderer->drawString(Resolutions_c, false, xOffset + final_base_x + 20, yOffset + final_base_y + 55, 18, settings.textColor);
+-                renderer->drawString("Viewport", false, xOffset + final_base_x + 180, yOffset + final_base_y + 20, 20, settings.catColor);
++                renderer->drawString("노출", false, xOffset + final_base_x + 180, yOffset + final_base_y + 20, 20, settings.catColor);
+                 renderer->drawString(Resolutions2_c, false, xOffset + final_base_x + 180, yOffset + final_base_y + 55, 18, settings.textColor);
+             }
+             // Game not detected
+@@ -300,9 +300,9 @@ public:
+         
+                 std::string msg;
+                 if (under100ms && waitingForGame)
+-                    msg = "Checking for game...";
++                    msg = "게임 확인 중...";
+                 else {
+-                    msg = "Game is not running\nor is incompatible.";
++                    msg = "실행 중인 게임이 없거나\n호환되는 게임이 없습니다.";
+                     waitingForGame = false;
+                 }
+         

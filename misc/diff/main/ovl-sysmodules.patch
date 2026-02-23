@@ -1,0 +1,45 @@
+diff --git a/source/gui_main.cpp b/source/gui_main.cpp
+index 145a3fa..d0c7a65 100644
+--- a/source/gui_main.cpp
++++ b/source/gui_main.cpp
+@@ -291,14 +291,14 @@ inline void drawMemoryWidget(auto renderer) {
+ tsl::elm::Element* GuiMain::createUI() {
+     auto* rootFrame = new tsl::elm::HeaderOverlayFrame(97);
+     rootFrame->setHeader(new tsl::elm::CustomDrawer([this](tsl::gfx::Renderer* renderer, s32 x, s32 y, s32 w, s32 h) {
+-        renderer->drawString("Sysmodules", false, 20, 52, 32, tsl::defaultOverlayColor);
++        renderer->drawString("시스템 모듈", false, 20, 52, 32, tsl::defaultOverlayColor);
+         renderer->drawString(VERSION, false, 20, 75, 15, tsl::bannerVersionTextColor);
+ 
+         drawMemoryWidget(renderer);
+     }));
+ 
+     if (this->m_sysmoduleListItems.size() == 0) {
+-        const char* description = this->m_scanned ? "No sysmodules found!" : "Scan failed!";
++        const char* description = this->m_scanned ? "시스템 모듈 없음!" : "스캔 실패!";
+ 
+         auto* warning = new tsl::elm::CustomDrawer([description](tsl::gfx::Renderer* renderer, s32 x, s32 y, s32 w, s32 h) {
+             renderer->drawString("\uE150", false, 180, 250, 90, tsl::headerTextColor);
+@@ -309,9 +309,9 @@ tsl::elm::Element* GuiMain::createUI() {
+     } else {
+         tsl::elm::List* sysmoduleList = new tsl::elm::List();
+ 
+-        sysmoduleList->addItem(new tsl::elm::CategoryHeader("Dynamic   Auto Start   Toggle", true));
++        sysmoduleList->addItem(new tsl::elm::CategoryHeader("동적 모듈 자동 시작 전환", true));
+         sysmoduleList->addItem(new tsl::elm::CustomDrawer([](tsl::gfx::Renderer* renderer, s32 x, s32 y, s32 w, s32 h) {
+-            renderer->drawString(" These sysmodules can be toggled at any time.", false, x + 5, y + 13, 15, tsl::warningTextColor);
++            renderer->drawString("  재부팅 없이 상시 전환 가능합니다", false, x + 5, y + 13, 15, tsl::warningTextColor);
+         }), 30);
+         for (const auto& module : this->m_sysmoduleListItems) {
+             if (!module.needReboot) {
+@@ -320,9 +320,9 @@ tsl::elm::Element* GuiMain::createUI() {
+             }
+         }
+ 
+-        sysmoduleList->addItem(new tsl::elm::CategoryHeader("Static   Auto Start", true));
++        sysmoduleList->addItem(new tsl::elm::CategoryHeader("정적 모듈 자동 시작", true));
+         sysmoduleList->addItem(new tsl::elm::CustomDrawer([](tsl::gfx::Renderer* renderer, s32 x, s32 y, s32 w, s32 h) {
+-            renderer->drawString(" These sysmodules need a reboot to work.", false, x + 5, y + 13, 15, tsl::warningTextColor);
++            renderer->drawString("  변동 사항은 재부팅 후에 적용됩니다", false, x + 5, y + 13, 15, tsl::warningTextColor);
+         }), 30);
+         for (const auto& module : this->m_sysmoduleListItems) {
+             if (module.needReboot) {

@@ -1,0 +1,32 @@
+diff --git a/library/include/borealis/extern/nanovg/fontstash.h b/library/include/borealis/extern/nanovg/fontstash.h
+index 6e141a2..fa01895 100644
+--- a/library/include/borealis/extern/nanovg/fontstash.h
++++ b/library/include/borealis/extern/nanovg/fontstash.h
+@@ -1660,8 +1660,8 @@ void fonsDeleteInternal(FONScontext* stash)
+ 	if (stash->fonts) free(stash->fonts);
+ 	if (stash->texData) free(stash->texData);
+ 	if (stash->scratch) free(stash->scratch);
+-	free(stash);
+ 	fons__tt_done(stash);
++	free(stash);
+ }
+ 
+ void fonsSetErrorCallback(FONScontext* stash, void (*callback)(void* uptr, int error, int val), void* uptr)
+diff --git a/library/lib/image.cpp b/library/lib/image.cpp
+index 32eb4a8..132175c 100644
+--- a/library/lib/image.cpp
++++ b/library/lib/image.cpp
+@@ -77,7 +77,12 @@ unsigned char* Image::copyImgBuf() const
+ 
+ Image& Image::operator=(const Image& cp_assign)
+ {
+-    return *this = cp_assign;
++    if (this == &cp_assign)
++        return *this;
++
++    Image temp(cp_assign);
++    std::swap(*this, temp);
++    return *this;
+ }
+ 
+ Image& Image::operator=(Image&& mv_assign)

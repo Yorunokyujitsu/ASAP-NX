@@ -1,0 +1,321 @@
+diff --git a/Makefile b/Makefile
+index 567d756..5344754 100644
+--- a/Makefile
++++ b/Makefile
+@@ -15,19 +15,16 @@ export GIT_REVISION := $(GIT_BRANCH)-$(shell git rev-parse --short HEAD)
+ export VERSION_DIRTY := $(VERSION)
+ export VERSION_WITH_HASH := $(VERSION)-$(shell git rev-parse --short HEAD)
+ else
+-export GIT_REVISION := $(GIT_BRANCH)-$(shell git rev-parse --short HEAD)-dirty
+-export VERSION_DIRTY := $(VERSION)-dirty
+-export VERSION_WITH_HASH := $(VERSION)-$(shell git rev-parse --short HEAD)-dirty
++export GIT_REVISION := $(GIT_BRANCH)-$(shell git rev-parse --short HEAD)
++export VERSION_DIRTY := $(VERSION)
++export VERSION_WITH_HASH := $(VERSION)-$(shell git rev-parse --short HEAD)
+ endif
+ 
+ export BUILD_DATE := -DDATE_YEAR=\"$(shell date +%Y)\" \
+ 					-DDATE_MONTH=\"$(shell date +%m)\" \
+ 					-DDATE_DAY=\"$(shell date +%d)\" \
+-					-DDATE_HOUR=\"$(shell date +%H)\" \
+-					-DDATE_MIN=\"$(shell date +%M)\" \
+-					-DDATE_SEC=\"$(shell date +%S)\" \
+ 
+-export CUSTOM_DEFINES := -DVERSION=\"v$(VERSION)\" \
++export CUSTOM_DEFINES := -DVERSION=\"$(VERSION)\" \
+ 					-DGIT_BRANCH=\"$(GIT_BRANCH)\" \
+ 					-DGIT_REVISION=\"$(GIT_REVISION)\" \
+ 					-DVERSION_DIRTY=\"$(VERSION_DIRTY)\" \
+@@ -46,8 +43,10 @@ $(TARGETS):
+ 
+ clean:
+ 	@rm -rf out
+-	@rm -f sys-patch.zip
+ 	@for i in $(TARGETS); do $(MAKE) -C $$i clean || exit 1; done;
++	@rm -rf overlay/{build,out} sysmod/{build,out}
++	@find sysmod/ -type f \( -name '*.elf' -o -name '*.nacp' -o -name '*.ovl' \) -delete
++	@find overlay/ -type f \( -name '*.elf' -o -name '*.npdm' -o -name '*.nso' -o -name '*.nsp' \) -delete
+ 
+ dist: all
+ 	@for i in $(TARGETS); do $(MAKE) -C $$i dist || exit 1; done;
+diff --git a/overlay/Makefile b/overlay/Makefile
+index 382a67d..cdf3ef6 100644
+--- a/overlay/Makefile
++++ b/overlay/Makefile
+@@ -37,7 +37,7 @@ include $(DEVKITPRO)/libnx/switch_rules
+ #   of a homebrew executable (.nro). This is intended to be used for sysmodules.
+ #   NACP building is skipped as well.
+ #---------------------------------------------------------------------------------
+-APP_TITLE	:=	sys-patch
++APP_TITLE	:=	Sys-Patch
+ APP_AUTHOR	:=	TotalJustice
+ APP_VERSION :=	$(VERSION_DIRTY)
+ 
+@@ -45,10 +45,11 @@ TARGET		:=	sys-patch-overlay
+ BUILD		:=	build
+ SOURCES		:=	src ../common/minIni
+ DATA		:=	data
+-INCLUDES	:=	include ../common libtesla/include
++INCLUDES	:=	include ../common
+ 
+ NO_ICON		:=  1
+ 
++include ${TOPDIR}/libultrahand/ultrahand.mk
+ #---------------------------------------------------------------------------------
+ # options for code generation
+ #---------------------------------------------------------------------------------
+@@ -59,7 +60,7 @@ CFLAGS	:=	-g -Wall -O2 -ffunction-sections \
+ 
+ CFLAGS	+=	$(INCLUDE) -D__SWITCH__
+ 
+-CXXFLAGS	:= $(CFLAGS) -std=c++23 -fno-exceptions
++CXXFLAGS	:= $(CFLAGS) -std=c++23 -fno-exceptions -Wno-invalid-memory-model
+ 
+ ASFLAGS	:=	-g $(ARCH)
+ LDFLAGS	=	-specs=$(DEVKITPRO)/libnx/switch.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
+diff --git a/overlay/src/main.cpp b/overlay/src/main.cpp
+index 66cb0f3..849c467 100644
+--- a/overlay/src/main.cpp
++++ b/overlay/src/main.cpp
+@@ -6,13 +6,8 @@
+ 
+ namespace {
+ 
+-constexpr auto CONFIG_PATH = "/config/sys-patch/config.ini";
+-constexpr auto LOG_PATH = "/config/sys-patch/log.ini";
+-
+-// Color constants for logging
+-constexpr tsl::Color COLOR_SYSPATCH{0, 255, 200, 255};
+-constexpr tsl::Color COLOR_FILE{255, 177, 66, 255};
+-constexpr tsl::Color COLOR_UNPATCHED{250, 90, 58, 255};
++constexpr auto CONFIG_PATH = "/atmosphere/config/sys-patch_cfg.ini";
++constexpr auto LOG_PATH = "/atmosphere/logs/sys-patch.log";
+ 
+ // Patch configuration metadata
+ struct PatchConfig {
+@@ -131,10 +126,10 @@ public:
+     GuiOptions() { }
+ 
+     tsl::elm::Element* createUI() override {
+-        auto frame = new tsl::elm::OverlayFrame("sys-patch", VERSION_WITH_HASH);
++        auto frame = new tsl::elm::OverlayFrame("시스템 패치", VERSION_DIRTY);
+         auto list = new tsl::elm::List();
+ 
+-        list->addItem(new tsl::elm::CategoryHeader("Options"));
++        list->addItem(new tsl::elm::CategoryHeader("설정"));
+         
+         auto add_option = [list](const char* section, const char* key, bool default_value, const char* label) {
+             const auto value = ini_getbool(section, key, default_value, CONFIG_PATH);
+@@ -145,23 +140,10 @@ public:
+             list->addItem(item);
+         };
+ 
+-        add_option("options", "patch_sysmmc", true, "Patch sysMMC");
+-        add_option("options", "patch_emummc", true, "Patch emuMMC");
+-        add_option("options", "enable_logging", true, "Logging");
+-        add_option("options", "version_skip", true, "Version skip");
+-
+-        frame->setContent(list);
+-        return frame;
+-    }
+-};
+-
+-class GuiToggle final : public tsl::Gui {
+-public:
+-    GuiToggle() { }
+-
+-    tsl::elm::Element* createUI() override {
+-        auto frame = new tsl::elm::OverlayFrame("sys-patch", VERSION_WITH_HASH);
+-        auto list = new tsl::elm::List();
++        add_option("options", "patch_sysmmc", true, "시스낸드 패치");
++        add_option("options", "patch_emummc", true, "에뮤낸드 패치");
++        add_option("options", "enable_logging", true, "로깅");
++        add_option("options", "version_skip", true, "버전 스킵");
+ 
+         for (const auto& config : PATCH_CONFIGS) {
+             list->addItem(new tsl::elm::CategoryHeader(
+@@ -191,7 +173,7 @@ public:
+     GuiLog() { }
+ 
+     tsl::elm::Element* createUI() override {
+-        auto frame = new tsl::elm::OverlayFrame("sys-patch", VERSION_WITH_HASH);
++        auto frame = new tsl::elm::OverlayFrame("시스템 패치", VERSION_DIRTY);
+         auto list = new tsl::elm::List();
+ 
+         if (does_file_exist(LOG_PATH)) {
+@@ -210,24 +192,43 @@ public:
+ 
+                 if (data->last_section != Section) {
+                     data->last_section = Section;
+-                    data->list->addItem(new tsl::elm::CategoryHeader("Log: " + data->last_section));
++                    data->list->addItem(new tsl::elm::CategoryHeader("로그: " + data->last_section));
+                 }
+ 
+                 if (value.starts_with("Patched")) {
+-                    const auto color = value.ends_with("(sys-patch)") ? COLOR_SYSPATCH : COLOR_FILE;
+-                    data->list->addItem(new tsl::elm::ListItem(Key, "Patched", color));
+-                } else if (value.starts_with("Unpatched") || value.starts_with("Disabled")) {
+-                    data->list->addItem(new tsl::elm::ListItem(Key, Value, COLOR_UNPATCHED));
++                    if (value.ends_with("(sys-patch)")) {
++                        auto li = new tsl::elm::ListItem(Key, "\uE14B");
++                        li->setValueColor(tsl::onTextColor);
++                        data->list->addItem(li);
++                    } else {
++                        auto li = new tsl::elm::ListItem(Key, "\uE14B");
++                        li->setValueColor(tsl::starColor);
++                        data->list->addItem(li);
++                    }
++                } else if (value.starts_with("Unpatched")) {
++                    auto li = new tsl::elm::ListItem(Key, "\uE14E");
++                    li->setValueColor(tsl::warningTextColor);
++                    data->list->addItem(li);
++                } else if (value.starts_with("Disabled")) {
++                    auto li = new tsl::elm::ListItem(Key, "\uE14C");
++                    li->setValueColor(tsl::warningTextColor);
++                    data->list->addItem(li);
+                 } else if (data->last_section == "stats") {
+-                    data->list->addItem(new tsl::elm::ListItem(Key, Value, tsl::style::color::ColorDescription));
++                    auto li = new tsl::elm::ListItem(Key, Value);
++                    li->setValueColor(tsl::bannerVersionTextColor);
++                    data->list->addItem(li);
+                 } else {
+-                    data->list->addItem(new tsl::elm::ListItem(Key, Value, tsl::style::color::ColorText));
++                    auto li = new tsl::elm::ListItem(Key, Value);
++                    li->setValueColor(tsl::bannerVersionTextColor);
++                    data->list->addItem(li);
+                 }
+ 
+                 return 1;
+             }, &callback_data, LOG_PATH);
+         } else {
+-            list->addItem(new tsl::elm::ListItem("No log found!"));
++            auto li = new tsl::elm::ListItem("Atmosphère 패치", "\uE12C");
++            li->setValueColor(tsl::onTextColor);
++            list->addItem(li);
+         }
+ 
+         frame->setContent(list);
+@@ -240,12 +241,11 @@ public:
+     GuiMain() { }
+ 
+     tsl::elm::Element* createUI() override {
+-        auto frame = new tsl::elm::OverlayFrame("sys-patch", VERSION_WITH_HASH);
++        auto frame = new tsl::elm::OverlayFrame("시스템 패치", VERSION_DIRTY);
+         auto list = new tsl::elm::List();
+ 
+-        auto options = new tsl::elm::ListItem("Options");
+-        auto toggle = new tsl::elm::ListItem("Toggle patches");
+-        auto log = new tsl::elm::ListItem("Log");
++        auto options = new tsl::elm::ListItem("설정");
++        auto log = new tsl::elm::ListItem("상태");
+ 
+         options->setClickListener([](u64 keys) -> bool {
+             if (keys & HidNpadButton_A) {
+@@ -255,14 +255,6 @@ public:
+             return false;
+         });
+ 
+-        toggle->setClickListener([](u64 keys) -> bool {
+-            if (keys & HidNpadButton_A) {
+-                tsl::changeTo<GuiToggle>();
+-                return true;
+-            }
+-            return false;
+-        });
+-
+         log->setClickListener([](u64 keys) -> bool {
+             if (keys & HidNpadButton_A) {
+                 tsl::changeTo<GuiLog>();
+@@ -271,11 +263,36 @@ public:
+             return false;
+         });
+ 
+-        list->addItem(new tsl::elm::CategoryHeader("Menu"));
++        list->addItem(new tsl::elm::CategoryHeader("메뉴"));
+         list->addItem(options);
+-        list->addItem(toggle);
+         list->addItem(log);
+ 
++        list->addItem(new tsl::elm::CategoryHeader("상태: sys-patch 비활성화 시"));
++        
++        list->addItem(new tsl::elm::CustomDrawer([&](tsl::gfx::Renderer *renderer, s32 x, s32 y, s32 w, s32 h) {
++            renderer->drawString("\uE12C", false, x + 15, y + 25, 16, tsl::onTextColor);
++            renderer->drawString("Atmosphère에서 패턴이 패치되었습니다.", false, x + 43, y + 25, 16, renderer->a(tsl::defaultTextColor));
++            renderer->drawString("별도의 패치 파일 없이 플레이 가능합니다.", false, x + 43, y + 45, 16, renderer->a(tsl::defaultTextColor));
++        }), 50);
++
++        list->addItem(new tsl::elm::CategoryHeader("상태: OC Toolkit, loader.kip 활성화 시"));
++        
++        list->addItem(new tsl::elm::CustomDrawer([&](tsl::gfx::Renderer *renderer, s32 x, s32 y, s32 w, s32 h) {
++            renderer->drawString("\uE14B", false, x + 15, y + 25, 16, tsl::onTextColor);
++            renderer->drawString("sys-patch로 패턴이 패치되었습니다.", false, x + 43, y + 25, 16, renderer->a(tsl::defaultTextColor));
++
++            renderer->drawString("\uE14B", false, x + 15, y + 60, 16, tsl::starColor);
++            renderer->drawString("빌트인 패치로 패턴이 패치되었습니다.", false, x + 43, y + 60, 16, renderer->a(tsl::defaultTextColor));
++            
++            renderer->drawString("\uE14E", false, x + 15, y + 95, 16, tsl::warningTextColor);
++            renderer->drawString("대응 패턴이 없거나, 패치할 필요가 없습니다.", false, x + 43, y + 95, 16, renderer->a(tsl::defaultTextColor));
++
++            renderer->drawString("\uE14C", false, x + 15, y + 130, 16, tsl::warningTextColor);
++            renderer->drawString("설정의 활성 상태를 확인하세요.", false, x + 43, y + 130, 16, renderer->a(tsl::defaultTextColor));
++            renderer->drawString("현재 펌웨어 코드의 패턴을 찾을 수 없거나,", false, x + 43, y + 150, 16, renderer->a(tsl::defaultTextColor));
++            renderer->drawString("패치에 실패하였습니다.", false, x + 43, y + 170, 16, renderer->a(tsl::defaultTextColor));
++        }), 175);
++
+         frame->setContent(list);
+         return frame;
+     }
+@@ -292,7 +309,7 @@ public:
+ } // namespace
+ 
+ int main(int argc, char **argv) {
+-    create_dir("/config/");
+-    create_dir("/config/sys-patch/");
++    create_dir("/atmosphere/config/");
++    create_dir("/atmosphere/logs/");
+     return tsl::loop<SysPatchOverlay>(argc, argv);
+ }
+diff --git a/sysmod/Makefile b/sysmod/Makefile
+index 536873f..e66d977 100644
+--- a/sysmod/Makefile
++++ b/sysmod/Makefile
+@@ -169,7 +169,6 @@ $(BUILD):
+ 	@rm -rf out/
+ 	@mkdir -p out/atmosphere/contents/420000000000000B/flags
+ 	@touch out/atmosphere/contents/420000000000000B/flags/boot2.flag
+-	@cp $(CURDIR)/toolbox.json out/atmosphere/contents/420000000000000B/toolbox.json
+ 	@cp $(CURDIR)/$(TARGET).nsp out/atmosphere/contents/420000000000000B/exefs.nsp
+ 
+ #---------------------------------------------------------------------------------
+diff --git a/sysmod/src/main.cpp b/sysmod/src/main.cpp
+index ba38a76..1ff2109 100644
+--- a/sysmod/src/main.cpp
++++ b/sysmod/src/main.cpp
+@@ -698,11 +698,11 @@ void keygen_to_str(char* s, u8 keygen) {
+ } // namespace
+ 
+ int main(int argc, char* argv[]) {
+-    constexpr auto ini_path = "/config/sys-patch/config.ini";
+-    constexpr auto log_path = "/config/sys-patch/log.ini";
++    constexpr auto ini_path = "/atmosphere/config/sys-patch_config.ini";
++    constexpr auto log_path = "/atmosphere/logs/sys-patch.log";
+ 
+-    create_dir("/config/");
+-    create_dir("/config/sys-patch/");
++    create_dir("/atmosphere/config/");
++    create_dir("/atmosphere/logs/");
+     ini_remove(log_path);
+ 
+     // load options
+@@ -777,9 +777,9 @@ int main(int argc, char* argv[]) {
+         ms_2_str(patch_time, diff_ns/1000ULL/1000ULL);
+ 
+         // defined in the Makefile
+-        #define DATE (DATE_DAY "." DATE_MONTH "." DATE_YEAR " " DATE_HOUR ":" DATE_MIN ":" DATE_SEC)
++        #define DATE (DATE_YEAR "." DATE_MONTH "." DATE_DAY)
+ 
+-        ini_puts("stats", "version", VERSION_WITH_HASH, log_path);
++        ini_puts("stats", "version", VERSION, log_path);
+         ini_puts("stats", "build_date", DATE, log_path);
+         ini_puts("stats", "fw_version", fw_version, log_path);
+         ini_puts("stats", "ams_version", ams_version, log_path);

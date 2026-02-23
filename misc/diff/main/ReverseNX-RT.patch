@@ -1,0 +1,223 @@
+diff --git a/Overlay/Makefile b/Overlay/Makefile
+index 5989ca5..20b201f 100644
+--- a/Overlay/Makefile
++++ b/Overlay/Makefile
+@@ -44,10 +44,11 @@ TARGET		:=	ReverseNX-RT-ovl
+ BUILD		:=	build
+ SOURCES		:=	source libs/Atmosphere-libs/libstratosphere/source/dmnt
+ DATA		:=	data
+-INCLUDES	:=	include libs/libtesla/include libs/Atmosphere-libs/libstratosphere/source/dmnt libs/Atmosphere-libs/libstratosphere/source
++INCLUDES	:=	include libs/Atmosphere-libs/libstratosphere/source/dmnt libs/Atmosphere-libs/libstratosphere/source
+ 
+ NO_ICON		:=  1
+ 
++include ${TOPDIR}/libs/libultrahand/ultrahand.mk
+ #---------------------------------------------------------------------------------
+ # options for code generation
+ #---------------------------------------------------------------------------------
+@@ -58,6 +59,17 @@ CFLAGS		:= -g -Wall -Os -ffunction-sections \
+ 
+ CFLAGS		+= $(INCLUDE) -D__SWITCH__ -DAPP_VERSION="\"$(APP_VERSION)\""
+ 
++# Enable appearance overriding
++#UI_OVERRIDE_PATH := /config/ReverseNX-RT/
++#CFLAGS += -DUI_OVERRIDE_PATH="\"$(UI_OVERRIDE_PATH)\""
++
++# Disable fstream
++NO_FSTREAM_DIRECTIVE := 1
++CFLAGS += -DNO_FSTREAM_DIRECTIVE=$(NO_FSTREAM_DIRECTIVE)
++
++CFLAGS   += -Wno-invalid-memory-model
++CXXFLAGS += -Wno-invalid-memory-model
++
+ CXXFLAGS	:= $(CFLAGS) -fno-exceptions -std=c++20
+ 
+ ASFLAGS		:= -g $(ARCH)
+@@ -65,6 +77,7 @@ LDFLAGS		= -specs=$(DEVKITPRO)/libnx/switch.specs -g $(ARCH) -Wl,-Map,$(notdir $
+ 
+ LIBS		:= -lnx
+ 
++
+ #---------------------------------------------------------------------------------
+ # list of directories containing libraries, this must be the top level containing
+ # include and lib
+@@ -205,4 +218,4 @@ $(OFILES_SRC)	: $(HFILES_BIN)
+ 
+ #---------------------------------------------------------------------------------------
+ endif
+-#---------------------------------------------------------------------------------------
++#---------------------------------------------------------------------------------------
+\ No newline at end of file
+diff --git a/Overlay/source/main.cpp b/Overlay/source/main.cpp
+index dca89be..2f0ee40 100644
+--- a/Overlay/source/main.cpp
++++ b/Overlay/source/main.cpp
+@@ -36,9 +36,15 @@ enum res_mode {
+ 
+ std::pair<int, int> resolutions[] = {{0 ,0}, {854, 480}, {960, 540}, {1120, 630}, {1280, 720}, {1440, 810}, {1600, 900}, {1920, 1080}};
+ 
++enum ReverseNX_state {
++	ReverseNX_Switch_Invalid = -1,
++	ReverseNX_Switch_Handheld = 0,
++	ReverseNX_Switch_Docked = 1
++};
++
+ struct Shared {
+ 	uint32_t MAGIC;
+-	bool isDocked;
++	int8_t isDocked;
+ 	bool def;
+ 	bool pluginActive;
+ 	struct {
+@@ -145,12 +151,12 @@ public:
+ 	virtual tsl::elm::Element* createUI() override {
+ 		// A OverlayFrame is the base element every overlay consists of. This will draw the default Title and Subtitle.
+ 		// If you need more information in the header or want to change it's look, use a HeaderOverlayFrame.
+-		auto frame = new tsl::elm::OverlayFrame("ReverseNX-RT", _isDocked ? "Change Docked Default Display Resolution" : "Change Handheld Default Display Resolution");
++		auto frame = new tsl::elm::OverlayFrame("ReverseNX-RT", _isDocked ? "독 모드 기본 해상도로 변경" : "휴대 모드 기본 해상도로 변경");
+ 
+ 		// A list that can contain sub elements and handles scrolling
+ 		auto list = new tsl::elm::List();
+ 
+-		auto *clickableListItem2 = new tsl::elm::ListItem("Default");
++		auto *clickableListItem2 = new tsl::elm::ListItem("기본");
+ 		clickableListItem2->setClickListener([this](u64 keys) { 
+ 			if ((keys & HidNpadButton_A) && PluginRunning) {
+ 				if (_isDocked) ReverseNX_RT->res.docked_res = res_mode_default;
+@@ -211,44 +217,44 @@ public:
+ 		
+ 		list->addItem(new tsl::elm::CustomDrawer([](tsl::gfx::Renderer *renderer, s32 x, s32 y, s32 w, s32 h) {
+ 			if (!SaltySD) {
+-				renderer->drawString("SaltyNX is not working!", false, x, y+50, 20, renderer->a(0xF33F));
++				renderer->drawString("SaltyNX가 작동하지 않습니다!", false, x, y+50, 20, renderer->a(tsl::warningTextColor));
+ 			}
+ 			else if (!check) {
+ 				if (closed) {
+-					renderer->drawString("Game was closed! Overlay disabled!", false, x, y+20, 19, renderer->a(0xF33F));
++					renderer->drawString("타이틀 종료 됨, 오버레이 비활성화!", false, x, y+20, 19, renderer->a(tsl::warningTextColor));
+ 				}
+ 				else {
+-					renderer->drawString("Game is not running! Overlay disabled!", false, x, y+20, 19, renderer->a(0xF33F));
++					renderer->drawString("실행 타이틀 없음, 오버레이 비활성화!", false, x, y+20, 19, renderer->a(tsl::warningTextColor));
+ 				}
+ 			}
+ 			else if (!PluginRunning) {
+-				renderer->drawString("Game is running.", false, x, y+20, 20, renderer->a(0xFFFF));
+-				renderer->drawString("ReverseNX-RT is not running!", false, x, y+40, 20, renderer->a(0xF33F));
++				renderer->drawString("타이틀 실행중", false, x, y+20, 20, renderer->a(tsl::sectionTextColor));
++				renderer->drawString("ReverseNX-RT가 작동하지 않습니다!", false, x, y+40, 20, renderer->a(tsl::warningTextColor));
+ 			}
+ 			else {
+-				renderer->drawString("ReverseNX-RT is running.", false, x, y+20, 20, renderer->a(0xFFFF));
+-				if (!(ReverseNX_RT->pluginActive)) renderer->drawString("Game didn't check any mode!", false, x, y+40, 18, renderer->a(0xF33F));
++				renderer->drawString("ReverseNX-RT 실행중", false, x, y+20, 20, renderer->a(tsl::sectionTextColor));
++				if (!(ReverseNX_RT->pluginActive) && ReverseNX_RT->isDocked > ReverseNX_Switch_Invalid) renderer->drawString("모드를 확인할 수 없습니다!", false, x, y+40, 18, renderer->a(tsl::warningTextColor));
+ 				else {
+-					renderer->drawString(SystemChar, false, x, y+42, 20, renderer->a(0xFFFF));
+-					renderer->drawString(DockedChar, false, x, y+64, 20, renderer->a(0xFFFF));
++					renderer->drawString(SystemChar, false, x, y+42, 20, renderer->a(tsl::sectionTextColor));
++					renderer->drawString(DockedChar, false, x, y+64, 20, renderer->a(tsl::sectionTextColor));
+ 					if (!(ReverseNX_RT->def)) {
+ 						if (ReverseNX_RT->wasDDRused) {
+-							renderer->drawString(HandheldDDR, false, x, y+86, 20, renderer->a(0xFFFF));
+-							renderer->drawString(DockedDDR, false, x, y+108, 20, renderer->a(0xFFFF));
++							renderer->drawString(HandheldDDR, false, x, y+86, 20, renderer->a(tsl::sectionTextColor));
++							renderer->drawString(DockedDDR, false, x, y+108, 20, renderer->a(tsl::sectionTextColor));
+ 						}
+ 						else {
+-							renderer->drawString("Default Display Resolution", false, x, y+86, 20, renderer->a(0xFFFF));
+-							renderer->drawString("was not checked!", false, x, y+108, 20, renderer->a(0xFFFF));							
++							renderer->drawString("기본 해상도", false, x, y+86, 20, renderer->a(tsl::sectionTextColor));
++							renderer->drawString("확인할 수 없습니다!", false, x, y+108, 20, renderer->a(tsl::sectionTextColor));
+ 						}
+ 					}
+ 				}
+-				renderer->drawString(saveChar, false, x, y+130, 20, renderer->a(0xFFFF));
++				renderer->drawString(saveChar, false, x, y+130, 20, renderer->a(tsl::sectionTextColor));
+ 			}
+ 	}), 150);
+ 
+-		if (PluginRunning && ReverseNX_RT->pluginActive) {
++		if (PluginRunning && ReverseNX_RT->pluginActive && ReverseNX_RT->isDocked > ReverseNX_Switch_Invalid) {
+ 
+-			auto *clickableListItem = new tsl::elm::ListItem("Change system control");
++			auto *clickableListItem = new tsl::elm::ListItem("시스템 제어");
+ 			clickableListItem->setClickListener([](u64 keys) { 
+ 				if ((keys & HidNpadButton_A) && PluginRunning) {
+ 					ReverseNX_RT->def = !(ReverseNX_RT->def);
+@@ -264,7 +270,7 @@ public:
+ 
+ 			if (!(ReverseNX_RT->def)) {
+ 
+-				auto *clickableListItem2 = new tsl::elm::ListItem("Change mode");
++				auto *clickableListItem2 = new tsl::elm::ListItem("모드 변경");
+ 				clickableListItem2->setClickListener([](u64 keys) { 
+ 					if ((keys & HidNpadButton_A) && PluginRunning) {
+ 						ReverseNX_RT->isDocked = !(ReverseNX_RT->isDocked);
+@@ -276,7 +282,7 @@ public:
+ 				list->addItem(clickableListItem2);
+ 
+ 				if (ReverseNX_RT->wasDDRused) {
+-					auto *clickableListItem3 = new tsl::elm::ListItem("Change Handheld DDR");
++					auto *clickableListItem3 = new tsl::elm::ListItem("휴대 모드 DDR 변경");
+ 					clickableListItem3->setClickListener([](u64 keys) { 
+ 						if ((keys & HidNpadButton_A) && PluginRunning) {
+ 							tsl::changeTo<ResolutionModeMenu>(false);
+@@ -287,7 +293,7 @@ public:
+ 					});
+ 					list->addItem(clickableListItem3);
+ 
+-					auto *clickableListItem4 = new tsl::elm::ListItem("Change Docked DDR");
++					auto *clickableListItem4 = new tsl::elm::ListItem("독 모드 DDR 변경");
+ 					clickableListItem4->setClickListener([](u64 keys) { 
+ 						if ((keys & HidNpadButton_A) && PluginRunning) {
+ 							tsl::changeTo<ResolutionModeMenu>(true);
+@@ -300,12 +306,12 @@ public:
+ 				}
+ 			}
+ 
+-			auto *clickableListItem3 = new tsl::elm::ListItem("Save current settings");
++			auto *clickableListItem3 = new tsl::elm::ListItem("현재 설정을 저장");
+ 			clickableListItem3->setClickListener([](u64 keys) { 
+ 				if ((keys & HidNpadButton_A) && PluginRunning) {
+ 					if (writeSave())
+-						snprintf(saveChar, sizeof(saveChar), "Settings saved successfully!");
+-					else snprintf(saveChar, sizeof(saveChar), "Saving settings failed!");
++						snprintf(saveChar, sizeof(saveChar), "설정 저장 성공!");
++					else snprintf(saveChar, sizeof(saveChar), "설정 저장 실패!");
+ 					return true;
+ 				}
+ 				
+@@ -337,22 +343,22 @@ public:
+ 				_isDocked = ReverseNX_RT->isDocked;
+ 				i = 0;
+ 				
+-				if (_def) sprintf(SystemChar, "Controlled by system: Yes");
+-				else sprintf(SystemChar, "Controlled by system: No");
++				if (_def) sprintf(SystemChar, "시스템 제어 상태: ON");
++				else sprintf(SystemChar, "시스템 제어 상태: OFF");
+ 
+ 				if (_def) {
+-					if (_isDocked) sprintf(DockedChar, "Mode: Docked");
+-					else sprintf(DockedChar, "Mode: Handheld");
++					if (_isDocked) sprintf(DockedChar, "타입: 독 모드");
++					else sprintf(DockedChar, "타입: 휴대 모드");
+ 				}
+ 				else {
+-					if (_isDocked) sprintf(DockedChar, "Mode: Fake Docked");
+-					else sprintf(DockedChar, "Mode: Fake Handheld");
++					if (_isDocked) sprintf(DockedChar, "타입: 페이크 독 모드");
++					else sprintf(DockedChar, "타입: 페이크 휴대 모드");
+ 				}
+ 
+-				if (!ReverseNX_RT->res.handheld_res) strcpy(HandheldDDR, "Handheld DDR: Default");
+-				else snprintf(HandheldDDR, sizeof(HandheldDDR), "Handheld DDR: %dx%d", resolutions[ReverseNX_RT->res.handheld_res].first, resolutions[ReverseNX_RT->res.handheld_res].second);
+-				if (!ReverseNX_RT->res.docked_res) strcpy(DockedDDR, "Docked DDR: Default");
+-				else snprintf(DockedDDR, sizeof(DockedDDR), "Docked DDR: %dx%d", resolutions[ReverseNX_RT->res.docked_res].first, resolutions[ReverseNX_RT->res.docked_res].second);
++				if (!ReverseNX_RT->res.handheld_res) strcpy(HandheldDDR, "휴대 모드 DDR: 기본");
++				else snprintf(HandheldDDR, sizeof(HandheldDDR), "휴대 모드 DDR: %dx%d", resolutions[ReverseNX_RT->res.handheld_res].first, resolutions[ReverseNX_RT->res.handheld_res].second);
++				if (!ReverseNX_RT->res.docked_res) strcpy(DockedDDR, "독 모드 DDR: 기본");
++				else snprintf(DockedDDR, sizeof(DockedDDR), "독 모드 DDR: %dx%d", resolutions[ReverseNX_RT->res.docked_res].first, resolutions[ReverseNX_RT->res.docked_res].second);
+ 			}
+ 			else i++;
+ 		}

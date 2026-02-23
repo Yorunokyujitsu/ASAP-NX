@@ -1,0 +1,22 @@
+diff --git a/libstratosphere/source/dmnt/dmntcht.c b/libstratosphere/source/dmnt/dmntcht.c
+index dd5faaa1..76666d42 100644
+--- a/libstratosphere/source/dmnt/dmntcht.c
++++ b/libstratosphere/source/dmnt/dmntcht.c
+@@ -34,9 +34,15 @@ Service* dmntchtGetServiceSession(void) {
+ }
+ 
+ Result dmntchtHasCheatProcess(bool *out) {
+-    u8 tmp;
++    u8 tmp = 0;
++    bool has = false;
+     Result rc = serviceDispatchOut(&g_dmntchtSrv, 65000, tmp);
+-    if (R_SUCCEEDED(rc) && out) *out = tmp & 1;
++    if (R_SUCCEEDED(rc)) {
++        has = (tmp & 1) != 0;
++    }
++    if (out) {
++        *out = has;
++    }
+     return rc;
+ }
+ 

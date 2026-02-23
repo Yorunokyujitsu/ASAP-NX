@@ -1,0 +1,19 @@
+diff --git a/include/fancontrol.h b/include/fancontrol.h
+index 42c5227..a09bef9 100644
+--- a/include/fancontrol.h
++++ b/include/fancontrol.h
+@@ -13,10 +13,10 @@ extern "C" {
+ 
+ #include <switch.h>
+ 
+-#define LOG_DIR "./config/NX-FanControl/"
+-#define LOG_FILE "./config/NX-FanControl/log.txt"
+-#define CONFIG_DIR "./config/NX-FanControl/"
+-#define CONFIG_FILE "./config/NX-FanControl/config.dat"
++#define LOG_DIR "./config/ultrahand/"
++#define LOG_FILE "./config/ultrahand/nxfan_log.ini"
++#define CONFIG_DIR "./config/ultrahand/"
++#define CONFIG_FILE "./config/ultrahand/nxfan_cfg.dat"
+ #define TABLE_SIZE sizeof(TemperaturePoint) * 5
+ 
+ 
