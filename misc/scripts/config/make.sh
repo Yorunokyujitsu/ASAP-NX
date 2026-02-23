@@ -4,6 +4,7 @@ set -euo pipefail
 # Default config
 : "${APP_DIR:?APP_DIR not set}"
 : "${MISC_DIR:?MISC_DIR not set}"
+: "${ENABLE_ATMOSPHERE:=1}"
 
 source "${MISC_DIR}/scripts/config/log.sh"
 source "${MISC_DIR}/scripts/repos.sh"
@@ -25,6 +26,7 @@ for entry in "${REPOS[@]}"; do
 
   # Atmosphere (upstream)
   if [[ "$dest" == "Atmosphere" ]]; then
+    [[ "$ENABLE_ATMOSPHERE" == "1" ]] || continue
     print_title "[BUILD] ${dest}"
 
     if [[ "${ENABLE_CUSTOM:-0}" == "1" ]]; then
@@ -40,6 +42,7 @@ for entry in "${REPOS[@]}"; do
 
   # Atmosphere_8GB (only fusee + exosphere)
   if [[ "$dest" == "Atmosphere_8GB" ]]; then
+    [[ "$ENABLE_ATMOSPHERE" == "1" ]] || continue
     print_title "[BUILD] ${dest}"
 
     if [[ -d "$dir/fusee" ]]; then

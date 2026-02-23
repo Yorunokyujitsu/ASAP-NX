@@ -19,28 +19,26 @@ REPOS=()
 if [[ "${ENABLE_CUSTOM:-0}" == "1" ]]; then
   # Custom On - ASAP
   REPOS+=(
-    # Hekate / 8GB
-    "CTCaer/hekate@3af777f"
-    "CTCaer/hekate=hekate_8GB@3af777f"
+    # Hekate (EN: f688f65)
+    "Yorunokyujitsu/hekate@custom"
 
-    # Atmosphere / 8GB
-    "Atmosphere-NX/Atmosphere@5056ab2"
-    "Atmosphere-NX/Atmosphere=Atmosphere_8GB@5056ab2"
+    # Atmosphere
+    "Yorunokyujitsu/Atmosphere@custom"
 
     # Homebrew loader and Sphaira
     "switchbrew/nx-hbloader"
-    "Yorunokyujitsu/sphaira@test"
+    #"Yorunokyujitsu/sphaira@test"
 
-    # System modules and overlays (latest libultrahand f053eaa)
-    "ppkantorski/Ultrahand-Overlay@77bd239"
+    # System modules and overlays (latest libultrahand 5dc0b63)
+    "ppkantorski/Ultrahand-Overlay@f580fd9"
     "ppkantorski/EdiZon-Overlay@835e2fd"
-    "masagrator/FPSLocker@e887a22"
+    "masagrator/FPSLocker@fa5a61b"
     "ppkantorski/NX-FanControl@4c3226e"
     "ppkantorski/ovl-sysmodules@73bb9cf"
     "masagrator/ReverseNX-RT@725eb27"
-    "ppkantorski/Status-Monitor-Overlay@7000377"
+    "ppkantorski/Status-Monitor-Overlay@3d1204b"
     "ppkantorski/sys-clk@d6bc69d"
-    "borntohonk/sys-patch@6904ed6"
+    "borntohonk/sys-patch@f51f916"
 
     # Homebrews
     "HamletDuFromage/aio-switch-updater=ASAP-Updater@3d38eaa"
@@ -48,6 +46,8 @@ if [[ "${ENABLE_CUSTOM:-0}" == "1" ]]; then
     #"Yorunokyujitsu/DBIPatcher"
 
     # Local
+    "__local__/hekate_8GB"
+    "__local__/Atmosphere_8GB"
     "__local__/LockPick"
   )
 else
@@ -57,6 +57,7 @@ else
     "Atmosphere-NX/Atmosphere"
     "switchbrew/nx-hbloader"
     "switchbrew/nx-hbmenu"
+    #"ITotalJustice/sphaira"
     "suchmememanyskill/TegraExplorer"
     "impeeza/Lockpick_RCMDecScots=Lockpick_RCM"
     #"impeeza/sys-patch"

@@ -40,6 +40,7 @@ DBI_EN_URL="$(gh_release_latest Yorunokyujitsu DBIPatcher DBI_en.zip)"
 SALTYNX_URL="$(gh_release_latest masagrator SaltyNX SaltyNX.zip)"
 TINFOIL_URL="https://tinfoil.media/repo/Tinfoil%20Applet%20Mode%20%5B20.0%5D%5Bv2%5D.zip"
 AMIIBO_GEN_URL="$(gh_release_latest yusufakg AmiiboGenerator AmiiboGenerator.nro)"
+SPHAIRA_URL="$(gh_release_latest Yorunokyujitsu sphaira sphaira.nro)"
 
 # Dynamic name zips URLs
 HEKATE_URL="$(gh_dynamic_name CTCaer hekate '^hekate_ctcaer.*\.zip$')"
@@ -103,6 +104,7 @@ package_asap() {
 
   # Download file
   download 5 -o "${DIST_DIR}/switch/AmiiboGenerator/AmiiboGenerator.nro" "${AMIIBO_GEN_URL}"
+  download 5 -o "${DIST_DIR}/switch/sphaira/sphaira.nro" "${SPHAIRA_URL}"
 
   # Extract
   unzip -oq "${DIST_DIR}/sys-clk.zip" "atmosphere/*" -d "${DIST_DIR}"
@@ -239,7 +241,7 @@ package_asap() {
   cp "${APP_DIR}/ASAP-Updater/ASAP-Updater.nro" "${DIST_DIR}/switch/ASAP-Updater/ASAP-Updater_.nro"
   cp "${APP_DIR}/ASAP-Updater/.ASAP-Updater.nro.star" "${DIST_DIR}/switch/ASAP-Updater"
   cp "${APP_DIR}/linkalho/linkalho.nro" "${DIST_DIR}/switch/linkalho"
-  cp "${APP_DIR}/sphaira/build/Release/sphaira.nro" "${DIST_DIR}/switch/sphaira"
+  #cp "${APP_DIR}/sphaira/build/Release/sphaira.nro" "${DIST_DIR}/switch/sphaira"
   #cp "${APP_DIR}/DBIPatcher/dist/DBI.nro" "${DIST_DIR}/switch/DBI/DBI.845.nro"
   cp "${MISC_DIR}/ini/dbi.ini" "${DIST_DIR}/switch/DBI/dbi.config"
   cp "${MISC_DIR}/res/icons/logo.png" "${DIST_DIR}/switch/tinfoil/themes/ASAP_Custom"
