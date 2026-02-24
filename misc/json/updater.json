@@ -13,7 +13,7 @@
             "System Modules & Overlays 업데이트",
             "SaltyNX: 1.7.2 → 1.7.4",
             "Ultrahand: 2.2.7 → 2.2.9",
-            "FPSLocker: 3.2.3 → 3.3.0",
+            "FPSLocker: 3.2.3 → 3.3.1",
             "emuiibo: 잘못된 init 코드가 수정된 최신 커밋으로 리빌드 되었습니다.",
             "ASAP-Updater: 1.0.4 → 1.0.5"
         ]
@@ -36,7 +36,7 @@
         }
     },
     "firmwares": {
-        "21.2.0": "https://github.com/Switch-Bros/Switch-Firmware/releases/download/21.2.0/Firmware_21.2.0.zip",
+        "21.2.0": "https://github.com/THZoria/NX_Firmware/releases/download/21.2.0/Firmware_21.2.0.zip",
         "21.1.0": "https://github.com/THZoria/NX_Firmware/releases/download/21.1.0/Firmware.21.1.0.zip",
         "21.0.1": "https://github.com/THZoria/NX_Firmware/releases/download/21.0.1/Firmware.21.0.1.zip",
         "21.0.0": "https://github.com/THZoria/NX_Firmware/releases/download/21.0.0/Firmware.21.0.0.zip",
