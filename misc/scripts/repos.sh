@@ -32,7 +32,7 @@ if [[ "${ENABLE_CUSTOM:-0}" == "1" ]]; then
     # System modules and overlays (latest libultrahand 5dc0b63)
     "ppkantorski/Ultrahand-Overlay@f580fd9"
     "ppkantorski/EdiZon-Overlay@835e2fd"
-    "masagrator/FPSLocker@fa5a61b"
+    "masagrator/FPSLocker@76f3619"
     "ppkantorski/NX-FanControl@4c3226e"
     "ppkantorski/ovl-sysmodules@73bb9cf"
     "masagrator/ReverseNX-RT@725eb27"

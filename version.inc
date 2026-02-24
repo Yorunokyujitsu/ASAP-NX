@@ -6,7 +6,7 @@ current_nyx=1.9.1
 
 [latest_version]
 supported_hos=21.2.0
-tester_version=0223
+tester_version=0224
 eos_version=1.3.0
 kip_version=1.7.2
 
@@ -24,7 +24,7 @@ sys_con=1.6.1
 ultrahand=2.2.9
 edizon=1.0.15
 emuiibo=1.1.2
-fpslocker=3.3.0
+fpslocker=3.3.1
 ovl_sysmodules=1.4.7
 reversenx_rt=2.2.1
 statusmonitor=1.3.2+r6
