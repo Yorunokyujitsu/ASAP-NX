@@ -1,5 +1,5 @@
 diff --git a/Makefile b/Makefile
-index 567d756..5344754 100644
+index 567d756..d263c31 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -15,19 +15,16 @@ export GIT_REVISION := $(GIT_BRANCH)-$(shell git rev-parse --short HEAD)
@@ -26,31 +26,20 @@ index 567d756..5344754 100644
  					-DGIT_BRANCH=\"$(GIT_BRANCH)\" \
  					-DGIT_REVISION=\"$(GIT_REVISION)\" \
  					-DVERSION_DIRTY=\"$(VERSION_DIRTY)\" \
-@@ -46,8 +43,10 @@ $(TARGETS):
- 
+@@ -47,6 +44,9 @@ $(TARGETS):
  clean:
  	@rm -rf out
--	@rm -f sys-patch.zip
- 	@for i in $(TARGETS); do $(MAKE) -C $$i clean || exit 1; done;
+ 	@rm -f sys-patch.zip
 +	@rm -rf overlay/{build,out} sysmod/{build,out}
 +	@find sysmod/ -type f \( -name '*.elf' -o -name '*.nacp' -o -name '*.ovl' \) -delete
 +	@find overlay/ -type f \( -name '*.elf' -o -name '*.npdm' -o -name '*.nso' -o -name '*.nsp' \) -delete
+ 	@for i in $(TARGETS); do $(MAKE) -C $$i clean || exit 1; done;
  
  dist: all
- 	@for i in $(TARGETS); do $(MAKE) -C $$i dist || exit 1; done;
 diff --git a/overlay/Makefile b/overlay/Makefile
-index 382a67d..cdf3ef6 100644
+index 382a67d..3c3484c 100644
 --- a/overlay/Makefile
 +++ b/overlay/Makefile
-@@ -37,7 +37,7 @@ include $(DEVKITPRO)/libnx/switch_rules
- #   of a homebrew executable (.nro). This is intended to be used for sysmodules.
- #   NACP building is skipped as well.
- #---------------------------------------------------------------------------------
--APP_TITLE	:=	sys-patch
-+APP_TITLE	:=	Sys-Patch
- APP_AUTHOR	:=	TotalJustice
- APP_VERSION :=	$(VERSION_DIRTY)
- 
 @@ -45,10 +45,11 @@ TARGET		:=	sys-patch-overlay
  BUILD		:=	build
  SOURCES		:=	src ../common/minIni
@@ -64,36 +53,22 @@ index 382a67d..cdf3ef6 100644
  #---------------------------------------------------------------------------------
  # options for code generation
  #---------------------------------------------------------------------------------
-@@ -59,7 +60,7 @@ CFLAGS	:=	-g -Wall -O2 -ffunction-sections \
- 
- CFLAGS	+=	$(INCLUDE) -D__SWITCH__
- 
--CXXFLAGS	:= $(CFLAGS) -std=c++23 -fno-exceptions
-+CXXFLAGS	:= $(CFLAGS) -std=c++23 -fno-exceptions -Wno-invalid-memory-model
- 
- ASFLAGS	:=	-g $(ARCH)
- LDFLAGS	=	-specs=$(DEVKITPRO)/libnx/switch.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 diff --git a/overlay/src/main.cpp b/overlay/src/main.cpp
-index 66cb0f3..849c467 100644
+index 9a7887e..fa42d20 100644
 --- a/overlay/src/main.cpp
 +++ b/overlay/src/main.cpp
-@@ -6,13 +6,8 @@
+@@ -6,8 +6,8 @@
  
  namespace {
  
 -constexpr auto CONFIG_PATH = "/config/sys-patch/config.ini";
 -constexpr auto LOG_PATH = "/config/sys-patch/log.ini";
--
--// Color constants for logging
--constexpr tsl::Color COLOR_SYSPATCH{0, 255, 200, 255};
--constexpr tsl::Color COLOR_FILE{255, 177, 66, 255};
--constexpr tsl::Color COLOR_UNPATCHED{250, 90, 58, 255};
 +constexpr auto CONFIG_PATH = "/atmosphere/config/sys-patch_cfg.ini";
 +constexpr auto LOG_PATH = "/atmosphere/logs/sys-patch.log";
  
- // Patch configuration metadata
- struct PatchConfig {
-@@ -131,10 +126,10 @@ public:
+ auto does_file_exist(const char* path) -> bool {
+     Result rc{};
+@@ -71,32 +71,14 @@ public:
      GuiOptions() { }
  
      tsl::elm::Element* createUI() override {
@@ -102,22 +77,19 @@ index 66cb0f3..849c467 100644
          auto list = new tsl::elm::List();
  
 -        list->addItem(new tsl::elm::CategoryHeader("Options"));
-+        list->addItem(new tsl::elm::CategoryHeader("설정"));
-         
-         auto add_option = [list](const char* section, const char* key, bool default_value, const char* label) {
-             const auto value = ini_getbool(section, key, default_value, CONFIG_PATH);
-@@ -145,23 +140,10 @@ public:
-             list->addItem(item);
-         };
- 
--        add_option("options", "patch_sysmmc", true, "Patch sysMMC");
--        add_option("options", "patch_emummc", true, "Patch emuMMC");
--        add_option("options", "enable_logging", true, "Logging");
--        add_option("options", "version_skip", true, "Version skip");
+-        list->addItem(config_patch_sysmmc.create_list_item("Patch sysMMC"));
+-        list->addItem(config_patch_emummc.create_list_item("Patch emuMMC"));
+-        list->addItem(config_logging.create_list_item("Logging"));
+-        list->addItem(config_version_skip.create_list_item("Version skip"));
 -
 -        frame->setContent(list);
 -        return frame;
 -    }
+-
+-    ConfigEntry config_patch_sysmmc{"options", "patch_sysmmc", true};
+-    ConfigEntry config_patch_emummc{"options", "patch_emummc", true};
+-    ConfigEntry config_logging{"options", "enable_logging", true};
+-    ConfigEntry config_version_skip{"options", "version_skip", true};
 -};
 -
 -class GuiToggle final : public tsl::Gui {
@@ -127,14 +99,27 @@ index 66cb0f3..849c467 100644
 -    tsl::elm::Element* createUI() override {
 -        auto frame = new tsl::elm::OverlayFrame("sys-patch", VERSION_WITH_HASH);
 -        auto list = new tsl::elm::List();
-+        add_option("options", "patch_sysmmc", true, "시스낸드 패치");
-+        add_option("options", "patch_emummc", true, "에뮤낸드 패치");
-+        add_option("options", "enable_logging", true, "로깅");
-+        add_option("options", "version_skip", true, "버전 스킵");
++        list->addItem(new tsl::elm::CategoryHeader("설정"));
++        list->addItem(config_patch_sysmmc.create_list_item("시스낸드 패치"));
++        list->addItem(config_patch_emummc.create_list_item("에뮤낸드 패치"));
++        list->addItem(config_logging.create_list_item("로깅"));
++        list->addItem(config_version_skip.create_list_item("버전 스킵"));
  
-         for (const auto& config : PATCH_CONFIGS) {
-             list->addItem(new tsl::elm::CategoryHeader(
-@@ -191,7 +173,7 @@ public:
+         list->addItem(new tsl::elm::CategoryHeader("FS - 0100000000000000"));
+         list->addItem(config_noacidsigchk1.create_list_item("noacidsigchk_1.0.0-9.2.0"));
+@@ -140,6 +122,11 @@ public:
+         return frame;
+     }
+ 
++    ConfigEntry config_patch_sysmmc{"options", "patch_sysmmc", true};
++    ConfigEntry config_patch_emummc{"options", "patch_emummc", true};
++    ConfigEntry config_logging{"options", "enable_logging", true};
++    ConfigEntry config_version_skip{"options", "version_skip", true};
++
+     ConfigEntry config_noacidsigchk1{"fs", "noacidsigchk_1.0.0-9.2.0", true};
+     ConfigEntry config_noacidsigchk2{"fs", "noacidsigchk_1.0.0-9.2.0", true};
+     ConfigEntry config_noncasigchk1{"fs", "noncasigchk_1.0.0-3.0.2", true};
+@@ -171,7 +158,7 @@ public:
      GuiLog() { }
  
      tsl::elm::Element* createUI() override {
@@ -143,50 +128,63 @@ index 66cb0f3..849c467 100644
          auto list = new tsl::elm::List();
  
          if (does_file_exist(LOG_PATH)) {
-@@ -210,24 +192,43 @@ public:
+@@ -190,37 +177,43 @@ public:
  
-                 if (data->last_section != Section) {
-                     data->last_section = Section;
--                    data->list->addItem(new tsl::elm::CategoryHeader("Log: " + data->last_section));
-+                    data->list->addItem(new tsl::elm::CategoryHeader("로그: " + data->last_section));
+                 if (user->last_section != Section) {
+                     user->last_section = Section;
+-                    user->list->addItem(new tsl::elm::CategoryHeader("Log: " + user->last_section));
++                    user->list->addItem(new tsl::elm::CategoryHeader("로그: " + user->last_section));
                  }
  
+-                #define F(x) ((x) >> 4) // 8bit -> 4bit
+-                constexpr tsl::Color colour_syspatch{F(0), F(255), F(200), F(255)};
+-                constexpr tsl::Color colour_file{F(255), F(177), F(66), F(255)};
+-                constexpr tsl::Color colour_unpatched{F(250), F(90), F(58), F(255)};
+-                #undef F
+-
                  if (value.starts_with("Patched")) {
--                    const auto color = value.ends_with("(sys-patch)") ? COLOR_SYSPATCH : COLOR_FILE;
--                    data->list->addItem(new tsl::elm::ListItem(Key, "Patched", color));
+-                    auto *item = new tsl::elm::ListItem(Key);
+-                    item->setValue("Patched", true);
+-                    user->list->addItem(item);
 -                } else if (value.starts_with("Unpatched") || value.starts_with("Disabled")) {
--                    data->list->addItem(new tsl::elm::ListItem(Key, Value, COLOR_UNPATCHED));
+-                    auto *item = new tsl::elm::ListItem(Key);
+-                    item->setValue(Value, true);
+-                    user->list->addItem(item);
 +                    if (value.ends_with("(sys-patch)")) {
 +                        auto li = new tsl::elm::ListItem(Key, "\uE14B");
 +                        li->setValueColor(tsl::onTextColor);
-+                        data->list->addItem(li);
++                        user->list->addItem(li);
 +                    } else {
 +                        auto li = new tsl::elm::ListItem(Key, "\uE14B");
 +                        li->setValueColor(tsl::starColor);
-+                        data->list->addItem(li);
++                        user->list->addItem(li);
 +                    }
 +                } else if (value.starts_with("Unpatched")) {
 +                    auto li = new tsl::elm::ListItem(Key, "\uE14E");
 +                    li->setValueColor(tsl::warningTextColor);
-+                    data->list->addItem(li);
++                    user->list->addItem(li);
 +                } else if (value.starts_with("Disabled")) {
 +                    auto li = new tsl::elm::ListItem(Key, "\uE14C");
 +                    li->setValueColor(tsl::warningTextColor);
-+                    data->list->addItem(li);
-                 } else if (data->last_section == "stats") {
--                    data->list->addItem(new tsl::elm::ListItem(Key, Value, tsl::style::color::ColorDescription));
++                    user->list->addItem(li);
+                 } else if (user->last_section == "stats") {
+-                    auto *item = new tsl::elm::ListItem(Key);
+-                    item->setValue(Value, true);
+-                    user->list->addItem(item);
 +                    auto li = new tsl::elm::ListItem(Key, Value);
 +                    li->setValueColor(tsl::bannerVersionTextColor);
-+                    data->list->addItem(li);
++                    user->list->addItem(li);
                  } else {
--                    data->list->addItem(new tsl::elm::ListItem(Key, Value, tsl::style::color::ColorText));
+-                    auto *item = new tsl::elm::ListItem(Key);
+-                    item->setValue(Value, true);
+-                    user->list->addItem(item);
 +                    auto li = new tsl::elm::ListItem(Key, Value);
 +                    li->setValueColor(tsl::bannerVersionTextColor);
-+                    data->list->addItem(li);
++                    user->list->addItem(li);
                  }
  
                  return 1;
-             }, &callback_data, LOG_PATH);
+             }, &callback_userdata, LOG_PATH);
          } else {
 -            list->addItem(new tsl::elm::ListItem("No log found!"));
 +            auto li = new tsl::elm::ListItem("Atmosphère 패치", "\uE12C");
@@ -195,7 +193,7 @@ index 66cb0f3..849c467 100644
          }
  
          frame->setContent(list);
-@@ -240,12 +241,11 @@ public:
+@@ -233,12 +226,11 @@ public:
      GuiMain() { }
  
      tsl::elm::Element* createUI() override {
@@ -211,7 +209,7 @@ index 66cb0f3..849c467 100644
  
          options->setClickListener([](u64 keys) -> bool {
              if (keys & HidNpadButton_A) {
-@@ -255,14 +255,6 @@ public:
+@@ -248,14 +240,6 @@ public:
              return false;
          });
  
@@ -226,7 +224,7 @@ index 66cb0f3..849c467 100644
          log->setClickListener([](u64 keys) -> bool {
              if (keys & HidNpadButton_A) {
                  tsl::changeTo<GuiLog>();
-@@ -271,11 +263,36 @@ public:
+@@ -264,11 +248,36 @@ public:
              return false;
          });
  
@@ -265,7 +263,7 @@ index 66cb0f3..849c467 100644
          frame->setContent(list);
          return frame;
      }
-@@ -292,7 +309,7 @@ public:
+@@ -285,7 +294,7 @@ public:
  } // namespace
  
  int main(int argc, char **argv) {
@@ -288,10 +286,10 @@ index 536873f..e66d977 100644
  
  #---------------------------------------------------------------------------------
 diff --git a/sysmod/src/main.cpp b/sysmod/src/main.cpp
-index ba38a76..1ff2109 100644
+index 01edb31..8eff51f 100644
 --- a/sysmod/src/main.cpp
 +++ b/sysmod/src/main.cpp
-@@ -698,11 +698,11 @@ void keygen_to_str(char* s, u8 keygen) {
+@@ -583,11 +583,11 @@ void keygen_to_str(char* s, u8 keygen) {
  } // namespace
  
  int main(int argc, char* argv[]) {
@@ -307,15 +305,12 @@ index ba38a76..1ff2109 100644
      ini_remove(log_path);
  
      // load options
-@@ -777,9 +777,9 @@ int main(int argc, char* argv[]) {
+@@ -662,7 +662,7 @@ int main(int argc, char* argv[]) {
          ms_2_str(patch_time, diff_ns/1000ULL/1000ULL);
  
          // defined in the Makefile
 -        #define DATE (DATE_DAY "." DATE_MONTH "." DATE_YEAR " " DATE_HOUR ":" DATE_MIN ":" DATE_SEC)
 +        #define DATE (DATE_YEAR "." DATE_MONTH "." DATE_DAY)
  
--        ini_puts("stats", "version", VERSION_WITH_HASH, log_path);
-+        ini_puts("stats", "version", VERSION, log_path);
+         ini_puts("stats", "version", VERSION_WITH_HASH, log_path);
          ini_puts("stats", "build_date", DATE, log_path);
-         ini_puts("stats", "fw_version", fw_version, log_path);
-         ini_puts("stats", "ams_version", ams_version, log_path);
