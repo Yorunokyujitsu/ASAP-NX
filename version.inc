@@ -6,7 +6,7 @@ current_nyx=1.9.1
 
 [latest_version]
 supported_hos=21.2.0
-tester_version=0224
+tester_version=0317
 eos_version=1.3.0
 kip_version=1.7.2
 
@@ -14,21 +14,21 @@ hekate=6.5.1
 nyx=1.9.1
 atmosphere=1.10.2
 atlas=1.1.4
-sys_patch=1.5.9
+sys_patch=1.6.0
 missioncontrol=0.14.2
 nx_fancontrol=1.0.4
 ovlloader=2.0.0
 saltynx=1.7.4
 spl=1.0.1
 sys_con=1.6.1
-ultrahand=2.2.9
+ultrahand=2.3.0
 edizon=1.0.15
 emuiibo=1.1.2
 fpslocker=3.3.1
-ovl_sysmodules=1.4.7
+ovl_sysmodules=1.4.8
 reversenx_rt=2.2.1
-statusmonitor=1.3.2+r6
-sys_clk=2.0.1+r21
+statusmonitor=1.3.2+r7
+sys_clk=2.0.1+r22
 asap_updater=1.0.5
 amiibogenerator=2.2.1
 daybreak=1.0.1
