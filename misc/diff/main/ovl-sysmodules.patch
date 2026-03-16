@@ -1,5 +1,5 @@
 diff --git a/source/gui_main.cpp b/source/gui_main.cpp
-index 145a3fa..d0c7a65 100644
+index 8902a1c..21be6a7 100644
 --- a/source/gui_main.cpp
 +++ b/source/gui_main.cpp
 @@ -291,14 +291,14 @@ inline void drawMemoryWidget(auto renderer) {

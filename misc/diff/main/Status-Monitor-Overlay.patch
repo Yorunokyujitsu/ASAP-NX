@@ -121,7 +121,7 @@ index c66ef2f..f65b73e 100644
      convertStrToRGBA4444("#FFFF", &(settings->textColor));
      settings->refreshRate = 10;
 diff --git a/source/main.cpp b/source/main.cpp
-index ca87a6f..1a37c08 100755
+index ca87a6f..6698a3b 100755
 --- a/source/main.cpp
 +++ b/source/main.cpp
 @@ -31,7 +31,7 @@ static std::string lastSelectedItem;
@@ -466,7 +466,7 @@ index c700a64..cdbed44 100644
  
          if (isChargerConnected) {
 diff --git a/source/modes/Configurator.hpp b/source/modes/Configurator.hpp
-index 52aa7a9..6d51413 100644
+index 4d35d1e..b6cc856 100644
 --- a/source/modes/Configurator.hpp
 +++ b/source/modes/Configurator.hpp
 @@ -85,11 +85,11 @@ private:
@@ -882,16 +882,31 @@ index 52aa7a9..6d51413 100644
          rootFrame->setContent(list);
          return rootFrame;
      }
-@@ -798,7 +800,7 @@ public:
+@@ -792,10 +794,10 @@ private:
+     
+ public:
+     FramePaddingConfig(const std::string& mode) : modeName(mode) {
+-        isMiniMode = (mode == "Mini");
+-        isGameResolutionsMode = (mode == "Game Resolutions");
+-        isFPSCounterMode = (mode == "FPS Counter");
+-        isFPSGraphMode = (mode == "FPS Graph");
++        isMiniMode = (mode == "팝업창");
++        isGameResolutionsMode = (mode == "게임 해상도");
++        isFPSCounterMode = (mode == "FPS 카운터");
++        isFPSGraphMode = (mode == "FPS 그래프");
+ 
+         std::string section;
+         if (isMiniMode) section = "mini";
+@@ -813,7 +815,7 @@ public:
      
      virtual tsl::elm::Element* createUI() override {
          auto* list = new tsl::elm::List();
 -        list->addItem(new tsl::elm::CategoryHeader("Frame Padding"));
 +        list->addItem(new tsl::elm::CategoryHeader("팝업 프레임 여백"));
  
-         static const std::vector<int> paddingValues = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
-         for (int padding : paddingValues) {
-@@ -823,7 +825,7 @@ public:
+         std::string section;
+         if (isMiniMode) section = "mini";
+@@ -844,7 +846,7 @@ public:
          
          list->jumpToItem("", ult::CHECKMARK_SYMBOL, false);
  
@@ -900,7 +915,7 @@ index 52aa7a9..6d51413 100644
          rootFrame->setContent(list);
          return rootFrame;
      }
-@@ -857,12 +859,12 @@ private:
+@@ -878,12 +880,12 @@ private:
  public:
      FontSizeSelector(const std::string& mode, const std::string& type) 
          : modeName(mode), fontType(type) {
@@ -917,7 +932,7 @@ index 52aa7a9..6d51413 100644
          }
      ~FontSizeSelector() {
          lastSelectedListItem = nullptr;
-@@ -879,7 +881,7 @@ public:
+@@ -900,7 +902,7 @@ public:
          
          const std::string keyName = fontType + "_font_size";
          const std::string currentValue = ult::parseValueFromIniSection(configIniPath, section, keyName);
@@ -926,7 +941,7 @@ index 52aa7a9..6d51413 100644
          const int currentSize = currentValue.empty() ? defaultSize : atoi(currentValue.c_str());
          
          // Font size range depends on mode
-@@ -911,7 +913,7 @@ public:
+@@ -932,7 +934,7 @@ public:
          
          list->jumpToItem("", ult::CHECKMARK_SYMBOL, false);
          
@@ -935,7 +950,7 @@ index 52aa7a9..6d51413 100644
          rootFrame->setContent(list);
          return rootFrame;
      }
-@@ -941,14 +943,14 @@ private:
+@@ -962,14 +964,14 @@ private:
      
  public:
      FontSizeConfig(const std::string& mode) : modeName(mode) {
@@ -954,7 +969,7 @@ index 52aa7a9..6d51413 100644
          
          std::string section;
          if (isMiniMode) section = "mini";
-@@ -958,11 +960,11 @@ public:
+@@ -979,11 +981,11 @@ public:
          const std::string handheldValue = ult::parseValueFromIniSection(configIniPath, section, "handheld_font_size");
          const std::string dockedValue = ult::parseValueFromIniSection(configIniPath, section, "docked_font_size");
          
@@ -968,7 +983,7 @@ index 52aa7a9..6d51413 100644
          handheldItem->setValue(std::to_string(handheldSize) + " pt");
          handheldItem->setClickListener([this, handheldItem](uint64_t keys) {
              if (keys & KEY_A) {
-@@ -974,7 +976,7 @@ public:
+@@ -995,7 +997,7 @@ public:
          });
          list->addItem(handheldItem);
          
@@ -977,7 +992,7 @@ index 52aa7a9..6d51413 100644
          dockedItem->setValue(std::to_string(dockedSize) + " pt");
          dockedItem->setClickListener([this, dockedItem](uint64_t keys) {
              if (keys & KEY_A) {
-@@ -986,7 +988,7 @@ public:
+@@ -1007,7 +1009,7 @@ public:
          });
          list->addItem(dockedItem);
          
@@ -986,7 +1001,7 @@ index 52aa7a9..6d51413 100644
          rootFrame->setContent(list);
          list->jumpToItem(jumpItemName, jumpItemValue, jumpItemExactMatch);
          {
-@@ -1027,12 +1029,12 @@ private:
+@@ -1048,12 +1050,12 @@ private:
  public:
      ColorSelector(const std::string& mode, const std::string& title, const std::string& key, const std::string& def) 
          : modeName(mode), modeTitle(title), colorKey(key), defaultValue(def) {
@@ -1005,7 +1020,7 @@ index 52aa7a9..6d51413 100644
              
              // Determine if this is a background color or text-based color
              isBackgroundColor = (key == "background_color" || key == "focus_background_color" || 
-@@ -1069,54 +1071,54 @@ public:
+@@ -1090,54 +1092,54 @@ public:
          // Updated colors list with comprehensive color palette
          static const std::vector<std::pair<std::string, std::string>> colors = {
              // Grays & Basics
@@ -1092,7 +1107,7 @@ index 52aa7a9..6d51413 100644
          };
          
          std::string _jumpItemValue;
-@@ -1198,7 +1200,7 @@ public:
+@@ -1219,7 +1221,7 @@ public:
          }
          list->jumpToItem("", _jumpItemValue, false);
          
@@ -1101,7 +1116,7 @@ index 52aa7a9..6d51413 100644
          rootFrame->setContent(list);
          return rootFrame;
      }
-@@ -1231,12 +1233,12 @@ private:
+@@ -1252,12 +1254,12 @@ private:
      
  public:
      ColorConfig(const std::string& mode) : modeName(mode) {
@@ -1120,7 +1135,7 @@ index 52aa7a9..6d51413 100644
          
          // Full mode should never access color configuration
          //if (isFullMode) {
-@@ -1247,7 +1249,7 @@ public:
+@@ -1268,7 +1270,7 @@ public:
      
      virtual tsl::elm::Element* createUI() override {
          auto* list = new tsl::elm::List();
@@ -1129,7 +1144,7 @@ index 52aa7a9..6d51413 100644
          
          auto getCurrentColor = [this](const std::string& key, const std::string& def) {
              std::string section;
-@@ -1272,54 +1274,54 @@ public:
+@@ -1293,54 +1295,54 @@ public:
              // Map of hex colors to names (RGB only, no alpha)
              static const std::map<std::string, std::string> colorNames = {
                  // Grays & Basics
@@ -1216,7 +1231,7 @@ index 52aa7a9..6d51413 100644
              };
              
              auto it = colorNames.find(rgb);
-@@ -1327,8 +1329,8 @@ public:
+@@ -1348,8 +1350,8 @@ public:
                  // Special case for black/transparent disambiguation
                  if (rgb == "#000" && hexColor.length() == 5) {
                      char alpha = hexColor[4];
@@ -1227,7 +1242,7 @@ index 52aa7a9..6d51413 100644
                  }
                  return it->second;
              }
-@@ -1358,7 +1360,7 @@ public:
+@@ -1379,7 +1381,7 @@ public:
          
          if (!isFullMode) {
              // Background Color (all modes)
@@ -1236,7 +1251,7 @@ index 52aa7a9..6d51413 100644
              std::string bgDefault = "#0009";
              std::string bgCurrentColor = getCurrentColor("background_color", bgDefault);
              // Display color name instead of hex
-@@ -1366,7 +1368,7 @@ public:
+@@ -1387,7 +1389,7 @@ public:
              bgColor->setClickListener([this, bgColor, bgDefault](uint64_t keys) {
                  if (keys & KEY_A) {
                      tsl::shiftItemFocus(bgColor);
@@ -1245,7 +1260,7 @@ index 52aa7a9..6d51413 100644
                      return true;
                  }
                  return false;
-@@ -1374,12 +1376,12 @@ public:
+@@ -1395,12 +1397,12 @@ public:
              list->addItem(bgColor);
              
              // Background Alpha (new)
@@ -1260,7 +1275,7 @@ index 52aa7a9..6d51413 100644
                      return true;
                  }
                  return false;
-@@ -1388,13 +1390,13 @@ public:
+@@ -1409,13 +1411,13 @@ public:
          
              if (isMiniMode || isFPSCounterMode || isFPSGraphMode || isGameResolutionsMode) {
                  // Mini mode: has focus background
@@ -1276,7 +1291,7 @@ index 52aa7a9..6d51413 100644
                          return true;
                      }
                      return false;
-@@ -1402,12 +1404,12 @@ public:
+@@ -1423,12 +1425,12 @@ public:
                  list->addItem(focusBgColor);
                  
                  // Focus Alpha (new)
@@ -1291,7 +1306,7 @@ index 52aa7a9..6d51413 100644
                          return true;
                      }
                      return false;
-@@ -1417,14 +1419,14 @@ public:
+@@ -1438,14 +1440,14 @@ public:
          }
  
          // Text Color (all modes)
@@ -1308,7 +1323,7 @@ index 52aa7a9..6d51413 100644
                  return true;
              }
              return false;
-@@ -1441,12 +1443,12 @@ public:
+@@ -1462,12 +1464,12 @@ public:
              };
              
              // Game Resolutions: only category color (no separator)
@@ -1324,7 +1339,7 @@ index 52aa7a9..6d51413 100644
                      return true;
                  }
                  return false;
-@@ -1454,18 +1456,18 @@ public:
+@@ -1475,18 +1477,18 @@ public:
              list->addItem(catColor);
  
              static const std::vector<ColorSetting> fpsGraphColors = {
@@ -1352,7 +1367,7 @@ index 52aa7a9..6d51413 100644
                  const std::string currentVal = getCurrentColor(color.key, color.defaultVal);
                  
                  if (color.isBackgroundType) {
-@@ -1488,12 +1490,12 @@ public:
+@@ -1509,12 +1511,12 @@ public:
                  
                  // Add alpha selector for background-type colors
                  if (color.isBackgroundType) {
@@ -1367,7 +1382,7 @@ index 52aa7a9..6d51413 100644
                              return true;
                          }
                          return false;
-@@ -1503,65 +1505,65 @@ public:
+@@ -1524,65 +1526,65 @@ public:
              }
  
          } else if (isFullMode) {
@@ -1445,7 +1460,7 @@ index 52aa7a9..6d51413 100644
                      return true;
                  }
                  return false;
-@@ -1569,12 +1571,12 @@ public:
+@@ -1590,12 +1592,12 @@ public:
              list->addItem(sepColor);
              
          } else if (isMicroMode) {
@@ -1460,7 +1475,7 @@ index 52aa7a9..6d51413 100644
                      return true;
                  }
                  return false;
-@@ -1582,12 +1584,12 @@ public:
+@@ -1603,12 +1605,12 @@ public:
              list->addItem(catColor);
              
              // Micro mode: separator and category colors (no focus background like Mini)
@@ -1475,7 +1490,7 @@ index 52aa7a9..6d51413 100644
                      return true;
                  }
                  return false;
-@@ -1597,12 +1599,12 @@ public:
+@@ -1618,12 +1620,12 @@ public:
              
          } else if (isGameResolutionsMode) {
              // Game Resolutions: only category color (no separator)
@@ -1490,7 +1505,7 @@ index 52aa7a9..6d51413 100644
                      return true;
                  }
                  return false;
-@@ -1620,7 +1622,7 @@ public:
+@@ -1641,7 +1643,7 @@ public:
          }
          
          //list->disableCaching();
@@ -1499,7 +1514,7 @@ index 52aa7a9..6d51413 100644
          rootFrame->setContent(list);
          return rootFrame;
      }
-@@ -1647,20 +1649,20 @@ private:
+@@ -1668,20 +1670,20 @@ private:
      
  public:
      ShowConfig(const std::string& mode) : modeName(mode) {
@@ -1524,7 +1539,7 @@ index 52aa7a9..6d51413 100644
          }
          convertToUpper(showValue);
          
-@@ -1815,7 +1817,7 @@ public:
+@@ -1836,7 +1838,7 @@ public:
              jumpItemExactMatch = false;
          }
          
@@ -1533,7 +1548,7 @@ index 52aa7a9..6d51413 100644
          rootFrame->setContent(list);
          return rootFrame;
      }
-@@ -1872,21 +1874,21 @@ private:
+@@ -1893,21 +1895,21 @@ private:
      
  public:
      ConfiguratorOverlay(const std::string& mode) : modeName(mode) {
@@ -1563,7 +1578,7 @@ index 52aa7a9..6d51413 100644
              showSettings->setValue(ult::DROPDOWN_SYMBOL);
              showSettings->setClickListener([this, showSettings](uint64_t keys) {
                  if (keys & KEY_A) {
-@@ -1901,7 +1903,7 @@ public:
+@@ -1922,7 +1924,7 @@ public:
  
          // 3. Toggles (All modes)
          //if (isMiniMode || isMicroMode || isFullMode || isFPSGraphMode) {
@@ -1572,7 +1587,7 @@ index 52aa7a9..6d51413 100644
          toggles->setValue(ult::DROPDOWN_SYMBOL);
          toggles->setClickListener([this, toggles](uint64_t keys) {
              if (keys & KEY_A) {
-@@ -1916,7 +1918,7 @@ public:
+@@ -1937,7 +1939,7 @@ public:
  
          // 2. Colors (not Full mode - it has no color settings)
          //if (!isFullMode) {
@@ -1581,7 +1596,7 @@ index 52aa7a9..6d51413 100644
          colors->setValue(ult::DROPDOWN_SYMBOL);
          colors->setClickListener([this, colors](uint64_t keys) {
              if (keys & KEY_A) {
-@@ -1932,7 +1934,7 @@ public:
+@@ -1953,7 +1955,7 @@ public:
          
          // 4. Font Sizes (Mini/Micro/FPS Counter only)
          if (isMiniMode || isMicroMode || isFPSCounterMode) {
@@ -1590,7 +1605,7 @@ index 52aa7a9..6d51413 100644
              fontSizes->setValue(ult::DROPDOWN_SYMBOL);
              fontSizes->setClickListener([this, fontSizes](uint64_t keys) {
                  if (keys & KEY_A) {
-@@ -1946,7 +1948,7 @@ public:
+@@ -1967,7 +1969,7 @@ public:
          }
          
          // 1. Refresh Rate (all modes)
@@ -1599,7 +1614,7 @@ index 52aa7a9..6d51413 100644
          refreshRate->setValue(std::to_string(getCurrentRefreshRate()) + " Hz");
          refreshRate->setClickListener([this, refreshRate](uint64_t keys) {
              if (keys & KEY_A) {
-@@ -1960,7 +1962,7 @@ public:
+@@ -1981,7 +1983,7 @@ public:
          
          // 6. DTC Format (Mini/Micro only) - NEW ADDITION
          if (isMiniMode || isMicroMode) {
@@ -1608,7 +1623,7 @@ index 52aa7a9..6d51413 100644
              dtcFormat->setValue(getCurrentDTCFormat());
              dtcFormat->setClickListener([this, dtcFormat](uint64_t keys) {
                  if (keys & KEY_A) {
-@@ -1975,7 +1977,7 @@ public:
+@@ -1996,7 +1998,7 @@ public:
  
          // 7. Frame Padding (Mini only) - NEW ADDITION
          if (isMiniMode || isGameResolutionsMode || isFPSCounterMode || isFPSGraphMode) {
@@ -1617,7 +1632,7 @@ index 52aa7a9..6d51413 100644
              framePadding->setValue(std::to_string(getCurrentFramePadding()) + " px");
              framePadding->setClickListener([this, framePadding](uint64_t keys) {
                  if (keys & KEY_A) {
-@@ -1991,7 +1993,7 @@ public:
+@@ -2012,7 +2014,7 @@ public:
          // 7. Mode-specific positioning settings
          if (isMicroMode) {
              // Text Alignment for Micro
@@ -1626,7 +1641,7 @@ index 52aa7a9..6d51413 100644
              textAlign->setValue(getCurrentTextAlign());
              textAlign->setClickListener([this, textAlign](uint64_t keys) {
                  if (keys & KEY_A) {
-@@ -2004,7 +2006,7 @@ public:
+@@ -2025,7 +2027,7 @@ public:
              list->addItem(textAlign);
  
              // Vertical Position for Micro (Top/Bottom only)
@@ -1635,7 +1650,7 @@ index 52aa7a9..6d51413 100644
              layerPos->setValue(getCurrentLayerPosBottom());
              layerPos->setClickListener([this, layerPos](uint64_t keys) {
                  if (keys & KEY_A) {
-@@ -2018,7 +2020,7 @@ public:
+@@ -2039,7 +2041,7 @@ public:
              
          } else if (isFullMode) {
              // Horizontal Position for Full (Left/Right only)
@@ -1644,7 +1659,7 @@ index 52aa7a9..6d51413 100644
              layerPos->setValue(getCurrentLayerPosRight());
              layerPos->setClickListener([this, layerPos](uint64_t keys) {
                  if (keys & KEY_A) {
-@@ -2032,7 +2034,7 @@ public:
+@@ -2053,7 +2055,7 @@ public:
              
          //} else if (isGameResolutionsMode || isFPSCounterMode || isFPSGraphMode) {
          //    // Both horizontal and vertical positioning
@@ -1653,7 +1668,7 @@ index 52aa7a9..6d51413 100644
          //    layerPosH->setValue(getCurrentLayerPosRight());
          //    layerPosH->setClickListener([this, layerPosH](uint64_t keys) {
          //        if (keys & KEY_A) {
-@@ -2044,7 +2046,7 @@ public:
+@@ -2065,7 +2067,7 @@ public:
          //    });
          //    list->addItem(layerPosH);
          //    
@@ -1662,7 +1677,7 @@ index 52aa7a9..6d51413 100644
          //    layerPosV->setValue(getCurrentLayerPosBottom());
          //    layerPosV->setClickListener([this, layerPosV](uint64_t keys) {
          //        if (keys & KEY_A) {
-@@ -2064,7 +2066,7 @@ public:
+@@ -2085,7 +2087,7 @@ public:
              jumpItemExactMatch = false;
          }
          
@@ -1671,7 +1686,7 @@ index 52aa7a9..6d51413 100644
          rootFrame->setContent(list);
          return rootFrame;
      }
-@@ -2103,7 +2105,7 @@ private:
+@@ -2124,7 +2126,7 @@ private:
              
              // Handle defaults properly
              if (value.empty()) {
@@ -1680,7 +1695,7 @@ index 52aa7a9..6d51413 100644
              }
              
              // Convert format string to display name
-@@ -2137,9 +2139,9 @@ private:
+@@ -2162,9 +2164,9 @@ private:
          if (isMicroMode) {
              std::string value = ult::parseValueFromIniSection(configIniPath, "micro", "text_align");
              convertToUpper(value);
@@ -1693,7 +1708,7 @@ index 52aa7a9..6d51413 100644
          }
          return "";
      }
-@@ -2156,13 +2158,13 @@ private:
+@@ -2181,13 +2183,13 @@ private:
          
          if (isFullMode) {
              // Full mode: only Left and Right allowed
@@ -1712,7 +1727,7 @@ index 52aa7a9..6d51413 100644
          }
      }
  
-@@ -2178,13 +2180,13 @@ private:
+@@ -2203,13 +2205,13 @@ private:
          
          if (isMicroMode) {
              // Micro mode: only Top and Bottom allowed
@@ -1731,7 +1746,7 @@ index 52aa7a9..6d51413 100644
          }
      }
      
-@@ -2192,12 +2194,13 @@ private:
+@@ -2217,12 +2219,13 @@ private:
          if (isMicroMode) {
              const std::string current = getCurrentTextAlign();
              std::string next;
@@ -1750,7 +1765,7 @@ index 52aa7a9..6d51413 100644
              return next;
          }
          return "";
-@@ -2215,16 +2218,16 @@ private:
+@@ -2240,16 +2243,16 @@ private:
          
          if (isFullMode) {
              // Full mode: only Left and Right
@@ -1773,7 +1788,7 @@ index 52aa7a9..6d51413 100644
          ult::setIniFileValue(configIniPath, section, "layer_width_align", value);
          return next;
      }
-@@ -2241,16 +2244,16 @@ private:
+@@ -2266,16 +2269,16 @@ private:
          
          if (isMicroMode) {
              // Micro mode: only Top and Bottom
@@ -1797,10 +1812,10 @@ index 52aa7a9..6d51413 100644
          return next;
      }
 diff --git a/source/modes/FPS_Graph.hpp b/source/modes/FPS_Graph.hpp
-index 8b7c381..d548a16 100644
+index 3e762b4..f744a65 100644
 --- a/source/modes/FPS_Graph.hpp
 +++ b/source/modes/FPS_Graph.hpp
-@@ -445,7 +445,7 @@ public:
+@@ -435,7 +435,7 @@ public:
                  renderer->drawString(RAM_Load_c, false, value_x, startY + lineHeight * 2+2*SPACING, fontSize, settings.textColor);
                  
                  // Line 3: SOC (with gradient color)
@@ -1809,7 +1824,7 @@ index 8b7c381..d548a16 100644
                  renderer->drawString(SOC_TEMP_c, false, value_x, startY + lineHeight * 3+3*SPACING, fontSize, socColor);
                  
                  // Line 4: PCB (with gradient color)
-@@ -453,7 +453,7 @@ public:
+@@ -443,7 +443,7 @@ public:
                  renderer->drawString(PCB_TEMP_c, false, value_x, startY + lineHeight * 4+4*SPACING, fontSize, pcbColor);
                  
                  // Line 5: SKIN (with gradient color)
@@ -1819,7 +1834,7 @@ index 8b7c381..d548a16 100644
              }
          });
 diff --git a/source/modes/Full.hpp b/source/modes/Full.hpp
-index 239d6f8..447b118 100644
+index 5a32059..47394ba 100644
 --- a/source/modes/Full.hpp
 +++ b/source/modes/Full.hpp
 @@ -123,15 +123,15 @@ public:
@@ -2057,10 +2072,10 @@ index 239d6f8..447b118 100644
          }
          else if (!GameRunning && resolutionLookup != 0) {
 diff --git a/source/modes/Mini.hpp b/source/modes/Mini.hpp
-index d1a10dc..14ab9b8 100644
+index 2ab16bb..cda45f8 100644
 --- a/source/modes/Mini.hpp
 +++ b/source/modes/Mini.hpp
-@@ -525,7 +525,7 @@ public:
+@@ -523,7 +523,7 @@ public:
                          flags |= 4;
                      } else if (key == "SOC" && !(flags & 8)) {
                          shouldAdd = true;
@@ -2069,7 +2084,7 @@ index d1a10dc..14ab9b8 100644
                          flags |= 8;
                      } else if (key == "TMP" && !(flags & 16)) {
                          shouldAdd = true;
-@@ -720,7 +720,7 @@ public:
+@@ -714,7 +714,7 @@ public:
                  const int baseY = currentY + frameOffsetY + clippingOffsetY;
                  
                  if (settings.useDynamicColors) {
@@ -2163,10 +2178,10 @@ index 0bac6be..c472e3f 100644
          // Format just the values for NV clocks
          snprintf(NVDEC_value_c, sizeof(NVDEC_value_c), "%.1f MHz", (float)NVDEC_Hz / 1000000);
 diff --git a/source/modes/Resolutions.hpp b/source/modes/Resolutions.hpp
-index 856e70e..e98ce0a 100644
+index 0a16b49..05a1c67 100644
 --- a/source/modes/Resolutions.hpp
 +++ b/source/modes/Resolutions.hpp
-@@ -285,9 +285,9 @@ public:
+@@ -276,9 +276,9 @@ public:
          
                  int xOffset = 10;
                  int yOffset = 10;
@@ -2178,7 +2193,7 @@ index 856e70e..e98ce0a 100644
                  renderer->drawString(Resolutions2_c, false, xOffset + final_base_x + 180, yOffset + final_base_y + 55, 18, settings.textColor);
              }
              // Game not detected
-@@ -300,9 +300,9 @@ public:
+@@ -291,9 +291,9 @@ public:
          
                  std::string msg;
                  if (under100ms && waitingForGame)
