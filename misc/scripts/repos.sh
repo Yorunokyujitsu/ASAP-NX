@@ -29,16 +29,16 @@ if [[ "${ENABLE_CUSTOM:-0}" == "1" ]]; then
     "switchbrew/nx-hbloader"
     #"Yorunokyujitsu/sphaira@test"
 
-    # System modules and overlays (latest libultrahand 5dc0b63)
-    "ppkantorski/Ultrahand-Overlay@f580fd9"
+    # System modules and overlays (latest libultrahand c034e9c)
+    "ppkantorski/Ultrahand-Overlay@7df15c9"
     "ppkantorski/EdiZon-Overlay@835e2fd"
-    "masagrator/FPSLocker@76f3619"
-    "ppkantorski/NX-FanControl@4c3226e"
-    "ppkantorski/ovl-sysmodules@73bb9cf"
+    "masagrator/FPSLocker@1d7f081"
+    "ppkantorski/NX-FanControl@91fccf8"
+    "ppkantorski/ovl-sysmodules@6b5dc4f"
     "masagrator/ReverseNX-RT@725eb27"
-    "ppkantorski/Status-Monitor-Overlay@3d1204b"
-    "ppkantorski/sys-clk@d6bc69d"
-    "borntohonk/sys-patch@f51f916"
+    "ppkantorski/Status-Monitor-Overlay@1335710"
+    "ppkantorski/sys-clk@9d23400"
+    "borntohonk/sys-patch" # a3c8cca
 
     # Homebrews
     "HamletDuFromage/aio-switch-updater=ASAP-Updater@3d38eaa"

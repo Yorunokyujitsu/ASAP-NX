@@ -20,6 +20,7 @@ LINKALHO="${APP_DIR}/linkalho/lib/"
 # libultrahand path
 LIB_PATHS=(
   "EdiZon-Overlay/libs/"
+  #"FPSLocker/libs/"
   "NX-FanControl/overlay/lib/"
   "ovl-sysmodules/libs/"
   "ReverseNX-RT/Overlay/libs/"
