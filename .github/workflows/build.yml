@@ -43,7 +43,6 @@ jobs:
         shell: bash
         run: |
           set -e
-          dkp-pacman -Sy --noconfirm libnx
           apt-get update
           apt-get install -y --no-install-recommends \
           git jq zip unzip rsync \

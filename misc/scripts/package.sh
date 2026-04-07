@@ -191,11 +191,6 @@ package_asap() {
 
   # Packaging
   AMS_DIR="${APP_DIR}/Atmosphere/out/nintendo_nx_arm64_armv8a/release/atmosphere-out"
-  AMS_EXOSPHERE="${APP_DIR}/Atmosphere_8GB/exosphere/out/nintendo_nx_arm64_armv8a/release/exosphere.bin"
-  AMS_FUSEE="${APP_DIR}/Atmosphere_8GB/fusee/out/nintendo_nx_arm_armv4t/release/fusee.bin"
-
-  require_file "${AMS_EXOSPHERE}"
-  require_file "${AMS_FUSEE}"
 
   cp -r "${AMS_DIR}/atmosphere/config" "${DIST_DIR}/atmosphere"
   cp -r "${AMS_DIR}/atmosphere/hbl_html" "${DIST_DIR}/atmosphere"
@@ -218,7 +213,6 @@ package_asap() {
 
   cp "${MISC_DIR}/tools/img_converter/hekate_res/background.bmp" "${DIST_DIR}/bootloader/res/asap.bmp"
   cp "${TOP_DIR}/version.inc" "${DIST_DIR}/atmosphere/config"
-  cp "${AMS_EXOSPHERE}" "${DIST_DIR}/atmosphere/config/exosphere_.bin"
   cp "${APP_DIR}/nx-hbloader/hbl.nsp" "${DIST_DIR}/atmosphere/spl/spl.nsp"
   cp "${AMS_DIR}/atmosphere/package3" "${DIST_DIR}/atmosphere"
   cp "${AMS_DIR}/atmosphere/stratosphere.romfs" "${DIST_DIR}/atmosphere"
@@ -229,7 +223,6 @@ package_asap() {
   cp "${APP_DIR}/hekate/output/hekate.bin" "${DIST_DIR}/bootloader/update.bin"
   cp "${APP_DIR}/hekate/output/hekate.bin" "${DIST_DIR}/payload.bin"
   cp "${APP_DIR}/hekate/output/nyx.bin" "${DIST_DIR}/bootloader/sys"
-  cp "${AMS_FUSEE}" "${DIST_DIR}/switch/.packages/.offload/ram_expansion/fusee_8gb.bin"
   cp "${APP_DIR}/hekate_8GB/output/hekate.bin" "${DIST_DIR}/switch/.packages/.offload/ram_expansion/hekate_8gb.bin"
   cp "${APP_DIR}/FPSLocker/FPSLocker.ovl" "${DIST_DIR}/switch/.overlays"
   cp "${APP_DIR}/EdiZon-Overlay/out/ovlEdiZon.ovl" "${DIST_DIR}/switch/.overlays"
@@ -252,9 +245,11 @@ package_asap() {
   cp "${MISC_DIR}/ini/overlays.ini" "${DIST_DIR}/config/ultrahand"
   cp "${MISC_DIR}/ini/ftpsrv.ini" "${DIST_DIR}/config/ftpsrv/config_.ini"
   cp "${MISC_DIR}/mod/boot.dat" "${DIST_DIR}"
-  cp "${MISC_DIR}/cache/wb_14.bin" "${DIST_DIR}/warmboot_mariko"
-  cp "${MISC_DIR}/cache/wb_15.bin" "${DIST_DIR}/warmboot_mariko"
   cp "${MISC_DIR}/cache/wb_16.bin" "${DIST_DIR}/warmboot_mariko"
+  cp "${MISC_DIR}/cache/wb_17.bin" "${DIST_DIR}/warmboot_mariko"
+
+  # Temporary
+  cp -r "${APP_DIR}/hekate" "${DIST_DIR}"
 
   # ASAP Current version
   sed -i '/^\[latest_version\]/,/^\[/d' \

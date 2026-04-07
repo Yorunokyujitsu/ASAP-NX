@@ -29,8 +29,8 @@ if [[ "${ENABLE_CUSTOM:-0}" == "1" ]]; then
     "switchbrew/nx-hbloader"
     #"Yorunokyujitsu/sphaira@test"
 
-    # System modules and overlays (latest libultrahand c034e9c)
-    "ppkantorski/Ultrahand-Overlay@7df15c9"
+    # System modules and overlays (latest libultrahand 8159e43)
+    "ppkantorski/Ultrahand-Overlay@2ba22aa"
     "ppkantorski/EdiZon-Overlay@835e2fd"
     "masagrator/FPSLocker@1d7f081"
     "ppkantorski/NX-FanControl@91fccf8"
@@ -38,7 +38,7 @@ if [[ "${ENABLE_CUSTOM:-0}" == "1" ]]; then
     "masagrator/ReverseNX-RT@725eb27"
     "ppkantorski/Status-Monitor-Overlay@1335710"
     "ppkantorski/sys-clk@9d23400"
-    "borntohonk/sys-patch" # a3c8cca
+    "borntohonk/sys-patch" #35d2c25
 
     # Homebrews
     "HamletDuFromage/aio-switch-updater=ASAP-Updater@3d38eaa"
@@ -47,7 +47,6 @@ if [[ "${ENABLE_CUSTOM:-0}" == "1" ]]; then
 
     # Local
     "__local__/hekate_8GB"
-    "__local__/Atmosphere_8GB"
     "__local__/LockPick"
   )
 else
@@ -57,10 +56,8 @@ else
     "Atmosphere-NX/Atmosphere"
     "switchbrew/nx-hbloader"
     "switchbrew/nx-hbmenu"
-    #"ITotalJustice/sphaira"
     "suchmememanyskill/TegraExplorer"
     "impeeza/Lockpick_RCMDecScots=Lockpick_RCM"
-    #"impeeza/sys-patch"
     "HamletDuFromage/aio-switch-updater"
     "impeeza/linkalho"
   )

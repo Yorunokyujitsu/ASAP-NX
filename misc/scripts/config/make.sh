@@ -40,24 +40,6 @@ for entry in "${REPOS[@]}"; do
     continue
   fi
 
-  # Atmosphere_8GB (only fusee + exosphere)
-  if [[ "$dest" == "Atmosphere_8GB" ]]; then
-    [[ "$ENABLE_ATMOSPHERE" == "1" ]] || continue
-    print_title "[BUILD] ${dest}"
-
-    if [[ -d "$dir/fusee" ]]; then
-      make -C "$dir/fusee" -j"$(nproc)"
-    fi
-
-    if [[ -d "$dir/exosphere" ]]; then
-      make -C "$dir/exosphere" -j"$(nproc)"
-    fi
-
-    echo "${dest} partial build completed"
-    echo
-    continue
-  fi
-
   # Works only with DBIPatcher forks derived from Yorunokyujitsu’s repository.
   if [[ "$dest" == "DBIPatcher" ]]; then
     source "$dir/config.txt"
