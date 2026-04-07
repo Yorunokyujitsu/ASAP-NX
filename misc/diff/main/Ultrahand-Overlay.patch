@@ -1,5 +1,5 @@
 diff --git a/source/main.cpp b/source/main.cpp
-index 153392bf..d44fe887 100644
+index 153392bf..fc76ef8f 100644
 --- a/source/main.cpp
 +++ b/source/main.cpp
 @@ -169,7 +169,7 @@ static std::string lastPackageMenu;
@@ -166,17 +166,15 @@ index 153392bf..d44fe887 100644
          
          auto* list = new tsl::elm::List();
          
-@@ -852,8 +932,8 @@ public:
+@@ -852,7 +932,7 @@ public:
              
              // Apply defaults and processing
              trim(keyCombo);
 -            defaultLang = defaultLang.empty() ? "en" : defaultLang;
--            keyCombo = keyCombo.empty() ? defaultCombos[0] : keyCombo;
 +            defaultLang = defaultLang.empty() ? "ko" : defaultLang;
-+            keyCombo = keyCombo.empty() ? defaultCombos[20] : keyCombo;
+             keyCombo = keyCombo.empty() ? defaultCombos[0] : keyCombo;
              convertComboToUnicode(keyCombo);
              currentTheme = (currentTheme.empty() || currentTheme == DEFAULT_STR) ? DEFAULT : currentTheme;
- 
 @@ -900,7 +980,7 @@ public:
  
              for (const auto& defaultLangMode : defaultLanguages) {
@@ -211,17 +209,18 @@ index 153392bf..d44fe887 100644
              }
              
              addHeader(list, SOFTWARE_UPDATE);
+-            addUpdateButton(list, UPDATE_ULTRAHAND, fullVersionLabel);
 +            std::vector<std::vector<std::string>> tableData = {
-+                {"", "", "" + UPDATE_ASAP_1},
-+                {"", "", "" + UPDATE_ASAP_2},
-+                {"", "", ""},
-+                {"", "", "" + UPDATE_ASAP_3},
-+                {"", "", "" + UPDATE_ASAP_4},
-+                {"", "", ""}
++                {"", UPDATE_ASAP_1},
++                {"", UPDATE_ASAP_2},
++                {"", ""},
++                {"", UPDATE_ASAP_3},
++                {"", UPDATE_ASAP_4},
++                {"", ""}
 +            };
 +            addTable(list, tableData, "", 10, 35, 10, 10, DEFAULT_STR, "notice", DEFAULT_STR, CENTER_STR);
 +            addGap(list, 20);
-             addUpdateButton(list, UPDATE_ULTRAHAND, fullVersionLabel);
++            addUpdateButton(list, "ASAP-Test", fullVersionLabel);
 +            addGap(list, 30);
              
              PackageHeader overlayHeader;
@@ -232,7 +231,7 @@ index 153392bf..d44fe887 100644
 -            overlayHeader.credits = ULTRAHAND_CREDITS_START+"WerWolv, HookedBehemoth, B3711, ComplexNarrative, ssky, MasaGratoR, meha,"+ULTRAHAND_CREDITS_END;
 +            overlayHeader.about = ABOUT_INFO;
 +            overlayHeader.creator = "ppkantorski, forked by Asa";
-+            overlayHeader.credits = "B3711, ComplexNarrative, meha,      ssky, MasaGratoR, WerWolv, HookedBehemoth, many others";
++            overlayHeader.credits = "B3711, ComplexNarrative, meha, ssky, MasaGratoR, WerWolv, HookedBehemoth, many others";
  
              std::string defaultLang = parseValueFromIniSection(ULTRAHAND_CONFIG_INI_PATH, ULTRAHAND_PROJECT_NAME, DEFAULT_LANG_STR);
              if (defaultLang.empty()) {
@@ -319,18 +318,15 @@ index 153392bf..d44fe887 100644
  
              //addGap(list, 3);
              
-@@ -1067,9 +1156,9 @@ public:
+@@ -1067,7 +1156,7 @@ public:
              
              char ramString[24];
              const float freeRamMB = static_cast<float>(RAM_Total_system_u - RAM_Used_system_u) / (1024.0f * 1024.0f);
 -            snprintf(ramString, sizeof(ramString), "%.2f MB %s", freeRamMB, FREE.c_str());
 +            snprintf(ramString, sizeof(ramString), "%s: %.2f MB", FREE.c_str(), freeRamMB);
              
--            const char* ramColor = freeRamMB >= 9.0f ? "healthy_ram" : (freeRamMB >= 4.0f ? "neutral_ram" : "bad_ram");
-+            const char* ramColor = freeRamMB >= 9.0f ? "healthy_ram" : (freeRamMB >= 3.0f ? "neutral_ram" : "bad_ram");
+             const char* ramColor = freeRamMB >= 9.0f ? "healthy_ram" : (freeRamMB >= 4.0f ? "neutral_ram" : "bad_ram");
              
-             auto* systemMemoryHeader = new tsl::elm::CategoryHeader(SYSTEM_RAM);
-             systemMemoryHeader->setValue(ramString, getRawColor(ramColor, tsl::infoTextColor));
 @@ -1193,7 +1282,7 @@ public:
              // Add an "Exit Overlay System" menu item
              auto* exitItem = new tsl::elm::ListItem(EXIT_OVERLAY_SYSTEM, "", true);
@@ -367,6 +363,17 @@ index 153392bf..d44fe887 100644
                  else
                      currentSounds = OPTION_SYMBOL;
              }
+@@ -1531,8 +1620,8 @@ public:
+                 };
+                 
+                 std::vector<std::string> infoLines = {
+-                    "\uE0B6 ("+CLICK+")\uE058 ("+TAP+")",
+-                    "\uE0B6 ("+HOLD_FOR_4S+")",
++                    "\uE0F2 ("+CLICK+")\uE058 ("+TAP+")",
++                    "\uE0F2 ("+HOLD_FOR_4S+")",
+                 };
+                 
+                 size_t maxInfoWidth = 0;
 @@ -1574,8 +1663,8 @@ public:
              addHeader(list, MENU_SETTINGS);
              hidePackages = getBoolValue("hide_packages", false); // FALSE_STR default
@@ -642,11 +649,8 @@ index 153392bf..d44fe887 100644
                          }
                          const std::string translationJsonPath = packageFilePath+"lang/"+defaultLang+".json";
  
-@@ -7216,9 +7316,15 @@ public:
- // Extract the settings initialization logic into a separate method
- void initializeSettingsAndDirectories() {
+@@ -7218,7 +7318,12 @@ void initializeSettingsAndDirectories() {
      versionLabel = cleanVersionLabel(APP_VERSION) + " " + DIVIDER_SYMBOL + " " + loaderTitle + " " + cleanVersionLabel(loaderInfo);
-+    std::string defaultLang = "ko";
  
      // Create necessary directories
 -    createDirectory(PACKAGE_PATH);
@@ -659,7 +663,7 @@ index 153392bf..d44fe887 100644
      createDirectory(LANG_PATH);
      createDirectory(FLAGS_PATH);
      createDirectory(NOTIFICATIONS_FLAGS_PATH);
-@@ -7228,8 +7334,12 @@ void initializeSettingsAndDirectories() {
+@@ -7228,8 +7333,12 @@ void initializeSettingsAndDirectories() {
      createDirectory(SOUNDS_PATH);
      createDirectory(LOADED_SOUNDS_PATH);
      createDirectory(ASSETS_PATH);
@@ -668,11 +672,59 @@ index 153392bf..d44fe887 100644
  
 +    // Update latest version
 +    downloadFile(LATEST_RELEASE_INFO_URL, SETTINGS_PATH);
-+    
++
      bool needsUpdate = false;
      std::map<std::string, std::map<std::string, std::string>> iniData;
  
-@@ -7456,7 +7566,7 @@ public:
+@@ -7258,7 +7367,7 @@ void initializeSettingsAndDirectories() {
+     ensureDefault("dynamic_logo",             TRUE_STR);
+     ensureDefault("selection_bg",             TRUE_STR);
+     ensureDefault("selection_text",           FALSE_STR);
+-    ensureDefault("selection_value",          FALSE_STR);
++    ensureDefault("selection_value",          TRUE_STR);
+     ensureDefault("launch_combos",            TRUE_STR);
+     ensureDefault("sound_effects",            TRUE_STR);
+     ensureDefault("haptic_feedback",          FALSE_STR);
+@@ -7269,9 +7378,9 @@ void initializeSettingsAndDirectories() {
+     ensureDefault("notifications_hotkey",     TRUE_STR);
+     ensureDefault("max_notifications",        "3");
+     ensureDefault("hide_clock",               FALSE_STR);
+-    ensureDefault("hide_battery",             TRUE_STR);
++    ensureDefault("hide_battery",             FALSE_STR);
+     ensureDefault("hide_pcb_temp",            TRUE_STR);
+-    ensureDefault("hide_soc_temp",            TRUE_STR);
++    ensureDefault("hide_soc_temp",            FALSE_STR);
+     ensureDefault("dynamic_widget_colors",    TRUE_STR);
+     ensureDefault("hide_widget_backdrop",     FALSE_STR);
+     ensureDefault("center_widget_alignment",  TRUE_STR);
+@@ -7286,7 +7395,7 @@ void initializeSettingsAndDirectories() {
+         else { sec[key] = def; flag = (def == TRUE_STR); needsUpdate = true; }
+     };
+ 
+-    setDefaultValue("hide_user_guide",        FALSE_STR, hideUserGuide);
++    //setDefaultValue("hide_user_guide",        FALSE_STR, hideUserGuide);
+     setDefaultValue("hide_packages",          FALSE_STR, hidePackages);
+     setDefaultValue("hide_hidden",            FALSE_STR, hideHidden);  // also set by parseOverlaySettings
+     setDefaultValue("hide_delete",            FALSE_STR, hideDelete);
+@@ -7296,7 +7405,7 @@ void initializeSettingsAndDirectories() {
+     setDefaultValue("hide_overlay_versions",  FALSE_STR, hideOverlayVersions);
+     setDefaultValue("hide_package_versions",  FALSE_STR, hidePackageVersions);
+     setDefaultValue("libultrahand_titles",    FALSE_STR, useLibultrahandTitles);
+-    setDefaultValue("libultrahand_versions",  TRUE_STR,  useLibultrahandVersions);
++    setDefaultValue("libultrahand_versions",  FALSE_STR,  useLibultrahandVersions);
+     setDefaultValue("package_titles",         FALSE_STR, usePackageTitles);
+     setDefaultValue("package_versions",       TRUE_STR,  usePackageVersions);
+     setDefaultValue("page_swap",              FALSE_STR, usePageSwap);        // also set by parseOverlaySettings
+@@ -7315,7 +7424,7 @@ void initializeSettingsAndDirectories() {
+         saveIniFileData(ULTRAHAND_CONFIG_INI_PATH, iniData);
+ 
+     // Sync combo and set initial menu page (run once)
+-    updateMenuCombos = copyTeslaKeyComboToUltrahand();
++    //updateMenuCombos = copyTeslaKeyComboToUltrahand();
+ 
+     static bool hasInitialized = false;
+     if (!hasInitialized) {
+@@ -7456,7 +7565,7 @@ public:
              }
          }
          if (firstBoot && tsl::notification && useStartupNotification) {
@@ -682,9 +734,28 @@ index 153392bf..d44fe887 100644
  
          // Default behavior - load main menu
 diff --git a/source/utils.hpp b/source/utils.hpp
-index 4737ce10..ae346f94 100644
+index 4737ce10..bbb01c94 100644
 --- a/source/utils.hpp
 +++ b/source/utils.hpp
+@@ -203,8 +203,9 @@ void removeKeyComboFromOthers(const std::string& keyCombo, const std::string& cu
+ }
+ 
+ // Define default key combos (same as UltrahandSettingsMenu)
+-static const std::array<std::string, 29> defaultCombos = {
++static const std::array<std::string, 28> defaultCombos = {
+     // Primary (Default) Combos – top priority, always first
++    "L+DDOWN+RS",
+     "ZL+ZR+DDOWN",
+     "ZL+ZR+DRIGHT",
+     "ZL+ZR+DUP",
+@@ -231,7 +232,6 @@ static const std::array<std::string, 29> defaultCombos = {
+ 
+     // Stick Click Combos
+     "LS+RS",
+-    "L+DDOWN+RS",
+     "L+R+LS",
+     "L+R+RS",
+ 
 @@ -857,7 +857,7 @@ void powerOffAllControllers() {
   * - If neither has a combo: do nothing
   * 
