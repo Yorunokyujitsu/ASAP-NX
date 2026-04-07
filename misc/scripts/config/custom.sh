@@ -283,26 +283,6 @@ else
   echo "[ERROR] hekate not found, skipping"
 fi
 
-# Duplicating Atmosphere
-AMS_8GB="${APP_DIR}/Atmosphere_8GB"
-AMS_SECMON="${AMS_8GB}/exosphere/program/source/smc/secmon_smc_info.cpp"
-AMS_FUSEE="${AMS_8GB}/libraries/libexosphere/source/fuse/fuse_api.cpp"
-
-rsync -a "${APP_DIR}/Atmosphere/" "${AMS_8GB}/"
-
-for i in {1..200}; do
-  if [[ -f "${AMS_SECMON}" && -f "${AMS_FUSEE}" ]]; then
-    echo "Duplicated: Atmosphere > Atmosphere_8GB"
-    break
-  fi
-  sleep 0.1
-done
-
-if [[ ! -f "${AMS_SECMON}" || ! -f "${AMS_FUSEE}" ]]; then
-  echo "[ERROR] Atmosphere_8GB copy incomplete (timeout)"
-  exit 1
-fi
-
 # Hekate 8GB DRAM
 if [[ -f "${APP_DIR}/hekate_8GB/loader/loader.c" ]]; then
   echo "Patching: loader.c"
@@ -315,34 +295,4 @@ else
   echo "[ERROR] loader.c not found, skipping 8GB DRAM Mode"
 fi
 echo
-
-# Atmosphere 8GB DRAM
-if [[ -f "${AMS_SECMON}" ]]; then
-  echo "Patching: secmon_smc_info.cpp"
-
-  sed -i \
-    's/u32 memory_mode = pkg1::MemoryMode_4GB;/u32 memory_mode = pkg1::MemoryMode_8GB;/' \
-    "${AMS_SECMON}"
-  sed -i \
-    's/pkg1::MemorySize memory_size = pkg1::MemorySize_4GB;/pkg1::MemorySize memory_size = pkg1::MemorySize_8GB;/' \
-    "${AMS_SECMON}"
-  sed -i \
-    's/if (const auto &bcd = GetBootConfig().data; bcd.IsDevelopmentFunctionEnabled()) {/if (const auto \&bcd = GetBootConfig().data; 1) {/' \
-    "${AMS_SECMON}"
-else
-  echo "[ERROR] secmon_smc_info.cpp not found, skipping"
-fi
-
-if [[ -f "${AMS_FUSEE}" ]]; then
-  echo "Patching: fuse_api.cpp"
-  sed -i '
-    /DramId GetDramId()/,/}/ {
-      s@return static_cast<DramId>(GetDramIdValue(util::BitPack32{GetCommonOdmWord(4)}));@return DramId_AulaSamsung1y8GBX;\
-        return static_cast<DramId>(GetDramIdValue(util::BitPack32{GetCommonOdmWord(4)}));@
-    }
-  ' "${AMS_FUSEE}"
-else
-  echo "[ERROR] fuse_api.cpp not found, skipping"
-fi
-echo "Atmosphere: supported 8GB DRAM Mode"
 echo "Done"
