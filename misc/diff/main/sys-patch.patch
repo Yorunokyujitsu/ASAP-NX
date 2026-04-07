@@ -1,5 +1,5 @@
 diff --git a/Makefile b/Makefile
-index 567d756..d263c31 100644
+index 94822ed..3053a71 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -15,19 +15,16 @@ export GIT_REVISION := $(GIT_BRANCH)-$(shell git rev-parse --short HEAD)
@@ -54,7 +54,7 @@ index 382a67d..3c3484c 100644
  # options for code generation
  #---------------------------------------------------------------------------------
 diff --git a/overlay/src/main.cpp b/overlay/src/main.cpp
-index 9a7887e..fa42d20 100644
+index 63411de..132c50b 100644
 --- a/overlay/src/main.cpp
 +++ b/overlay/src/main.cpp
 @@ -6,8 +6,8 @@
@@ -107,7 +107,7 @@ index 9a7887e..fa42d20 100644
  
          list->addItem(new tsl::elm::CategoryHeader("FS - 0100000000000000"));
          list->addItem(config_noacidsigchk1.create_list_item("noacidsigchk_1.0.0-9.2.0"));
-@@ -140,6 +122,11 @@ public:
+@@ -144,6 +126,11 @@ public:
          return frame;
      }
  
@@ -119,7 +119,7 @@ index 9a7887e..fa42d20 100644
      ConfigEntry config_noacidsigchk1{"fs", "noacidsigchk_1.0.0-9.2.0", true};
      ConfigEntry config_noacidsigchk2{"fs", "noacidsigchk_1.0.0-9.2.0", true};
      ConfigEntry config_noncasigchk1{"fs", "noncasigchk_1.0.0-3.0.2", true};
-@@ -171,7 +158,7 @@ public:
+@@ -177,7 +164,7 @@ public:
      GuiLog() { }
  
      tsl::elm::Element* createUI() override {
@@ -128,7 +128,7 @@ index 9a7887e..fa42d20 100644
          auto list = new tsl::elm::List();
  
          if (does_file_exist(LOG_PATH)) {
-@@ -190,37 +177,43 @@ public:
+@@ -196,37 +183,43 @@ public:
  
                  if (user->last_section != Section) {
                      user->last_section = Section;
@@ -193,7 +193,7 @@ index 9a7887e..fa42d20 100644
          }
  
          frame->setContent(list);
-@@ -233,12 +226,11 @@ public:
+@@ -239,12 +232,11 @@ public:
      GuiMain() { }
  
      tsl::elm::Element* createUI() override {
@@ -209,7 +209,7 @@ index 9a7887e..fa42d20 100644
  
          options->setClickListener([](u64 keys) -> bool {
              if (keys & HidNpadButton_A) {
-@@ -248,14 +240,6 @@ public:
+@@ -254,14 +246,6 @@ public:
              return false;
          });
  
@@ -224,7 +224,7 @@ index 9a7887e..fa42d20 100644
          log->setClickListener([](u64 keys) -> bool {
              if (keys & HidNpadButton_A) {
                  tsl::changeTo<GuiLog>();
-@@ -264,11 +248,36 @@ public:
+@@ -270,11 +254,36 @@ public:
              return false;
          });
  
@@ -263,7 +263,7 @@ index 9a7887e..fa42d20 100644
          frame->setContent(list);
          return frame;
      }
-@@ -285,7 +294,7 @@ public:
+@@ -291,7 +300,7 @@ public:
  } // namespace
  
  int main(int argc, char **argv) {
@@ -286,10 +286,10 @@ index 536873f..e66d977 100644
  
  #---------------------------------------------------------------------------------
 diff --git a/sysmod/src/main.cpp b/sysmod/src/main.cpp
-index 01edb31..8eff51f 100644
+index 8746969..72788c8 100644
 --- a/sysmod/src/main.cpp
 +++ b/sysmod/src/main.cpp
-@@ -583,11 +583,11 @@ void keygen_to_str(char* s, u8 keygen) {
+@@ -589,11 +589,11 @@ void keygen_to_str(char* s, u8 keygen) {
  } // namespace
  
  int main(int argc, char* argv[]) {
@@ -305,7 +305,7 @@ index 01edb31..8eff51f 100644
      ini_remove(log_path);
  
      // load options
-@@ -662,7 +662,7 @@ int main(int argc, char* argv[]) {
+@@ -668,7 +668,7 @@ int main(int argc, char* argv[]) {
          ms_2_str(patch_time, diff_ns/1000ULL/1000ULL);
  
          // defined in the Makefile
