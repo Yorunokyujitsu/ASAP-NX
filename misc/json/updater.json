@@ -1,23 +1,26 @@
 {
     "changelog": {
         "21.2.0": [
-            "sys-patch: 1.5.9 → 1.6.0",
-            "호환성을 위해 최신 libnx 4.12.0-1로 재 빌드되었습니다.",
-            "패치의 패턴이 재구성되었으며 와일드카드/니블을 지원합니다.",
-            "libultrahand와의 호환성 문제로 발생하는 충돌이 수정되었습니다.",
+            "Atmosphère: 1.10.2 → 1.11.1",
+            "6/8GB RAM 모드를 공식 지원하며, AM 패치를 통하여 홈브류의 정상 동작을 지원합니다.",
             "",
-            "Ultrahand: 2.2.9 → 2.3.0",
-            "정리된 코드로 빌드되었으며 알림 관련 옵션이 세부 조정되었습니다.",
-            "일부 오버레이 관련 버그 등이 수정되었습니다.",
+            "Hekate & Nyx: 6.5.1 & 1.9.1 → 6.5.2 & 1.9.2",
+            "컬러 테마를 상세 조정할 수 있도록 변경되었습니다.",
+            "emuMMC 파티셔닝 버튼 문제가 해결, eMMC, 패널, 웨이퍼등 개선된 정보로 수정, 추가되었습니다.",
             "",
-            "libultrahand 업데이트",
-            "ovl-sysmodules: 1.4.7 → 1.4.8",
-            "Status-Monitor-Overlay: 1.3.2+r6 → 1.3.2+r7",
-            "sys-clk: 2.0.1+r21 → 2.0.1+r22",
-            "",
-            "System Clock+",
-            "사용중 표시 버그가 수정되었습니다."
-        ]
+            "Payloads & System Modules & Overlays",
+            "sys-patch는 앞으로 패키지에 포함되지 않으며 제거되었습니다.",
+            "Ultrahand: 2.3.0 → 2.4.1",
+            "ovl-sysmodules: 1.4.7 → 1.5.0",
+            "ATLAS: 1.1.4 → 1.2.0",
+            "SaltyNX: 1.7.4 → 1.7.5",
+            "sys-clk: 2.0.1+r24 → Horizon-OC: 2.2.0",
+            "MissionControl: 0.14.2 → 0.15.1",
+            "FPSLocker: 3.3.1 → 3.3.2",
+            "Status-Monitor: 1.3.2+r6 → 1.3.2+r9",
+            "emuiibo: 1.1.2 → 1.1.3"
+        ],
+        "22.1.0": ""
     },
     "cfws": {
         "asap": {
@@ -37,8 +40,9 @@
         }
     },
     "firmwares": {
+        "22.1.0": "https://github.com/THZoria/NX_Firmware/releases/download/22.1.0/Firmware_22.1.0.zip",
         "22.0.0": "https://github.com/THZoria/NX_Firmware/releases/download/22.0.0/Firmware_22.0.0.zip",
-        "21.2.0": "https://github.com/THZoria/NX_Firmware/releases/download/21.2.0/Firmware_21.2.0.zip",
+        "21.2.0": "https://github.com/THZoria/NX_Firmware/releases/download/21.2.0/Firmware.21.2.0.zip",
         "21.1.0": "https://github.com/THZoria/NX_Firmware/releases/download/21.1.0/Firmware.21.1.0.zip",
         "21.0.1": "https://github.com/THZoria/NX_Firmware/releases/download/21.0.1/Firmware.21.0.1.zip",
         "21.0.0": "https://github.com/THZoria/NX_Firmware/releases/download/21.0.0/Firmware.21.0.0.zip",
