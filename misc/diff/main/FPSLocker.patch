@@ -194,7 +194,7 @@ index 0000000..f7da9ef
 +}
 \ No newline at end of file
 diff --git a/source/Langs.cpp b/source/Langs.cpp
-index 92a5ae3..856a60c 100644
+index e7345cb..afcb30b 100644
 --- a/source/Langs.cpp
 +++ b/source/Langs.cpp
 @@ -5,6 +5,7 @@
@@ -230,10 +230,10 @@ index 92a5ae3..856a60c 100644
          case SetLanguage_PT:
          case SetLanguage_FRCA:
 diff --git a/source/main.cpp b/source/main.cpp
-index 3a05751..eaf6da9 100644
+index 1862712..5b016b4 100644
 --- a/source/main.cpp
 +++ b/source/main.cpp
-@@ -270,7 +270,7 @@ public:
+@@ -289,7 +289,7 @@ public:
  
  		list->addItem(clickableListItem3);
  
@@ -242,7 +242,7 @@ index 3a05751..eaf6da9 100644
  		clickableListItem4->setClickListener([](u64 keys) { 
  			if (keys & HidNpadButton_A) {
  				setForceEnglishLanguage(!forceEnglishLanguage);
-@@ -281,7 +281,7 @@ public:
+@@ -300,7 +300,7 @@ public:
  			return false;
  		});
  
