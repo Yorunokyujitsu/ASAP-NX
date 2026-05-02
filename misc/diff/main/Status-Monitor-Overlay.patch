@@ -121,10 +121,10 @@ index c66ef2f..f65b73e 100644
      convertStrToRGBA4444("#FFFF", &(settings->textColor));
      settings->refreshRate = 10;
 diff --git a/source/main.cpp b/source/main.cpp
-index ca87a6f..6698a3b 100755
+index c1c10d4..8f892d0 100755
 --- a/source/main.cpp
 +++ b/source/main.cpp
-@@ -31,7 +31,7 @@ static std::string lastSelectedItem;
+@@ -33,7 +33,7 @@ static std::string lastSelectedItem;
  //
  //        list->addItem(new tsl::elm::CategoryHeader("FPS"));
  //
@@ -133,7 +133,7 @@ index ca87a6f..6698a3b 100755
  //        comFPSGraph->setClickListener([](uint64_t keys) {
  //            if (keys & KEY_A) {
  //                tsl::swapTo<com_FPSGraph>();
-@@ -41,7 +41,7 @@ static std::string lastSelectedItem;
+@@ -43,7 +43,7 @@ static std::string lastSelectedItem;
  //        });
  //        list->addItem(comFPSGraph);
  //
@@ -142,7 +142,7 @@ index ca87a6f..6698a3b 100755
  //        comFPSCounter->setClickListener([](uint64_t keys) {
  //            if (keys & KEY_A) {
  //                tsl::swapTo<com_FPS>();
-@@ -51,7 +51,7 @@ static std::string lastSelectedItem;
+@@ -53,7 +53,7 @@ static std::string lastSelectedItem;
  //        });
  //        list->addItem(comFPSCounter);
  //
@@ -151,7 +151,7 @@ index ca87a6f..6698a3b 100755
  //        rootFrame->setContent(list);
  //
  //        return rootFrame;
-@@ -92,9 +92,9 @@ public:
+@@ -94,9 +94,9 @@ public:
          
          auto* list = new tsl::elm::List();
  
@@ -163,7 +163,7 @@ index ca87a6f..6698a3b 100755
          Battery->disableClickAnimation();
          Battery->setClickListener([](uint64_t keys) {
              if (keys & KEY_A) {
-@@ -105,7 +105,7 @@ public:
+@@ -107,7 +107,7 @@ public:
          });
          list->addItem(Battery);
  
@@ -172,7 +172,7 @@ index ca87a6f..6698a3b 100755
          Misc->disableClickAnimation();
          Misc->setClickListener([](uint64_t keys) {
              if (keys & KEY_A) {
-@@ -117,7 +117,7 @@ public:
+@@ -119,7 +119,7 @@ public:
          list->addItem(Misc);
  
          //if (SaltySD) {
@@ -181,7 +181,7 @@ index ca87a6f..6698a3b 100755
          //    Res->setClickListener([](uint64_t keys) {
          //        if (keys & KEY_A) {
          //            tsl::swapTo<ResolutionsOverlay>();
-@@ -128,7 +128,7 @@ public:
+@@ -130,7 +130,7 @@ public:
          //    list->addItem(Res);
          //}
          //tsl::elm::g_disableMenuCacheOnReturn.store(true, std::memory_order_release);
@@ -190,7 +190,7 @@ index ca87a6f..6698a3b 100755
          if (!lastSelectedItem.empty()) {
              list->jumpToItem(lastSelectedItem);
          }
-@@ -181,9 +181,9 @@ public:
+@@ -182,9 +182,9 @@ public:
          auto* list = new tsl::elm::List();
          
          //list->addItem(new tsl::elm::CategoryHeader("Modes " + ult::DIVIDER_SYMBOL + " \uE0E0 Enter " + ult::DIVIDER_SYMBOL + " \uE0E3 Configure"));
@@ -203,8 +203,8 @@ index ca87a6f..6698a3b 100755
          Full->disableClickAnimation();
          Full->setClickListener([](uint64_t keys) {
 @@ -196,7 +196,7 @@ public:
-                 triggerRumbleClick.store(true, std::memory_order_release);
-                 triggerSettingsSound.store(true, std::memory_order_release);
+             if (keys & KEY_Y) {
+                 triggerSettingsFeedback();
                  // Launch configurator for Mini mode
 -                tsl::swapTo<ConfiguratorOverlay>("Full");
 +                tsl::swapTo<ConfiguratorOverlay>("전체");
@@ -215,49 +215,41 @@ index ca87a6f..6698a3b 100755
              }
          }
          if (fileExist) {
--            auto* Mini = new tsl::elm::ListItem("Mini");
-+            auto* Mini = new tsl::elm::ListItem("팝업창");
+-            auto* Mini = new tsl::elm::SilentListItem("Mini");
++            auto* Mini = new tsl::elm::SilentListItem("팝업창");
              Mini->enableShortHoldKey();
              Mini->disableClickAnimation();
              Mini->setClickListener([](uint64_t keys) {
-@@ -241,14 +241,14 @@ public:
-                     triggerRumbleClick.store(true, std::memory_order_release);
-                     triggerSettingsSound.store(true, std::memory_order_release);
+@@ -240,7 +240,7 @@ public:
+                 if (keys & KEY_Y) {
+                     triggerSettingsFeedback();
                      // Launch configurator for Mini mode
 -                    tsl::swapTo<ConfiguratorOverlay>("Mini");
 +                    tsl::swapTo<ConfiguratorOverlay>("팝업창");
                      return true;
                  }
                  return false;
-             });
-             list->addItem(Mini);
- 
--            auto* Micro = new tsl::elm::ListItem("Micro");
-+            auto* Micro = new tsl::elm::ListItem("상태바");
-             Micro->enableShortHoldKey();
-             Micro->disableClickAnimation();
-             Micro->setClickListener([](uint64_t keys) {
-@@ -261,7 +261,7 @@ public:
-                     triggerRumbleClick.store(true, std::memory_order_release);
-                     triggerSettingsSound.store(true, std::memory_order_release);
+@@ -259,7 +259,7 @@ public:
+                 if (keys & KEY_Y) {
+                     triggerSettingsFeedback();
                      // Launch configurator for Micro mode
 -                    tsl::swapTo<ConfiguratorOverlay>("Micro");
 +                    tsl::swapTo<ConfiguratorOverlay>("상태바");
                      return true;
                  }
                  return false;
-@@ -280,7 +280,7 @@ public:
+@@ -278,7 +278,7 @@ public:
              //});
              //list->addItem(Graphs);
  
--            auto* comFPSGraph = new tsl::elm::ListItem("FPS Graph");
-+            auto* comFPSGraph = new tsl::elm::ListItem("FPS 그래프");
+-            auto* comFPSGraph = new tsl::elm::SilentListItem("FPS Graph");
++            auto* comFPSGraph = new tsl::elm::SilentListItem("FPS 그래프");
              comFPSGraph->enableShortHoldKey();
              comFPSGraph->disableClickAnimation();
              comFPSGraph->setClickListener([](uint64_t keys) {
-@@ -300,14 +300,14 @@ public:
-                     triggerRumbleClick.store(true, std::memory_order_release);
-                     triggerSettingsSound.store(true, std::memory_order_release);
+@@ -297,14 +297,14 @@ public:
+                 if (keys & KEY_Y) {
+                     triggerSettingsFeedback();
                      // Launch configurator for Micro mode
 -                    tsl::swapTo<ConfiguratorOverlay>("FPS Graph");
 +                    tsl::swapTo<ConfiguratorOverlay>("FPS 그래프");
@@ -267,14 +259,14 @@ index ca87a6f..6698a3b 100755
              });
              list->addItem(comFPSGraph);
  
--            auto* comFPSCounter = new tsl::elm::ListItem("FPS Counter");
-+            auto* comFPSCounter = new tsl::elm::ListItem("FPS 카운터");
+-            auto* comFPSCounter = new tsl::elm::SilentListItem("FPS Counter");
++            auto* comFPSCounter = new tsl::elm::SilentListItem("FPS 카운터");
              comFPSCounter->enableShortHoldKey();
              comFPSCounter->disableClickAnimation();
              comFPSCounter->setClickListener([](uint64_t keys) {
-@@ -327,14 +327,14 @@ public:
-                     triggerRumbleClick.store(true, std::memory_order_release);
-                     triggerSettingsSound.store(true, std::memory_order_release);
+@@ -323,14 +323,14 @@ public:
+                 if (keys & KEY_Y) {
+                     triggerSettingsFeedback();
                      // Launch configurator for Micro mode
 -                    tsl::swapTo<ConfiguratorOverlay>("FPS Counter");
 +                    tsl::swapTo<ConfiguratorOverlay>("FPS 카운터");
@@ -284,21 +276,21 @@ index ca87a6f..6698a3b 100755
              });
              list->addItem(comFPSCounter);
  
--            auto* Res = new tsl::elm::ListItem("Game Resolutions");
-+            auto* Res = new tsl::elm::ListItem("게임 해상도");
+-            auto* Res = new tsl::elm::SilentListItem("Game Resolutions");
++            auto* Res = new tsl::elm::SilentListItem("게임 해상도");
              Res->enableShortHoldKey();
              Res->disableClickAnimation();
              Res->setClickListener([](uint64_t keys) {
-@@ -353,7 +353,7 @@ public:
-                     triggerRumbleClick.store(true, std::memory_order_release);
-                     triggerSettingsSound.store(true, std::memory_order_release);
+@@ -348,7 +348,7 @@ public:
+                 if (keys & KEY_Y) {
+                     triggerSettingsFeedback();
                      // Launch configurator for Micro mode
 -                    tsl::swapTo<ConfiguratorOverlay>("Game Resolutions");
 +                    tsl::swapTo<ConfiguratorOverlay>("게임 해상도");
                      return true;
                  }
                  return false;
-@@ -361,7 +361,7 @@ public:
+@@ -356,7 +356,7 @@ public:
              list->addItem(Res);
  
          }
@@ -307,7 +299,7 @@ index ca87a6f..6698a3b 100755
          Other->disableClickAnimation();
          Other->setValue(ult::DROPDOWN_SYMBOL);
          Other->setClickListener([](uint64_t keys) {
-@@ -382,7 +382,7 @@ public:
+@@ -376,7 +376,7 @@ public:
  
  
          //list->disableCaching();
@@ -317,7 +309,7 @@ index ca87a6f..6698a3b 100755
  
          return rootFrame;
 diff --git a/source/modes/Battery.hpp b/source/modes/Battery.hpp
-index c700a64..cdbed44 100644
+index 4afaa47..c7f4248 100644
 --- a/source/modes/Battery.hpp
 +++ b/source/modes/Battery.hpp
 @@ -43,106 +43,106 @@ public:
@@ -466,10 +458,10 @@ index c700a64..cdbed44 100644
  
          if (isChargerConnected) {
 diff --git a/source/modes/Configurator.hpp b/source/modes/Configurator.hpp
-index 4d35d1e..b6cc856 100644
+index 0c8a834..b4589f4 100644
 --- a/source/modes/Configurator.hpp
 +++ b/source/modes/Configurator.hpp
-@@ -85,11 +85,11 @@ private:
+@@ -237,11 +237,11 @@ private:
  public:
      AlphaSelector(const std::string& mode, const std::string& key, const std::string& displayTitle) 
          : modeName(mode), colorKey(key), title(displayTitle) {
@@ -486,7 +478,7 @@ index 4d35d1e..b6cc856 100644
          }
      ~AlphaSelector() {
          lastSelectedListItem = nullptr;
-@@ -115,7 +115,7 @@ public:
+@@ -267,7 +267,7 @@ public:
          
          // Alpha options
          static const std::vector<std::pair<std::string, char>> alphaOptions = {
@@ -495,7 +487,7 @@ index 4d35d1e..b6cc856 100644
              {"10%", '1'},
              {"20%", '3'},
              {"30%", '4'},
-@@ -125,7 +125,7 @@ public:
+@@ -277,7 +277,7 @@ public:
              {"70%", 'B'},
              {"80%", 'C'},
              {"90%", 'E'},
@@ -504,7 +496,7 @@ index 4d35d1e..b6cc856 100644
          };
          
          for (const auto& option : alphaOptions) {
-@@ -157,7 +157,7 @@ public:
+@@ -309,7 +309,7 @@ public:
          
          list->jumpToItem("", ult::CHECKMARK_SYMBOL, false);
          
@@ -513,7 +505,7 @@ index 4d35d1e..b6cc856 100644
          rootFrame->setContent(list);
          return rootFrame;
      }
-@@ -181,31 +181,33 @@ public:
+@@ -332,31 +332,33 @@ public:
  // Define available DTC format options
  static const std::vector<std::pair<std::string, std::string>> dtcFormats = {
      // Special
@@ -566,7 +558,7 @@ index 4d35d1e..b6cc856 100644
  };
  
  // DTC Format Configuration (Mini/Micro only)
-@@ -217,8 +219,8 @@ private:
+@@ -368,8 +370,8 @@ private:
      
  public:
      DTCFormatConfig(const std::string& mode) : modeName(mode) {
@@ -577,7 +569,7 @@ index 4d35d1e..b6cc856 100644
      }
      ~DTCFormatConfig() {
          lastSelectedListItem = nullptr;
-@@ -226,14 +228,14 @@ public:
+@@ -377,14 +379,14 @@ public:
      
      virtual tsl::elm::Element* createUI() override {
          auto* list = new tsl::elm::List();
@@ -594,7 +586,7 @@ index 4d35d1e..b6cc856 100644
          }
          
          
-@@ -262,7 +264,7 @@ public:
+@@ -413,7 +415,7 @@ public:
          // Jump to currently selected item
          list->jumpToItem("", ult::CHECKMARK_SYMBOL, false);
          
@@ -603,7 +595,7 @@ index 4d35d1e..b6cc856 100644
          rootFrame->setContent(list);
          return rootFrame;
      }
-@@ -295,33 +297,33 @@ private:
+@@ -445,33 +447,33 @@ private:
      
  public:
      TogglesConfig(const std::string& mode) : modeName(mode) {
@@ -647,7 +639,7 @@ index 4d35d1e..b6cc856 100644
              disableScreenshots->setStateChangedListener([this](bool state) {
                  ult::setIniFileValue(configIniPath, "fps-graph", "disable_screenshots", state ? "true" : "false");
              });
-@@ -329,49 +331,49 @@ public:
+@@ -479,49 +481,49 @@ public:
              
          } else if (isFullMode) {
              // Full mode: specific full toggles
@@ -705,7 +697,7 @@ index 4d35d1e..b6cc856 100644
              disableScreenshots->setStateChangedListener([this](bool state) {
                  ult::setIniFileValue(configIniPath, "full", "disable_screenshots", state ? "true" : "false");
              });
-@@ -382,57 +384,57 @@ public:
+@@ -532,57 +534,57 @@ public:
              const std::string section = isMiniMode ? "mini" : "micro";
              
              if (isMiniMode) {
@@ -772,7 +764,7 @@ index 4d35d1e..b6cc856 100644
                  ramLoadCPUGPU->setStateChangedListener([this, section](bool state) {
                      ult::setIniFileValue(configIniPath, section, "show_RAM_load_CPU_GPU", state ? "true" : "false");
                  });
-@@ -440,32 +442,32 @@ public:
+@@ -590,32 +592,32 @@ public:
              }
  
              if (isMiniMode || isMicroMode) {
@@ -810,7 +802,7 @@ index 4d35d1e..b6cc856 100644
              sleepExit->setStateChangedListener([this, section](bool state) {
                  ult::setIniFileValue(configIniPath, section, "sleep_exit", state ? "true" : "false");
              });
-@@ -473,7 +475,7 @@ public:
+@@ -623,7 +625,7 @@ public:
              
          } else if (isGameResolutionsMode) {
              // Game Resolutions mode: only disable_screenshots
@@ -819,7 +811,7 @@ index 4d35d1e..b6cc856 100644
              disableScreenshots->setStateChangedListener([this](bool state) {
                  ult::setIniFileValue(configIniPath, "game_resolutions", "disable_screenshots", state ? "true" : "false");
              });
-@@ -481,14 +483,14 @@ public:
+@@ -631,14 +633,14 @@ public:
              
          } else if (isFPSCounterMode) {
              // FPS Counter mode: only disable_screenshots
@@ -836,7 +828,7 @@ index 4d35d1e..b6cc856 100644
              disableScreenshots->setStateChangedListener([this](bool state) {
                  ult::setIniFileValue(configIniPath, "fps-counter", "disable_screenshots", state ? "true" : "false");
              });
-@@ -502,7 +504,7 @@ public:
+@@ -652,7 +654,7 @@ public:
              jumpItemExactMatch = false;
          }
  
@@ -845,7 +837,7 @@ index 4d35d1e..b6cc856 100644
          rootFrame->setContent(list);
          return rootFrame;
      }
-@@ -701,12 +703,12 @@ private:
+@@ -850,12 +852,12 @@ private:
      
  public:
      RefreshRateConfig(const std::string& mode) : modeName(mode) {
@@ -864,7 +856,7 @@ index 4d35d1e..b6cc856 100644
          
          std::string section;
          if (isMiniMode) section = "mini";
-@@ -727,7 +729,7 @@ public:
+@@ -876,7 +878,7 @@ public:
      
      virtual tsl::elm::Element* createUI() override {
          auto* list = new tsl::elm::List();
@@ -873,7 +865,7 @@ index 4d35d1e..b6cc856 100644
  
          static const std::vector<int> rates = {1, 2, 3, 5, 10, 15, 30, 60};
          for (int rate : rates) {
-@@ -760,7 +762,7 @@ public:
+@@ -909,7 +911,7 @@ public:
          
          list->jumpToItem("", ult::CHECKMARK_SYMBOL, false);
  
@@ -882,7 +874,25 @@ index 4d35d1e..b6cc856 100644
          rootFrame->setContent(list);
          return rootFrame;
      }
-@@ -792,10 +794,10 @@ private:
+@@ -963,7 +965,7 @@ public:
+ 
+     virtual tsl::elm::Element* createUI() override {
+         auto* list = new tsl::elm::List();
+-        list->addItem(new tsl::elm::CategoryHeader("Mode Combo"));
++        list->addItem(new tsl::elm::CategoryHeader("모드 커맨드"));
+ 
+         // ── "None" — clears our slot without touching anyone else's combos.
+         {
+@@ -1035,7 +1037,7 @@ public:
+                              HidAnalogStickState joyStickPosLeft, HidAnalogStickState joyStickPosRight) override {
+         if (keysDown & KEY_B) {
+             triggerExitFeedback();
+-            jumpItemName = "Mode Combo";
++            jumpItemName = "모드 커맨드";
+             jumpItemValue = "";
+             jumpItemExactMatch = false;
+ 
+@@ -1058,10 +1060,10 @@ private:
      
  public:
      FramePaddingConfig(const std::string& mode) : modeName(mode) {
@@ -897,7 +907,7 @@ index 4d35d1e..b6cc856 100644
  
          std::string section;
          if (isMiniMode) section = "mini";
-@@ -813,7 +815,7 @@ public:
+@@ -1079,7 +1081,7 @@ public:
      
      virtual tsl::elm::Element* createUI() override {
          auto* list = new tsl::elm::List();
@@ -906,7 +916,7 @@ index 4d35d1e..b6cc856 100644
  
          std::string section;
          if (isMiniMode) section = "mini";
-@@ -844,7 +846,7 @@ public:
+@@ -1110,7 +1112,7 @@ public:
          
          list->jumpToItem("", ult::CHECKMARK_SYMBOL, false);
  
@@ -915,7 +925,7 @@ index 4d35d1e..b6cc856 100644
          rootFrame->setContent(list);
          return rootFrame;
      }
-@@ -878,12 +880,12 @@ private:
+@@ -1143,12 +1145,12 @@ private:
  public:
      FontSizeSelector(const std::string& mode, const std::string& type) 
          : modeName(mode), fontType(type) {
@@ -932,7 +942,7 @@ index 4d35d1e..b6cc856 100644
          }
      ~FontSizeSelector() {
          lastSelectedListItem = nullptr;
-@@ -900,7 +902,7 @@ public:
+@@ -1165,7 +1167,7 @@ public:
          
          const std::string keyName = fontType + "_font_size";
          const std::string currentValue = ult::parseValueFromIniSection(configIniPath, section, keyName);
@@ -941,7 +951,7 @@ index 4d35d1e..b6cc856 100644
          const int currentSize = currentValue.empty() ? defaultSize : atoi(currentValue.c_str());
          
          // Font size range depends on mode
-@@ -932,7 +934,7 @@ public:
+@@ -1197,7 +1199,7 @@ public:
          
          list->jumpToItem("", ult::CHECKMARK_SYMBOL, false);
          
@@ -950,7 +960,7 @@ index 4d35d1e..b6cc856 100644
          rootFrame->setContent(list);
          return rootFrame;
      }
-@@ -962,14 +964,14 @@ private:
+@@ -1226,14 +1228,14 @@ private:
      
  public:
      FontSizeConfig(const std::string& mode) : modeName(mode) {
@@ -969,7 +979,7 @@ index 4d35d1e..b6cc856 100644
          
          std::string section;
          if (isMiniMode) section = "mini";
-@@ -979,11 +981,11 @@ public:
+@@ -1243,11 +1245,11 @@ public:
          const std::string handheldValue = ult::parseValueFromIniSection(configIniPath, section, "handheld_font_size");
          const std::string dockedValue = ult::parseValueFromIniSection(configIniPath, section, "docked_font_size");
          
@@ -983,7 +993,7 @@ index 4d35d1e..b6cc856 100644
          handheldItem->setValue(std::to_string(handheldSize) + " pt");
          handheldItem->setClickListener([this, handheldItem](uint64_t keys) {
              if (keys & KEY_A) {
-@@ -995,7 +997,7 @@ public:
+@@ -1259,7 +1261,7 @@ public:
          });
          list->addItem(handheldItem);
          
@@ -992,7 +1002,7 @@ index 4d35d1e..b6cc856 100644
          dockedItem->setValue(std::to_string(dockedSize) + " pt");
          dockedItem->setClickListener([this, dockedItem](uint64_t keys) {
              if (keys & KEY_A) {
-@@ -1007,7 +1009,7 @@ public:
+@@ -1271,7 +1273,7 @@ public:
          });
          list->addItem(dockedItem);
          
@@ -1001,7 +1011,7 @@ index 4d35d1e..b6cc856 100644
          rootFrame->setContent(list);
          list->jumpToItem(jumpItemName, jumpItemValue, jumpItemExactMatch);
          {
-@@ -1048,12 +1050,12 @@ private:
+@@ -1311,12 +1313,12 @@ private:
  public:
      ColorSelector(const std::string& mode, const std::string& title, const std::string& key, const std::string& def) 
          : modeName(mode), modeTitle(title), colorKey(key), defaultValue(def) {
@@ -1020,7 +1030,7 @@ index 4d35d1e..b6cc856 100644
              
              // Determine if this is a background color or text-based color
              isBackgroundColor = (key == "background_color" || key == "focus_background_color" || 
-@@ -1090,54 +1092,54 @@ public:
+@@ -1353,54 +1355,54 @@ public:
          // Updated colors list with comprehensive color palette
          static const std::vector<std::pair<std::string, std::string>> colors = {
              // Grays & Basics
@@ -1107,7 +1117,7 @@ index 4d35d1e..b6cc856 100644
          };
          
          std::string _jumpItemValue;
-@@ -1219,7 +1221,7 @@ public:
+@@ -1482,7 +1484,7 @@ public:
          }
          list->jumpToItem("", _jumpItemValue, false);
          
@@ -1116,7 +1126,7 @@ index 4d35d1e..b6cc856 100644
          rootFrame->setContent(list);
          return rootFrame;
      }
-@@ -1252,12 +1254,12 @@ private:
+@@ -1514,12 +1516,12 @@ private:
      
  public:
      ColorConfig(const std::string& mode) : modeName(mode) {
@@ -1135,7 +1145,7 @@ index 4d35d1e..b6cc856 100644
          
          // Full mode should never access color configuration
          //if (isFullMode) {
-@@ -1268,7 +1270,7 @@ public:
+@@ -1530,7 +1532,7 @@ public:
      
      virtual tsl::elm::Element* createUI() override {
          auto* list = new tsl::elm::List();
@@ -1144,7 +1154,7 @@ index 4d35d1e..b6cc856 100644
          
          auto getCurrentColor = [this](const std::string& key, const std::string& def) {
              std::string section;
-@@ -1293,54 +1295,54 @@ public:
+@@ -1555,54 +1557,54 @@ public:
              // Map of hex colors to names (RGB only, no alpha)
              static const std::map<std::string, std::string> colorNames = {
                  // Grays & Basics
@@ -1231,7 +1241,7 @@ index 4d35d1e..b6cc856 100644
              };
              
              auto it = colorNames.find(rgb);
-@@ -1348,8 +1350,8 @@ public:
+@@ -1610,8 +1612,8 @@ public:
                  // Special case for black/transparent disambiguation
                  if (rgb == "#000" && hexColor.length() == 5) {
                      char alpha = hexColor[4];
@@ -1242,7 +1252,7 @@ index 4d35d1e..b6cc856 100644
                  }
                  return it->second;
              }
-@@ -1379,7 +1381,7 @@ public:
+@@ -1641,7 +1643,7 @@ public:
          
          if (!isFullMode) {
              // Background Color (all modes)
@@ -1251,16 +1261,16 @@ index 4d35d1e..b6cc856 100644
              std::string bgDefault = "#0009";
              std::string bgCurrentColor = getCurrentColor("background_color", bgDefault);
              // Display color name instead of hex
-@@ -1387,7 +1389,7 @@ public:
+@@ -1649,7 +1651,7 @@ public:
              bgColor->setClickListener([this, bgColor, bgDefault](uint64_t keys) {
                  if (keys & KEY_A) {
-                     tsl::shiftItemFocus(bgColor);
+                     //tsl::shiftItemFocus(bgColor);
 -                    tsl::changeTo<ColorSelector>(modeName, "Background Color", "background_color", bgDefault);
 +                    tsl::changeTo<ColorSelector>(modeName, "배경 색상", "background_color", bgDefault);
                      return true;
                  }
                  return false;
-@@ -1395,12 +1397,12 @@ public:
+@@ -1657,12 +1659,12 @@ public:
              list->addItem(bgColor);
              
              // Background Alpha (new)
@@ -1269,13 +1279,13 @@ index 4d35d1e..b6cc856 100644
              bgAlpha->setValue(getAlphaPercentage(bgCurrentColor));
              bgAlpha->setClickListener([this, bgAlpha](uint64_t keys) {
                  if (keys & KEY_A) {
-                     tsl::shiftItemFocus(bgAlpha);
+                     //tsl::shiftItemFocus(bgAlpha);
 -                    tsl::changeTo<AlphaSelector>(modeName, "background_color", "Background Alpha");
 +                    tsl::changeTo<AlphaSelector>(modeName, "background_color", "배경 투명도");
                      return true;
                  }
                  return false;
-@@ -1409,13 +1411,13 @@ public:
+@@ -1671,13 +1673,13 @@ public:
          
              if (isMiniMode || isFPSCounterMode || isFPSGraphMode || isGameResolutionsMode) {
                  // Mini mode: has focus background
@@ -1285,13 +1295,13 @@ index 4d35d1e..b6cc856 100644
                  focusBgColor->setValue(getColorName(focusCurrentColor));
                  focusBgColor->setClickListener([this, focusBgColor](uint64_t keys) {
                      if (keys & KEY_A) {
-                         tsl::shiftItemFocus(focusBgColor);
+                         //tsl::shiftItemFocus(focusBgColor);
 -                        tsl::changeTo<ColorSelector>(modeName, "Focus Color", "focus_background_color", "#000F");
 +                        tsl::changeTo<ColorSelector>(modeName, "포커싱 색상", "focus_background_color", "#000F");
                          return true;
                      }
                      return false;
-@@ -1423,12 +1425,12 @@ public:
+@@ -1685,12 +1687,12 @@ public:
                  list->addItem(focusBgColor);
                  
                  // Focus Alpha (new)
@@ -1300,13 +1310,13 @@ index 4d35d1e..b6cc856 100644
                  focusAlpha->setValue(getAlphaPercentage(focusCurrentColor));
                  focusAlpha->setClickListener([this, focusAlpha](uint64_t keys) {
                      if (keys & KEY_A) {
-                         tsl::shiftItemFocus(focusAlpha);
+                         //tsl::shiftItemFocus(focusAlpha);
 -                        tsl::changeTo<AlphaSelector>(modeName, "focus_background_color", "Focus Alpha");
 +                        tsl::changeTo<AlphaSelector>(modeName, "focus_background_color", "포커싱 투명도");
                          return true;
                      }
                      return false;
-@@ -1438,14 +1440,14 @@ public:
+@@ -1700,14 +1702,14 @@ public:
          }
  
          // Text Color (all modes)
@@ -1317,13 +1327,13 @@ index 4d35d1e..b6cc856 100644
          textColor->setValue(getColorName(textCurrentColor));
          textColor->setClickListener([this, textColor](uint64_t keys) {
              if (keys & KEY_A) {
-                 tsl::shiftItemFocus(textColor);
+                 //tsl::shiftItemFocus(textColor);
 -                tsl::changeTo<ColorSelector>(modeName, "Text Color", "text_color", "#FFFF");
 +                tsl::changeTo<ColorSelector>(modeName, "글자 색상", "text_color", "#FFFF");
                  return true;
              }
              return false;
-@@ -1462,12 +1464,12 @@ public:
+@@ -1724,12 +1726,12 @@ public:
              };
              
              // Game Resolutions: only category color (no separator)
@@ -1333,13 +1343,13 @@ index 4d35d1e..b6cc856 100644
 +            catColor->setValue(getColorName(getCurrentColor("cat_color", "#2DFF")));
              catColor->setClickListener([this, catColor](uint64_t keys) {
                  if (keys & KEY_A) {
-                     tsl::shiftItemFocus(catColor);
+                     //tsl::shiftItemFocus(catColor);
 -                    tsl::changeTo<ColorSelector>(modeName, "Category Color", "cat_color", "#0F0F");
 +                    tsl::changeTo<ColorSelector>(modeName, "카테고리 색상", "cat_color", "#2DFF");
                      return true;
                  }
                  return false;
-@@ -1475,18 +1477,18 @@ public:
+@@ -1737,18 +1739,18 @@ public:
              list->addItem(catColor);
  
              static const std::vector<ColorSetting> fpsGraphColors = {
@@ -1367,7 +1377,7 @@ index 4d35d1e..b6cc856 100644
                  const std::string currentVal = getCurrentColor(color.key, color.defaultVal);
                  
                  if (color.isBackgroundType) {
-@@ -1509,12 +1511,12 @@ public:
+@@ -1771,12 +1773,12 @@ public:
                  
                  // Add alpha selector for background-type colors
                  if (color.isBackgroundType) {
@@ -1376,13 +1386,13 @@ index 4d35d1e..b6cc856 100644
                      alphaItem->setValue(getAlphaPercentage(currentVal));
                      alphaItem->setClickListener([this, alphaItem, color](uint64_t keys) {
                          if (keys & KEY_A) {
-                             tsl::shiftItemFocus(alphaItem);
+                             //tsl::shiftItemFocus(alphaItem);
 -                            tsl::changeTo<AlphaSelector>(modeName, color.key, color.name + " Alpha");
 +                            tsl::changeTo<AlphaSelector>(modeName, color.key, color.name + " 투명도");
                              return true;
                          }
                          return false;
-@@ -1524,65 +1526,65 @@ public:
+@@ -1786,65 +1788,65 @@ public:
              }
  
          } else if (isFullMode) {
@@ -1393,8 +1403,9 @@ index 4d35d1e..b6cc856 100644
 +            catColor1->setValue(getColorName(getCurrentColor("cat_color_1", "#2DFF")));
              catColor1->setClickListener([this, catColor1](uint64_t keys) {
                  if (keys & KEY_A) {
-                     tsl::shiftItemFocus(catColor1);
+-                    //tsl::shiftItemFocus(catColor1);
 -                    tsl::changeTo<ColorSelector>(modeName, "Category Color 1", "cat_color_1", "#8FFF");
++                    tsl::shiftItemFocus(catColor1);
 +                    tsl::changeTo<ColorSelector>(modeName, "카테고리 색상 1", "cat_color_1", "#2DFF");
                      return true;
                  }
@@ -1409,8 +1420,9 @@ index 4d35d1e..b6cc856 100644
 +            catColor2->setValue(getColorName(getCurrentColor("cat_color_2", "#FFFF")));
              catColor2->setClickListener([this, catColor2](uint64_t keys) {
                  if (keys & KEY_A) {
-                     tsl::shiftItemFocus(catColor2);
+-                    //tsl::shiftItemFocus(catColor2);
 -                    tsl::changeTo<ColorSelector>(modeName, "Category Color 2", "cat_color_2", "#2DFF");
++                    tsl::shiftItemFocus(catColor2);
 +                    tsl::changeTo<ColorSelector>(modeName, "카테고리 색상 2", "cat_color_2", "#FFFF");
                      return true;
                  }
@@ -1424,7 +1436,7 @@ index 4d35d1e..b6cc856 100644
              sepColor->setValue(getColorName(getCurrentColor("separator_color", "#888F")));
              sepColor->setClickListener([this, sepColor](uint64_t keys) {
                  if (keys & KEY_A) {
-                     tsl::shiftItemFocus(sepColor);
+                     //tsl::shiftItemFocus(sepColor);
 -                    tsl::changeTo<ColorSelector>(modeName, "Separator Color", "separator_color", "#888F");
 +                    tsl::changeTo<ColorSelector>(modeName, "구분선 색상", "separator_color", "#888F");
                      return true;
@@ -1439,7 +1451,7 @@ index 4d35d1e..b6cc856 100644
              catColor->setValue(getColorName(getCurrentColor("cat_color", "#2DFF")));
              catColor->setClickListener([this, catColor](uint64_t keys) {
                  if (keys & KEY_A) {
-                     tsl::shiftItemFocus(catColor);
+                     //tsl::shiftItemFocus(catColor);
 -                    tsl::changeTo<ColorSelector>(modeName, "Category Color", "cat_color", "#2DFF");
 +                    tsl::changeTo<ColorSelector>(modeName, "카테고리 색상", "cat_color", "#2DFF");
                      return true;
@@ -1454,13 +1466,13 @@ index 4d35d1e..b6cc856 100644
              sepColor->setValue(getColorName(getCurrentColor("separator_color", "#888F")));
              sepColor->setClickListener([this, sepColor](uint64_t keys) {
                  if (keys & KEY_A) {
-                     tsl::shiftItemFocus(sepColor);
+                     //tsl::shiftItemFocus(sepColor);
 -                    tsl::changeTo<ColorSelector>(modeName, "Separator Color", "separator_color", "#888F");
 +                    tsl::changeTo<ColorSelector>(modeName, "구분선 색상", "separator_color", "#888F");
                      return true;
                  }
                  return false;
-@@ -1590,12 +1592,12 @@ public:
+@@ -1852,12 +1854,12 @@ public:
              list->addItem(sepColor);
              
          } else if (isMicroMode) {
@@ -1469,13 +1481,13 @@ index 4d35d1e..b6cc856 100644
              catColor->setValue(getColorName(getCurrentColor("cat_color", "#2DFF")));
              catColor->setClickListener([this, catColor](uint64_t keys) {
                  if (keys & KEY_A) {
-                     tsl::shiftItemFocus(catColor);
+                     //tsl::shiftItemFocus(catColor);
 -                    tsl::changeTo<ColorSelector>(modeName, "Category Color", "cat_color", "#2DFF");
 +                    tsl::changeTo<ColorSelector>(modeName, "카테고리 색상", "cat_color", "#2DFF");
                      return true;
                  }
                  return false;
-@@ -1603,12 +1605,12 @@ public:
+@@ -1865,12 +1867,12 @@ public:
              list->addItem(catColor);
              
              // Micro mode: separator and category colors (no focus background like Mini)
@@ -1484,13 +1496,13 @@ index 4d35d1e..b6cc856 100644
              sepColor->setValue(getColorName(getCurrentColor("separator_color", "#888F")));
              sepColor->setClickListener([this, sepColor](uint64_t keys) {
                  if (keys & KEY_A) {
-                     tsl::shiftItemFocus(sepColor);
+                     //tsl::shiftItemFocus(sepColor);
 -                    tsl::changeTo<ColorSelector>(modeName, "Separator Color", "separator_color", "#888F");
 +                    tsl::changeTo<ColorSelector>(modeName, "구분선 색상", "separator_color", "#888F");
                      return true;
                  }
                  return false;
-@@ -1618,12 +1620,12 @@ public:
+@@ -1880,12 +1882,12 @@ public:
              
          } else if (isGameResolutionsMode) {
              // Game Resolutions: only category color (no separator)
@@ -1499,13 +1511,13 @@ index 4d35d1e..b6cc856 100644
              catColor->setValue(getColorName(getCurrentColor("cat_color", "#2DFF")));
              catColor->setClickListener([this, catColor](uint64_t keys) {
                  if (keys & KEY_A) {
-                     tsl::shiftItemFocus(catColor);
+                     //tsl::shiftItemFocus(catColor);
 -                    tsl::changeTo<ColorSelector>(modeName, "Category Color", "cat_color", "#2DFF");
 +                    tsl::changeTo<ColorSelector>(modeName, "카테고리 색상", "cat_color", "#2DFF");
                      return true;
                  }
                  return false;
-@@ -1641,7 +1643,7 @@ public:
+@@ -1903,7 +1905,7 @@ public:
          }
          
          //list->disableCaching();
@@ -1514,7 +1526,7 @@ index 4d35d1e..b6cc856 100644
          rootFrame->setContent(list);
          return rootFrame;
      }
-@@ -1668,20 +1670,20 @@ private:
+@@ -1929,20 +1931,20 @@ private:
      
  public:
      ShowConfig(const std::string& mode) : modeName(mode) {
@@ -1539,7 +1551,7 @@ index 4d35d1e..b6cc856 100644
          }
          convertToUpper(showValue);
          
-@@ -1836,7 +1838,7 @@ public:
+@@ -2095,7 +2097,7 @@ public:
              jumpItemExactMatch = false;
          }
          
@@ -1548,7 +1560,7 @@ index 4d35d1e..b6cc856 100644
          rootFrame->setContent(list);
          return rootFrame;
      }
-@@ -1893,21 +1895,21 @@ private:
+@@ -2151,21 +2153,21 @@ private:
      
  public:
      ConfiguratorOverlay(const std::string& mode) : modeName(mode) {
@@ -1578,7 +1590,7 @@ index 4d35d1e..b6cc856 100644
              showSettings->setValue(ult::DROPDOWN_SYMBOL);
              showSettings->setClickListener([this, showSettings](uint64_t keys) {
                  if (keys & KEY_A) {
-@@ -1922,7 +1924,7 @@ public:
+@@ -2180,7 +2182,7 @@ public:
  
          // 3. Toggles (All modes)
          //if (isMiniMode || isMicroMode || isFullMode || isFPSGraphMode) {
@@ -1587,7 +1599,7 @@ index 4d35d1e..b6cc856 100644
          toggles->setValue(ult::DROPDOWN_SYMBOL);
          toggles->setClickListener([this, toggles](uint64_t keys) {
              if (keys & KEY_A) {
-@@ -1937,7 +1939,7 @@ public:
+@@ -2195,7 +2197,7 @@ public:
  
          // 2. Colors (not Full mode - it has no color settings)
          //if (!isFullMode) {
@@ -1596,7 +1608,7 @@ index 4d35d1e..b6cc856 100644
          colors->setValue(ult::DROPDOWN_SYMBOL);
          colors->setClickListener([this, colors](uint64_t keys) {
              if (keys & KEY_A) {
-@@ -1953,7 +1955,7 @@ public:
+@@ -2211,7 +2213,7 @@ public:
          
          // 4. Font Sizes (Mini/Micro/FPS Counter only)
          if (isMiniMode || isMicroMode || isFPSCounterMode) {
@@ -1605,7 +1617,7 @@ index 4d35d1e..b6cc856 100644
              fontSizes->setValue(ult::DROPDOWN_SYMBOL);
              fontSizes->setClickListener([this, fontSizes](uint64_t keys) {
                  if (keys & KEY_A) {
-@@ -1967,7 +1969,7 @@ public:
+@@ -2225,7 +2227,7 @@ public:
          }
          
          // 1. Refresh Rate (all modes)
@@ -1614,7 +1626,7 @@ index 4d35d1e..b6cc856 100644
          refreshRate->setValue(std::to_string(getCurrentRefreshRate()) + " Hz");
          refreshRate->setClickListener([this, refreshRate](uint64_t keys) {
              if (keys & KEY_A) {
-@@ -1981,7 +1983,7 @@ public:
+@@ -2239,7 +2241,7 @@ public:
          
          // 6. DTC Format (Mini/Micro only) - NEW ADDITION
          if (isMiniMode || isMicroMode) {
@@ -1623,7 +1635,7 @@ index 4d35d1e..b6cc856 100644
              dtcFormat->setValue(getCurrentDTCFormat());
              dtcFormat->setClickListener([this, dtcFormat](uint64_t keys) {
                  if (keys & KEY_A) {
-@@ -1996,7 +1998,7 @@ public:
+@@ -2254,7 +2256,7 @@ public:
  
          // 7. Frame Padding (Mini only) - NEW ADDITION
          if (isMiniMode || isGameResolutionsMode || isFPSCounterMode || isFPSGraphMode) {
@@ -1632,7 +1644,7 @@ index 4d35d1e..b6cc856 100644
              framePadding->setValue(std::to_string(getCurrentFramePadding()) + " px");
              framePadding->setClickListener([this, framePadding](uint64_t keys) {
                  if (keys & KEY_A) {
-@@ -2012,7 +2014,7 @@ public:
+@@ -2270,7 +2272,7 @@ public:
          // 7. Mode-specific positioning settings
          if (isMicroMode) {
              // Text Alignment for Micro
@@ -1641,7 +1653,7 @@ index 4d35d1e..b6cc856 100644
              textAlign->setValue(getCurrentTextAlign());
              textAlign->setClickListener([this, textAlign](uint64_t keys) {
                  if (keys & KEY_A) {
-@@ -2025,7 +2027,7 @@ public:
+@@ -2283,7 +2285,7 @@ public:
              list->addItem(textAlign);
  
              // Vertical Position for Micro (Top/Bottom only)
@@ -1650,7 +1662,7 @@ index 4d35d1e..b6cc856 100644
              layerPos->setValue(getCurrentLayerPosBottom());
              layerPos->setClickListener([this, layerPos](uint64_t keys) {
                  if (keys & KEY_A) {
-@@ -2039,7 +2041,7 @@ public:
+@@ -2297,7 +2299,7 @@ public:
              
          } else if (isFullMode) {
              // Horizontal Position for Full (Left/Right only)
@@ -1659,7 +1671,7 @@ index 4d35d1e..b6cc856 100644
              layerPos->setValue(getCurrentLayerPosRight());
              layerPos->setClickListener([this, layerPos](uint64_t keys) {
                  if (keys & KEY_A) {
-@@ -2053,7 +2055,7 @@ public:
+@@ -2311,7 +2313,7 @@ public:
              
          //} else if (isGameResolutionsMode || isFPSCounterMode || isFPSGraphMode) {
          //    // Both horizontal and vertical positioning
@@ -1668,7 +1680,7 @@ index 4d35d1e..b6cc856 100644
          //    layerPosH->setValue(getCurrentLayerPosRight());
          //    layerPosH->setClickListener([this, layerPosH](uint64_t keys) {
          //        if (keys & KEY_A) {
-@@ -2065,7 +2067,7 @@ public:
+@@ -2323,7 +2325,7 @@ public:
          //    });
          //    list->addItem(layerPosH);
          //    
@@ -1677,7 +1689,16 @@ index 4d35d1e..b6cc856 100644
          //    layerPosV->setValue(getCurrentLayerPosBottom());
          //    layerPosV->setClickListener([this, layerPosV](uint64_t keys) {
          //        if (keys & KEY_A) {
-@@ -2085,7 +2087,7 @@ public:
+@@ -2351,7 +2353,7 @@ public:
+                     ult::convertComboToUnicode(comboDisplay);
+                 }
+ 
+-                auto* modeCombo = new tsl::elm::ListItem("Mode Combo", comboDisplay);
++                auto* modeCombo = new tsl::elm::ListItem("모드 커맨드", comboDisplay);
+                 modeCombo->setClickListener([this, modeCombo](uint64_t keys) {
+                     if (keys & KEY_A) {
+                         tsl::changeTo<ModeComboConfig>(modeName);
+@@ -2370,7 +2372,7 @@ public:
              jumpItemExactMatch = false;
          }
          
@@ -1686,7 +1707,7 @@ index 4d35d1e..b6cc856 100644
          rootFrame->setContent(list);
          return rootFrame;
      }
-@@ -2124,7 +2126,7 @@ private:
+@@ -2408,7 +2410,7 @@ private:
              
              // Handle defaults properly
              if (value.empty()) {
@@ -1695,7 +1716,7 @@ index 4d35d1e..b6cc856 100644
              }
              
              // Convert format string to display name
-@@ -2162,9 +2164,9 @@ private:
+@@ -2446,9 +2448,9 @@ private:
          if (isMicroMode) {
              std::string value = ult::parseValueFromIniSection(configIniPath, "micro", "text_align");
              convertToUpper(value);
@@ -1708,7 +1729,7 @@ index 4d35d1e..b6cc856 100644
          }
          return "";
      }
-@@ -2181,13 +2183,13 @@ private:
+@@ -2465,13 +2467,13 @@ private:
          
          if (isFullMode) {
              // Full mode: only Left and Right allowed
@@ -1727,7 +1748,7 @@ index 4d35d1e..b6cc856 100644
          }
      }
  
-@@ -2203,13 +2205,13 @@ private:
+@@ -2487,13 +2489,13 @@ private:
          
          if (isMicroMode) {
              // Micro mode: only Top and Bottom allowed
@@ -1746,7 +1767,7 @@ index 4d35d1e..b6cc856 100644
          }
      }
      
-@@ -2217,12 +2219,13 @@ private:
+@@ -2501,12 +2503,13 @@ private:
          if (isMicroMode) {
              const std::string current = getCurrentTextAlign();
              std::string next;
@@ -1765,7 +1786,7 @@ index 4d35d1e..b6cc856 100644
              return next;
          }
          return "";
-@@ -2240,16 +2243,16 @@ private:
+@@ -2524,16 +2527,16 @@ private:
          
          if (isFullMode) {
              // Full mode: only Left and Right
@@ -1788,7 +1809,7 @@ index 4d35d1e..b6cc856 100644
          ult::setIniFileValue(configIniPath, section, "layer_width_align", value);
          return next;
      }
-@@ -2266,16 +2269,16 @@ private:
+@@ -2550,16 +2553,16 @@ private:
          
          if (isMicroMode) {
              // Micro mode: only Top and Bottom
@@ -1812,7 +1833,7 @@ index 4d35d1e..b6cc856 100644
          return next;
      }
 diff --git a/source/modes/FPS_Graph.hpp b/source/modes/FPS_Graph.hpp
-index 3e762b4..f744a65 100644
+index eb45a76..087ccc5 100644
 --- a/source/modes/FPS_Graph.hpp
 +++ b/source/modes/FPS_Graph.hpp
 @@ -435,7 +435,7 @@ public:
@@ -1834,7 +1855,7 @@ index 3e762b4..f744a65 100644
              }
          });
 diff --git a/source/modes/Full.hpp b/source/modes/Full.hpp
-index 5a32059..47394ba 100644
+index cff9846..407d83d 100644
 --- a/source/modes/Full.hpp
 +++ b/source/modes/Full.hpp
 @@ -123,15 +123,15 @@ public:
@@ -2072,7 +2093,7 @@ index 5a32059..47394ba 100644
          }
          else if (!GameRunning && resolutionLookup != 0) {
 diff --git a/source/modes/Mini.hpp b/source/modes/Mini.hpp
-index 2ab16bb..cda45f8 100644
+index f80b3c0..5cdde4c 100644
 --- a/source/modes/Mini.hpp
 +++ b/source/modes/Mini.hpp
 @@ -523,7 +523,7 @@ public:
@@ -2094,7 +2115,7 @@ index 2ab16bb..cda45f8 100644
                          const size_t degreesPos = currentLine.find("°");
                          if (degreesPos != std::string::npos) {
 diff --git a/source/modes/Misc.hpp b/source/modes/Misc.hpp
-index 0bac6be..c472e3f 100644
+index 3df629b..9d7f0b2 100644
 --- a/source/modes/Misc.hpp
 +++ b/source/modes/Misc.hpp
 @@ -74,55 +74,55 @@ public:
@@ -2178,7 +2199,7 @@ index 0bac6be..c472e3f 100644
          // Format just the values for NV clocks
          snprintf(NVDEC_value_c, sizeof(NVDEC_value_c), "%.1f MHz", (float)NVDEC_Hz / 1000000);
 diff --git a/source/modes/Resolutions.hpp b/source/modes/Resolutions.hpp
-index 0a16b49..05a1c67 100644
+index 4e1cd61..46c4d06 100644
 --- a/source/modes/Resolutions.hpp
 +++ b/source/modes/Resolutions.hpp
 @@ -276,9 +276,9 @@ public:

@@ -1,5 +1,5 @@
 diff --git a/Makefile b/Makefile
-index ed2ae41..ce77da2 100644
+index ed2ae41..d30c115 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -1,21 +1,31 @@
@@ -49,20 +49,20 @@ index ed2ae41..ce77da2 100644
 +	@find ./overlay -type f \( -name '*.elf' -o -name '*.nacp' -o -name '*.ovl' \) -exec rm -f {} \;
 \ No newline at end of file
 diff --git a/overlay/Makefile b/overlay/Makefile
-index a1d26d3..7d30f86 100644
+index 0b74a01..6b4cd26 100644
 --- a/overlay/Makefile
 +++ b/overlay/Makefile
 @@ -38,7 +38,7 @@ include $(DEVKITPRO)/libnx/switch_rules
  #   NACP building is skipped as well.
  #---------------------------------------------------------------------------------
  APP_TITLE	:=	NX-FanControl
--APP_VERSION :=	1.0.3+r1
+-APP_VERSION :=	1.0.3+r3
 +APP_VERSION :=	1.0.4
  
  TARGET		:=	$(APP_TITLE)
  BUILD		:=	build
 diff --git a/overlay/source/main_menu.cpp b/overlay/source/main_menu.cpp
-index 90ad403..7ab614b 100644
+index 9dba0d6..472e489 100644
 --- a/overlay/source/main_menu.cpp
 +++ b/overlay/source/main_menu.cpp
 @@ -5,19 +5,19 @@ MainMenu::MainMenu()
@@ -92,7 +92,7 @@ index 90ad403..7ab614b 100644
      }
  }
  
-@@ -29,6 +29,7 @@ tsl::elm::Element* MainMenu::createUI()
+@@ -27,6 +27,7 @@ tsl::elm::Element* MainMenu::createUI()
  
      auto list = new tsl::elm::List();
  
@@ -100,7 +100,7 @@ index 90ad403..7ab614b 100644
      this->_enabledBtn->setStateChangedListener([this](bool state)
      {
  	    if (state)
-@@ -52,7 +53,7 @@ tsl::elm::Element* MainMenu::createUI()
+@@ -50,7 +51,7 @@ tsl::elm::Element* MainMenu::createUI()
      });
      list->addItem(this->_enabledBtn);
  
@@ -109,7 +109,7 @@ index 90ad403..7ab614b 100644
      this->_p0Label->setClickListener([this](uint64_t keys)
      {
  	    if (keys & HidNpadButton_A) 
-@@ -122,11 +123,11 @@ void MainMenu::update()
+@@ -121,11 +122,11 @@ void MainMenu::update()
  {
      if(this->_tableIsChanged)
      {
@@ -127,7 +127,7 @@ index 90ad403..7ab614b 100644
          this->_tableIsChanged = false;
      }
 diff --git a/overlay/source/select_menu.cpp b/overlay/source/select_menu.cpp
-index d815969..a85d7a8 100644
+index 0d4e631..8216b90 100644
 --- a/overlay/source/select_menu.cpp
 +++ b/overlay/source/select_menu.cpp
 @@ -7,8 +7,8 @@ SelectMenu::SelectMenu(int i, TemperaturePoint* fanCurveTable, bool* tableIsChan
@@ -141,7 +141,7 @@ index d815969..a85d7a8 100644
      this->_fanLabel = new tsl::elm::CategoryHeader(std::to_string((int)((this->_fanCurveTable + this->_i)->fanLevel_f * 100)) + "%", true);
  }
  
-@@ -19,12 +19,12 @@ tsl::elm::Element* SelectMenu::createUI(){
+@@ -17,12 +17,12 @@ tsl::elm::Element* SelectMenu::createUI(){
      auto list = new tsl::elm::List();
  
      list->addItem(this->_tempLabel);
@@ -157,7 +157,7 @@ index d815969..a85d7a8 100644
      });
      stepTemp->setProgress(((this->_fanCurveTable + this->_i)->temperature_c) / 5);
      list->addItem(stepTemp);
-@@ -35,7 +35,7 @@ tsl::elm::Element* SelectMenu::createUI(){
+@@ -33,7 +33,7 @@ tsl::elm::Element* SelectMenu::createUI(){
      {
          this->_fanLabel->setText(std::to_string(value * 5) + "%");
          (this->_fanCurveTable + this->_i)->fanLevel_f = (float)(value * 5)/100;
@@ -166,7 +166,7 @@ index d815969..a85d7a8 100644
      });
      stepFanL->setProgress(((int)((this->_fanCurveTable + this->_i)->fanLevel_f * 100)) / 5);
      list->addItem(stepFanL);
-@@ -58,7 +58,7 @@ tsl::elm::Element* SelectMenu::createUI(){
+@@ -56,7 +56,7 @@ tsl::elm::Element* SelectMenu::createUI(){
                  pmshellLaunchProgram(0, &programLocation, &pid);
              }
                  

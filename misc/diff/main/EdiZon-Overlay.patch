@@ -1,5 +1,5 @@
 diff --git a/Makefile b/Makefile
-index 2542399..576e77d 100644
+index 6038546..41973fd 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -12,7 +12,7 @@ include $(DEVKITPRO)/libnx/switch_rules
@@ -12,10 +12,10 @@ index 2542399..576e77d 100644
  ifeq ($(RELEASE), 1)
  	APP_VERSION	:=	$(APP_VERSION)-$(shell git describe --always)
 diff --git a/source/main.cpp b/source/main.cpp
-index ea248cc..c76369a 100644
+index 31ea3c2..c233058 100644
 --- a/source/main.cpp
 +++ b/source/main.cpp
-@@ -48,23 +48,23 @@ public:
+@@ -49,26 +49,26 @@ public:
      virtual tsl::elm::Element* createUI() {
          auto *rootFrame = new tsl::elm::HeaderOverlayFrame();
          rootFrame->setHeader(new tsl::elm::CustomDrawer([this](tsl::gfx::Renderer *renderer, s32 x, s32 y, s32 w, s32 h) {
@@ -46,8 +46,12 @@ index ea248cc..c76369a 100644
 +            auto cheatsItem = new tsl::elm::ListItem("치트 매니저");
              cheatsItem->setClickListener([cheatsItem](s64 keys) {
                  if (keys & KEY_A) {
-                     tsl::shiftItemFocus(cheatsItem);
-@@ -75,11 +75,11 @@ public:
+-                    //tsl::shiftItemFocus(cheatsItem);
++                    tsl::shiftItemFocus(cheatsItem);
+                     tsl::changeTo<GuiCheats>("");
+                     return true;
+                 }
+@@ -76,11 +76,11 @@ public:
              });
              list->addItem(cheatsItem);
          } else {
@@ -60,8 +64,8 @@ index ea248cc..c76369a 100644
 +        auto statsItem  = new tsl::elm::ListItem("시스템 정보");
          statsItem->setClickListener([statsItem](s64 keys) {
              if (keys & KEY_A) {
-                 tsl::shiftItemFocus(statsItem);
-@@ -119,36 +119,36 @@ public:
+                 //tsl::shiftItemFocus(statsItem);
+@@ -120,36 +120,36 @@ public:
         // bool setOnce = true; // for ensuring header sync with frame caching for header overlayframe
  
          rootFrame->setHeader(new tsl::elm::CustomDrawer([this](tsl::gfx::Renderer *renderer, s32 x, s32 y, s32 w, s32 h) {
@@ -111,7 +115,7 @@ index ea248cc..c76369a 100644
  
              bool skip = false, inSection = false, submenus = true;
              std::string skipUntil = "";
-@@ -199,7 +199,7 @@ public:
+@@ -200,7 +200,7 @@ public:
                          replaceAll(cheatNameCheck, ":ENABLED", "");
  
                          auto cheatToggleItem = new tsl::elm::ToggleListItem(/*formatString("%d:%s: %s", cheat->getID(), (cheat->isEnabled() ? "y" : "n"),*/ cheatNameCheck/*.c_str()).c_str()*/, cheat->isEnabled());
@@ -120,7 +124,7 @@ index ea248cc..c76369a 100644
  
                          this->m_cheatToggleItems.insert({cheat->getID(), cheatToggleItem});
                          list->addItem(cheatToggleItem);
-@@ -227,9 +227,9 @@ public:
+@@ -228,9 +228,9 @@ public:
              if(this->m_numCheats < 1){
                  auto warning = new tsl::elm::CustomDrawer([](tsl::gfx::Renderer *renderer, u16 x, u16 y, u16 w, u16 h){
                      static const auto iconWidth = renderer->getTextDimensions("\uE150", false, 90).first;
@@ -133,7 +137,7 @@ index ea248cc..c76369a 100644
                  });
  
                  rootFrame->setContent(warning);
-@@ -286,20 +286,20 @@ public:
+@@ -287,20 +287,20 @@ public:
       }
              
      virtual tsl::elm::Element* createUI() override {
@@ -163,7 +167,7 @@ index ea248cc..c76369a 100644
      
      
              // Draw temperatures and battery percentage
-@@ -316,8 +316,8 @@ public:
+@@ -317,8 +317,8 @@ public:
              snprintf(SOC_temperatureStr, sizeof(SOC_temperatureStr) - 1, "%.1f °C", static_cast<double>(tempSOC));
              snprintf(PCB_temperatureStr, sizeof(PCB_temperatureStr) - 1, "%.1f °C", static_cast<double>(tempPCB));
              
@@ -174,7 +178,7 @@ index ea248cc..c76369a 100644
              
              static u32 cpuClock = 0, gpuClock = 0, memClock = 0;
      
-@@ -331,47 +331,45 @@ public:
+@@ -332,47 +332,45 @@ public:
                  pcvGetClockRate(PcvModule_EMC, &memClock);
              }
      

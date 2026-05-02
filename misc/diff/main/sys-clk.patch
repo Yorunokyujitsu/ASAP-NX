@@ -58,24 +58,11 @@ index bc705b6..c708b95 100644
          default:
              return NULL;
      }
-diff --git a/manager/src/app_profiles_tab.cpp b/manager/src/app_profiles_tab.cpp
-index 4c9bd48..058fad3 100644
---- a/manager/src/app_profiles_tab.cpp
-+++ b/manager/src/app_profiles_tab.cpp
-@@ -87,7 +87,7 @@ AppProfilesTab::AppProfilesTab()
-         }
- 
-         // Name
--        if (!langEntry->name)
-+        if (langEntry->name[0] == '\0')
-         {
-             i++;
-             continue;
 diff --git a/overlay/src/main.cpp b/overlay/src/main.cpp
-index 1563e59..c97edfb 100644
+index 151fa6f..eb29730 100644
 --- a/overlay/src/main.cpp
 +++ b/overlay/src/main.cpp
-@@ -40,10 +40,10 @@ class AppOverlay : public tsl::Overlay
+@@ -41,10 +41,10 @@ class AppOverlay : public tsl::Overlay
              if(!sysclkIpcRunning())
              {
                  return initially<FatalGui>(
@@ -89,7 +76,7 @@ index 1563e59..c97edfb 100644
                      ""
                  );
              }
-@@ -51,10 +51,10 @@ class AppOverlay : public tsl::Overlay
+@@ -52,10 +52,10 @@ class AppOverlay : public tsl::Overlay
              if(R_FAILED(sysclkIpcInitialize()) || R_FAILED(sysclkIpcGetAPIVersion(&apiVersion)))
              {
                  return initially<FatalGui>(
@@ -103,7 +90,7 @@ index 1563e59..c97edfb 100644
                      ""
                  );
              }
-@@ -62,11 +62,11 @@ class AppOverlay : public tsl::Overlay
+@@ -63,11 +63,11 @@ class AppOverlay : public tsl::Overlay
              //if(SYSCLK_IPC_API_VERSION != apiVersion)
              //{
              //    return initially<FatalGui>(
@@ -426,18 +413,10 @@ index e20c5b5..b1b2f62 100644
  static inline std::string formatListFreqMHz(std::uint32_t mhz)
  {
 diff --git a/overlay/src/ui/gui/app_profile_gui.cpp b/overlay/src/ui/gui/app_profile_gui.cpp
-index 89b00c8..ee8c6d4 100644
+index a9a1bee..8938df4 100644
 --- a/overlay/src/ui/gui/app_profile_gui.cpp
 +++ b/overlay/src/ui/gui/app_profile_gui.cpp
-@@ -34,6 +34,7 @@ void AppProfileGui::openFreqChoiceGui(tsl::elm::ListItem* listItem, SysClkProfil
-         FatalGui::openWithResultCode("sysclkIpcGetFreqList", rc);
-         return;
-     }
-+
-     tsl::shiftItemFocus(listItem);
-     tsl::changeTo<FreqChoiceGui>(this->profileList->mhzMap[profile][module] * 1000000, hzList, hzCount, module, [this, listItem, profile, module](std::uint32_t hz) {
-         this->profileList->mhzMap[profile][module] = hz / 1000000;
-@@ -90,7 +91,7 @@ void AppProfileGui::addModuleListItem(SysClkProfile profile, SysClkModule module
+@@ -88,7 +88,7 @@ void AppProfileGui::addModuleListItem(SysClkProfile profile, SysClkModule module
  
  void AppProfileGui::addProfileUI(SysClkProfile profile)
  {
@@ -446,7 +425,7 @@ index 89b00c8..ee8c6d4 100644
      this->addModuleListItem(profile, SysClkModule_CPU);
      this->addModuleListItem(profile, SysClkModule_GPU);
      this->addModuleListItem(profile, SysClkModule_MEM);
-@@ -126,10 +127,10 @@ void AppProfileGui::update()
+@@ -124,10 +124,10 @@ void AppProfileGui::update()
      if((this->context && this->applicationId != this->context->applicationId) &&  this->applicationId != SYSCLK_GLOBAL_PROFILE_TID)
      {
          tsl::changeTo<FatalGui>(
@@ -461,11 +440,11 @@ index 89b00c8..ee8c6d4 100644
          );
      }
 diff --git a/overlay/src/ui/gui/base_gui.cpp b/overlay/src/ui/gui/base_gui.cpp
-index db193a4..4f8fc9b 100644
+index 7169bf5..17ca214 100644
 --- a/overlay/src/ui/gui/base_gui.cpp
 +++ b/overlay/src/ui/gui/base_gui.cpp
-@@ -49,7 +49,7 @@ void BaseGui::preDraw(tsl::gfx::Renderer* renderer)
-     renderer->drawString("overlay", false, LOGO_LABEL_X, LOGO_LABEL_Y, LOGO_LABEL_FONT_SIZE, renderer->a(TEXT_COLOR));
+@@ -54,7 +54,7 @@ void BaseGui::preDraw(tsl::gfx::Renderer* renderer)
+     renderer->drawString("overlay", false, LOGO_LABEL_X, LOGO_LABEL_Y, LOGO_LABEL_FONT_SIZE, TEXT_COLOR);
      renderer->drawString(TARGET_VERSION, false, VERSION_X, VERSION_Y, VERSION_FONT_SIZE, tsl::bannerVersionTextColor);
      if (isUsingEOS) {
 -        renderer->drawString("EOS mode", false, VERSION_X+86, VERSION_Y, VERSION_FONT_SIZE, tsl::warningTextColor);
@@ -474,7 +453,7 @@ index db193a4..4f8fc9b 100644
  }
  
 diff --git a/overlay/src/ui/gui/base_menu_gui.cpp b/overlay/src/ui/gui/base_menu_gui.cpp
-index 1fa536f..9ea49da 100644
+index 3ce82fd..ee9ba83 100644
 --- a/overlay/src/ui/gui/base_menu_gui.cpp
 +++ b/overlay/src/ui/gui/base_menu_gui.cpp
 @@ -61,7 +61,7 @@ void BaseMenuGui::preDraw(tsl::gfx::Renderer* renderer) {
@@ -549,10 +528,10 @@ index d71cf41..89d2fb9 100644
  class FreqChoiceGui : public BaseMenuGui
  {
 diff --git a/overlay/src/ui/gui/global_override_gui.cpp b/overlay/src/ui/gui/global_override_gui.cpp
-index 2b50885..4e6adbc 100644
+index 368862e..f287597 100644
 --- a/overlay/src/ui/gui/global_override_gui.cpp
 +++ b/overlay/src/ui/gui/global_override_gui.cpp
-@@ -90,7 +90,7 @@ void GlobalOverrideGui::addModuleListItem(SysClkModule module)
+@@ -89,7 +89,7 @@ void GlobalOverrideGui::addModuleListItem(SysClkModule module)
  
  void GlobalOverrideGui::listUI()
  {
@@ -665,294 +644,3 @@ index 1aa8dc5..1f905c1 100644
      );
  
          
-diff --git a/src/main.cpp b/src/main.cpp
-index 1563e59..c97edfb 100644
---- a/src/main.cpp
-+++ b/src/main.cpp
-@@ -40,10 +40,10 @@ class AppOverlay : public tsl::Overlay
-             if(!sysclkIpcRunning())
-             {
-                 return initially<FatalGui>(
--                    "sys-clk is not running.\n\n"
-+                    "sys-clk 모듈 실행 불가\n\n"
-                     "\n"
--                    "Please make sure it is correctly\n\n"
--                    "installed and enabled.",
-+                    "모듈, 오버레이가 올바르게\n\n"
-+                    "설치, 활성화 되었습니까?",
-                     ""
-                 );
-             }
-@@ -51,10 +51,10 @@ class AppOverlay : public tsl::Overlay
-             if(R_FAILED(sysclkIpcInitialize()) || R_FAILED(sysclkIpcGetAPIVersion(&apiVersion)))
-             {
-                 return initially<FatalGui>(
--                    "Could not connect to sys-clk.\n\n"
-+                    "sys-clk 모듈 연결 불가\n\n"
-                     "\n"
--                    "Please make sure it is correctly\n\n"
--                    "installed and enabled.",
-+                    "모듈, 오버레이가 올바르게\n\n"
-+                    "설치, 활성화 되었습니까?",
-                     ""
-                 );
-             }
-@@ -62,11 +62,11 @@ class AppOverlay : public tsl::Overlay
-             //if(SYSCLK_IPC_API_VERSION != apiVersion)
-             //{
-             //    return initially<FatalGui>(
--            //        "Overlay not compatible with\n\n"
--            //        "the running sys-clk version.\n\n"
-+            //        "sys-clk 모듈과 오버레이\n\n"
-+            //        "버전이 일치하지 않습니다.\n\n"
-             //        "\n"
--            //        "Please make sure everything is\n\n"
--            //        "installed and up to date.",
-+            //        "모듈과 호환되는 버전의\n\n"
-+            //        "오버레이로 업데이트하세요.",
-             //        ""
-             //    );
-             //}
-diff --git a/src/ui/format.h b/src/ui/format.h
-index e20c5b5..b1b2f62 100644
---- a/src/ui/format.h
-+++ b/src/ui/format.h
-@@ -12,7 +12,7 @@
- 
- #include <cstdio>
- 
--#define FREQ_DEFAULT_TEXT "Do not override"
-+#define FREQ_DEFAULT_TEXT "설정 안 함"
- 
- static inline std::string formatListFreqMHz(std::uint32_t mhz)
- {
-diff --git a/src/ui/gui/app_profile_gui.cpp b/src/ui/gui/app_profile_gui.cpp
-index 03c7ff4..cd1b591 100644
---- a/src/ui/gui/app_profile_gui.cpp
-+++ b/src/ui/gui/app_profile_gui.cpp
-@@ -126,10 +126,10 @@ void AppProfileGui::update()
-     if((this->context && this->applicationId != this->context->applicationId) &&  this->applicationId != SYSCLK_GLOBAL_PROFILE_TID)
-     {
-         tsl::changeTo<FatalGui>(
--            "Application changed\n\n"
-+            "실행 앱 변경 안내\n\n"
-             "\n"
--            "The running application changed\n\n"
--            "while editing was going on.",
-+            "편집이 진행되는 동안\n\n"
-+            "실행 중인 앱이 변경되었습니다.",
-             ""
-         );
-     }
-diff --git a/src/ui/gui/base_gui.cpp b/src/ui/gui/base_gui.cpp
-index db193a4..4f8fc9b 100644
---- a/src/ui/gui/base_gui.cpp
-+++ b/src/ui/gui/base_gui.cpp
-@@ -49,7 +49,7 @@ void BaseGui::preDraw(tsl::gfx::Renderer* renderer)
-     renderer->drawString("overlay", false, LOGO_LABEL_X, LOGO_LABEL_Y, LOGO_LABEL_FONT_SIZE, renderer->a(TEXT_COLOR));
-     renderer->drawString(TARGET_VERSION, false, VERSION_X, VERSION_Y, VERSION_FONT_SIZE, tsl::bannerVersionTextColor);
-     if (isUsingEOS) {
--        renderer->drawString("EOS mode", false, VERSION_X+86, VERSION_Y, VERSION_FONT_SIZE, tsl::warningTextColor);
-+        renderer->drawString("EOS 모드", false, VERSION_X+86, VERSION_Y, VERSION_FONT_SIZE, tsl::warningTextColor);
-     }
- }
- 
-diff --git a/src/ui/gui/base_menu_gui.cpp b/src/ui/gui/base_menu_gui.cpp
-index 505a17c..da172d2 100644
---- a/src/ui/gui/base_menu_gui.cpp
-+++ b/src/ui/gui/base_menu_gui.cpp
-@@ -61,7 +61,7 @@ void BaseMenuGui::preDraw(tsl::gfx::Renderer* renderer) {
-     
-     // All constants pre-calculated and cached
-     static constexpr const char* const labels[10] = {
--        "App ID", "Profile", "CPU", "GPU", "MEM", "SOC", "PCB", "Skin", "Now", "Avg"
-+        "App ID", "프로필", "CPU", "GPU", "RAM", "SoC", "PCB", "기기", "현재", "평균"
-     };
- 
-     static constexpr u32 dataPositions[6] = {63-3+3, 200-1, 344-1-3, 200-1, 342-1, 321-1};
-@@ -77,7 +77,7 @@ void BaseMenuGui::preDraw(tsl::gfx::Renderer* renderer) {
-     }
-     static u32 positions[10] = {24-1, 310-labelWidths[1], 24-1, 192-labelWidths[3], 332-labelWidths[4], 24-1, 192 - labelWidths[6], 332-labelWidths[7], 192 - labelWidths[8], 332-labelWidths[9]};
- 
--    static u32 maxProfileValueWidth = renderer->getTextDimensions("Official Charger", false, SMALL_TEXT_SIZE).first; // longest word
-+    static u32 maxProfileValueWidth = renderer->getTextDimensions("정격 충전기", false, SMALL_TEXT_SIZE).first; // longest word
- 
-     u32 y = 91;
-     
-diff --git a/src/ui/gui/fatal_gui.cpp b/src/ui/gui/fatal_gui.cpp
-index 5fe5565..447453c 100644
---- a/src/ui/gui/fatal_gui.cpp
-+++ b/src/ui/gui/fatal_gui.cpp
-@@ -23,10 +23,10 @@ void FatalGui::openWithResultCode(std::string tag, Result rc)
-     info.append(rcStr, snprintf(rcStr, sizeof(rcStr), "\n\n[0x%x] %04d-%04d", rc, R_MODULE(rc), R_DESCRIPTION(rc)));
- 
-     tsl::changeTo<FatalGui>(
--        "Could not connect to sys-clk.\n\n"
-+        "sys-clk 모듈 실행 불가\n\n"
-         "\n"
--        "Please make sure everything is\n\n"
--        "correctly installed and enabled.",
-+        "sys-clk 모듈, 오버레이가\n\n"
-+        "올바르게 설치되었습니까?",
-         info
-     );
- }
-@@ -35,7 +35,7 @@ tsl::elm::Element* FatalGui::baseUI()
- {
-     tsl::elm::CustomDrawer* drawer = new tsl::elm::CustomDrawer([this](tsl::gfx::Renderer* renderer, u16 x, u16 y, u16 w, u16 h) {
-         renderer->drawString("\uE150", false, 40, 210, 40, TEXT_COLOR);
--        renderer->drawString("Fatal error", false, 100, 210, 30, TEXT_COLOR);
-+        renderer->drawString("치명적인 오류", false, 100, 210, 30, TEXT_COLOR);
- 
-         std::uint32_t txtY = 255;
-         if(!this->message.empty())
-diff --git a/src/ui/gui/freq_choice_gui.cpp b/src/ui/gui/freq_choice_gui.cpp
-index c8b6453..7241b6c 100644
---- a/src/ui/gui/freq_choice_gui.cpp
-+++ b/src/ui/gui/freq_choice_gui.cpp
-@@ -54,7 +54,7 @@ void FreqChoiceGui::listUI()
-     for(std::uint32_t i = 0; i < this->hzCount; i++) {
-         hz = this->hzList[i];
-         // Skip 204 MHz exactly
--        if(moduleName == "Memory" && hz == 204000000) {
-+        if(moduleName == "RAM" && hz == 204000000) {
-             continue;
-         }
-         
-diff --git a/src/ui/gui/freq_choice_gui.h b/src/ui/gui/freq_choice_gui.h
-index d71cf41..89d2fb9 100644
---- a/src/ui/gui/freq_choice_gui.h
-+++ b/src/ui/gui/freq_choice_gui.h
-@@ -16,7 +16,7 @@
- 
- using FreqChoiceListener = std::function<bool(std::uint32_t hz)>;
- 
--#define FREQ_DEFAULT_TEXT "Do not override"
-+#define FREQ_DEFAULT_TEXT "설정 안 함"
- 
- class FreqChoiceGui : public BaseMenuGui
- {
-diff --git a/src/ui/gui/global_override_gui.cpp b/src/ui/gui/global_override_gui.cpp
-index 1cf4af5..5a65557 100644
---- a/src/ui/gui/global_override_gui.cpp
-+++ b/src/ui/gui/global_override_gui.cpp
-@@ -89,7 +89,7 @@ void GlobalOverrideGui::addModuleListItem(SysClkModule module)
- 
- void GlobalOverrideGui::listUI()
- {
--    this->listElement->addItem(new tsl::elm::CategoryHeader("Temporary Overrides " + ult::DIVIDER_SYMBOL + "  Reset"));
-+    this->listElement->addItem(new tsl::elm::CategoryHeader("임시 프로필 " + ult::DIVIDER_SYMBOL + "  초기화"));
-     this->addModuleListItem(SysClkModule_CPU);
-     this->addModuleListItem(SysClkModule_GPU);
-     this->addModuleListItem(SysClkModule_MEM);
-diff --git a/src/ui/gui/main_gui.cpp b/src/ui/gui/main_gui.cpp
-index 214c626..3e06bb6 100644
---- a/src/ui/gui/main_gui.cpp
-+++ b/src/ui/gui/main_gui.cpp
-@@ -20,7 +20,7 @@ void MainGui::listUI()
-     bool isUsingEOS = usingEOS();
- 
-     if (!isUsingEOS) {
--        this->enabledToggle = new tsl::elm::ToggleListItem("Enable", false);
-+        this->enabledToggle = new tsl::elm::ToggleListItem("모듈 활성화", false);
-         enabledToggle->setStateChangedListener([this](bool state) {
-             Result rc = sysclkIpcSetEnabled(state);
-             if(R_FAILED(rc))
-@@ -35,7 +35,7 @@ void MainGui::listUI()
-         this->listElement->addItem(this->enabledToggle);
-     }
- 
--    tsl::elm::ListItem* appProfileItem = new tsl::elm::ListItem("Edit App Profile");
-+    tsl::elm::ListItem* appProfileItem = new tsl::elm::ListItem("프로필 편집");
-     appProfileItem->setClickListener([this](u64 keys) {
-         if((keys & HidNpadButton_A) == HidNpadButton_A && this->context)
-         {
-@@ -47,10 +47,10 @@ void MainGui::listUI()
-     });
-     this->listElement->addItem(appProfileItem);
- 
--    this->listElement->addItem(new tsl::elm::CategoryHeader("Advanced"));
-+    this->listElement->addItem(new tsl::elm::CategoryHeader("고급 설정"));
- 
-     if (isUsingEOS) {
--        tsl::elm::ListItem* globalProfileItem = new tsl::elm::ListItem("Edit Global Profile");
-+        tsl::elm::ListItem* globalProfileItem = new tsl::elm::ListItem("글로벌 프로필");
-         globalProfileItem->setClickListener([this](u64 keys) {
-             if((keys & HidNpadButton_A) == HidNpadButton_A && this->context)
-             {
-@@ -63,7 +63,7 @@ void MainGui::listUI()
-         this->listElement->addItem(globalProfileItem);
-     }
- 
--    tsl::elm::ListItem* globalOverrideItem = new tsl::elm::ListItem("Temporary Overrides");
-+    tsl::elm::ListItem* globalOverrideItem = new tsl::elm::ListItem("임시 프로필");
-     globalOverrideItem->setClickListener([this](u64 keys) {
-         if((keys & HidNpadButton_A) == HidNpadButton_A)
-         {
-@@ -78,7 +78,7 @@ void MainGui::listUI()
-     //this->listElement->addItem(new tsl::elm::CategoryHeader("Misc"));
- 
-     if (isUsingEOS) {
--        tsl::elm::ListItem* miscItem = new tsl::elm::ListItem("Settings");
-+        tsl::elm::ListItem* miscItem = new tsl::elm::ListItem("기타 옵션");
-         miscItem->setClickListener([this](u64 keys) {
-             if((keys & HidNpadButton_A) == HidNpadButton_A && this->context)
-             {
-diff --git a/src/ui/gui/misc_gui.cpp b/src/ui/gui/misc_gui.cpp
-index c9d9d7c..2a2d45a 100644
---- a/src/ui/gui/misc_gui.cpp
-+++ b/src/ui/gui/misc_gui.cpp
-@@ -364,9 +364,9 @@ void MiscGui::updateConfigToggles() {
- void MiscGui::listUI()
- {
- 
--    this->listElement->addItem(new tsl::elm::CategoryHeader("Settings"));
-+    this->listElement->addItem(new tsl::elm::CategoryHeader("기타 옵션"));
- 
--    this->enabledToggle = new tsl::elm::ToggleListItem("Enable", false);
-+    this->enabledToggle = new tsl::elm::ToggleListItem("모듈 활성화", false);
-     enabledToggle->setStateChangedListener([this](bool state) {
-         Result rc = sysclkIpcSetEnabled(state);
-         if(R_FAILED(rc))
-@@ -380,17 +380,17 @@ void MiscGui::listUI()
-     this->listElement->addItem(this->enabledToggle);
- 
-     // Add the 4 boolean config toggles using INI keys
--    addConfigToggle("uncapped_clocks", "Uncapped Clocks");
--    addConfigToggle("boost_gpu_override", "Boost GPU Override");
--    addConfigToggle("auto_cpu_boost", "Auto CPU Boost");
--    addConfigToggle("reversenx_sync", "Sync ReverseNX");
-+    addConfigToggle("uncapped_clocks", "클럭 제한 해제");
-+    addConfigToggle("boost_gpu_override", "부스트 모드 덮어쓰기");
-+    addConfigToggle("auto_cpu_boost", "CPU 자동 부스트");
-+    addConfigToggle("reversenx_sync", "ReverseNX 동기화");
-     
-     // Add GPU DVFS as a NamedStepTrackBar with V2 style
-     this->autoGPUVminTrackbar = new tsl::elm::NamedStepTrackBar("", {
--        "Off",
--        "Official Service", 
--        "Hijack"
--    }, true, "Auto GPU Vmin");
-+        "설정 안 함",
-+        "공식 서비스",
-+        "하이잭"
-+    }, true, "GPU 자동 최소전력");
-     
-     // Set initial value (default is 0 if not set)
-     //int currentAutoGPUVminValue = getConfigIntValue("auto_gpu_vmin", 1);
-@@ -436,7 +436,7 @@ void MiscGui::listUI()
-             "0 mV"
-         },
-         true,
--        "GPU Vmin Offset"
-+        "GPU 최소전력 오프셋"
-     );
-         
-     // Set initial value - convert stored value to trackbar index
-@@ -485,4 +485,4 @@ void MiscGui::refresh() {
-             this->gpuVminOffsetTrackbar->setProgress(static_cast<u8>(trackbarIndex));
-         }
-     }
--}
-\ No newline at end of file
-+}
