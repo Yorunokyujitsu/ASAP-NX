@@ -51,13 +51,12 @@ Final build artifacts and logs are uploaded as GitHub Actions Artifacts.<br><br>
 > **suchmememanyskill** - Payload-based [file manager](https://github.com/suchmememanyskill/TegraExplorer).<br>
 > **shchmue** - Device encryption keys dumper.<br>
 > **hwfly-nx**, **sthetix** and **rehius** - Arduino flashing management toolboxes.<br>
-> **borntohonk** - [System module](https://github.com/borntohonk/sys-patch) for using a clock-patched KIP.<br>
 > **ndeadly** - System module that supports for [third-party Bluetooth controllers](https://github.com/ndeadly/MissionControl).<br>
 > **o0Zz** - System module that supports for [third-party USB controllers](https://github.com/o0Zz/sys-con).<br>
 > **Zathawo** - System module to control the [fan curve](https://github.com/Zathawo/NX-FanControl).<br>
 > **proferabg** - System module for [managing user cheats](https://github.com/proferabg/EdiZon-Overlay).<br>
 > **masagrator** - Tools and a [supporting module](https://github.com/masagrator/SaltyNX) for [FPS customization](https://github.com/masagrator/FPSLocker) and [mode switching](https://github.com/masagrator/ReverseNX-RT).<br>
-> **halop** - Clock-patched [loader.kip management tools](https://github.com/halop/OC_Toolkit).<br>
+> **Horizon-OC**, **NaGaa95** - Clock-patched [loader.kip](https://github.com/Horizon-OC/Horizon-OC) [management tools](https://github.com/NaGaa95/EOS-Pro).<br>
 > **ppkantorski** - [Overlay menu](https://github.com/ppkantorski/Ultrahand-Overlay), [loader](https://github.com/ppkantorski/nx-ovlloader), and various forked apps [[1]](https://github.com/ppkantorski/nx-ovlreloader), [[2]](https://github.com/ppkantorski/ovl-sysmodules), [[3]](https://github.com/ppkantorski/Status-Monitor-Overlay), [[4]](https://github.com/ppkantorski/sys-clk), [[5]](https://github.com/ppkantorski/FPSLocker).<br>
 > **XorTroll** and **yusufakg** - [Homebrew](https://github.com/yusufakg/AmiiboGenerator) and [system module](https://github.com/XorTroll/emuiibo) for managing virtual amiibo.<br>
 > **rdmrocha**, **impeeza** - Tool for managing NNID linking and unlinking.<br>
