@@ -83,7 +83,7 @@ package_asap() {
   mkdir -p "${DIST_DIR}"/atmosphere/{contents/010B6ECF3B30D000/tools,contents/00FF0000636C6BFF/flags,hosts,spl}
   mkdir -p "${DIST_DIR}"/backup/{keys,kips/.OC}
   mkdir -p "${DIST_DIR}"/bootloader/{payloads,sys,res}
-  mkdir -p "${DIST_DIR}"/config/{ftpsrv,ultrahand/sounds}
+  mkdir -p "${DIST_DIR}"/config/{ftpsrv,ultrahand/sounds,ultrahand/assets/notifications}
   mkdir -p "${DIST_DIR}"/switch/{.packages/.offload/ram_expansion,AmiiboGenerator}
   mkdir -p "${DIST_DIR}"/switch/{ASAP-Updater,DBI,linkalho,sphaira,tinfoil/themes/ASAP_Custom}
   mkdir -p "${DIST_DIR}/warmboot_mariko"
@@ -249,6 +249,7 @@ package_asap() {
   cp "${MISC_DIR}/res/screens/bg.png" "${DIST_DIR}/switch/tinfoil/themes/ASAP_Custom"
   cp "${MISC_DIR}/json/tinfoil_theme.json" "${DIST_DIR}/switch/tinfoil/themes/ASAP_Custom/settings.json"
   cp "${MISC_DIR}/json/tinfoil_options.json" "${DIST_DIR}/switch/tinfoil/options.json"
+  cp "${MISC_DIR}/res/misc/hoc.rgba" "${DIST_DIR}/config/ultrahand/assets/notifications/hoc.rgba"
   cp "${MISC_DIR}/res/misc/res.pak" "${DIST_DIR}/bootloader/sys"
   cp "${MISC_DIR}/ini/overlays.ini" "${DIST_DIR}/config/ultrahand"
   cp "${MISC_DIR}/ini/ftpsrv.ini" "${DIST_DIR}/config/ftpsrv/config_.ini"
