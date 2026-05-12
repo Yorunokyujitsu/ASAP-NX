@@ -4,33 +4,33 @@
 ==========================
 
 [CLONE] hekate - Yorunokyujitsu
-  branch    : custom (d9570e1)
+  branch    : custom (bd9a49d7)
 
 [CLONE] Atmosphere - Yorunokyujitsu
-  branch    : custom (01989ae10)
+  branch    : custom (efdfe38c4)
 
 [CLONE] nx-hbloader - switchbrew
   branch    : default (82b9512)
 
 [CLONE] Ultrahand-Overlay - ppkantorski
-  branch    : commit (f580fd9c)
-  submodule : libultrahand (5dc0b63)
+  branch    : commit (580b4734)
+  submodule : libultrahand (145ee51)
 
 [CLONE] EdiZon-Overlay - ppkantorski
-  branch    : commit (835e2fd)
-  submodule : libultrahand (f053eaa)
+  branch    : commit (769344a)
+  submodule : libultrahand (f4fdce0)
 
 [CLONE] FPSLocker - masagrator
-  branch    : commit (76f3619)
+  branch    : commit (7b316c9)
 
 [CLONE] NX-FanControl - ppkantorski
-  branch    : commit (4c3226e)
+  branch    : commit (2580291)
   submodule : libfancontrol (2cb987c)
-  submodule : libultrahand (f91d4d9)
+  submodule : libultrahand (f4fdce0)
 
 [CLONE] ovl-sysmodules - ppkantorski
-  branch    : commit (73bb9cf)
-  submodule : libultrahand (f053eaa)
+  branch    : commit (005a075)
+  submodule : libultrahand (f4fdce0)
 
 [CLONE] ReverseNX-RT - masagrator
   branch    : commit (725eb27)
@@ -38,17 +38,9 @@
   submodule : libtesla (779b4ea)
 
 [CLONE] Status-Monitor-Overlay - ppkantorski
-  branch    : commit (3d1204b)
+  branch    : commit (f870971)
   submodule : Atmosphere-libs (6e2c09c)
-  submodule : libultrahand (1072d44)
-
-[CLONE] sys-clk - ppkantorski
-  branch    : commit (d6bc69d)
-  submodule : libultrahand (f053eaa)
-
-[CLONE] sys-patch - borntohonk
-  branch    : commit (f51f916)
-  submodule : libtesla (3d74aeb)
+  submodule : libultrahand (145ee51)
 
 [CLONE] aio-switch-updater - HamletDuFromage
   branch    : commit (3d38eaa)
@@ -61,8 +53,6 @@
   submodule : borealis (25651d2)
 
 [SKIP] local project: hekate_8GB
-
-[SKIP] local project: Atmosphere_8GB
 
 [SKIP] local project: LockPick
 
