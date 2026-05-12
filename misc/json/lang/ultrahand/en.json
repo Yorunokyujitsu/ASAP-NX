@@ -167,6 +167,7 @@
     "CPU_INFO": "Unit: mV",
     "CPU_CHART": "　　",
     "USED": "Used",
+    "HOC_KIP": "Enabled loader.kip",
     "ES_DISABLED": "Disabled",
     "CD_LAUNCHER": "Create/Delete",
     "INSTALL_PATH": "Install Path",

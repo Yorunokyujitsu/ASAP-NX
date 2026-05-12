@@ -1,6 +1,6 @@
 {
     "changelog": {
-        "21.2.0": [
+        "22.1.0": [
             "Atmosphère: 1.10.2 → 1.11.1",
             "6/8GB RAM 모드를 공식 지원하며, AM 패치를 통하여 홈브류의 정상 동작을 지원합니다.",
             "",
@@ -8,19 +8,15 @@
             "컬러 테마를 상세 조정할 수 있도록 변경되었습니다.",
             "emuMMC 파티셔닝 버튼 문제가 해결, eMMC, 패널, 웨이퍼등 개선된 정보로 수정, 추가되었습니다.",
             "",
-            "Payloads & System Modules & Overlays",
+            "Payloads & System Modules & Overlays & Homebrews",
             "sys-patch는 앞으로 패키지에 포함되지 않으며 제거되었습니다.",
-            "Ultrahand: 2.3.0 → 2.4.1",
-            "ovl-sysmodules: 1.4.7 → 1.5.0",
-            "ATLAS: 1.1.4 → 1.2.0",
-            "SaltyNX: 1.7.4 → 1.7.5",
-            "sys-clk: 2.0.1+r24 → Horizon-OC: 2.2.0",
-            "MissionControl: 0.14.2 → 0.15.1",
-            "FPSLocker: 3.3.1 → 3.3.2",
-            "Status-Monitor: 1.3.2+r6 → 1.3.2+r9",
-            "emuiibo: 1.1.2 → 1.1.3"
-        ],
-        "22.1.0": ""
+            "Ultrahand: 2.3.0 → 2.4.2 │ ovlloader: 2.0.0 → 2.0.1",
+            "ovl-sysmodules: 1.4.7 → 1.5.1 │ ATLAS: 1.1.4 → 1.2.0",
+            "SaltyNX: 1.7.4 → 1.8.1 │ sys-clk: 2.0.1+r24 → Horizon-OC: 2.3.0",
+            "MissionControl: 0.14.2 → 0.15.1 │ FPSLocker: 3.3.1 → 3.3.2",
+            "Status-Monitor: 1.3.2+r6 → 1.4.0+ │ emuiibo: 1.1.2 → 1.1.3",
+            "DBI: 845 → 895"
+        ]
     },
     "cfws": {
         "asap": {
