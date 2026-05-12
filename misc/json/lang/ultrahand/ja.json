@@ -167,6 +167,7 @@
     "CPU_INFO": "単位: mV",
     "CPU_CHART": "　　",
     "USED": "使用中",
+    "HOC_KIP": "loader.kipを有効化",
     "ES_DISABLED": "無効化",
     "CD_LAUNCHER": "作成/削除",
     "INSTALL_PATH": "パス",
