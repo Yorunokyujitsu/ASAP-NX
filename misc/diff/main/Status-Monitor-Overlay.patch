@@ -1,8 +1,474 @@
+diff --git a/include/hocclk/board.h b/include/hocclk/board.h
+index 376b34b..de20140 100644
+--- a/include/hocclk/board.h
++++ b/include/hocclk/board.h
+@@ -251,11 +251,11 @@ static inline const char* hocclkFormatModule(HocClkModule module, bool pretty)
+         case HocClkModule_GPU:
+             return pretty ? "GPU" : "gpu";
+         case HocClkModule_MEM:
+-            return pretty ? "Memory" : "mem";
++            return pretty ? "RAM" : "mem";
+         case HocClkModule_Display:
+-            return pretty ? "Display" : "display";
++            return pretty ? "주사율" : "display";
+         case HocClkModule_Governor:
+-            return pretty ? "Governor" : "governor";
++            return pretty ? "클럭 제어" : "governor";
+         default:
+             return "null";
+     }
+@@ -265,11 +265,11 @@ static inline const char* hocclkFormatThermalSensor(HocClkThermalSensor thermSen
+ {
+     switch(thermSensor) {
+         case HocClkThermalSensor_SOC:
+-            return pretty ? "SOC" : "soc";
++            return pretty ? "SoC" : "soc";
+         case HocClkThermalSensor_PCB:
+             return pretty ? "PCB" : "pcb";
+         case HocClkThermalSensor_Skin:
+-            return pretty ? "Skin" : "skin";
++            return pretty ? "기기" : "skin";
+         case HocClkThermalSensor_Battery:
+             return pretty ? "BAT" : "battery";
+         case HocClkThermalSensor_PMIC:
+@@ -279,7 +279,7 @@ static inline const char* hocclkFormatThermalSensor(HocClkThermalSensor thermSen
+         case HocClkThermalSensor_GPU:
+             return pretty ? "GPU" : "gpu";
+         case HocClkThermalSensor_MEM:
+-            return pretty ? "MEM" : "mem";
++            return pretty ? "RAM" : "mem";
+         case HocClkThermalSensor_PLLX:
+             return pretty ? "PLLX" : "pllx";
+         case HocClkThermalSensor_AO:
+@@ -296,9 +296,9 @@ static inline const char* hocclkFormatPowerSensor(HocClkPowerSensor powSensor, b
+     switch(powSensor)
+     {
+         case HocClkPowerSensor_Now:
+-            return pretty ? "Now" : "now";
++            return pretty ? "현재" : "now";
+         case HocClkPowerSensor_Avg:
+-            return pretty ? "Avg" : "avg";
++            return pretty ? "평균" : "avg";
+         default:
+             return "unknown";
+     }
+@@ -309,15 +309,15 @@ static inline const char* hocclkFormatProfile(HocClkProfile profile, bool pretty
+     switch(profile)
+     {
+         case HocClkProfile_Docked:
+-            return pretty ? "Docked" : "docked";
++            return pretty ? "독 모드" : "docked";
+         case HocClkProfile_Handheld:
+-            return pretty ? "Handheld" : "handheld";
++            return pretty ? "휴대 모드" : "handheld";
+         case HocClkProfile_HandheldCharging:
+-            return pretty ? "Charging" : "handheld_charging";
++            return pretty ? "충전 중" : "handheld_charging";
+         case HocClkProfile_HandheldChargingUSB:
+-            return pretty ? "USB Charger" : "handheld_charging_usb";
++            return pretty ? "USB 충전기" : "handheld_charging_usb";
+         case HocClkProfile_HandheldChargingOfficial:
+-            return pretty ? "PD Charger" : "handheld_charging_official";
++            return pretty ? "정격 충전기" : "handheld_charging_official";
+         default:
+             return "unknown";
+     }
+@@ -337,9 +337,9 @@ static inline const char* hocClkFormatVoltage(HocClkVoltage voltage, bool pretty
+         case HocClkVoltage_EMCVDDQ:
+             return pretty ? "VDDQ" : "vddq";
+         case HocClkVoltage_SOC:
+-            return pretty ? "SOC" : "soc";
++            return pretty ? "SoC" : "soc";
+         case HocClkVoltage_Display:
+-            return pretty ? "Display" : "display";
++            return pretty ? "주사율" : "display";
+         default:
+             return "unknown";
+     }
+diff --git a/include/hocclk/config.h b/include/hocclk/config.h
+index 8b3700d..d460be5 100644
+--- a/include/hocclk/config.h
++++ b/include/hocclk/config.h
+@@ -70,6 +70,10 @@ typedef enum {
+ 
+     HocClkConfigValue_MemoryFrequencyMeasurementMode,
+     HocClkConfigValue_RamDisplayUnit,
++    HocClkConfigValue_IsFirstLoad,
++
++    HocClkConfigValue_AulaDisplayColorPreset,
++    HocClkConfigValue_MarikoMiddleFreqs,
+ 
+     KipConfigValue_custRev,
+     // KipConfigValue_mtcConf,
+@@ -79,9 +83,12 @@ typedef enum {
+     KipConfigValue_eristaEmcMaxClock,
+     KipConfigValue_eristaEmcMaxClock1,
+     KipConfigValue_eristaEmcMaxClock2,
++
++    KipConfigValue_stepMode,
+     KipConfigValue_marikoEmcMaxClock,
+     KipConfigValue_marikoEmcVddqVolt,
+     KipConfigValue_emcDvbShift,
++    KipConfigValue_marikoSocVmax,
+ 
+     KipConfigValue_t1_tRCD,
+     KipConfigValue_t2_tRP,
+@@ -91,6 +98,23 @@ typedef enum {
+     KipConfigValue_t6_tRTW,
+     KipConfigValue_t7_tWTR,
+     KipConfigValue_t8_tREFI,
++
++    KipConfigValue_timingEmcTbreak,
++    KipConfigValue_low_t6_tRTW,
++    KipConfigValue_low_t7_tWTR,
++
++    KipConfigValue_t2_tRP_cap,
++
++    KipConfigValue_read_latency_1333,
++    KipConfigValue_read_latency_1600,
++    KipConfigValue_read_latency_1866,
++    KipConfigValue_read_latency_2133,
++
++    KipConfigValue_write_latency_1333,
++    KipConfigValue_write_latency_1600,
++    KipConfigValue_write_latency_1866,
++    KipConfigValue_write_latency_2133,
++
+     KipConfigValue_mem_burst_read_latency,
+     KipConfigValue_mem_burst_write_latency,
+ 
+@@ -176,7 +200,6 @@ typedef enum {
+     KipConfigValue_t7_tWTR_fine_tune,
+ 
+     KipCrc32,
+-    HocClkConfigValue_IsFirstLoad,
+     HocClkConfigValue_EnumMax,
+ } HocClkConfigValue;
+ 
+@@ -200,96 +223,102 @@ static inline const char* hocclkFormatConfigValue(HocClkConfigValue val, bool pr
+             return pretty ? "CSV write interval (ms)" : "csv_write_interval_ms";
+ 
+         case HocClkConfigValue_UncappedClocks:
+-            return pretty ? "Uncapped Clocks" : "uncapped_clocks";
++            return pretty ? "클럭 제한 해제" : "uncapped_clocks";
+         case HocClkConfigValue_OverwriteBoostMode:
+-            return pretty ? "Overwrite Boost Mode" : "ow_boost";
++            return pretty ? "부스트 모드 덮어쓰기" : "ow_boost";
+ 
+         case HocClkConfigValue_EristaMaxCpuClock:
+-            return pretty ? "CPU Max Clock" : "cpu_max_e";
++            return pretty ? "CPU 최대 클럭" : "cpu_max_e";
+ 
+         case HocClkConfigValue_MarikoMaxCpuClock:
+-            return pretty ? "CPU Max Display Clock" : "cpu_max_m";
++            return pretty ? "CPU 표시 최대 클럭" : "cpu_max_m";
+ 
+         case HocClkConfigValue_ThermalThrottle:
+-            return pretty ? "Thermal Throttle" : "thermal_throttle";
++            return pretty ? "온도 제한" : "thermal_throttle";
+ 
+         case HocClkConfigValue_ThermalThrottleThreshold:
+-            return pretty ? "Thermal Throttle Threshold" : "thermal_throttle_threshold";
++            return pretty ? "온도 제한 임계값" : "thermal_throttle_threshold";
+ 
+         case HocClkConfigValue_HandheldTDP:
+-            return pretty ? "Handheld TDP" : "handheld_tdp";
++            return pretty ? "휴대 모드 TDP" : "handheld_tdp";
+ 
+         case HocClkConfigValue_HandheldTDPLimit:
+-            return pretty ? "Handheld TDP Limit" : "tdp_limit";
++            return pretty ? "휴대 모드 TDP 제한" : "tdp_limit";
+ 
+         case HocClkConfigValue_LiteTDPLimit:
+-            return pretty ? "Handheld TDP Limit" : "tdp_limit_l";
++            return pretty ? "휴대 모드 TDP 제한" : "tdp_limit_l";
+ 
+         case HocClkConfigValue_BatteryChargeCurrent:
+-            return pretty ? "Battery Charge Current" : "bat_charge_current";
++            return pretty ? "배터리 충전 전류" : "bat_charge_current";
+ 
+         case HocClkConfigValue_OverwriteRefreshRate:
+-            return pretty ? "Display Refresh Rate Changing" : "drr_changing";
++            return pretty ? "주사율 변경" : "drr_changing";
+ 
+         case HocClkConfigValue_MaxDisplayClockH:
+-            return pretty ? "Max Display Clock (Handheld)" : "drr_max_clock";
++            return pretty ? "최대 표시 클럭 (휴대 모드)" : "drr_max_clock";
+ 
+         case HocClkConfigValue_DVFSMode:
+-            return pretty ? "DVFS Mode" : "dvfs_mode";
++            return pretty ? "DVFS 모드" : "dvfs_mode";
+ 
+         case HocClkConfigValue_DVFSOffset:
+-            return pretty ? "DVFS Offset" : "dvfs_offset";
++            return pretty ? "DVFS 오프셋" : "dvfs_offset";
+ 
+         case HocClkConfigValue_GPUScheduling:
+-            return pretty ? "GPU Scheduling" : "gpu_scheduling";
++            return pretty ? "GPU 스케줄링" : "gpu_scheduling";
+ 
+         case HocClkConfigValue_GPUSchedulingMethod:
+-            return pretty ? "GPU Scheduling Method" : "gpu_sched_method";
++            return pretty ? "GPU 스케줄링 방식" : "gpu_sched_method";
+ 
+         case HocClkConfigValue_LiveCpuUv:
+-            return pretty ? "Live CPU Undervolt" : "live_cpu_uv";
++            return pretty ? "CPU 실시간 언더볼팅" : "live_cpu_uv";
+ 
+         case HocClkConfigValue_EnableExperimentalSettings:
+-            return pretty ? "Enable Experimental Settings" : "enable_experimental_settings";
++            return pretty ? "실험실 기능 활성화" : "enable_experimental_settings";
+ 
+         case HocClkConfigValue_RAMVoltDisplayMode:
+-            return pretty ? "RAM Voltage / Usage Display Mode" : "ram_volt_usage_display_mode";
++            return pretty ? "RAM 전압 / 사용량 표시 모드" : "ram_volt_usage_display_mode";
+         case HocClkConfigValue_CpuGovernorMinimumFreq:
+-            return pretty ? "CPU Governor Minimum Frequency" : "cpu_gov_min_freq";
++            return pretty ? "CPU 최소 클럭" : "cpu_gov_min_freq";
+ 
+         case HocClkConfigValue_DisplayVoltage:
+-            return pretty ? "Display Voltage" : "display_voltage";
++            return pretty ? "전압 표시" : "display_voltage";
+ 
+         case HocClkConfigValue_MemoryFrequencyMeasurementMode:
+-            return pretty ? "RAM Frequency Measurement Mode" : "mem_freq_measurement_mode";
++            return pretty ? "RAM 주파수 측정" : "mem_freq_measurement_mode";
+ 
+         case HocClkConfigValue_RamDisplayUnit:
+-            return pretty ? "RAM Frequency Display Unit" : "RAM_display_unit";
+-
++            return pretty ? "RAM 표시 단위" : "RAM_display_unit";
++        case HocClkConfigValue_AulaDisplayColorPreset:
++            return pretty ? "Aula 표시 색상 프리셋" : "aula_color_preset";
++        case HocClkConfigValue_MarikoMiddleFreqs:
++            return pretty ? "Mariko 중간 클럭" : "mariko_middle_freqs";
+         // KIP config values
+         case KipConfigValue_custRev:
+             return pretty ? "Custom Revision" : "kip_cust_rev";
+         // case KipConfigValue_mtcConf:
+         //     return pretty ? "MTC Config" : "kip_mtc_conf";
+         case KipConfigValue_hpMode:
+-            return pretty ? "HP Mode" : "kip_hp_mode";
++            return pretty ? "HP 모드" : "kip_hp_mode";
+ 
+         // EMC
+         case KipConfigValue_commonEmcMemVolt:
+-            return pretty ? "Common EMC/MEM Voltage" : "common_emc_mem_volt";
++            return pretty ? "일반 EMC/MEM 전압" : "common_emc_mem_volt";
+         case KipConfigValue_eristaEmcMaxClock:
+-            return pretty ? "Erista EMC Max Clock 1" : "erista_emc_max_clock";
++            return pretty ? "Erista EMC 최대 클럭 1" : "erista_emc_max_clock";
+         case KipConfigValue_eristaEmcMaxClock1:
+-            return pretty ? "Erista EMC Max Clock 2" : "erista_emc_max_clock1";
++            return pretty ? "Erista EMC 최대 클럭 2" : "erista_emc_max_clock1";
+         case KipConfigValue_eristaEmcMaxClock2:
+-            return pretty ? "Erista EMC Max Clock 3" : "erista_emc_max_clock2";
++            return pretty ? "Erista EMC 최대 클럭 3" : "erista_emc_max_clock2";
++        case KipConfigValue_stepMode:
++            return pretty ? "단계별 조정 모드:" : "step_mode";
+         case KipConfigValue_marikoEmcMaxClock:
+-            return pretty ? "Mariko EMC Max Clock" : "mariko_emc_max_clock";
++            return pretty ? "Mariko EMC 최대 클럭" : "mariko_emc_max_clock";
+         case KipConfigValue_marikoEmcVddqVolt:
+-            return pretty ? "Mariko EMC VDDQ Voltage" : "mariko_emc_vddq_volt";
++            return pretty ? "Mariko EMC VDDQ 전압" : "mariko_emc_vddq_volt";
+         case KipConfigValue_emcDvbShift:
+-            return pretty ? "EMC DVB Shift" : "emc_dvb_shift";
+-
++            return pretty ? "EMC DVB 조정값" : "emc_dvb_shift";
++        case KipConfigValue_marikoSocVmax:
++            return pretty ? "SOC 최대 전압" : "soc_vmax";
+         // Memory timings
+         case KipConfigValue_t1_tRCD:
+             return pretty ? "t1 - tRCD" : "t1_trcd";
+@@ -307,59 +336,88 @@ static inline const char* hocclkFormatConfigValue(HocClkConfigValue val, bool pr
+             return pretty ? "t7 - tWTR" : "t7_twtr";
+         case KipConfigValue_t8_tREFI:
+             return pretty ? "t8 - tREFI" : "t8_trefi";
++
++        case KipConfigValue_timingEmcTbreak:
++            return pretty ? "Timing Emc Tbreak" : "timingEmcTbreak";
++        case KipConfigValue_low_t6_tRTW:
++            return pretty ? "Low T6 - tRTW" : "low_t6_tRTW";
++        case KipConfigValue_low_t7_tWTR:
++            return pretty ? "Low T7 - tWTR" : "low_t7_tWTR";
++
++        case KipConfigValue_t2_tRP_cap:
++            return pretty ? "t2 - trp 1333WL Cap" : "t2_tRP_cap";
++
++        case KipConfigValue_read_latency_1333:
++            return pretty ? "1333 읽기 지연" : "read_latency_1333";
++        case KipConfigValue_read_latency_1600:
++            return pretty ? "1600 읽기 지연" : "read_latency_1600";
++        case KipConfigValue_read_latency_1866:
++            return pretty ? "1866 읽기 지연" : "read_latency_1866";
++        case KipConfigValue_read_latency_2133:
++            return pretty ? "2133 읽기 지연" : "read_latency_2133";
++
++        case KipConfigValue_write_latency_1333:
++            return pretty ? "1333 쓰기 지연" : "write_latency_1333";
++        case KipConfigValue_write_latency_1600:
++            return pretty ? "1600 쓰기 지연" : "write_latency_1600";
++        case KipConfigValue_write_latency_1866:
++            return pretty ? "1866 쓰기 지연" : "write_latency_1866";
++        case KipConfigValue_write_latency_2133:
++            return pretty ? "2133 쓰기 지연" : "write_latency_2133";
++
+         case KipConfigValue_mem_burst_read_latency:
+-            return pretty ? "Memory Burst Read Latency" : "mem_burst_read_latency";
++            return pretty ? "RAM 버스트 읽기 지연" : "mem_burst_read_latency";
+         case KipConfigValue_mem_burst_write_latency:
+-            return pretty ? "Memory Burst Write Latency" : "mem_burst_write_latency";
++            return pretty ? "RAM 버스트 쓰기 지연" : "mem_burst_write_latency";
+ 
+         // CPU – Erista
+         case KipConfigValue_eristaCpuUV:
+-            return pretty ? "Erista CPU Undervolt" : "erista_cpu_uv";
++            return pretty ? "Erista CPU 언더볼트" : "erista_cpu_uv";
+         case KipConfigValue_eristaCpuVmin:
+-            return pretty ? "Erista CPU vMin" : "erista_cpu_vmin";
++            return pretty ? "Erista CPU 최소 전압" : "erista_cpu_vmin";
+         case KipConfigValue_eristaCpuMaxVolt:
+-            return pretty ? "Erista CPU Max Voltage" : "erista_cpu_max_volt";
++            return pretty ? "Erista CPU 최대 전압" : "erista_cpu_max_volt";
+         case KipConfigValue_eristaCpuUnlock:
+-            return pretty ? "Erista CPU Unlock" : "erista_cpu_unlock";
++            return pretty ? "Erista CPU 잠금 해제" : "erista_cpu_unlock";
+ 
+         // CPU – Mariko
+         case KipConfigValue_marikoCpuUVLow:
+-            return pretty ? "Mariko CPU Undervolt (Low)" : "mariko_cpu_uv_low";
++            return pretty ? "Mariko CPU 언더볼트 (Low)" : "mariko_cpu_uv_low";
+         case KipConfigValue_marikoCpuUVHigh:
+-            return pretty ? "Mariko CPU Undervolt (High)" : "mariko_cpu_uv_high";
++            return pretty ? "Mariko CPU 언더볼트 (High)" : "mariko_cpu_uv_high";
+         case KipConfigValue_tableConf:
+-            return pretty ? "Table Config" : "kip_table_conf";
++            return pretty ? "테이블 설정" : "kip_table_conf";
+         case KipConfigValue_marikoCpuLowVmin:
+-            return pretty ? "Mariko CPU Low Vmin" : "mariko_cpu_low_vmin";
++            return pretty ? "Mariko CPU Low 최소 전압" : "mariko_cpu_low_vmin";
+         case KipConfigValue_marikoCpuHighVmin:
+-            return pretty ? "Mariko CPU High Vmin" : "mariko_cpu_high_vmin";
++            return pretty ? "Mariko CPU High 최소 전압" : "mariko_cpu_high_vmin";
+         case KipConfigValue_marikoCpuMaxVolt:
+-            return pretty ? "Mariko CPU Max Voltage" : "mariko_cpu_max_volt";
++            return pretty ? "Mariko CPU 최대 전압" : "mariko_cpu_max_volt";
+ 
+         case KipConfigValue_eristaCpuBoostClock:
+-            return pretty ? "Erista CPU Boost Clock" : "erista_cpu_boost_clock";
++            return pretty ? "Erista CPU 부스트 클럭" : "erista_cpu_boost_clock";
+         case KipConfigValue_marikoCpuBoostClock:
+-            return pretty ? "Mariko CPU Boost Clock" : "mariko_cpu_boost_clock";
++            return pretty ? "Mariko CPU 부스트 클럭" : "mariko_cpu_boost_clock";
+ 
+         case KipConfigValue_marikoCpuMaxClock:
+-            return pretty ? "Mariko CPU Max Clock" : "mariko_cpu_max_clock";
++            return pretty ? "Mariko CPU 최대 클럭" : "mariko_cpu_max_clock";
+ 
+         // GPU – Erista
+         case KipConfigValue_eristaGpuUV:
+-            return pretty ? "Erista GPU Undervolt" : "erista_gpu_uv";
++            return pretty ? "Erista GPU 언더볼트" : "erista_gpu_uv";
+         case KipConfigValue_eristaGpuVmin:
+-            return pretty ? "Erista GPU Vmin" : "erista_gpu_vmin";
++            return pretty ? "Erista GPU 최소 전압" : "erista_gpu_vmin";
+ 
+         // GPU – Mariko
+         case KipConfigValue_marikoGpuUV:
+-            return pretty ? "Mariko GPU Undervolt" : "mariko_gpu_uv";
++            return pretty ? "Mariko GPU 언더볼트" : "mariko_gpu_uv";
+         case KipConfigValue_marikoGpuVmin:
+-            return pretty ? "Mariko GPU Vmin" : "mariko_gpu_vmin";
++            return pretty ? "Mariko GPU 최소 전압" : "mariko_gpu_vmin";
+         case KipConfigValue_marikoGpuVmax:
+-            return pretty ? "Mariko GPU Vmax" : "mariko_gpu_vmax";
++            return pretty ? "Mariko GPU 최대 전압" : "mariko_gpu_vmax";
+ 
+         case KipConfigValue_commonGpuVoltOffset:
+-            return pretty ? "Common GPU Voltage Offset" : "common_gpu_volt_offset";
++            return pretty ? "일반 GPU 전압 오프셋" : "common_gpu_volt_offset";
+         case KipConfigValue_gpuSpeedo:
+             return pretty ? "GPU Speedo" : "gpu_speedo";
+ 
+@@ -417,7 +475,7 @@ static inline const char* hocclkFormatConfigValue(HocClkConfigValue val, bool pr
+         case KipConfigValue_g_volt_e_998400: return pretty ? "Erista GPU Volt 998 MHz" : "g_volt_e_998400";
+         case KipConfigValue_g_volt_e_1036800: return pretty ? "Erista GPU Volt 1036 MHz" : "g_volt_e_1036800";
+         case KipConfigValue_g_volt_e_1075200: return pretty ? "Erista GPU Volt 1075 MHz" : "g_volt_e_1075200";
+-        case KipConfigValue_t6_tRTW_fine_tune: return pretty ? "t6 - tRTW Fine Tune" : "t6_tRTW_fine_fune";
++        case KipConfigValue_t6_tRTW_fine_tune: return pretty ? "t6 - tRTW Fine Tune" : "t6_tRTW_fine_tune";
+         case KipConfigValue_t7_tWTR_fine_tune: return pretty ? "t7 - tWTR Fine Tune" : "t7_tWTR_fine_tune";
+         case KipCrc32:
+             return pretty ? "CRC32" : "crc32";
+@@ -446,6 +504,7 @@ static inline uint64_t hocclkDefaultConfigValue(HocClkConfigValue val)
+         case HocClkConfigValue_LiveCpuUv:
+         case HocClkConfigValue_GPUSchedulingMethod:
+         case HocClkConfigValue_MemoryFrequencyMeasurementMode:
++        case HocClkConfigValue_MarikoMiddleFreqs:
+             return 0ULL;
+         case HocClkConfigValue_RamDisplayUnit:
+             return (uint64_t)RamDisplayUnit_MHz;
+@@ -472,6 +531,8 @@ static inline uint64_t hocclkDefaultConfigValue(HocClkConfigValue val)
+             return 60ULL;
+         case HocClkConfigValue_DisplayVoltage:
+             return 1200ULL; // Auto
++        case HocClkConfigValue_AulaDisplayColorPreset:
++            return AulaDisplayColorMode_DoNotOverride;
+         default:
+             return 0ULL;
+     }
+@@ -503,6 +564,7 @@ static inline uint64_t hocclkValidConfigValue(HocClkConfigValue val, uint64_t in
+         case HocClkConfigValue_EnableExperimentalSettings:
+         case HocClkConfigValue_LiveCpuUv:
+         case HocClkConfigValue_GPUSchedulingMethod:
++        case HocClkConfigValue_MarikoMiddleFreqs:
+             return (input & 0x1) == input;
+ 
+         case KipConfigValue_custRev:
+@@ -512,9 +574,11 @@ static inline uint64_t hocclkValidConfigValue(HocClkConfigValue val, uint64_t in
+         case KipConfigValue_eristaEmcMaxClock:
+         case KipConfigValue_eristaEmcMaxClock1:
+         case KipConfigValue_eristaEmcMaxClock2:
++        case KipConfigValue_stepMode:
+         case KipConfigValue_marikoEmcMaxClock:
+         case KipConfigValue_marikoEmcVddqVolt:
+         case KipConfigValue_emcDvbShift:
++        case KipConfigValue_marikoSocVmax:
+         case KipConfigValue_t1_tRCD:
+         case KipConfigValue_t2_tRP:
+         case KipConfigValue_t3_tRAS:
+@@ -523,6 +587,18 @@ static inline uint64_t hocclkValidConfigValue(HocClkConfigValue val, uint64_t in
+         case KipConfigValue_t6_tRTW:
+         case KipConfigValue_t7_tWTR:
+         case KipConfigValue_t8_tREFI:
++        case KipConfigValue_timingEmcTbreak:
++        case KipConfigValue_low_t6_tRTW:
++        case KipConfigValue_low_t7_tWTR:
++        case KipConfigValue_t2_tRP_cap:
++        case KipConfigValue_read_latency_1333:
++        case KipConfigValue_read_latency_1600:
++        case KipConfigValue_read_latency_1866:
++        case KipConfigValue_read_latency_2133:
++        case KipConfigValue_write_latency_1333:
++        case KipConfigValue_write_latency_1600:
++        case KipConfigValue_write_latency_1866:
++        case KipConfigValue_write_latency_2133:
+         case KipConfigValue_mem_burst_read_latency:
+         case KipConfigValue_mem_burst_write_latency:
+         case KipConfigValue_eristaCpuUV:
+@@ -606,6 +682,7 @@ static inline uint64_t hocclkValidConfigValue(HocClkConfigValue val, uint64_t in
+         case HocClkConfigValue_CpuGovernorMinimumFreq:
+         case HocClkConfigValue_MemoryFrequencyMeasurementMode:
+         case HocClkConfigValue_RamDisplayUnit:
++        case HocClkConfigValue_AulaDisplayColorPreset:
+             return true;
+         case HocClkConfigValue_BatteryChargeCurrent:
+             return ((input >= 1024) && (input <= 3072)) || !input;
 diff --git a/source/Utils.hpp b/source/Utils.hpp
-index c66ef2f..f65b73e 100644
+index 1838685..be76dbc 100644
 --- a/source/Utils.hpp
 +++ b/source/Utils.hpp
-@@ -61,7 +61,7 @@ constexpr const char* teslaConfigIniPath = "sdmc:/config/tesla/config.ini";
+@@ -62,7 +62,7 @@ constexpr const char* teslaConfigIniPath = "sdmc:/config/tesla/config.ini";
  
  std::string filename;
  std::string filepath;
@@ -11,7 +477,7 @@ index c66ef2f..f65b73e 100644
  
  //Misc2
  MmuRequest nvdecRequest;
-@@ -1519,20 +1519,19 @@ ALWAYS_INLINE void GetConfigSettings(MiniSettings* settings) {
+@@ -1843,20 +1843,19 @@ ALWAYS_INLINE void GetConfigSettings(MiniSettings* settings) {
      settings->showFullResolution = true;
      settings->showFanPercentage = true;
      settings->useDynamicColors = true;
@@ -39,7 +505,7 @@ index c66ef2f..f65b73e 100644
      convertStrToRGBA4444("#2DFF", &(settings->catColor));
      convertStrToRGBA4444("#FFFF", &(settings->textColor));
      settings->show = "DTC+BAT+CPU+GPU+RAM+TMP+FPS+RES";
-@@ -1819,21 +1818,21 @@ ALWAYS_INLINE void GetConfigSettings(MicroSettings* settings) {
+@@ -2164,21 +2163,21 @@ ALWAYS_INLINE void GetConfigSettings(MicroSettings* settings) {
      settings->showFullResolution = false;
      settings->showSOCVoltage = true;
      settings->useDynamicColors = true;
@@ -65,9 +531,9 @@ index c66ef2f..f65b73e 100644
 -    settings->show = "FPS+CPU+GPU+RAM+SOC+BAT+DTC";
 +    settings->show = "FPS+CPU+GPU+RAM+TMP+DTC+BAT";
      settings->showRAMLoad = true;
-     settings->setPosBottom = false;
-     settings->disableScreenshots = false;
-@@ -2063,11 +2062,11 @@ ALWAYS_INLINE void GetConfigSettings(MicroSettings* settings) {
+     settings->showComponentTemps = false;
+     settings->showSocPcbSkinTemps = true;
+@@ -2439,11 +2438,11 @@ ALWAYS_INLINE void GetConfigSettings(MicroSettings* settings) {
  
  ALWAYS_INLINE void GetConfigSettings(FpsCounterSettings* settings) {
      // Initialize defaults
@@ -82,7 +548,7 @@ index c66ef2f..f65b73e 100644
      //settings->setPos = 0;
      settings->refreshRate = 30;
      settings->useIntegerCounter = false;
-@@ -2199,7 +2198,7 @@ ALWAYS_INLINE void GetConfigSettings(FpsGraphSettings* settings) {
+@@ -2575,7 +2574,7 @@ ALWAYS_INLINE void GetConfigSettings(FpsGraphSettings* settings) {
      //settings->setPos = 0;
      convertStrToRGBA4444("#0009", &(settings->backgroundColor));
      convertStrToRGBA4444("#000F", &(settings->focusBackgroundColor));
@@ -91,7 +557,7 @@ index c66ef2f..f65b73e 100644
      convertStrToRGBA4444("#2DFF", &(settings->borderColor));
      convertStrToRGBA4444("#8888", &(settings->dashedLineColor));
      convertStrToRGBA4444("#FFFF", &(settings->maxFPSTextColor));
-@@ -2209,7 +2208,7 @@ ALWAYS_INLINE void GetConfigSettings(FpsGraphSettings* settings) {
+@@ -2585,7 +2584,7 @@ ALWAYS_INLINE void GetConfigSettings(FpsGraphSettings* settings) {
      convertStrToRGBA4444("#0C0F", &(settings->perfectLineColor));
  
      convertStrToRGBA4444("#FFFF", &(settings->textColor));
@@ -100,7 +566,7 @@ index c66ef2f..f65b73e 100644
  
      settings->refreshRate = 30;
      settings->useDynamicColors = true;
-@@ -2350,8 +2349,8 @@ ALWAYS_INLINE void GetConfigSettings(FullSettings* settings) {
+@@ -2726,8 +2725,8 @@ ALWAYS_INLINE void GetConfigSettings(FullSettings* settings) {
      settings->useDynamicColors = true;
      settings->disableScreenshots = false;
      convertStrToRGBA4444("#888F", &(settings->separatorColor));
@@ -111,7 +577,7 @@ index c66ef2f..f65b73e 100644
      convertStrToRGBA4444("#FFFF", &(settings->textColor));
  
      // Open and read file efficiently
-@@ -2483,7 +2482,7 @@ ALWAYS_INLINE void GetConfigSettings(ResolutionSettings* settings) {
+@@ -2859,7 +2858,7 @@ ALWAYS_INLINE void GetConfigSettings(ResolutionSettings* settings) {
      // Initialize defaults
      convertStrToRGBA4444("#0009", &(settings->backgroundColor));
      convertStrToRGBA4444("#000F", &(settings->focusBackgroundColor));
@@ -121,7 +587,7 @@ index c66ef2f..f65b73e 100644
      convertStrToRGBA4444("#FFFF", &(settings->textColor));
      settings->refreshRate = 10;
 diff --git a/source/main.cpp b/source/main.cpp
-index c1c10d4..8f892d0 100755
+index b0e2cf4..042f2b0 100755
 --- a/source/main.cpp
 +++ b/source/main.cpp
 @@ -33,7 +33,7 @@ static std::string lastSelectedItem;
@@ -220,7 +686,7 @@ index c1c10d4..8f892d0 100755
              Mini->enableShortHoldKey();
              Mini->disableClickAnimation();
              Mini->setClickListener([](uint64_t keys) {
-@@ -240,7 +240,7 @@ public:
+@@ -240,14 +240,14 @@ public:
                  if (keys & KEY_Y) {
                      triggerSettingsFeedback();
                      // Launch configurator for Mini mode
@@ -229,6 +695,14 @@ index c1c10d4..8f892d0 100755
                      return true;
                  }
                  return false;
+             });
+             list->addItem(Mini);
+ 
+-            auto* Micro = new tsl::elm::SilentListItem("Micro");
++            auto* Micro = new tsl::elm::SilentListItem("상태바");
+             Micro->enableShortHoldKey();
+             Micro->disableClickAnimation();
+             Micro->setClickListener([](uint64_t keys) {
 @@ -259,7 +259,7 @@ public:
                  if (keys & KEY_Y) {
                      triggerSettingsFeedback();
@@ -309,7 +783,7 @@ index c1c10d4..8f892d0 100755
  
          return rootFrame;
 diff --git a/source/modes/Battery.hpp b/source/modes/Battery.hpp
-index 4afaa47..c7f4248 100644
+index 4afaa47..9f55d1b 100644
 --- a/source/modes/Battery.hpp
 +++ b/source/modes/Battery.hpp
 @@ -43,106 +43,106 @@ public:
@@ -458,10 +932,10 @@ index 4afaa47..c7f4248 100644
  
          if (isChargerConnected) {
 diff --git a/source/modes/Configurator.hpp b/source/modes/Configurator.hpp
-index 0c8a834..b4589f4 100644
+index aded13f..3365278 100644
 --- a/source/modes/Configurator.hpp
 +++ b/source/modes/Configurator.hpp
-@@ -237,11 +237,11 @@ private:
+@@ -238,11 +238,11 @@ private:
  public:
      AlphaSelector(const std::string& mode, const std::string& key, const std::string& displayTitle) 
          : modeName(mode), colorKey(key), title(displayTitle) {
@@ -478,7 +952,7 @@ index 0c8a834..b4589f4 100644
          }
      ~AlphaSelector() {
          lastSelectedListItem = nullptr;
-@@ -267,7 +267,7 @@ public:
+@@ -268,7 +268,7 @@ public:
          
          // Alpha options
          static const std::vector<std::pair<std::string, char>> alphaOptions = {
@@ -487,7 +961,7 @@ index 0c8a834..b4589f4 100644
              {"10%", '1'},
              {"20%", '3'},
              {"30%", '4'},
-@@ -277,7 +277,7 @@ public:
+@@ -278,7 +278,7 @@ public:
              {"70%", 'B'},
              {"80%", 'C'},
              {"90%", 'E'},
@@ -496,7 +970,7 @@ index 0c8a834..b4589f4 100644
          };
          
          for (const auto& option : alphaOptions) {
-@@ -309,7 +309,7 @@ public:
+@@ -310,7 +310,7 @@ public:
          
          list->jumpToItem("", ult::CHECKMARK_SYMBOL, false);
          
@@ -505,7 +979,7 @@ index 0c8a834..b4589f4 100644
          rootFrame->setContent(list);
          return rootFrame;
      }
-@@ -332,31 +332,33 @@ public:
+@@ -333,31 +333,33 @@ public:
  // Define available DTC format options
  static const std::vector<std::pair<std::string, std::string>> dtcFormats = {
      // Special
@@ -558,7 +1032,7 @@ index 0c8a834..b4589f4 100644
  };
  
  // DTC Format Configuration (Mini/Micro only)
-@@ -368,8 +370,8 @@ private:
+@@ -369,8 +371,8 @@ private:
      
  public:
      DTCFormatConfig(const std::string& mode) : modeName(mode) {
@@ -569,7 +1043,7 @@ index 0c8a834..b4589f4 100644
      }
      ~DTCFormatConfig() {
          lastSelectedListItem = nullptr;
-@@ -377,14 +379,14 @@ public:
+@@ -378,14 +380,14 @@ public:
      
      virtual tsl::elm::Element* createUI() override {
          auto* list = new tsl::elm::List();
@@ -586,7 +1060,7 @@ index 0c8a834..b4589f4 100644
          }
          
          
-@@ -413,7 +415,7 @@ public:
+@@ -414,7 +416,7 @@ public:
          // Jump to currently selected item
          list->jumpToItem("", ult::CHECKMARK_SYMBOL, false);
          
@@ -595,7 +1069,7 @@ index 0c8a834..b4589f4 100644
          rootFrame->setContent(list);
          return rootFrame;
      }
-@@ -445,33 +447,33 @@ private:
+@@ -446,33 +448,33 @@ private:
      
  public:
      TogglesConfig(const std::string& mode) : modeName(mode) {
@@ -639,7 +1113,7 @@ index 0c8a834..b4589f4 100644
              disableScreenshots->setStateChangedListener([this](bool state) {
                  ult::setIniFileValue(configIniPath, "fps-graph", "disable_screenshots", state ? "true" : "false");
              });
-@@ -479,49 +481,49 @@ public:
+@@ -480,49 +482,49 @@ public:
              
          } else if (isFullMode) {
              // Full mode: specific full toggles
@@ -697,7 +1171,7 @@ index 0c8a834..b4589f4 100644
              disableScreenshots->setStateChangedListener([this](bool state) {
                  ult::setIniFileValue(configIniPath, "full", "disable_screenshots", state ? "true" : "false");
              });
-@@ -532,57 +534,57 @@ public:
+@@ -533,50 +535,50 @@ public:
              const std::string section = isMiniMode ? "mini" : "micro";
              
              if (isMiniMode) {
@@ -756,7 +1230,29 @@ index 0c8a834..b4589f4 100644
              socVoltage->setStateChangedListener([this, section](bool state) {
                  ult::setIniFileValue(configIniPath, section, "show_soc_voltage", state ? "true" : "false");
              });
-             list->addItem(socVoltage);
+@@ -584,9 +586,9 @@ public:
+ 
+             if (isMiniMode || isMicroMode) {
+                 // CPU/GPU/RAM die temps toggle
+-                auto* compTemps = new tsl::elm::ToggleListItem("CPU/GPU/RAM Temps", getCurrentShowComponentTemps());
++                auto* compTemps = new tsl::elm::ToggleListItem("CPU/GPU/RAM 온도", getCurrentShowComponentTemps());
+                 // SOC/PCB/Skin temps toggle  
+-                auto* socPcbTemps = new tsl::elm::ToggleListItem("SOC/PCB/Skin Temps", getCurrentShowSocPcbSkinTemps());
++                auto* socPcbTemps = new tsl::elm::ToggleListItem("SoC/PCB/Skin 온도", getCurrentShowSocPcbSkinTemps());
+ 
+                 // Mutual exclusivity: at least one must always be on
+                 compTemps->setStateChangedListener([this, section, compTemps, socPcbTemps](bool state) {
+@@ -613,7 +615,7 @@ public:
+ 
+                 if (isMicroMode) {
+                     // Side By Side Temps: show both groups on one line with divider (default off)
+-                    auto* sideBySide = new tsl::elm::ToggleListItem("Side By Side Temps", getCurrentShowSideBySideTemps());
++                    auto* sideBySide = new tsl::elm::ToggleListItem("온도 병렬 표시", getCurrentShowSideBySideTemps());
+                     sideBySide->setStateChangedListener([this](bool state) {
+                         ult::setIniFileValue(configIniPath, "micro", "show_side_by_side_temps", state ? "true" : "false");
+                     });
+@@ -622,7 +624,7 @@ public:
+             }
  
              if (isMiniMode) {
 -                auto* ramLoadCPUGPU = new tsl::elm::ToggleListItem("RAM Load CPU/GPU", getCurrentShowRAMLoadCPUGPU());
@@ -764,7 +1260,7 @@ index 0c8a834..b4589f4 100644
                  ramLoadCPUGPU->setStateChangedListener([this, section](bool state) {
                      ult::setIniFileValue(configIniPath, section, "show_RAM_load_CPU_GPU", state ? "true" : "false");
                  });
-@@ -590,32 +592,32 @@ public:
+@@ -630,32 +632,32 @@ public:
              }
  
              if (isMiniMode || isMicroMode) {
@@ -802,7 +1298,7 @@ index 0c8a834..b4589f4 100644
              sleepExit->setStateChangedListener([this, section](bool state) {
                  ult::setIniFileValue(configIniPath, section, "sleep_exit", state ? "true" : "false");
              });
-@@ -623,7 +625,7 @@ public:
+@@ -663,7 +665,7 @@ public:
              
          } else if (isGameResolutionsMode) {
              // Game Resolutions mode: only disable_screenshots
@@ -811,7 +1307,7 @@ index 0c8a834..b4589f4 100644
              disableScreenshots->setStateChangedListener([this](bool state) {
                  ult::setIniFileValue(configIniPath, "game_resolutions", "disable_screenshots", state ? "true" : "false");
              });
-@@ -631,14 +633,14 @@ public:
+@@ -671,14 +673,14 @@ public:
              
          } else if (isFPSCounterMode) {
              // FPS Counter mode: only disable_screenshots
@@ -828,7 +1324,7 @@ index 0c8a834..b4589f4 100644
              disableScreenshots->setStateChangedListener([this](bool state) {
                  ult::setIniFileValue(configIniPath, "fps-counter", "disable_screenshots", state ? "true" : "false");
              });
-@@ -652,7 +654,7 @@ public:
+@@ -692,7 +694,7 @@ public:
              jumpItemExactMatch = false;
          }
  
@@ -837,7 +1333,7 @@ index 0c8a834..b4589f4 100644
          rootFrame->setContent(list);
          return rootFrame;
      }
-@@ -850,12 +852,12 @@ private:
+@@ -913,12 +915,12 @@ private:
      
  public:
      RefreshRateConfig(const std::string& mode) : modeName(mode) {
@@ -856,7 +1352,7 @@ index 0c8a834..b4589f4 100644
          
          std::string section;
          if (isMiniMode) section = "mini";
-@@ -876,7 +878,7 @@ public:
+@@ -939,7 +941,7 @@ public:
      
      virtual tsl::elm::Element* createUI() override {
          auto* list = new tsl::elm::List();
@@ -865,7 +1361,7 @@ index 0c8a834..b4589f4 100644
  
          static const std::vector<int> rates = {1, 2, 3, 5, 10, 15, 30, 60};
          for (int rate : rates) {
-@@ -909,7 +911,7 @@ public:
+@@ -972,7 +974,7 @@ public:
          
          list->jumpToItem("", ult::CHECKMARK_SYMBOL, false);
  
@@ -874,7 +1370,7 @@ index 0c8a834..b4589f4 100644
          rootFrame->setContent(list);
          return rootFrame;
      }
-@@ -963,7 +965,7 @@ public:
+@@ -1026,7 +1028,7 @@ public:
  
      virtual tsl::elm::Element* createUI() override {
          auto* list = new tsl::elm::List();
@@ -883,7 +1379,7 @@ index 0c8a834..b4589f4 100644
  
          // ── "None" — clears our slot without touching anyone else's combos.
          {
-@@ -1035,7 +1037,7 @@ public:
+@@ -1098,7 +1100,7 @@ public:
                               HidAnalogStickState joyStickPosLeft, HidAnalogStickState joyStickPosRight) override {
          if (keysDown & KEY_B) {
              triggerExitFeedback();
@@ -892,7 +1388,7 @@ index 0c8a834..b4589f4 100644
              jumpItemValue = "";
              jumpItemExactMatch = false;
  
-@@ -1058,10 +1060,10 @@ private:
+@@ -1121,10 +1123,10 @@ private:
      
  public:
      FramePaddingConfig(const std::string& mode) : modeName(mode) {
@@ -907,7 +1403,7 @@ index 0c8a834..b4589f4 100644
  
          std::string section;
          if (isMiniMode) section = "mini";
-@@ -1079,7 +1081,7 @@ public:
+@@ -1142,7 +1144,7 @@ public:
      
      virtual tsl::elm::Element* createUI() override {
          auto* list = new tsl::elm::List();
@@ -916,7 +1412,7 @@ index 0c8a834..b4589f4 100644
  
          std::string section;
          if (isMiniMode) section = "mini";
-@@ -1110,7 +1112,7 @@ public:
+@@ -1173,7 +1175,7 @@ public:
          
          list->jumpToItem("", ult::CHECKMARK_SYMBOL, false);
  
@@ -925,7 +1421,7 @@ index 0c8a834..b4589f4 100644
          rootFrame->setContent(list);
          return rootFrame;
      }
-@@ -1143,12 +1145,12 @@ private:
+@@ -1206,12 +1208,12 @@ private:
  public:
      FontSizeSelector(const std::string& mode, const std::string& type) 
          : modeName(mode), fontType(type) {
@@ -942,7 +1438,7 @@ index 0c8a834..b4589f4 100644
          }
      ~FontSizeSelector() {
          lastSelectedListItem = nullptr;
-@@ -1165,7 +1167,7 @@ public:
+@@ -1228,7 +1230,7 @@ public:
          
          const std::string keyName = fontType + "_font_size";
          const std::string currentValue = ult::parseValueFromIniSection(configIniPath, section, keyName);
@@ -951,7 +1447,7 @@ index 0c8a834..b4589f4 100644
          const int currentSize = currentValue.empty() ? defaultSize : atoi(currentValue.c_str());
          
          // Font size range depends on mode
-@@ -1197,7 +1199,7 @@ public:
+@@ -1260,7 +1262,7 @@ public:
          
          list->jumpToItem("", ult::CHECKMARK_SYMBOL, false);
          
@@ -960,7 +1456,7 @@ index 0c8a834..b4589f4 100644
          rootFrame->setContent(list);
          return rootFrame;
      }
-@@ -1226,14 +1228,14 @@ private:
+@@ -1289,14 +1291,14 @@ private:
      
  public:
      FontSizeConfig(const std::string& mode) : modeName(mode) {
@@ -979,7 +1475,7 @@ index 0c8a834..b4589f4 100644
          
          std::string section;
          if (isMiniMode) section = "mini";
-@@ -1243,11 +1245,11 @@ public:
+@@ -1306,11 +1308,11 @@ public:
          const std::string handheldValue = ult::parseValueFromIniSection(configIniPath, section, "handheld_font_size");
          const std::string dockedValue = ult::parseValueFromIniSection(configIniPath, section, "docked_font_size");
          
@@ -993,7 +1489,7 @@ index 0c8a834..b4589f4 100644
          handheldItem->setValue(std::to_string(handheldSize) + " pt");
          handheldItem->setClickListener([this, handheldItem](uint64_t keys) {
              if (keys & KEY_A) {
-@@ -1259,7 +1261,7 @@ public:
+@@ -1322,7 +1324,7 @@ public:
          });
          list->addItem(handheldItem);
          
@@ -1002,7 +1498,7 @@ index 0c8a834..b4589f4 100644
          dockedItem->setValue(std::to_string(dockedSize) + " pt");
          dockedItem->setClickListener([this, dockedItem](uint64_t keys) {
              if (keys & KEY_A) {
-@@ -1271,7 +1273,7 @@ public:
+@@ -1334,7 +1336,7 @@ public:
          });
          list->addItem(dockedItem);
          
@@ -1011,7 +1507,7 @@ index 0c8a834..b4589f4 100644
          rootFrame->setContent(list);
          list->jumpToItem(jumpItemName, jumpItemValue, jumpItemExactMatch);
          {
-@@ -1311,12 +1313,12 @@ private:
+@@ -1374,12 +1376,12 @@ private:
  public:
      ColorSelector(const std::string& mode, const std::string& title, const std::string& key, const std::string& def) 
          : modeName(mode), modeTitle(title), colorKey(key), defaultValue(def) {
@@ -1030,7 +1526,7 @@ index 0c8a834..b4589f4 100644
              
              // Determine if this is a background color or text-based color
              isBackgroundColor = (key == "background_color" || key == "focus_background_color" || 
-@@ -1353,54 +1355,54 @@ public:
+@@ -1416,54 +1418,54 @@ public:
          // Updated colors list with comprehensive color palette
          static const std::vector<std::pair<std::string, std::string>> colors = {
              // Grays & Basics
@@ -1117,7 +1613,7 @@ index 0c8a834..b4589f4 100644
          };
          
          std::string _jumpItemValue;
-@@ -1482,7 +1484,7 @@ public:
+@@ -1545,7 +1547,7 @@ public:
          }
          list->jumpToItem("", _jumpItemValue, false);
          
@@ -1126,7 +1622,7 @@ index 0c8a834..b4589f4 100644
          rootFrame->setContent(list);
          return rootFrame;
      }
-@@ -1514,12 +1516,12 @@ private:
+@@ -1577,12 +1579,12 @@ private:
      
  public:
      ColorConfig(const std::string& mode) : modeName(mode) {
@@ -1145,7 +1641,7 @@ index 0c8a834..b4589f4 100644
          
          // Full mode should never access color configuration
          //if (isFullMode) {
-@@ -1530,7 +1532,7 @@ public:
+@@ -1593,7 +1595,7 @@ public:
      
      virtual tsl::elm::Element* createUI() override {
          auto* list = new tsl::elm::List();
@@ -1154,7 +1650,7 @@ index 0c8a834..b4589f4 100644
          
          auto getCurrentColor = [this](const std::string& key, const std::string& def) {
              std::string section;
-@@ -1555,54 +1557,54 @@ public:
+@@ -1618,54 +1620,54 @@ public:
              // Map of hex colors to names (RGB only, no alpha)
              static const std::map<std::string, std::string> colorNames = {
                  // Grays & Basics
@@ -1241,7 +1737,7 @@ index 0c8a834..b4589f4 100644
              };
              
              auto it = colorNames.find(rgb);
-@@ -1610,8 +1612,8 @@ public:
+@@ -1673,8 +1675,8 @@ public:
                  // Special case for black/transparent disambiguation
                  if (rgb == "#000" && hexColor.length() == 5) {
                      char alpha = hexColor[4];
@@ -1252,7 +1748,7 @@ index 0c8a834..b4589f4 100644
                  }
                  return it->second;
              }
-@@ -1641,7 +1643,7 @@ public:
+@@ -1704,7 +1706,7 @@ public:
          
          if (!isFullMode) {
              // Background Color (all modes)
@@ -1261,7 +1757,7 @@ index 0c8a834..b4589f4 100644
              std::string bgDefault = "#0009";
              std::string bgCurrentColor = getCurrentColor("background_color", bgDefault);
              // Display color name instead of hex
-@@ -1649,7 +1651,7 @@ public:
+@@ -1712,7 +1714,7 @@ public:
              bgColor->setClickListener([this, bgColor, bgDefault](uint64_t keys) {
                  if (keys & KEY_A) {
                      //tsl::shiftItemFocus(bgColor);
@@ -1270,7 +1766,7 @@ index 0c8a834..b4589f4 100644
                      return true;
                  }
                  return false;
-@@ -1657,12 +1659,12 @@ public:
+@@ -1720,12 +1722,12 @@ public:
              list->addItem(bgColor);
              
              // Background Alpha (new)
@@ -1285,7 +1781,7 @@ index 0c8a834..b4589f4 100644
                      return true;
                  }
                  return false;
-@@ -1671,13 +1673,13 @@ public:
+@@ -1734,13 +1736,13 @@ public:
          
              if (isMiniMode || isFPSCounterMode || isFPSGraphMode || isGameResolutionsMode) {
                  // Mini mode: has focus background
@@ -1301,7 +1797,7 @@ index 0c8a834..b4589f4 100644
                          return true;
                      }
                      return false;
-@@ -1685,12 +1687,12 @@ public:
+@@ -1748,12 +1750,12 @@ public:
                  list->addItem(focusBgColor);
                  
                  // Focus Alpha (new)
@@ -1316,7 +1812,7 @@ index 0c8a834..b4589f4 100644
                          return true;
                      }
                      return false;
-@@ -1700,14 +1702,14 @@ public:
+@@ -1763,14 +1765,14 @@ public:
          }
  
          // Text Color (all modes)
@@ -1333,7 +1829,7 @@ index 0c8a834..b4589f4 100644
                  return true;
              }
              return false;
-@@ -1724,12 +1726,12 @@ public:
+@@ -1787,12 +1789,12 @@ public:
              };
              
              // Game Resolutions: only category color (no separator)
@@ -1349,7 +1845,7 @@ index 0c8a834..b4589f4 100644
                      return true;
                  }
                  return false;
-@@ -1737,18 +1739,18 @@ public:
+@@ -1800,18 +1802,18 @@ public:
              list->addItem(catColor);
  
              static const std::vector<ColorSetting> fpsGraphColors = {
@@ -1377,7 +1873,7 @@ index 0c8a834..b4589f4 100644
                  const std::string currentVal = getCurrentColor(color.key, color.defaultVal);
                  
                  if (color.isBackgroundType) {
-@@ -1771,12 +1773,12 @@ public:
+@@ -1834,12 +1836,12 @@ public:
                  
                  // Add alpha selector for background-type colors
                  if (color.isBackgroundType) {
@@ -1392,7 +1888,7 @@ index 0c8a834..b4589f4 100644
                              return true;
                          }
                          return false;
-@@ -1786,65 +1788,65 @@ public:
+@@ -1849,65 +1851,65 @@ public:
              }
  
          } else if (isFullMode) {
@@ -1472,7 +1968,7 @@ index 0c8a834..b4589f4 100644
                      return true;
                  }
                  return false;
-@@ -1852,12 +1854,12 @@ public:
+@@ -1915,12 +1917,12 @@ public:
              list->addItem(sepColor);
              
          } else if (isMicroMode) {
@@ -1487,7 +1983,7 @@ index 0c8a834..b4589f4 100644
                      return true;
                  }
                  return false;
-@@ -1865,12 +1867,12 @@ public:
+@@ -1928,12 +1930,12 @@ public:
              list->addItem(catColor);
              
              // Micro mode: separator and category colors (no focus background like Mini)
@@ -1502,7 +1998,7 @@ index 0c8a834..b4589f4 100644
                      return true;
                  }
                  return false;
-@@ -1880,12 +1882,12 @@ public:
+@@ -1943,12 +1945,12 @@ public:
              
          } else if (isGameResolutionsMode) {
              // Game Resolutions: only category color (no separator)
@@ -1517,7 +2013,7 @@ index 0c8a834..b4589f4 100644
                      return true;
                  }
                  return false;
-@@ -1903,7 +1905,7 @@ public:
+@@ -1966,7 +1968,7 @@ public:
          }
          
          //list->disableCaching();
@@ -1526,7 +2022,7 @@ index 0c8a834..b4589f4 100644
          rootFrame->setContent(list);
          return rootFrame;
      }
-@@ -1929,20 +1931,20 @@ private:
+@@ -1992,20 +1994,20 @@ private:
      
  public:
      ShowConfig(const std::string& mode) : modeName(mode) {
@@ -1551,7 +2047,7 @@ index 0c8a834..b4589f4 100644
          }
          convertToUpper(showValue);
          
-@@ -2095,7 +2097,7 @@ public:
+@@ -2158,7 +2160,7 @@ public:
              jumpItemExactMatch = false;
          }
          
@@ -1560,7 +2056,7 @@ index 0c8a834..b4589f4 100644
          rootFrame->setContent(list);
          return rootFrame;
      }
-@@ -2151,21 +2153,21 @@ private:
+@@ -2214,21 +2216,21 @@ private:
      
  public:
      ConfiguratorOverlay(const std::string& mode) : modeName(mode) {
@@ -1590,7 +2086,7 @@ index 0c8a834..b4589f4 100644
              showSettings->setValue(ult::DROPDOWN_SYMBOL);
              showSettings->setClickListener([this, showSettings](uint64_t keys) {
                  if (keys & KEY_A) {
-@@ -2180,7 +2182,7 @@ public:
+@@ -2243,7 +2245,7 @@ public:
  
          // 3. Toggles (All modes)
          //if (isMiniMode || isMicroMode || isFullMode || isFPSGraphMode) {
@@ -1599,7 +2095,7 @@ index 0c8a834..b4589f4 100644
          toggles->setValue(ult::DROPDOWN_SYMBOL);
          toggles->setClickListener([this, toggles](uint64_t keys) {
              if (keys & KEY_A) {
-@@ -2195,7 +2197,7 @@ public:
+@@ -2258,7 +2260,7 @@ public:
  
          // 2. Colors (not Full mode - it has no color settings)
          //if (!isFullMode) {
@@ -1608,7 +2104,7 @@ index 0c8a834..b4589f4 100644
          colors->setValue(ult::DROPDOWN_SYMBOL);
          colors->setClickListener([this, colors](uint64_t keys) {
              if (keys & KEY_A) {
-@@ -2211,7 +2213,7 @@ public:
+@@ -2274,7 +2276,7 @@ public:
          
          // 4. Font Sizes (Mini/Micro/FPS Counter only)
          if (isMiniMode || isMicroMode || isFPSCounterMode) {
@@ -1617,7 +2113,7 @@ index 0c8a834..b4589f4 100644
              fontSizes->setValue(ult::DROPDOWN_SYMBOL);
              fontSizes->setClickListener([this, fontSizes](uint64_t keys) {
                  if (keys & KEY_A) {
-@@ -2225,7 +2227,7 @@ public:
+@@ -2288,7 +2290,7 @@ public:
          }
          
          // 1. Refresh Rate (all modes)
@@ -1626,7 +2122,7 @@ index 0c8a834..b4589f4 100644
          refreshRate->setValue(std::to_string(getCurrentRefreshRate()) + " Hz");
          refreshRate->setClickListener([this, refreshRate](uint64_t keys) {
              if (keys & KEY_A) {
-@@ -2239,7 +2241,7 @@ public:
+@@ -2302,7 +2304,7 @@ public:
          
          // 6. DTC Format (Mini/Micro only) - NEW ADDITION
          if (isMiniMode || isMicroMode) {
@@ -1635,7 +2131,7 @@ index 0c8a834..b4589f4 100644
              dtcFormat->setValue(getCurrentDTCFormat());
              dtcFormat->setClickListener([this, dtcFormat](uint64_t keys) {
                  if (keys & KEY_A) {
-@@ -2254,7 +2256,7 @@ public:
+@@ -2317,7 +2319,7 @@ public:
  
          // 7. Frame Padding (Mini only) - NEW ADDITION
          if (isMiniMode || isGameResolutionsMode || isFPSCounterMode || isFPSGraphMode) {
@@ -1644,7 +2140,7 @@ index 0c8a834..b4589f4 100644
              framePadding->setValue(std::to_string(getCurrentFramePadding()) + " px");
              framePadding->setClickListener([this, framePadding](uint64_t keys) {
                  if (keys & KEY_A) {
-@@ -2270,7 +2272,7 @@ public:
+@@ -2333,7 +2335,7 @@ public:
          // 7. Mode-specific positioning settings
          if (isMicroMode) {
              // Text Alignment for Micro
@@ -1653,7 +2149,7 @@ index 0c8a834..b4589f4 100644
              textAlign->setValue(getCurrentTextAlign());
              textAlign->setClickListener([this, textAlign](uint64_t keys) {
                  if (keys & KEY_A) {
-@@ -2283,7 +2285,7 @@ public:
+@@ -2346,7 +2348,7 @@ public:
              list->addItem(textAlign);
  
              // Vertical Position for Micro (Top/Bottom only)
@@ -1662,7 +2158,7 @@ index 0c8a834..b4589f4 100644
              layerPos->setValue(getCurrentLayerPosBottom());
              layerPos->setClickListener([this, layerPos](uint64_t keys) {
                  if (keys & KEY_A) {
-@@ -2297,7 +2299,7 @@ public:
+@@ -2360,7 +2362,7 @@ public:
              
          } else if (isFullMode) {
              // Horizontal Position for Full (Left/Right only)
@@ -1671,7 +2167,7 @@ index 0c8a834..b4589f4 100644
              layerPos->setValue(getCurrentLayerPosRight());
              layerPos->setClickListener([this, layerPos](uint64_t keys) {
                  if (keys & KEY_A) {
-@@ -2311,7 +2313,7 @@ public:
+@@ -2374,7 +2376,7 @@ public:
              
          //} else if (isGameResolutionsMode || isFPSCounterMode || isFPSGraphMode) {
          //    // Both horizontal and vertical positioning
@@ -1680,7 +2176,7 @@ index 0c8a834..b4589f4 100644
          //    layerPosH->setValue(getCurrentLayerPosRight());
          //    layerPosH->setClickListener([this, layerPosH](uint64_t keys) {
          //        if (keys & KEY_A) {
-@@ -2323,7 +2325,7 @@ public:
+@@ -2386,7 +2388,7 @@ public:
          //    });
          //    list->addItem(layerPosH);
          //    
@@ -1689,7 +2185,7 @@ index 0c8a834..b4589f4 100644
          //    layerPosV->setValue(getCurrentLayerPosBottom());
          //    layerPosV->setClickListener([this, layerPosV](uint64_t keys) {
          //        if (keys & KEY_A) {
-@@ -2351,7 +2353,7 @@ public:
+@@ -2414,7 +2416,7 @@ public:
                      ult::convertComboToUnicode(comboDisplay);
                  }
  
@@ -1698,7 +2194,7 @@ index 0c8a834..b4589f4 100644
                  modeCombo->setClickListener([this, modeCombo](uint64_t keys) {
                      if (keys & KEY_A) {
                          tsl::changeTo<ModeComboConfig>(modeName);
-@@ -2370,7 +2372,7 @@ public:
+@@ -2433,7 +2435,7 @@ public:
              jumpItemExactMatch = false;
          }
          
@@ -1707,7 +2203,7 @@ index 0c8a834..b4589f4 100644
          rootFrame->setContent(list);
          return rootFrame;
      }
-@@ -2408,7 +2410,7 @@ private:
+@@ -2471,7 +2473,7 @@ private:
              
              // Handle defaults properly
              if (value.empty()) {
@@ -1716,7 +2212,7 @@ index 0c8a834..b4589f4 100644
              }
              
              // Convert format string to display name
-@@ -2446,9 +2448,9 @@ private:
+@@ -2509,9 +2511,9 @@ private:
          if (isMicroMode) {
              std::string value = ult::parseValueFromIniSection(configIniPath, "micro", "text_align");
              convertToUpper(value);
@@ -1729,7 +2225,7 @@ index 0c8a834..b4589f4 100644
          }
          return "";
      }
-@@ -2465,13 +2467,13 @@ private:
+@@ -2528,13 +2530,13 @@ private:
          
          if (isFullMode) {
              // Full mode: only Left and Right allowed
@@ -1748,7 +2244,7 @@ index 0c8a834..b4589f4 100644
          }
      }
  
-@@ -2487,13 +2489,13 @@ private:
+@@ -2550,13 +2552,13 @@ private:
          
          if (isMicroMode) {
              // Micro mode: only Top and Bottom allowed
@@ -1767,7 +2263,7 @@ index 0c8a834..b4589f4 100644
          }
      }
      
-@@ -2501,12 +2503,13 @@ private:
+@@ -2564,12 +2566,13 @@ private:
          if (isMicroMode) {
              const std::string current = getCurrentTextAlign();
              std::string next;
@@ -1786,7 +2282,7 @@ index 0c8a834..b4589f4 100644
              return next;
          }
          return "";
-@@ -2524,16 +2527,16 @@ private:
+@@ -2587,16 +2590,16 @@ private:
          
          if (isFullMode) {
              // Full mode: only Left and Right
@@ -1809,7 +2305,7 @@ index 0c8a834..b4589f4 100644
          ult::setIniFileValue(configIniPath, section, "layer_width_align", value);
          return next;
      }
-@@ -2550,16 +2553,16 @@ private:
+@@ -2613,16 +2616,16 @@ private:
          
          if (isMicroMode) {
              // Micro mode: only Top and Bottom
@@ -1833,7 +2329,7 @@ index 0c8a834..b4589f4 100644
          return next;
      }
 diff --git a/source/modes/FPS_Graph.hpp b/source/modes/FPS_Graph.hpp
-index eb45a76..087ccc5 100644
+index eb45a76..bd2e1d8 100644
 --- a/source/modes/FPS_Graph.hpp
 +++ b/source/modes/FPS_Graph.hpp
 @@ -435,7 +435,7 @@ public:
@@ -1855,10 +2351,10 @@ index eb45a76..087ccc5 100644
              }
          });
 diff --git a/source/modes/Full.hpp b/source/modes/Full.hpp
-index cff9846..407d83d 100644
+index e25db0a..a36ee94 100644
 --- a/source/modes/Full.hpp
 +++ b/source/modes/Full.hpp
-@@ -123,15 +123,15 @@ public:
+@@ -126,15 +126,15 @@ public:
                  if (realCPU_Hz && settings.showRealFreqs) {
                      height_offset = 162;
                  }
@@ -1877,7 +2373,7 @@ index cff9846..407d83d 100644
                      renderer->drawString(RealCPU_Hz_c, false, COMMON_MARGIN + valueOffset, height_offset - 15, 15, (settings.textColor));
                      if (settings.showDeltas && settings.showTargetFreqs) {
                          renderer->drawString(DeltaCPU_c, false, COMMON_MARGIN +  deltaOffset, height_offset - 7, 15, (settings.textColor));
-@@ -145,22 +145,22 @@ public:
+@@ -148,43 +148,43 @@ public:
                  }
                  
                  // CPU Core labels and values
@@ -1908,11 +2404,17 @@ index cff9846..407d83d 100644
                  renderer->drawString(CPU_Core3_c, false, COMMON_MARGIN + core3Width, core_height + 45, 15, (settings.textColor));
              }
              
-@@ -172,16 +172,16 @@ public:
-                     height_offset = 327-8;
+             ///GPU
+             if (R_SUCCEEDED(clkrstCheck) || R_SUCCEEDED(pcvCheck) || R_SUCCEEDED(nvCheck)) {
+                 
+-                uint32_t height_offset = 306;
++                uint32_t height_offset = 320-8;
+                 if (realGPU_Hz && settings.showRealFreqs) {
+-                    height_offset = 313;
++                    height_offset = 327-8;
                  }
  
--                renderer->drawString("GPU Usage", false, COMMON_MARGIN, 285-8, 20, (settings.catColor1));
+-                renderer->drawString("GPU Usage", false, COMMON_MARGIN, 271, 20, (settings.catColor1));
 +                renderer->drawString("GPU", false, COMMON_MARGIN, 285-8, 20, renderer->a(tsl::stmSectionColor));
                  if (R_SUCCEEDED(clkrstCheck) || R_SUCCEEDED(pcvCheck)) {
                      if (settings.showTargetFreqs) { 
@@ -1928,7 +2430,7 @@ index cff9846..407d83d 100644
                          renderer->drawString(RealGPU_Hz_c, false, COMMON_MARGIN + valueOffset, height_offset - 15, 15, (settings.textColor));
                          if (settings.showDeltas && settings.showTargetFreqs) {
                              renderer->drawString(DeltaGPU_c, false, COMMON_MARGIN +  deltaOffset, height_offset - 7, 15, (settings.textColor));
-@@ -196,7 +196,7 @@ public:
+@@ -199,7 +199,7 @@ public:
                  }
                  if (R_SUCCEEDED(nvCheck)) {
                      //static auto loadWidth = renderer->getTextDimensions("Load: ", false, 15).first;
@@ -1937,11 +2439,17 @@ index cff9846..407d83d 100644
                      renderer->drawString(GPU_Load_c, false, COMMON_MARGIN + valueOffset, height_offset + 15, 15, (settings.textColor));
                  }
                  
-@@ -212,16 +212,16 @@ public:
+@@ -210,21 +210,21 @@ public:
+             ///RAM
+             if (R_SUCCEEDED(clkrstCheck) || R_SUCCEEDED(pcvCheck) || R_SUCCEEDED(Hinted)) {
+                 
+-                uint32_t height_offset = 397;
++                uint32_t height_offset = 410;
+                 if (realRAM_Hz && settings.showRealFreqs) {
                      height_offset += 7;
                  }
  
--                renderer->drawString("RAM Usage", false, COMMON_MARGIN, 375, 20, (settings.catColor1));
+-                renderer->drawString("RAM Usage", false, COMMON_MARGIN, 362, 20, (settings.catColor1));
 +                renderer->drawString("RAM", false, COMMON_MARGIN, 375, 20, renderer->a(tsl::stmSectionColor));
                  if (R_SUCCEEDED(clkrstCheck) || R_SUCCEEDED(pcvCheck)) {
                      if (settings.showTargetFreqs) {
@@ -1957,8 +2465,12 @@ index cff9846..407d83d 100644
                          renderer->drawString(RealRAM_Hz_c, false, COMMON_MARGIN + valueOffset, height_offset - 15, 15, (settings.textColor));
                          if (settings.showDeltas && settings.showTargetFreqs) {
                              renderer->drawString(DeltaRAM_c, false, COMMON_MARGIN +  deltaOffset, height_offset - 7, 15, (settings.textColor));
-@@ -236,13 +236,13 @@ public:
-                     if (R_SUCCEEDED(sysclkCheck)) {
+@@ -236,16 +236,16 @@ public:
+                     else if (realRAM_Hz && settings.showDeltas && (settings.showRealFreqs || settings.showTargetFreqs)) {
+                         renderer->drawString(DeltaRAM_c, false, COMMON_MARGIN +  deltaOffset, height_offset, 15, (settings.textColor));
+                     }
+-                    if (R_SUCCEEDED(sysclkCheck) || R_SUCCEEDED(hocclkCheck)) {
++                    if (R_SUCCEEDED(sysclkCheck)) {
                          static std::vector<std::string> ramLoadColoredChars = {"CPU", "GPU"};
                          //static auto loadLabelWidth = renderer->getTextDimensions("Load: ", false, 15).first;
 -                        renderer->drawString("Load", false, COMMON_MARGIN, height_offset+15, 15, (settings.catColor2));
@@ -1973,50 +2485,65 @@ index cff9846..407d83d 100644
                      renderer->drawString(RAM_var_compressed_c, false, COMMON_MARGIN + valueOffset, height_offset + 40, 15, (settings.textColor));
                      renderer->drawString(RAM_percentage_var_compressed_c, false, ramPercentageOffset, height_offset + 40, 15, (settings.textColor));
                  }
-@@ -250,17 +250,17 @@ public:
+@@ -253,20 +253,20 @@ public:
              
              ///Thermal
              if (R_SUCCEEDED(i2cCheck) || R_SUCCEEDED(tcCheck) || R_SUCCEEDED(pwmCheck)) {
--                renderer->drawString("Board", false, 20, 550+2, 20, (settings.catColor1));
+-                renderer->drawString("Board", false, 20, 536+2, 20, (settings.catColor1));
 +                renderer->drawString("메인 보드", false, 20, 550+2, 20, renderer->a(tsl::stmSectionColor));
                  if (R_SUCCEEDED(i2cCheck)) {
--                    renderer->drawString("Battery Power Flow", false, COMMON_MARGIN, 575+2, 15, (settings.catColor2));
+-                    renderer->drawString("Battery Power Flow", false, COMMON_MARGIN, 561+2, 15, (settings.catColor2));
+-                    renderer->drawStringWithColoredSections(BatteryDraw_c, false, specialChars, COMMON_MARGIN + valueOffset, 561+2, 15, (settings.textColor), settings.separatorColor);
 +                    renderer->drawString(" 소비 전력 :", false, COMMON_MARGIN, 575+2, 15, (settings.catColor2));
-                     renderer->drawStringWithColoredSections(BatteryDraw_c, false, specialChars, COMMON_MARGIN + valueOffset, 575+2, 15, (settings.textColor), settings.separatorColor);
++                    renderer->drawStringWithColoredSections(BatteryDraw_c, false, specialChars, COMMON_MARGIN + valueOffset, 575+2, 15, (settings.textColor), settings.separatorColor);
                  }
                  if (R_SUCCEEDED(pwmCheck)) {
--                    renderer->drawString("Fan Rotation Level", false, COMMON_MARGIN, 590+2, 15, (settings.catColor2));
+-                    renderer->drawString("Fan Rotation Level", false, COMMON_MARGIN, 576+2, 15, (settings.catColor2));
+-                    renderer->drawString(Rotation_SpeedLevel_c, false, COMMON_MARGIN + valueOffset, 576+2, 15, (settings.textColor));
 +                    renderer->drawString(" 팬 커브 :", false, COMMON_MARGIN, 590+2, 15, (settings.catColor2));
-                     renderer->drawString(Rotation_SpeedLevel_c, false, COMMON_MARGIN + valueOffset, 590+2, 15, (settings.textColor));
++                    renderer->drawString(Rotation_SpeedLevel_c, false, COMMON_MARGIN + valueOffset, 590+2, 15, (settings.textColor));
                  }
                  if (R_SUCCEEDED(i2cCheck) || R_SUCCEEDED(tcCheck)) {
--                    static auto socLabelWidth = renderer->getTextDimensions("SOC  ", false, 15).first;
-+                    static auto socLabelWidth = renderer->getTextDimensions("SoC  ", false, 15).first;
-                     static auto pcbLabelWidth = renderer->getTextDimensions("PCB  ", false, 15).first;
-                     static auto maxLabelWidth = std::max(socLabelWidth, pcbLabelWidth);
-                     static auto skinLabelWidth = renderer->getTextDimensions("Skin  ", false, 15).first;
-@@ -270,11 +270,11 @@ public:
-                     const tsl::Color pcbColor = settings.useDynamicColors ? tsl::GradientColor(PCB_temperatureF) : settings.textColor;
-                     const tsl::Color skinColor = settings.useDynamicColors ? tsl::GradientColor(static_cast<float>(skin_temperaturemiliC) / 1000.0f) : settings.textColor;
-                     
--                    renderer->drawString("Temperatures", false, COMMON_MARGIN, 605+2, 15, (settings.catColor2));
-+                    renderer->drawString(" 온도 :", false, COMMON_MARGIN, 605+2, 15, (settings.catColor2));
-                     
-                     // SOC - starts at valueOffset next to "Temperatures"
-                     uint32_t current_x = COMMON_MARGIN + valueOffset;
--                    renderer->drawString("SOC  ", false, current_x, 605+2, 15, (settings.catColor2));
-+                    renderer->drawString("SoC  ", false, current_x, 605+2, 15, (settings.catColor2));
-                     current_x += maxLabelWidth;
-                     renderer->drawString(SOC_temperature_c, false, current_x, 605+2, 15, socColor);
-                     
-@@ -296,33 +296,33 @@ public:
+                     // Pre-measure label widths for column alignment
+                     static auto lbl_cpu  = renderer->getTextDimensions("CPU  ", false, 15).first;
+                     static auto lbl_gpu  = renderer->getTextDimensions("GPU  ", false, 15).first;
+-                    static auto lbl_mem  = renderer->getTextDimensions("MEM  ", false, 15).first;
++                    static auto lbl_mem  = renderer->getTextDimensions("RAM  ", false, 15).first;
+                     static auto lbl_soc  = renderer->getTextDimensions("SOC  ", false, 15).first;
+                     static auto lbl_pcb  = renderer->getTextDimensions("PCB  ", false, 15).first;
+                     static auto lbl_skin = renderer->getTextDimensions("Skin  ", false, 15).first;
+@@ -306,7 +306,7 @@ public:
+                     const tsl::Color gpuColor = settings.useDynamicColors ? tsl::GradientColor(componentGPU_mC / 1000.0f, tsl::DEFAULT_TEMP_RANGE_HIGH) : settings.textColor;
+                     const tsl::Color memColor = settings.useDynamicColors ? tsl::GradientColor(componentRAM_mC / 1000.0f, tsl::DEFAULT_TEMP_RANGE_HIGH) : settings.textColor;
+ 
+-                    renderer->drawString("Temperatures", false, COMMON_MARGIN, temp_label_y, 15, settings.catColor2);
++                    renderer->drawString(" 온도 :", false, COMMON_MARGIN, temp_label_y, 15, settings.catColor2);
+ 
+                     // --- Row 1: CPU | GPU | MEM ---
+                     renderer->drawString("CPU  ", false, col1_x, row1_y, 15, settings.catColor2);
+@@ -315,11 +315,11 @@ public:
+                     renderer->drawString("GPU  ", false, col2_x, row1_y, 15, settings.catColor2);
+                     renderer->drawString(GPU_temp_c,   false, col2_x + col2_lbl, row1_y, 15, gpuColor);
+ 
+-                    renderer->drawString("MEM  ", false, col3_x, row1_y, 15, settings.catColor2);
++                    renderer->drawString("RAM  ", false, col3_x, row1_y, 15, settings.catColor2);
+                     renderer->drawString(MEM_temp_c,   false, col3_x + col3_lbl, row1_y, 15, memColor);
+ 
+                     // --- Row 2: SOC | PCB | Skin ---
+-                    renderer->drawString("SOC  ", false, col1_x, row2_y, 15, settings.catColor2);
++                    renderer->drawString("SoC  ", false, col1_x, row2_y, 15, settings.catColor2);
+                     renderer->drawString(SOC_temperature_c, false, col1_x + col1_lbl, row2_y, 15, socColor);
+ 
+                     renderer->drawString("PCB  ", false, col2_x, row2_y, 15, settings.catColor2);
+@@ -334,33 +334,33 @@ public:
              if (GameRunning) {
                  const uint32_t width_offset = valueOffset;
                  if (settings.showFPS || settings.showRES || settings.showRDSD) {
--                    renderer->drawString("Game", false, COMMON_MARGIN + width_offset, 185+12, 20, (settings.catColor1));
+-                    renderer->drawString("Game", false, COMMON_MARGIN + width_offset, 185+12-1, 20, (settings.catColor1));
 +                    renderer->drawString("게임", false, COMMON_MARGIN + width_offset, 185+12, 20, renderer->a(tsl::stmSectionColor));
                  }
-                 uint32_t height = 210+12;
+-                uint32_t height = 210+12+1;
++                uint32_t height = 210+12;
                  if (settings.showFPS == true) {
 -                    static auto pfpsWidth = renderer->getTextDimensions("PFPS  ", false, 15).first;
 -                    static auto fpsWidth = renderer->getTextDimensions("FPS  ", false, 15).first;
@@ -2052,7 +2579,7 @@ index cff9846..407d83d 100644
                      renderer->drawString(readSpeed_c, false, COMMON_MARGIN + width_offset + readLabelWidth, height, 15, (settings.textColor));
                  }
              }
-@@ -330,7 +330,7 @@ public:
+@@ -368,7 +368,7 @@ public:
              //renderer->drawStringWithColoredSections(message, false, KEY_SYMBOLS, 30, 693, 23,  a(tsl::bottomTextColor), a(tsl::buttonColor));
              
  
@@ -2061,7 +2588,7 @@ index cff9846..407d83d 100644
              static const auto keyComboWidth = renderer->getTextDimensions(formattedKeyCombo.c_str(), false, 23).first;
              
              static constexpr u16 baseX = 30;
-@@ -338,16 +338,16 @@ public:
+@@ -376,16 +376,16 @@ public:
              static constexpr u8 fontSize = 23;
  
              // Draw "Press "
@@ -2081,7 +2608,7 @@ index cff9846..407d83d 100644
          rootFrame->setContent(Status);
  
          return rootFrame;
-@@ -567,8 +567,8 @@ public:
+@@ -609,8 +609,8 @@ public:
                  old_res[1] = std::make_pair(m_resolutionOutput[1].width, m_resolutionOutput[1].height);
              }
              if (settings.showRDSD == true && GameRunning && NxFps) {
@@ -2093,10 +2620,10 @@ index cff9846..407d83d 100644
          }
          else if (!GameRunning && resolutionLookup != 0) {
 diff --git a/source/modes/Mini.hpp b/source/modes/Mini.hpp
-index f80b3c0..5cdde4c 100644
+index d1655ea..a883536 100644
 --- a/source/modes/Mini.hpp
 +++ b/source/modes/Mini.hpp
-@@ -523,7 +523,7 @@ public:
+@@ -525,7 +525,7 @@ public:
                          flags |= 4;
                      } else if (key == "SOC" && !(flags & 8)) {
                          shouldAdd = true;
@@ -2104,8 +2631,8 @@ index f80b3c0..5cdde4c 100644
 +                        labelText = "SoC";
                          flags |= 8;
                      } else if (key == "TMP" && !(flags & 16)) {
-                         shouldAdd = true;
-@@ -714,7 +714,7 @@ public:
+                         if (settings.showComponentTemps && settings.showSocPcbSkinTemps) {
+@@ -734,7 +734,7 @@ public:
                  const int baseY = currentY + frameOffsetY + clippingOffsetY;
                  
                  if (settings.useDynamicColors) {
@@ -2115,7 +2642,7 @@ index f80b3c0..5cdde4c 100644
                          const size_t degreesPos = currentLine.find("°");
                          if (degreesPos != std::string::npos) {
 diff --git a/source/modes/Misc.hpp b/source/modes/Misc.hpp
-index 3df629b..9d7f0b2 100644
+index 3df629b..5299f77 100644
 --- a/source/modes/Misc.hpp
 +++ b/source/modes/Misc.hpp
 @@ -74,55 +74,55 @@ public:
@@ -2199,7 +2726,7 @@ index 3df629b..9d7f0b2 100644
          // Format just the values for NV clocks
          snprintf(NVDEC_value_c, sizeof(NVDEC_value_c), "%.1f MHz", (float)NVDEC_Hz / 1000000);
 diff --git a/source/modes/Resolutions.hpp b/source/modes/Resolutions.hpp
-index 4e1cd61..46c4d06 100644
+index 62ae388..21a7104 100644
 --- a/source/modes/Resolutions.hpp
 +++ b/source/modes/Resolutions.hpp
 @@ -276,9 +276,9 @@ public:
