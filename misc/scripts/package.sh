@@ -219,6 +219,7 @@ package_asap() {
   #cp "${MISC_DIR}/oc/hoc/hoc.kip" "${DIST_DIR}/backup/kips/.OC/HOC.kip"
   #cp "${MISC_DIR}/oc/hoc/hoc.nsp" "${DIST_DIR}/switch/.packages/.offload/oc/HOC.nsp"
   #cp "${MISC_DIR}/oc/hoc/hoc.ovl" "${DIST_DIR}/switch/.packages/.offload/oc/HOC.ovl"
+  cp "${MISC_DIR}/oc/hoc/hoc.bin" "${DIST_DIR}/atmosphere/config/exosphere_.bin"
   cp "${MISC_DIR}/oc/hoc/hoc.kip" "${DIST_DIR}/backup/kips/.OC/loader.kip"
   cp "${MISC_DIR}/oc/hoc/hoc.nsp" "${DIST_DIR}/atmosphere/contents/00FF0000636C6BFF/exefs.nsp"
   cp "${MISC_DIR}/oc/hoc/hoc.ovl" "${DIST_DIR}/switch/.overlays/sys-clk-overlay.ovl"
