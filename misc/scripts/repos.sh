@@ -29,14 +29,14 @@ if [[ "${ENABLE_CUSTOM:-0}" == "1" ]]; then
     "switchbrew/nx-hbloader"
     #"Yorunokyujitsu/sphaira@test"
 
-    # System modules and overlays (latest libultrahand 145ee51)
-    "ppkantorski/Ultrahand-Overlay@580b473"
+    # System modules and overlays (latest libultrahand a8a49c4)
+    "ppkantorski/Ultrahand-Overlay@43d7011"
     "ppkantorski/EdiZon-Overlay@769344a"
     "masagrator/FPSLocker@7b316c9"
     "ppkantorski/NX-FanControl@2580291"
-    "ppkantorski/ovl-sysmodules@005a075"
+    "ppkantorski/ovl-sysmodules@ca44b71"
     "masagrator/ReverseNX-RT@725eb27"
-    "ppkantorski/Status-Monitor-Overlay@f870971"
+    "ppkantorski/Status-Monitor-Overlay@12242b8"
     #"ppkantorski/sys-clk@da1d785"
     #"borntohonk/sys-patch" #ebd1d31
 
