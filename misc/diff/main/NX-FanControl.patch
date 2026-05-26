@@ -49,7 +49,7 @@ index ed2ae41..d30c115 100644
 +	@find ./overlay -type f \( -name '*.elf' -o -name '*.nacp' -o -name '*.ovl' \) -exec rm -f {} \;
 \ No newline at end of file
 diff --git a/overlay/Makefile b/overlay/Makefile
-index 0b74a01..6b4cd26 100644
+index 0b74a01..bda75ca 100644
 --- a/overlay/Makefile
 +++ b/overlay/Makefile
 @@ -38,7 +38,7 @@ include $(DEVKITPRO)/libnx/switch_rules
@@ -61,6 +61,15 @@ index 0b74a01..6b4cd26 100644
  
  TARGET		:=	$(APP_TITLE)
  BUILD		:=	build
+@@ -65,7 +65,7 @@ CFLAGS := -g -Wall -O3 -ffunction-sections -fdata-sections -flto \
+ CFLAGS += $(INCLUDE) -D__SWITCH__ -DAPP_VERSION="\"$(APP_VERSION)\"" -D_FORTIFY_SOURCE=2
+ 
+ # Enable appearance overriding
+-UI_OVERRIDE_PATH := /config/NX-FanControl/
++UI_OVERRIDE_PATH := /config/ultrahand/
+ CFLAGS += -DUI_OVERRIDE_PATH="\"$(UI_OVERRIDE_PATH)\""
+ 
+ # For theme / wallpaper loading in GUI class method (add to project if theme does not appear)
 diff --git a/overlay/source/main_menu.cpp b/overlay/source/main_menu.cpp
 index 9dba0d6..472e489 100644
 --- a/overlay/source/main_menu.cpp
