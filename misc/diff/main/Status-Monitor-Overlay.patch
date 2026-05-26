@@ -514,7 +514,7 @@ index 8b3700d..d847f30 100644
  }
 \ No newline at end of file
 diff --git a/source/Utils.hpp b/source/Utils.hpp
-index ea3d6a5..d0c7518 100644
+index 18667d3..8ca7c76 100644
 --- a/source/Utils.hpp
 +++ b/source/Utils.hpp
 @@ -63,7 +63,7 @@ constexpr const char* teslaConfigIniPath = "sdmc:/config/tesla/config.ini";
@@ -583,7 +583,7 @@ index ea3d6a5..d0c7518 100644
 +    settings->docked1080pFontSize = 18;  // ~15 × 1.5 — visually matches 720p docked size
      settings->use1080pDocked = true;
      settings->spacing = 8;
--    convertStrToRGBA4444("#000B", &(settings->backgroundColor));
+-    convertStrToRGBA4444("#000A", &(settings->backgroundColor));
 +    convertStrToRGBA4444("#0009", &(settings->backgroundColor));
      convertStrToRGBA4444("#000F", &(settings->focusBackgroundColor));
      convertStrToRGBA4444("#2DFF", &(settings->separatorColor));
@@ -651,15 +651,16 @@ index ea3d6a5..d0c7518 100644
      settings->useIntegerFPS = true;
 -    settings->dtcFormat1 = "%a, %b %d";
 -    settings->dtcFormat2 = "%l:%M:%S %p";
-+    settings->dtcFormat1 = "%p %l:%M";
-+    settings->dtcFormat2 = ult::OPTION_SYMBOL;
-     settings->dtcFormat  = settings->dtcFormat1 + ult::DIVIDER_SYMBOL + settings->dtcFormat2;
+-    settings->dtcFormat  = settings->dtcFormat1 + ult::DIVIDER_SYMBOL + settings->dtcFormat2;
 -    settings->invertBatteryDisplay = true;
 -    settings->showStackedBAT = true;
 -    settings->showStackedDTC = true;
 -    settings->handheldFontSize = 15;
 -    settings->dockedFontSize = 15;
 -    settings->docked1080pFontSize = 20;  // ~15 × 1.5 — visually matches 720p docked size
++    settings->dtcFormat1 = "%p %l:%M";
++    settings->dtcFormat2 = "⋯";
++    settings->dtcFormat  = settings->dtcFormat1;
 +    settings->invertBatteryDisplay = false;
 +    settings->showStackedBAT = false;
 +    settings->showStackedDTC = false;
@@ -668,7 +669,7 @@ index ea3d6a5..d0c7518 100644
 +    settings->docked1080pFontSize = 18;  // ~15 × 1.5 — visually matches 720p docked size
      settings->use1080pDocked = true;
      settings->alignTo = 1; // CENTER
--    convertStrToRGBA4444("#000B", &(settings->backgroundColor));
+-    convertStrToRGBA4444("#000A", &(settings->backgroundColor));
 +    convertStrToRGBA4444("#0009", &(settings->backgroundColor));
      convertStrToRGBA4444("#000F", &(settings->focusBackgroundColor));
      convertStrToRGBA4444("#2DFF", &(settings->separatorColor));
@@ -703,7 +704,7 @@ index ea3d6a5..d0c7518 100644
 +    settings->dockedFontSize = 20;
 +    settings->docked1080pFontSize = 40;  // ~40 × 1.5 — visually matches 720p docked size
      settings->use1080pDocked = true;
--    convertStrToRGBA4444("#000B", &(settings->backgroundColor));
+-    convertStrToRGBA4444("#000A", &(settings->backgroundColor));
 +    convertStrToRGBA4444("#0009", &(settings->backgroundColor));
      convertStrToRGBA4444("#000F", &(settings->focusBackgroundColor));
 -    convertStrToRGBA4444("#8CFF", &(settings->textColor));
@@ -715,7 +716,7 @@ index ea3d6a5..d0c7518 100644
      // Initialize defaults
      settings->showInfo = true;
      //settings->setPos = 0;
--    convertStrToRGBA4444("#000B", &(settings->backgroundColor));
+-    convertStrToRGBA4444("#000A", &(settings->backgroundColor));
 +    convertStrToRGBA4444("#0009", &(settings->backgroundColor));
      convertStrToRGBA4444("#000F", &(settings->focusBackgroundColor));
 -    convertStrToRGBA4444("#888C", &(settings->fpsColor));
@@ -747,7 +748,7 @@ index ea3d6a5..d0c7518 100644
  
  ALWAYS_INLINE void GetConfigSettings(ResolutionSettings* settings) {
      // Initialize defaults
--    convertStrToRGBA4444("#000B", &(settings->backgroundColor));
+-    convertStrToRGBA4444("#000A", &(settings->backgroundColor));
 +    convertStrToRGBA4444("#0009", &(settings->backgroundColor));
      convertStrToRGBA4444("#000F", &(settings->focusBackgroundColor));
 -    convertStrToRGBA4444("#8FFF", &(settings->catColor));
@@ -1101,7 +1102,7 @@ index 4afaa47..c7f4248 100644
  
          if (isChargerConnected) {
 diff --git a/source/modes/Configurator.hpp b/source/modes/Configurator.hpp
-index 95623ac..66b78f4 100644
+index 222ccb8..a2776b4 100644
 --- a/source/modes/Configurator.hpp
 +++ b/source/modes/Configurator.hpp
 @@ -53,12 +53,12 @@ class ModeComboConfig;
@@ -1305,24 +1306,6 @@ index 95623ac..66b78f4 100644
      return -1;
  }
  
-@@ -430,7 +430,7 @@ public:
- 
-         const std::string section = modeToSection(modeName);
-         std::string currentColor = ult::parseValueFromIniSection(configIniPath, section, colorKey);
--        if (currentColor.empty()) currentColor = "#000B";
-+        if (currentColor.empty()) currentColor = "#0009";
-         const std::string currentAlpha = extractAlphaFromColor(currentColor);
- 
-         static const std::pair<std::string, char> alphaOptions[16] = {
-@@ -447,7 +447,7 @@ public:
-             alphaItem->setClickListener([this, alphaItem, option, section](uint64_t keys) {
-                 if (keys & KEY_A) {
-                     std::string color = ult::parseValueFromIniSection(configIniPath, section, colorKey);
--                    if (color.empty()) color = "#000B";
-+                    if (color.empty()) color = "#0009";
-                     ult::setIniFileValue(configIniPath, section, colorKey, setAlphaInColor(color, option.second));
-                     selectItem(lastSelectedListItem, alphaItem, ult::CHECKMARK_SYMBOL);
-                     return true;
 @@ -458,7 +458,7 @@ public:
          }
  
@@ -1403,8 +1386,8 @@ index 95623ac..66b78f4 100644
          if (currentValue.empty()) {
 -            if (slot == 1) currentValue = std::string("%a, %b %d");
 -            else           currentValue = std::string("%l:%M:%S %p");
-+            if (slot == 1) currentValue = isMiniMode ? std::string("%a, %b %d") : std::string("%H:%M");
-+            else           currentValue = isMiniMode ? std::string("%I:%M %p")  : ult::OPTION_SYMBOL;
++            if (slot == 1) currentValue = isMiniMode ? std::string("%Y년 %m월 %d일, %A") : std::string("%p %l:%M");
++            else           currentValue = isMiniMode ? std::string("%p %l:%M") : std::string("⋯");
          }
  
          if (slot == 2) {
@@ -1811,14 +1794,14 @@ index 95623ac..66b78f4 100644
 +        list->addItem(new tsl::elm::CategoryHeader("색상"));
  
          if (!flags.isFull) {
--            addColorWithAlpha(list, "Background Color", "background_color",       "#000B", "Background Alpha");
+-            addColorWithAlpha(list, "Background Color", "background_color",       "#000A", "Background Alpha");
 -            if (flags.isMini || flags.isMicro || flags.isFPSCounter || flags.isFPSGraph || flags.isGameRes)
 -                addColorWithAlpha(list, "Focus Color",  "focus_background_color", "#000F", "Focus Alpha");
 +            addColorWithAlpha(list, "배경 색상", "background_color", "#0009", "배경색 투명도");
 +            if (flags.isMini || flags.isFPSCounter || flags.isFPSGraph || flags.isGameRes)
 +                addColorWithAlpha(list, "강조 색상", "focus_background_color", "#000F", "강조색 투명도");
          } else {
--            addColorWithAlpha(list, "Background Color", "background_color",       "#000B", "Background Alpha");
+-            addColorWithAlpha(list, "Background Color", "background_color",       "#000A", "Background Alpha");
 +            addColorWithAlpha(list, "배경 색상", "background_color", "#0009", "배경색 투명도");
          }
  
@@ -1928,8 +1911,8 @@ index 95623ac..66b78f4 100644
              } else {
 -                if (slot == 1) value = std::string("%a, %b %d");
 -                else           value = std::string("%l:%M:%S %p");
-+                if (slot == 1) value = flags.isMini ? std::string("%Y년 %m월 %d일, %A") : std::string("%H:%M");
-+                else           value = flags.isMini ? std::string("%p %l:%M")  : ult::OPTION_SYMBOL;
++                if (slot == 1) value = flags.isMini ? std::string("%Y년 %m월 %d일, %A") : std::string("%p %l:%M");
++                else           value = flags.isMini ? std::string("%p %l:%M") : std::string("⋯");
              }
          }
          return getDTCFormatName(value);
@@ -2456,10 +2439,10 @@ index e15f4bd..4af852f 100644
          }
          else if (!GameRunning && resolutionLookup != 0) {
 diff --git a/source/modes/Micro.hpp b/source/modes/Micro.hpp
-index 2aab5f3..ccbfdec 100644
+index bb82880..5c317b0 100644
 --- a/source/modes/Micro.hpp
 +++ b/source/modes/Micro.hpp
-@@ -619,7 +619,7 @@ public:
+@@ -625,7 +625,7 @@ public:
                          break;
                      case 0x534F43: // "SOC"
                          if (!(seen_flags & 8)) {
@@ -2468,7 +2451,7 @@ index 2aab5f3..ccbfdec 100644
                              seen_flags |= 8;
                          }
                          break;
-@@ -2697,19 +2697,19 @@ public:
+@@ -2723,19 +2723,19 @@ public:
                      // >= 10 GB/s: 1 decimal place
                      const unsigned bwInt = ramBW_MBs / 1000;
                      const unsigned bwDec = (ramBW_MBs % 1000) / 100;
@@ -2492,7 +2475,7 @@ index 2aab5f3..ccbfdec 100644
              }
          }
          if (settings.showRAMLoad && settings.showRAMLoadCPUGPU) {
-@@ -2892,6 +2892,9 @@ public:
+@@ -2918,6 +2918,9 @@ public:
              time_t rawtime = time(NULL);
              struct tm *timeinfo = localtime(&rawtime);
              strftime(DTC_c, sizeof(DTC_c), settings.dtcFormat.c_str(), timeinfo);
@@ -2502,7 +2485,7 @@ index 2aab5f3..ccbfdec 100644
          }
  
          // Thermal info
-@@ -3154,7 +3157,7 @@ public:
+@@ -3180,7 +3183,7 @@ public:
              float readSpeed = 0.0f;
              memcpy(&readSpeed, &(NxFps->readSpeedPerSecond), sizeof(float));
              if (readSpeed != 0.f) {
