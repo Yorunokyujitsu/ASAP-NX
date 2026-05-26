@@ -13,8 +13,8 @@
   branch    : default (82b9512)
 
 [CLONE] Ultrahand-Overlay - ppkantorski
-  branch    : commit (580b4734)
-  submodule : libultrahand (145ee51)
+  branch    : commit (43d7011d)
+  submodule : libultrahand (a8a49c4)
 
 [CLONE] EdiZon-Overlay - ppkantorski
   branch    : commit (769344a)
@@ -29,8 +29,8 @@
   submodule : libultrahand (f4fdce0)
 
 [CLONE] ovl-sysmodules - ppkantorski
-  branch    : commit (005a075)
-  submodule : libultrahand (f4fdce0)
+  branch    : commit (ca44b71)
+  submodule : libultrahand (4a161f4)
 
 [CLONE] ReverseNX-RT - masagrator
   branch    : commit (725eb27)
@@ -38,9 +38,9 @@
   submodule : libtesla (779b4ea)
 
 [CLONE] Status-Monitor-Overlay - ppkantorski
-  branch    : commit (f870971)
+  branch    : commit (26cdc2a)
   submodule : Atmosphere-libs (6e2c09c)
-  submodule : libultrahand (145ee51)
+  submodule : libultrahand (a8a49c4)
 
 [CLONE] aio-switch-updater - HamletDuFromage
   branch    : commit (3d38eaa)
