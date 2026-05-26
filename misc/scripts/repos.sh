@@ -36,7 +36,7 @@ if [[ "${ENABLE_CUSTOM:-0}" == "1" ]]; then
     "ppkantorski/NX-FanControl@2580291"
     "ppkantorski/ovl-sysmodules@ca44b71"
     "masagrator/ReverseNX-RT@725eb27"
-    "ppkantorski/Status-Monitor-Overlay@12242b8"
+    "ppkantorski/Status-Monitor-Overlay@26cdc2a"
     #"ppkantorski/sys-clk@da1d785"
     #"borntohonk/sys-patch" #ebd1d31
 
