@@ -30,7 +30,7 @@ if [[ "${ENABLE_CUSTOM:-0}" == "1" ]]; then
     #"Yorunokyujitsu/sphaira@test"
 
     # System modules and overlays (latest libultrahand a8a49c4)
-    "ppkantorski/Ultrahand-Overlay@43d7011"
+    "ppkantorski/Ultrahand-Overlay@ed8c29d"
     "ppkantorski/EdiZon-Overlay@769344a"
     "masagrator/FPSLocker@7b316c9"
     "ppkantorski/NX-FanControl@2580291"
