@@ -56,7 +56,7 @@ Final build artifacts and logs are uploaded as GitHub Actions Artifacts.<br><br>
 > **Zathawo** - System module to control the [fan curve](https://github.com/Zathawo/NX-FanControl).<br>
 > **proferabg** - System module for [managing user cheats](https://github.com/proferabg/EdiZon-Overlay).<br>
 > **masagrator** - Tools and a [supporting module](https://github.com/masagrator/SaltyNX) for [FPS customization](https://github.com/masagrator/FPSLocker) and [mode switching](https://github.com/masagrator/ReverseNX-RT).<br>
-> **Horizon-OC** - Clock-patched [loader.kip and sys-clk](https://github.com/Horizon-OC/Horizon-OC).<br>
+> **Horizon-OC** - Clock-patched [loader.kip and custom sys-clk](https://github.com/Horizon-OC/Horizon-OC).<br>
 > **ppkantorski** - [Overlay menu](https://github.com/ppkantorski/Ultrahand-Overlay), [loader](https://github.com/ppkantorski/nx-ovlloader), and various forked apps [[1]](https://github.com/ppkantorski/nx-ovlreloader), [[2]](https://github.com/ppkantorski/ovl-sysmodules), [[3]](https://github.com/ppkantorski/Status-Monitor-Overlay), [[4]](https://github.com/ppkantorski/FPSLocker).<br>
 > **XorTroll** and **yusufakg** - [Homebrew](https://github.com/yusufakg/AmiiboGenerator) and [system module](https://github.com/XorTroll/emuiibo) for managing virtual amiibo.<br>
 > **rdmrocha**, **impeeza** - Tool for managing NNID linking and unlinking.<br>
