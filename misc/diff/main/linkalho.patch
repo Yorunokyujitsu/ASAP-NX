@@ -1,5 +1,5 @@
 diff --git a/Makefile b/Makefile
-index 4d9ec2c..2e3aee5 100644
+index 4d9ec2c..e25ec1e 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -37,15 +37,15 @@ include $(DEVKITPRO)/libnx/switch_rules
@@ -35,7 +35,7 @@ index 4d9ec2c..2e3aee5 100644
 +#---------------------------------------------------------------------------------------
 \ No newline at end of file
 diff --git a/include/constants.hpp b/include/constants.hpp
-index d4d1a27..68251e3 100644
+index d4d1a27..edf7480 100644
 --- a/include/constants.hpp
 +++ b/include/constants.hpp
 @@ -15,7 +15,7 @@
@@ -51,7 +51,7 @@ index d4d1a27..68251e3 100644
 +#define DEFAULT_LOCALE "ko"
 +#define DEFAULT_TIMEZONE "Hong Kong/Taiwan/Korea/Seoul"
 diff --git a/include/utils/country_list.hpp b/include/utils/country_list.hpp
-index 48b3b43..87ff82d 100644
+index 48b3b43..652e0ee 100644
 --- a/include/utils/country_list.hpp
 +++ b/include/utils/country_list.hpp
 @@ -4,255 +4,255 @@
@@ -559,8 +559,91 @@ index 48b3b43..87ff82d 100644
  };
  
  inline constexpr auto getOrDefault(const auto &map, const auto &key, const auto &defaultValue)
+diff --git a/resources/i18n/ko/brls.json b/resources/i18n/ko/brls.json
+new file mode 100644
+index 0000000..85f3802
+--- /dev/null
++++ b/resources/i18n/ko/brls.json
+@@ -0,0 +1,15 @@
++{
++    "hints": {
++        "ok": "확인",
++        "back": "뒤로",
++        "exit": "종료"
++    },
++
++    "crash_frame": {
++        "button": "확인"
++    },
++
++    "thumbnail_sidebar": {
++        "save": "저장"
++    }
++}
+diff --git a/resources/i18n/ko/translations.json b/resources/i18n/ko/translations.json
+new file mode 100644
+index 0000000..eadd24a
+--- /dev/null
++++ b/resources/i18n/ko/translations.json
+@@ -0,0 +1,55 @@
++{
++    "restore_backup_view": {
++        "title": "백업 복원",
++        "not_found_dialog_hint": "복원 파일을 찾을 수 없습니다!",
++        "not_found_dialog_text": "복원하려면 백업 파일의 이름을 'restore.zip' 으로 변경하여\n다음 경로에 위치시켜주세요.\n'{}'\n\n기존 파일을 덮어쓰며, 손상된 파일인 경우,\n스위치 부팅이 중단될 수 있습니다.\n복원할 파일이 유효한지 확인하세요!",
++        "not_found_dialog_btn": "닫기",
++        "warning": "복원시 세이브 데이터 제외, 모든 파일을 덮어씁니다!\n\n기존 파일을 덮어쓰며, 손상된 파일인 경우, 스위치 부팅이 중단될 수 있습니다.\n\n복원할 파일이 유효한지 확인하세요!",
++        "working": "복원 중...",
++        "complete": "백업 어카운트를 복원했습니다!"
++    },
++    "create_backup_view": {
++        "title": "수동 백업 생성",
++        "warning": "어카운트 연결/해제 작업시 백업을 자동 생성합니다!\n\n연결/해제 없이 수동으로 생성하려는 경우에만 이 옵션을 사용하세요.",
++        "working": "백업 중...",
++        "complete": "백업이 생성되었습니다!"
++    },
++    "link_accounts_view": {
++        "title": "선택한 어카운트 연결",
++        "warning": "연결시 세이브 데이터를 제외, 기존 어카운트 정보를 모두 덮어씁니다.\n\n선택한 계정 중 NNID 에 연결된 어카운트도 덮어씁니다!\n( NNID - Nintendo Network ID )",
++        "working": "연결 중...",
++        "complete": "어카운트가 연결되었습니다!"
++    },
++    "unlink_accounts_view": {
++        "title": "선택한 어카운트 연결 해제",
++        "warning": "연결 해제시 세이브 데이터를 제외, 유저 어카운트가 변경됩니다.\n\n선택한 계정 중 NNID 에 연결된 어카운트는 관련 정보가 제거됩니다!\n( NNID - Nintendo Network ID )",
++        "working": "연결 해제 중...",
++        "complete": "어카운트가 연결 해제되었습니다!"
++    },
++    "country_select_view": {
++        "title": "연결된 어카운트의 국가 선택"
++    },
++    "account_select_view": {
++        "title": "연결/해제할 어카운트 선택",
++        "select_all": "모두 선택",
++        "unselect_all": "선택 취소",
++        "selected_count": "{}/{} 선택됨",
++        "extra_info": "{}개의 어카운트{}를 찾았습니다\n 연결/해제 시 {}로 재부팅합니다",
++        "reboot_payload_disabled": "Hekate",
++        "reboot_payload_inactive": "비활성화 ({} 를 찾을 수 없습니다)",
++        "reboot_payload_active": "Reboot to payload"
++    },
++    "account_list_item": {
++        "linked": "연결됨",
++        "not_linked": "연결되지 않음"
++    },
++    "confirm_view": {
++        "continue": "계속",
++        "back": "뒤로",
++        "reboot": "재부팅",
++        "reboot_to_payload": "'Reboot_to_payload.bin' 로 재부팅"
++    },
++    "errors": {
++        "no_accounts_selected": "선택한 어카운트가 없습니다!"
++    }
++}
+\ No newline at end of file
 diff --git a/source/views/account_select_view.cpp b/source/views/account_select_view.cpp
-index d318f6e..486bac4 100644
+index d318f6e..36b4228 100644
 --- a/source/views/account_select_view.cpp
 +++ b/source/views/account_select_view.cpp
 @@ -21,7 +21,7 @@ void AccountSelectView::computeValue() {
@@ -573,7 +656,7 @@ index d318f6e..486bac4 100644
  
  AccountSelectView::AccountSelectView() : ListItem("translations/account_select_view/title"_i18n)
 diff --git a/source/views/create_backup_view.cpp b/source/views/create_backup_view.cpp
-index 294174e..adc4f32 100644
+index 294174e..48525b0 100644
 --- a/source/views/create_backup_view.cpp
 +++ b/source/views/create_backup_view.cpp
 @@ -10,7 +10,7 @@ CreateBackupView::CreateBackupView(bool canUseLed) : ListItem("translations/crea
