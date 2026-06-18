@@ -1,23 +1,21 @@
 {
     "changelog": {
-        "22.1.0": [
-            "sys-clk (Horizon-OC) & loader.kip: 2.3.0 → 2.4.0.rev4",
-            "최신 커밋(749fd38) 업데이트이며 정규 버전이 아니니 유의하시길 바랍니다.",
-            "Mariko 기기 DVB 테이블 변경 및 전압 패치 수정됨.",
-            "정보 섹션 추가 및 Erista 언더볼트 개선, 일부 버그 수정됨.",
+        "22.5.0": [
+            "Hekate & Nyx: 6.5.2 & 1.9.2 → 6.5.3 & 1.9.3",
+            "SD 관련 정보 개선, 웨이퍼 제한 고정, 잘못된 PMIC 수정, GPT 검증 문제 수정.",
             "",
-            "nx-ovlloader: 2.0.1 → 2.0.2",
+            "Atmosphère: 1.11.1 → 1.11.2",
+            "40MB 메모리 지원, 최신 공식 동작을 반영하도록 업데이트됨, 홈브류 호환성 패치됨",
             "",
-            "Status-Monitor-Overlay: 1.4.0+ → 1.4.1+",
+            "Horizon-OC & loader.kip: 2.4.0.rev3 → 2.4.2.rev4",
+            "자동 RAM CPU OC 관련 클럭 및 일부 버그 수정, UI의 일관성이 향상됨.",
             "",
-            "Ultrahand-Overlay: 2.4.2 → 2.4.4",
-            "RAM 크기가 퓨즈 체크를 통하여 캐시되도록 변경됨.",
-            "IDDQ 보정 값이 올바르게 스케일링되도록 수정, 테이블이 개선됨.",
-            "절전시 CPU 부하 관련 문제가 개선되었으며 2.4.3 버그가 수정됨.",
-            "",
-            "libultrahand 업데이트",
-            "Ultrahand-Overlay │ EdiZon │ FPSLocker │ ovl-sysmodules",
-            "ReverseNX-RT │ Status-Monitor-Overlay │ sys-clk (Horizon-OC)"
+            "System Modules & Overlays & Homebrew",
+            "MissionControl: 0.15.1 → 0.15.2",
+            "Ultrahand-Overlay: 2.4.4 → 2.4.5",
+            "ovl-sysmodules: 1.5.1 → 1.5.2",
+            "Status-Monitor-Overlay: 1.4.1+ → 1.4.1+r2",
+            "Linkalho: 한글화가 적용되지 않는 버그가 수정됨."
         ]
     },
     "cfws": {
@@ -38,6 +36,7 @@
         }
     },
     "firmwares": {
+        "22.5.0": "https://github.com/THZoria/NX_Firmware/releases/download/22.5.0/Firmware.22.5.0.zip",
         "22.1.0": "https://github.com/THZoria/NX_Firmware/releases/download/22.1.0/Firmware.22.1.0.zip",
         "22.0.0": "https://github.com/THZoria/NX_Firmware/releases/download/22.0.0/Firmware_22.0.0.zip",
         "21.2.0": "https://github.com/THZoria/NX_Firmware/releases/download/21.2.0/Firmware.21.2.0.zip",
