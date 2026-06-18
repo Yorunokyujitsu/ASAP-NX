@@ -4,17 +4,17 @@
 ==========================
 
 [CLONE] hekate - Yorunokyujitsu
-  branch    : custom (bd9a49d7)
+  branch    : custom (b9d5e479)
 
 [CLONE] Atmosphere - Yorunokyujitsu
-  branch    : custom (efdfe38c4)
+  branch    : custom (b35db5de7)
 
 [CLONE] nx-hbloader - switchbrew
   branch    : default (82b9512)
 
 [CLONE] Ultrahand-Overlay - ppkantorski
-  branch    : commit (43d7011d)
-  submodule : libultrahand (a8a49c4)
+  branch    : commit (948228bf)
+  submodule : libultrahand (c0d12f2)
 
 [CLONE] EdiZon-Overlay - ppkantorski
   branch    : commit (769344a)
@@ -29,8 +29,8 @@
   submodule : libultrahand (f4fdce0)
 
 [CLONE] ovl-sysmodules - ppkantorski
-  branch    : commit (ca44b71)
-  submodule : libultrahand (4a161f4)
+  branch    : commit (4dcf516)
+  submodule : libultrahand (93921de)
 
 [CLONE] ReverseNX-RT - masagrator
   branch    : commit (725eb27)
@@ -38,9 +38,15 @@
   submodule : libtesla (779b4ea)
 
 [CLONE] Status-Monitor-Overlay - ppkantorski
-  branch    : commit (26cdc2a)
+  branch    : commit (7aa6bfe)
   submodule : Atmosphere-libs (6e2c09c)
-  submodule : libultrahand (a8a49c4)
+  submodule : libultrahand (93921de)
+
+[CLONE] Horizon-OC - Yorunokyujitsu
+  branch    : personal (2b9fc06b)
+  submodule : Atmosphere-libs (82f1553)
+  submodule : libultrahand (3e54f2a)
+  submodule : libultrahand (3e54f2a)
 
 [CLONE] aio-switch-updater - HamletDuFromage
   branch    : commit (3d38eaa)
@@ -51,6 +57,10 @@
 [CLONE] linkalho - impeeza
   branch    : commit (a34e7b0)
   submodule : borealis (25651d2)
+
+[SKIP] local project: HOC_Patch
+
+[SKIP] local project: AMS_40MB
 
 [SKIP] local project: hekate_8GB
 
