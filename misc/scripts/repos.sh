@@ -16,6 +16,13 @@
 
 REPOS=()
 
+# Repositories that should be cloned/updated
+# but skipped during build.
+SKIP_BUILD=(
+  # Requires custom libnx
+  "Ultrahand-Overlay"
+)
+
 if [[ "${ENABLE_CUSTOM:-0}" == "1" ]]; then
   # Custom On - ASAP
   REPOS+=(
@@ -29,23 +36,23 @@ if [[ "${ENABLE_CUSTOM:-0}" == "1" ]]; then
     "switchbrew/nx-hbloader"
     #"Yorunokyujitsu/sphaira@test"
 
-    # System modules and overlays (latest libultrahand a8a49c4)
-    "ppkantorski/Ultrahand-Overlay@ed8c29d"
+    # System modules and overlays (latest libultrahand 93921de)
+    "ppkantorski/Ultrahand-Overlay@948228b"
     "ppkantorski/EdiZon-Overlay@769344a"
     "masagrator/FPSLocker@7b316c9"
     "ppkantorski/NX-FanControl@2580291"
-    "ppkantorski/ovl-sysmodules@ca44b71"
+    "ppkantorski/ovl-sysmodules@4dcf516"
     "masagrator/ReverseNX-RT@725eb27"
-    "ppkantorski/Status-Monitor-Overlay@26cdc2a"
-    #"ppkantorski/sys-clk@da1d785"
-    #"borntohonk/sys-patch" #ebd1d31
+    "ppkantorski/Status-Monitor-Overlay@7aa6bfe"
+    "Yorunokyujitsu/Horizon-OC@personal" # 2a3256d
 
     # Homebrews
     "HamletDuFromage/aio-switch-updater=ASAP-Updater@3d38eaa"
     "impeeza/linkalho@a34e7b0"
-    #"Yorunokyujitsu/DBIPatcher"
 
     # Local
+    "__local__/HOC_Patch"
+    "__local__/AMS_40MB"
     "__local__/hekate_8GB"
     "__local__/LockPick"
   )
