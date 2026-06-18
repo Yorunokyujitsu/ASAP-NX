@@ -9,6 +9,16 @@ set -euo pipefail
 source "${MISC_DIR}/scripts/config/log.sh"
 source "${MISC_DIR}/scripts/repos.sh"
 
+skip_build() {
+  local repo="$1"
+
+  for skip in "${SKIP_BUILD[@]}"; do
+    [[ "$repo" == "$skip" ]] && return 0
+  done
+
+  return 1
+}
+
 for entry in "${REPOS[@]}"; do
   spec="$entry"
 
@@ -24,6 +34,11 @@ for entry in "${REPOS[@]}"; do
 
   [[ -d "$dir" ]] || continue
 
+  if skip_build "$dest"; then
+    echo "[SKIP BUILD] ${dest}"
+    continue
+  fi
+
   # Atmosphere (upstream)
   if [[ "$dest" == "Atmosphere" ]]; then
     [[ "$ENABLE_ATMOSPHERE" == "1" ]] || continue
@@ -36,6 +51,32 @@ for entry in "${REPOS[@]}"; do
     fi
 
     echo "${dest} build completed"
+    echo
+    continue
+  fi
+
+  # Atmosphere 40mb patch
+  if [[ "$dest" == "AMS_40MB" ]]; then
+    print_title "[BUILD] ${dest}"
+    make -C "$dir" -f atmosphere.mk dist-no-debug -j12
+    echo "Atmosphere 40MB patch build completed"
+    echo
+    continue
+  fi
+
+  # Atmosphere (only loader + exosphere)
+  if [[ "$dest" == "HOC_Patch" ]]; then
+    print_title "[BUILD] ${dest}"
+
+    if [[ -d "$dir/stratosphere/loader" ]]; then
+      make -C "$dir/stratosphere/loader" -j"$(nproc)"
+    fi
+
+    if [[ -d "$dir/exosphere" ]]; then
+      make -C "$dir/exosphere" -j"$(nproc)"
+    fi
+
+    echo "Atmosphere partial build completed"
     echo
     continue
   fi
@@ -126,6 +167,18 @@ for entry in "${REPOS[@]}"; do
     print_title "[BUILD] ${dest}"
     chmod +x "$dir/build.sh" || true
     "$dir/build.sh"
+    echo "${dest} build completed"
+    echo
+    continue
+  fi
+
+  # Horizon-OC (script build)
+  if [[ "$dest" == "Horizon-OC" ]]; then
+    print_title "[BUILD] ${dest}"
+    chmod +x "$dir/Source/hoc-clk/build.sh" || true
+    "$dir/Source/hoc-clk/build.sh"
+    print_title "[BUILD] Benchmark-Toolbox"
+    make -C "$dir/Source/Benchmark-Toolbox" -j"$(nproc)"
     echo "${dest} build completed"
     echo
     continue

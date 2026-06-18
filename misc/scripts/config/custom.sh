@@ -25,9 +25,10 @@ LIB_PATHS=(
   "ovl-sysmodules/libs/"
   "ReverseNX-RT/Overlay/libs/"
   "Status-Monitor-Overlay/lib/"
-  "sys-clk/overlay/lib/"
-  "sys-patch/overlay/"
+  #"sys-clk/overlay/lib/"
+  #"sys-patch/overlay/"
   "Ultrahand-Overlay/lib/"
+  "Horizon-OC/Source/hoc-clk/overlay/lib/"
 )
 
 # Helpers
@@ -271,8 +272,8 @@ echo "Done"
 echo
 
 
-# 8GB DRAM Support Patch
-print_title "[7/7] 8GB Patches"
+# 8GB DRAM Support / loader, exosphere patches
+print_title "[7/7] Patches"
 echo
 
 # Duplicating Hekate
@@ -294,5 +295,34 @@ if [[ -f "${APP_DIR}/hekate_8GB/loader/loader.c" ]]; then
 else
   echo "[ERROR] loader.c not found, skipping 8GB DRAM Mode"
 fi
+
+# Atmosphere 40mb patch
+if [[ -d "${APP_DIR}/Atmosphere" ]]; then
+  MEMPATCH_SRC="${APP_DIR}/AMS_40MB/libraries/libmesosphere/source/board/nintendo/nx"
+  cp -a "${APP_DIR}/Atmosphere" "${APP_DIR}/AMS_40MB"
+  cp -v "${APP_DIR}/AMS_40MB/40mb_patch.cpp" "${MEMPATCH_SRC}/kern_k_system_control.cpp"
+  echo "Duplicated: Atmosphere > AMS_40MB"
+else
+  echo "[ERROR] Atmosphere not found, skipping"
+fi
+
+# loader.kip, exosphere.bin
+if [[ -d "${APP_DIR}/Atmosphere" ]]; then
+  EXO_SRC="${APP_DIR}/Horizon-OC/Source/Atmosphere-Patches"
+  cp -a "${APP_DIR}/Atmosphere" "${APP_DIR}/HOC_Patch"
+  rm -rf "${APP_DIR}/HOC_Patch/stratosphere/loader/source/oc"
+  cp -a "${APP_DIR}/Horizon-OC/Source/Atmosphere/stratosphere/"* "${APP_DIR}/HOC_Patch/stratosphere"
+  cp -v "${EXO_SRC}/secmon_emc_access_table_data.inc" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
+  cp -v "${EXO_SRC}/secmon_define_emc_access_table.inc" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
+  cp -v "${EXO_SRC}/secmon_rtc_pmc_access_table_data.inc" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
+  cp -v "${EXO_SRC}/secmon_define_rtc_pmc_access_table.inc" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
+  cp -v "${EXO_SRC}/secmon_smc_register_access.cpp" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
+  cp -v "${EXO_SRC}/secmon_smc_handler.cpp" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
+  cp -v "${EXO_SRC}/secmon_memory_layout.hpp" "${APP_DIR}/HOC_Patch/libraries/libexosphere/include/exosphere/secmon"
+  echo "Duplicated: exosphere and stratosphere"
+else
+  echo "[ERROR] exosphere or stratosphere not found, skipping"
+fi
+
 echo
 echo "Done"

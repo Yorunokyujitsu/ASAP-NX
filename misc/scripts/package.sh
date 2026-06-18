@@ -172,7 +172,7 @@ package_asap() {
    } > "${DIST_DIR}/config/ultrahand/packages.ini"
 
   install -D /dev/null "${DIST_DIR}/switch/.packages/config.ini" && {
-    printf '[Master Volume]\nindex=30\nvalue=150';
+    printf '[Horizon-OC]\nfooter=On\n\n[Master Volume]\nindex=30\nvalue=150';
   } > "${DIST_DIR}/switch/.packages/config.ini"
 
   install -D /dev/null "${DIST_DIR}/boot.ini" && {
@@ -192,8 +192,13 @@ package_asap() {
   touch "${DIST_DIR}/atmosphere/contents/00FF0000636C6BFF/flags/boot2.flag"
   touch "${DIST_DIR}/atmosphere/contents/010B6ECF3B30D000/flag"
 
+  # Uncompress kip
+  KIP_DIR="${APP_DIR}/HOC_Patch/stratosphere/loader/out/nintendo_nx_arm64_armv8a/release"
+  hactool -t kip1 "${KIP_DIR}/loader.kip" --uncompress="${KIP_DIR}/hoc.kip"
+
   # Packaging
   AMS_DIR="${APP_DIR}/Atmosphere/out/nintendo_nx_arm64_armv8a/release/atmosphere-out"
+  MEM_DIR="${APP_DIR}/AMS_40MB/out/nintendo_nx_arm64_armv8a/release/atmosphere-out"
 
   cp -r "${AMS_DIR}/atmosphere/config" "${DIST_DIR}/atmosphere"
   cp -r "${AMS_DIR}/atmosphere/hbl_html" "${DIST_DIR}/atmosphere"
@@ -213,20 +218,17 @@ package_asap() {
 
   cp "${MISC_DIR}/tools/img_converter/hekate_res/background.bmp" "${DIST_DIR}/bootloader/res/asap.bmp"
   cp "${TOP_DIR}/version.inc" "${DIST_DIR}/atmosphere/config"
-  #cp "${MISC_DIR}/oc/eos/eos.kip" "${DIST_DIR}/backup/kips/.OC/EOS.kip"
-  #cp "${MISC_DIR}/oc/eos/eos.nsp" "${DIST_DIR}/switch/.packages/.offload/oc/EOS.nsp"
-  #cp "${MISC_DIR}/oc/eos/eos.ovl" "${DIST_DIR}/switch/.packages/.offload/oc/EOS.ovl"
-  #cp "${MISC_DIR}/oc/hoc/hoc.kip" "${DIST_DIR}/backup/kips/.OC/HOC.kip"
-  #cp "${MISC_DIR}/oc/hoc/hoc.nsp" "${DIST_DIR}/switch/.packages/.offload/oc/HOC.nsp"
-  #cp "${MISC_DIR}/oc/hoc/hoc.ovl" "${DIST_DIR}/switch/.packages/.offload/oc/HOC.ovl"
-  cp "${MISC_DIR}/oc/hoc/hoc.bin" "${DIST_DIR}/atmosphere/config/exosphere_.bin"
-  cp "${MISC_DIR}/oc/hoc/hoc.kip" "${DIST_DIR}/backup/kips/.OC/loader.kip"
-  cp "${MISC_DIR}/oc/hoc/hoc.nsp" "${DIST_DIR}/atmosphere/contents/00FF0000636C6BFF/exefs.nsp"
-  cp "${MISC_DIR}/oc/hoc/hoc.ovl" "${DIST_DIR}/switch/.overlays/sys-clk-overlay.ovl"
+  cp "${APP_DIR}/HOC_Patch/exosphere/out/nintendo_nx_arm64_armv8a/release/exosphere.bin" "${DIST_DIR}/atmosphere/config/exosphere.bin"
+  cp "${KIP_DIR}/hoc.kip" "${DIST_DIR}/backup/kips/.OC/loader.kip"
+  cp "${APP_DIR}/Horizon-OC/Source/hoc-clk/sysmodule/out/hoc-clk.nsp" "${DIST_DIR}/atmosphere/contents/00FF0000636C6BFF/exefs.nsp"
+  cp "${APP_DIR}/Horizon-OC/Source/hoc-clk/overlay/out/horizon-oc-overlay.ovl" "${DIST_DIR}/switch/.overlays/horizon-oc-overlay.ovl"
   cp "${APP_DIR}/nx-hbloader/hbl.nsp" "${DIST_DIR}/atmosphere/spl/spl.nsp"
   cp "${AMS_DIR}/atmosphere/package3" "${DIST_DIR}/atmosphere"
   cp "${AMS_DIR}/atmosphere/stratosphere.romfs" "${DIST_DIR}/atmosphere"
   cp "${AMS_DIR}/bootloader/payloads/fusee.bin" "${DIST_DIR}/bootloader/payloads"
+  cp "${MEM_DIR}/atmosphere/package3" "${DIST_DIR}/switch/.packages/.offload/ram_expansion/package3_40mb"
+  cp "${MEM_DIR}/atmosphere/stratosphere.romfs" "${DIST_DIR}/switch/.packages/.offload/ram_expansion/stratosphere_40mb.romfs"
+  cp "${MEM_DIR}/bootloader/payloads/fusee.bin" "${DIST_DIR}/switch/.packages/.offload/ram_expansion/fusee_40mb.bin"
   cp "${APP_DIR}/ASAP-Updater/ATLAS/output/ATLAS.bin" "${DIST_DIR}/bootloader/payloads"
   cp "${APP_DIR}/LockPick/output/auto_lockpick.bin" "${DIST_DIR}/bootloader/payloads"
   cp "${MISC_DIR}/ini/update.ini" "${DIST_DIR}/bootloader/update.te"
@@ -259,7 +261,7 @@ package_asap() {
   cp "${MISC_DIR}/cache/wb_17.bin" "${DIST_DIR}/warmboot_mariko"
 
   # Temporary
-  #cp -r "${APP_DIR}/hekate" "${DIST_DIR}"
+  # cp -r "${APP_DIR}/hekate" "${DIST_DIR}"
 
   # ASAP Current version
   sed -i '/^\[latest_version\]/,/^\[/d' \
@@ -286,9 +288,13 @@ package_asap() {
   cp -r "${DIST_DIR}/ASAP/switch/.packages/.offload" "${DIST_DIR}/temp/switch/.packages"
   cp "${DIST_DIR}/ASAP/atmosphere/config/version.inc" "${DIST_DIR}/temp/atmosphere/config"
   cp "${DIST_DIR}/ASAP/atmosphere/package3" "${DIST_DIR}/temp/atmosphere"
+  cp "${DIST_DIR}/ASAP/atmosphere/package3" "${DIST_DIR}/temp/switch/.packages/.offload/ram_expansion"
   cp "${DIST_DIR}/ASAP/atmosphere/stratosphere.romfs" "${DIST_DIR}/temp/atmosphere"
+  cp "${DIST_DIR}/ASAP/atmosphere/stratosphere.romfs" "${DIST_DIR}/temp/switch/.packages/.offload/ram_expansion"
   cp "${DIST_DIR}/ASAP/bootloader/payloads/ATLAS.bin" "${DIST_DIR}/temp/bootloader/payloads"
   cp "${DIST_DIR}/ASAP/bootloader/payloads/fusee.bin" "${DIST_DIR}/temp/bootloader/payloads"
+  cp "${DIST_DIR}/ASAP/bootloader/payloads/fusee.bin" "${DIST_DIR}/temp/bootloader/payloads"
+  cp "${DIST_DIR}/ASAP/bootloader/payloads/fusee.bin" "${DIST_DIR}/temp/switch/.packages/.offload/ram_expansion"
   cp "${DIST_DIR}/ASAP/bootloader/update.bin" "${DIST_DIR}/temp/bootloader"
   cp "${DIST_DIR}/ASAP/payload.bin" "${DIST_DIR}/temp/switch/.packages/.offload/ram_expansion/hekate_4gb.bin"
   cp "${DIST_DIR}/ASAP/payload.bin" "${DIST_DIR}/temp"
@@ -300,16 +306,29 @@ package_asap() {
   mv "${DIST_DIR}/temp/update.zip" "${DIST_DIR}/output"
 
   # oc.zip
-  mkdir -p "${DIST_DIR}/oc/"{atmosphere/contents,switch/{.overlays,.packages}}
+  mkdir -p "${DIST_DIR}/oc/"{atmosphere/{contents,config,kips},backup,config/sys-clk,switch/.overlays}
   cp -r "${DIST_DIR}/ASAP/atmosphere/contents/00FF0000636C6BFF" "${DIST_DIR}/oc/atmosphere/contents"
-  #cp -r "${DIST_DIR}/ASAP/switch/.packages/OC Toolkit" "${DIST_DIR}/oc/switch/.packages"
-  cp "${DIST_DIR}/ASAP/switch/.overlays/sys-clk-overlay.ovl" "${DIST_DIR}/oc/switch/.overlays"
+  cp -r "${DIST_DIR}/ASAP/backup/kips" "${DIST_DIR}/oc/backup"
+  cp "${DIST_DIR}/ASAP/atmosphere/config/exosphere.bin" "${DIST_DIR}/oc/atmosphere/config"
+  cp "${DIST_DIR}/ASAP/backup/kips/.OC/loader.kip" "${DIST_DIR}/oc/atmosphere/kips"
+  cp "${DIST_DIR}/ASAP/config/sys-clk/config_.ini" "${DIST_DIR}/oc/config/sys-clk/config.ini"
+  cp "${DIST_DIR}/ASAP/switch/.overlays/horizon-oc-overlay.ovl" "${DIST_DIR}/oc/switch/.overlays"
 
   (
     cd "${DIST_DIR}/oc"
     zip -r "oc.zip" .
   )
   mv "${DIST_DIR}/oc/oc.zip" "${DIST_DIR}/output"
+
+  # oc_ext.zip
+  mkdir -p "${DIST_DIR}/oc/switch/Benchmark-Toolbox"
+  cp "${APP_DIR}/Horizon-OC/Source/Benchmark-Toolbox/Benchmark-Toolbox.nro" "${DIST_DIR}/oc/switch/Benchmark-Toolbox"
+  
+  (
+    cd "${DIST_DIR}/oc"
+    zip -r "oc_ext.zip" .
+  )
+  mv "${DIST_DIR}/oc/oc_ext.zip" "${DIST_DIR}/output"
 }
 
 
