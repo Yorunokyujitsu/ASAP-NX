@@ -6,7 +6,7 @@ current_nyx=1.9.3
 
 [latest_version]
 supported_hos=22.5.0
-tester_version=0619
+tester_version=0621
 ldr_kip_version=2.4.2.rev5
 
 hekate=6.5.3
@@ -19,7 +19,7 @@ ovlloader=2.0.2
 saltynx=1.8.1
 spl=1.0.1
 sys_con=1.6.1
-ultrahand=2.4.5
+ultrahand=2.5.1
 edizon=1.0.15
 emuiibo=1.1.3
 fpslocker=3.3.2
