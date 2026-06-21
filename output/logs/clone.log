@@ -4,7 +4,7 @@
 ==========================
 
 [CLONE] hekate - Yorunokyujitsu
-  branch    : custom (b9d5e479)
+  branch    : custom (6a7af9fc)
 
 [CLONE] Atmosphere - Yorunokyujitsu
   branch    : custom (b35db5de7)
@@ -13,8 +13,8 @@
   branch    : default (82b9512)
 
 [CLONE] Ultrahand-Overlay - ppkantorski
-  branch    : commit (948228bf)
-  submodule : libultrahand (c0d12f2)
+  branch    : commit (2bfa8ab8)
+  submodule : libultrahand (aa233a1)
 
 [CLONE] EdiZon-Overlay - ppkantorski
   branch    : commit (769344a)
@@ -43,7 +43,7 @@
   submodule : libultrahand (93921de)
 
 [CLONE] Horizon-OC - Yorunokyujitsu
-  branch    : personal (2b9fc06b)
+  branch    : personal (67b973e2)
   submodule : Atmosphere-libs (82f1553)
   submodule : libultrahand (3e54f2a)
   submodule : libultrahand (3e54f2a)
