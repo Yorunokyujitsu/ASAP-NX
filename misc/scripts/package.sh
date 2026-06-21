@@ -322,6 +322,10 @@ package_asap() {
 
   # oc_ext.zip
   mkdir -p "${DIST_DIR}/oc/switch/Benchmark-Toolbox"
+  rm -rf "${DIST_DIR}/oc/atmosphere"
+  rm -rf "${DIST_DIR}/oc/backup"
+  rm -rf "${DIST_DIR}/oc/config"
+  rm -rf "${DIST_DIR}/oc/switch/.overlays"
   cp "${APP_DIR}/Horizon-OC/Source/Benchmark-Toolbox/Benchmark-Toolbox.nro" "${DIST_DIR}/oc/switch/Benchmark-Toolbox"
   
   (
