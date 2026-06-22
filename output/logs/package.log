@@ -10,57 +10,57 @@ Converted: 1280x720 True Color + Alpha BMP
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-100  874k  100  874k    0     0  6165k      0 --:--:-- --:--:-- --:--:-- 6165k
+100  874k  100  874k    0     0  3912k      0 --:--:-- --:--:-- --:--:-- 3912k
 [GET] https://github.com/Yorunokyujitsu/emuiibo/releases/latest/download/emuiibo.zip
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-100  619k  100  619k    0     0  2524k      0 --:--:-- --:--:-- --:--:-- 2524k
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100  619k  100  619k    0     0  1594k      0 --:--:-- --:--:-- --:--:-- 1594k
 [GET] https://github.com/ndeadly/MissionControl/releases/download/v0.15.2/MissionControl-0.15.2-master-d3941d43.zip
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-100  190k  100  190k    0     0  1421k      0 --:--:-- --:--:-- --:--:-- 1421k
+100  190k  100  190k    0     0   720k      0 --:--:-- --:--:-- --:--:--  720k
 [GET] https://github.com/ppkantorski/nx-ovlloader/releases/latest/download/nx-ovlloader.zip
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100 86442  100 86442    0     0   183k      0 --:--:-- --:--:-- --:--:--  183k
+[GET] https://github.com/masagrator/SaltyNX/releases/latest/download/SaltyNX.zip
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-100 86442  100 86442    0     0   398k      0 --:--:-- --:--:-- --:--:--  398k
-[GET] https://github.com/masagrator/SaltyNX/releases/latest/download/SaltyNX.zip
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-100  207k  100  207k    0     0  1100k      0 --:--:-- --:--:-- --:--:-- 1100k
+100  207k  100  207k    0     0   641k      0 --:--:-- --:--:-- --:--:--  641k
 [GET] https://github.com/o0Zz/sys-con/releases/download/1.6.2/sys-con-1.6.2.zip
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-100  486k  100  486k    0     0  3002k      0 --:--:-- --:--:-- --:--:-- 3002k
+100  486k  100  486k    0     0  1600k      0 --:--:-- --:--:-- --:--:-- 1600k
 [GET] https://tinfoil.media/repo/Tinfoil%20Applet%20Mode%20%5B20.0%5D%5Bv2%5D.zip
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 19.9M  100 19.9M    0     0   148M      0 --:--:-- --:--:-- --:--:--  149M
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 19.9M  100 19.9M    0     0   131M      0 --:--:-- --:--:-- --:--:--  131M
 [GET] https://github.com/Yorunokyujitsu/DBIPatcher/releases/latest/download/DBI_ko.zip
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-100 5837k  100 5837k    0     0  14.7M      0 --:--:-- --:--:-- --:--:-- 14.7M
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 5837k  100 5837k    0     0  12.1M      0 --:--:-- --:--:-- --:--:-- 33.1M
 [GET] https://github.com/yusufakg/AmiiboGenerator/releases/latest/download/AmiiboGenerator.nro
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-100 1548k  100 1548k    0     0  6647k      0 --:--:-- --:--:-- --:--:-- 6647k
+100 1548k  100 1548k    0     0  3286k      0 --:--:-- --:--:-- --:--:-- 3286k
 [GET] https://github.com/Yorunokyujitsu/sphaira/releases/latest/download/sphaira.nro
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-100 3722k  100 3722k    0     0  12.0M      0 --:--:-- --:--:-- --:--:-- 12.0M
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100 3722k  100 3722k    0     0  7636k      0 --:--:-- --:--:-- --:--:-- 7636k
 Archive:  /__w/ASAP-NX/ASAP-NX/dist/switch/DBI/DBI.zip
   inflating: /__w/ASAP-NX/ASAP-NX/dist/switch/DBI/DBI.nro  
   inflating: /__w/ASAP-NX/ASAP-NX/dist/switch/DBI/translation.bin  

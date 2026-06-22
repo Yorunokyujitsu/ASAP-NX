@@ -13,7 +13,7 @@
   branch    : default (82b9512)
 
 [CLONE] Ultrahand-Overlay - ppkantorski
-  branch    : commit (2bfa8ab8)
+  branch    : commit (9d61cee2)
   submodule : libultrahand (aa233a1)
 
 [CLONE] EdiZon-Overlay - ppkantorski
@@ -43,7 +43,7 @@
   submodule : libultrahand (93921de)
 
 [CLONE] Horizon-OC - Yorunokyujitsu
-  branch    : personal (67b973e2)
+  branch    : personal (00662495)
   submodule : Atmosphere-libs (82f1553)
   submodule : libultrahand (3e54f2a)
   submodule : libultrahand (3e54f2a)
