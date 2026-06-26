@@ -4,17 +4,17 @@
 ==========================
 
 [CLONE] hekate - Yorunokyujitsu
-  branch    : custom (6a7af9fc)
+  branch    : custom (125f4e85)
 
 [CLONE] Atmosphere - Yorunokyujitsu
-  branch    : custom (b35db5de7)
+  branch    : custom (a7437c852)
 
 [CLONE] nx-hbloader - switchbrew
   branch    : default (82b9512)
 
 [CLONE] Ultrahand-Overlay - ppkantorski
-  branch    : commit (9d61cee2)
-  submodule : libultrahand (aa233a1)
+  branch    : commit (fc343dca)
+  submodule : libultrahand (2f0b721)
 
 [CLONE] EdiZon-Overlay - ppkantorski
   branch    : commit (769344a)
@@ -29,8 +29,8 @@
   submodule : libultrahand (f4fdce0)
 
 [CLONE] ovl-sysmodules - ppkantorski
-  branch    : commit (4dcf516)
-  submodule : libultrahand (93921de)
+  branch    : commit (32f1045)
+  submodule : libultrahand (35fdeb4)
 
 [CLONE] ReverseNX-RT - masagrator
   branch    : commit (725eb27)
@@ -38,12 +38,12 @@
   submodule : libtesla (779b4ea)
 
 [CLONE] Status-Monitor-Overlay - ppkantorski
-  branch    : commit (7aa6bfe)
+  branch    : commit (50153ec)
   submodule : Atmosphere-libs (6e2c09c)
-  submodule : libultrahand (93921de)
+  submodule : libultrahand (270757c)
 
 [CLONE] Horizon-OC - Yorunokyujitsu
-  branch    : personal (00662495)
+  branch    : personal (41957981)
   submodule : Atmosphere-libs (82f1553)
   submodule : libultrahand (3e54f2a)
   submodule : libultrahand (3e54f2a)

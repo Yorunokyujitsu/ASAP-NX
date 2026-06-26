@@ -10,57 +10,57 @@ Converted: 1280x720 True Color + Alpha BMP
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-100  874k  100  874k    0     0  3912k      0 --:--:-- --:--:-- --:--:-- 3912k
+100  874k  100  874k    0     0  2300k      0 --:--:-- --:--:-- --:--:-- 2300k
 [GET] https://github.com/Yorunokyujitsu/emuiibo/releases/latest/download/emuiibo.zip
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-100  619k  100  619k    0     0  1594k      0 --:--:-- --:--:-- --:--:-- 1594k
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+  5  619k    5 31877    0     0  65845      0  0:00:09 --:--:--  0:00:09 65845100  619k  100  619k    0     0  1124k      0 --:--:-- --:--:-- --:--:-- 8786k
 [GET] https://github.com/ndeadly/MissionControl/releases/download/v0.15.2/MissionControl-0.15.2-master-d3941d43.zip
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-100  190k  100  190k    0     0   720k      0 --:--:-- --:--:-- --:--:--  720k
+100  190k  100  190k    0     0   540k      0 --:--:-- --:--:-- --:--:--  540k
 [GET] https://github.com/ppkantorski/nx-ovlloader/releases/latest/download/nx-ovlloader.zip
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-100 86442  100 86442    0     0   183k      0 --:--:-- --:--:-- --:--:--  183k
+100 86442  100 86442    0     0   168k      0 --:--:-- --:--:-- --:--:--  168k
 [GET] https://github.com/masagrator/SaltyNX/releases/latest/download/SaltyNX.zip
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-100  207k  100  207k    0     0   641k      0 --:--:-- --:--:-- --:--:--  641k
-[GET] https://github.com/o0Zz/sys-con/releases/download/1.6.2/sys-con-1.6.2.zip
+100  207k  100  207k    0     0   416k      0 --:--:-- --:--:-- --:--:--  416k
+[GET] https://github.com/o0Zz/sys-con/releases/download/1.6.3/sys-con-1.6.3.zip
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-100  486k  100  486k    0     0  1600k      0 --:--:-- --:--:-- --:--:-- 1600k
+100  487k  100  487k    0     0  1220k      0 --:--:-- --:--:-- --:--:-- 1220k
 [GET] https://tinfoil.media/repo/Tinfoil%20Applet%20Mode%20%5B20.0%5D%5Bv2%5D.zip
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 19.9M  100 19.9M    0     0   131M      0 --:--:-- --:--:-- --:--:--  131M
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0 19.9M    0  9565    0     0  43797      0  0:07:57 --:--:--  0:07:57 43675100 19.9M  100 19.9M    0     0  32.4M      0 --:--:-- --:--:-- --:--:-- 32.4M
 [GET] https://github.com/Yorunokyujitsu/DBIPatcher/releases/latest/download/DBI_ko.zip
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 5837k  100 5837k    0     0  12.1M      0 --:--:-- --:--:-- --:--:-- 33.1M
+  2 5837k    2  172k    0     0   348k      0  0:00:16 --:--:--  0:00:16  348k100 5837k  100 5837k    0     0  9067k      0 --:--:-- --:--:-- --:--:-- 37.3M
 [GET] https://github.com/yusufakg/AmiiboGenerator/releases/latest/download/AmiiboGenerator.nro
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-100 1548k  100 1548k    0     0  3286k      0 --:--:-- --:--:-- --:--:-- 3286k
+100 1548k  100 1548k    0     0  2542k      0 --:--:-- --:--:-- --:--:-- 2542k
 [GET] https://github.com/Yorunokyujitsu/sphaira/releases/latest/download/sphaira.nro
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-100 3722k  100 3722k    0     0  7636k      0 --:--:-- --:--:-- --:--:-- 7636k
+100 3722k  100 3722k    0     0  5566k      0 --:--:-- --:--:-- --:--:-- 5566k
 Archive:  /__w/ASAP-NX/ASAP-NX/dist/switch/DBI/DBI.zip
   inflating: /__w/ASAP-NX/ASAP-NX/dist/switch/DBI/DBI.nro  
   inflating: /__w/ASAP-NX/ASAP-NX/dist/switch/DBI/translation.bin  
@@ -252,10 +252,10 @@ KIP1:
     Is 64 Bit:                      True
     Is Address Space 64 Bit:        True
     Sections:
-        .text:                      00000000-00048000
-        .rodata:                    00048000-0004c000
-        .rwdata:                    0004c000-00059000
-        .bss:                       00059000-00109000
+        .text:                      00000000-00050000
+        .rodata:                    00050000-00057000
+        .rwdata:                    00057000-00066000
+        .bss:                       00066000-00117000
     Kernel Access Control:
         Allowed SVCs:               svcSetHeapSize                      (0x01)
                                     svcSetMemoryPermission              (0x02)
@@ -389,7 +389,7 @@ Done!
   adding: backup/keys/PartialAesKeyCrack/PartialAesKeyCrackRunner.bat (deflated 33%)
   adding: backup/kips/ (stored 0%)
   adding: backup/kips/.OC/ (stored 0%)
-  adding: backup/kips/.OC/loader.kip (deflated 56%)
+  adding: backup/kips/.OC/loader.kip (deflated 57%)
   adding: payload.bin (deflated 18%)
   adding: warmboot_mariko/ (stored 0%)
   adding: warmboot_mariko/wb_17.bin (deflated 7%)
@@ -552,7 +552,7 @@ Done!
   adding: atmosphere/contents/420000000007E51A/exefs.nsp (deflated 23%)
   adding: atmosphere/contents/420000000007E51A/flags/ (stored 0%)
   adding: atmosphere/contents/420000000007E51A/flags/boot2.flag (stored 0%)
-  adding: atmosphere/package3 (deflated 82%)
+  adding: atmosphere/package3 (deflated 81%)
   adding: atmosphere/hosts/ (stored 0%)
   adding: atmosphere/hosts/emummc.txt (deflated 32%)
   adding: boot.ini (deflated 15%)
@@ -571,7 +571,7 @@ Done!
   adding: switch/.overlays/ (stored 0%)
   adding: switch/.overlays/emuiibo.ovl (deflated 57%)
   adding: switch/.overlays/ovlSysmodules.ovl (deflated 45%)
-  adding: switch/.overlays/horizon-oc-overlay.ovl (deflated 53%)
+  adding: switch/.overlays/horizon-oc-overlay.ovl (deflated 54%)
   adding: switch/.overlays/ovlEdiZon.ovl (deflated 45%)
   adding: switch/.overlays/NX-FanControl.ovl (deflated 45%)
   adding: switch/.overlays/Status-Monitor-Overlay.ovl (deflated 46%)
@@ -619,7 +619,7 @@ Done!
   adding: switch/.packages/.offload/ (stored 0%)
   adding: switch/.packages/.offload/ram_expansion/ (stored 0%)
   adding: switch/.packages/.offload/ram_expansion/stratosphere_40mb.romfs (deflated 23%)
-  adding: switch/.packages/.offload/ram_expansion/package3_40mb (deflated 82%)
+  adding: switch/.packages/.offload/ram_expansion/package3_40mb (deflated 81%)
   adding: switch/.packages/.offload/ram_expansion/hekate_8gb.bin (deflated 18%)
   adding: switch/.packages/.offload/ram_expansion/fusee_40mb.bin (deflated 13%)
   adding: switch/.packages/Quick Guide+/ (stored 0%)
@@ -673,7 +673,7 @@ Done!
   adding: atmosphere/stratosphere.romfs (deflated 23%)
   adding: atmosphere/config/ (stored 0%)
   adding: atmosphere/config/version.inc (deflated 17%)
-  adding: atmosphere/package3 (deflated 82%)
+  adding: atmosphere/package3 (deflated 81%)
   adding: switch/ (stored 0%)
   adding: switch/.packages/ (stored 0%)
   adding: switch/.packages/.offload/ (stored 0%)
@@ -682,9 +682,9 @@ Done!
   adding: switch/.packages/.offload/ram_expansion/fusee.bin (deflated 13%)
   adding: switch/.packages/.offload/ram_expansion/stratosphere_40mb.romfs (deflated 23%)
   adding: switch/.packages/.offload/ram_expansion/hekate_4gb.bin (deflated 18%)
-  adding: switch/.packages/.offload/ram_expansion/package3_40mb (deflated 82%)
+  adding: switch/.packages/.offload/ram_expansion/package3_40mb (deflated 81%)
   adding: switch/.packages/.offload/ram_expansion/hekate_8gb.bin (deflated 18%)
-  adding: switch/.packages/.offload/ram_expansion/package3 (deflated 82%)
+  adding: switch/.packages/.offload/ram_expansion/package3 (deflated 81%)
   adding: switch/.packages/.offload/ram_expansion/fusee_40mb.bin (deflated 13%)
   adding: config/ (stored 0%)
   adding: config/sys-clk/ (stored 0%)
@@ -692,7 +692,7 @@ Done!
   adding: backup/ (stored 0%)
   adding: backup/kips/ (stored 0%)
   adding: backup/kips/.OC/ (stored 0%)
-  adding: backup/kips/.OC/loader.kip (deflated 56%)
+  adding: backup/kips/.OC/loader.kip (deflated 57%)
   adding: atmosphere/ (stored 0%)
   adding: atmosphere/config/ (stored 0%)
   adding: atmosphere/config/exosphere.bin (deflated 14%)
@@ -702,10 +702,10 @@ Done!
   adding: atmosphere/contents/00FF0000636C6BFF/flags/ (stored 0%)
   adding: atmosphere/contents/00FF0000636C6BFF/flags/boot2.flag (stored 0%)
   adding: atmosphere/kips/ (stored 0%)
-  adding: atmosphere/kips/loader.kip (deflated 56%)
+  adding: atmosphere/kips/loader.kip (deflated 57%)
   adding: switch/ (stored 0%)
   adding: switch/.overlays/ (stored 0%)
-  adding: switch/.overlays/horizon-oc-overlay.ovl (deflated 53%)
+  adding: switch/.overlays/horizon-oc-overlay.ovl (deflated 54%)
   adding: switch/ (stored 0%)
   adding: switch/Benchmark-Toolbox/ (stored 0%)
   adding: switch/Benchmark-Toolbox/Benchmark-Toolbox.nro (deflated 41%)
