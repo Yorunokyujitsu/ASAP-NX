@@ -1,5 +1,5 @@
 diff --git a/source/main.cpp b/source/main.cpp
-index 352c39dc..13cf83d9 100644
+index b3937ab8..86482b2e 100644
 --- a/source/main.cpp
 +++ b/source/main.cpp
 @@ -184,7 +184,7 @@ static std::string lastPackageMenu;
@@ -657,7 +657,7 @@ index 352c39dc..13cf83d9 100644
                          }
                          const std::string translationJsonPath = packageFilePath+"lang/"+defaultLang+".json";
  
-@@ -7468,7 +7569,12 @@ void initializeSettingsAndDirectories() {
+@@ -7476,7 +7577,12 @@ void initializeSettingsAndDirectories() {
      versionLabel = cleanVersionLabel(APP_VERSION) + " " + DIVIDER_SYMBOL + " " + loaderTitle + " " + cleanVersionLabel(loaderInfo);
  
      // Create necessary directories
@@ -671,7 +671,7 @@ index 352c39dc..13cf83d9 100644
      createDirectory(LANG_PATH);
      createDirectory(FLAGS_PATH);
      createDirectory(NOTIFICATIONS_FLAGS_PATH);
-@@ -7478,8 +7584,12 @@ void initializeSettingsAndDirectories() {
+@@ -7486,8 +7592,12 @@ void initializeSettingsAndDirectories() {
      createDirectory(SOUNDS_PATH);
      createDirectory(LOADED_SOUNDS_PATH);
      createDirectory(ASSETS_PATH);
@@ -684,7 +684,7 @@ index 352c39dc..13cf83d9 100644
      bool needsUpdate = false;
      std::map<std::string, std::map<std::string, std::string>> iniData;
  
-@@ -7510,7 +7620,7 @@ void initializeSettingsAndDirectories() {
+@@ -7518,7 +7628,7 @@ void initializeSettingsAndDirectories() {
      ensureDefault("dynamic_tables",            TRUE_STR);
      ensureDefault("selection_bg",             TRUE_STR);
      ensureDefault("selection_text",           FALSE_STR);
@@ -693,7 +693,7 @@ index 352c39dc..13cf83d9 100644
      ensureDefault("launch_combos",            TRUE_STR);
      ensureDefault("sound_effects",            TRUE_STR);
      ensureDefault("haptic_feedback",          FALSE_STR);
-@@ -7524,16 +7634,16 @@ void initializeSettingsAndDirectories() {
+@@ -7532,16 +7642,16 @@ void initializeSettingsAndDirectories() {
      ensureDefault("max_notifications",        "3");
      ensureDefault("hold_duration",            "3000");
      ensureDefault("hide_clock",               FALSE_STR);
@@ -713,7 +713,7 @@ index 352c39dc..13cf83d9 100644
  
      // Launcher-only keys (variables also set by parseOverlaySettings where accessible,
      // the rest are static to main.cpp so setDefaultValue is still needed here)
-@@ -7542,7 +7652,7 @@ void initializeSettingsAndDirectories() {
+@@ -7550,7 +7660,7 @@ void initializeSettingsAndDirectories() {
          else { sec[key] = def; flag = (def == TRUE_STR); needsUpdate = true; }
      };
  
@@ -722,7 +722,7 @@ index 352c39dc..13cf83d9 100644
      setDefaultValue("hide_packages",          FALSE_STR, hidePackages);
      setDefaultValue("hide_hidden",            FALSE_STR, hideHidden);  // also set by parseOverlaySettings
      setDefaultValue("hide_delete",            FALSE_STR, hideDelete);
-@@ -7552,7 +7662,7 @@ void initializeSettingsAndDirectories() {
+@@ -7560,7 +7670,7 @@ void initializeSettingsAndDirectories() {
      setDefaultValue("hide_overlay_versions",  FALSE_STR, hideOverlayVersions);
      setDefaultValue("hide_package_versions",  FALSE_STR, hidePackageVersions);
      setDefaultValue("libultrahand_titles",    FALSE_STR, useLibultrahandTitles);
@@ -731,7 +731,7 @@ index 352c39dc..13cf83d9 100644
      setDefaultValue("package_titles",         FALSE_STR, usePackageTitles);
      setDefaultValue("package_versions",       TRUE_STR,  usePackageVersions);
      setDefaultValue("page_swap",              FALSE_STR, usePageSwap);        // also set by parseOverlaySettings
-@@ -7577,7 +7687,7 @@ void initializeSettingsAndDirectories() {
+@@ -7585,7 +7695,7 @@ void initializeSettingsAndDirectories() {
          saveIniFileData(ULTRAHAND_CONFIG_INI_PATH, iniData);
  
      // Sync combo and set initial menu page (run once)
@@ -740,7 +740,7 @@ index 352c39dc..13cf83d9 100644
  
      static bool hasInitialized = false;
      if (!hasInitialized) {
-@@ -7741,7 +7851,7 @@ public:
+@@ -7749,7 +7859,7 @@ public:
              }
          }
          if (firstBoot && tsl::notification && useStartupNotification) {
