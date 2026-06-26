@@ -1,17 +1,17 @@
 diff --git a/source/gui_main.cpp b/source/gui_main.cpp
-index 177d3e6..a04b95b 100644
+index ed354a2..274c332 100644
 --- a/source/gui_main.cpp
 +++ b/source/gui_main.cpp
-@@ -298,7 +298,7 @@ GuiMain::GuiMain() {
-                             // IPC unavailable, rejected, or timed out — state is
-                             // unchanged. Fire a notification so the user knows.
-                             if (tsl::notification)
--                                tsl::notification->showNow(ult::NOTIFY_HEADER + "Shutdown IPC has failed.", 22);
-+                                tsl::notification->showNow(ult::NOTIFY_HEADER + "IPC 종료 실패!", 22);
-                         }
-                         // If exited == true, update() will flip the label to "Off"
-                         // on the next tick — no manual setValue needed.
-@@ -466,14 +466,14 @@ inline void drawMemoryWidget(auto renderer) {
+@@ -321,7 +321,7 @@ GuiMain::GuiMain() {
+                                 // IPC unavailable, rejected, or timed out — state is
+                                 // unchanged. Fire a notification so the user knows.
+                                 if (tsl::notification)
+-                                    tsl::notification->showNow(ult::NOTIFY_HEADER + "Shutdown IPC has failed.", 22);
++                                    tsl::notification->showNow(ult::NOTIFY_HEADER + "IPC 종료 실패!", 22);
+                             }
+                             // If exited == true, update() will flip the label to "Off"
+                             // on the next tick — no manual setValue needed.
+@@ -513,14 +513,14 @@ inline void drawMemoryWidget(auto renderer) {
  tsl::elm::Element* GuiMain::createUI() {
      auto* rootFrame = new tsl::elm::HeaderOverlayFrame(97);
      rootFrame->setHeader(new tsl::elm::CustomDrawer([this](tsl::gfx::Renderer* renderer, s32 x, s32 y, s32 w, s32 h) {
@@ -28,7 +28,7 @@ index 177d3e6..a04b95b 100644
  
          auto* warning = new tsl::elm::CustomDrawer([description](tsl::gfx::Renderer* renderer, s32 x, s32 y, s32 w, s32 h) {
              renderer->drawString("\uE150", false, 180, 250, 90, tsl::headerTextColor);
-@@ -488,9 +488,9 @@ tsl::elm::Element* GuiMain::createUI() {
+@@ -535,9 +535,9 @@ tsl::elm::Element* GuiMain::createUI() {
          // modules that declared a graceful-shutdown contract. The latter can
          // be stopped safely at runtime even though they require a reboot to
          // start; grouping them here makes them interactable in the overlay.
@@ -40,7 +40,7 @@ index 177d3e6..a04b95b 100644
          }), 30);
          for (const auto& module : this->m_sysmoduleListItems) {
              if (!module.needReboot || module.hasGracefulShutdown) {
-@@ -501,9 +501,9 @@ tsl::elm::Element* GuiMain::createUI() {
+@@ -548,9 +548,9 @@ tsl::elm::Element* GuiMain::createUI() {
  
          // Static section: modules that require a reboot AND have no
          // graceful-shutdown contract. These cannot be toggled at runtime.
