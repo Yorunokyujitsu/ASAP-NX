@@ -1,21 +1,23 @@
 {
     "changelog": {
         "22.5.0": [
-            "Hekate & Nyx: 6.5.2 & 1.9.2 → 6.5.3 & 1.9.3",
-            "SD 관련 정보 개선, 웨이퍼 제한 고정, 잘못된 PMIC 수정, GPT 검증 문제 수정.",
+            "Hekate & Nyx",
+            "오탈자 및 잘못 표시되는 아이콘 문제 수정.",
             "",
-            "Atmosphère: 1.11.1 → 1.11.2",
-            "40MB 메모리 지원, 최신 공식 동작을 반영하도록 업데이트됨, 홈브류 호환성 패치됨",
+            "Atmosphère",
+            "3ace80c 커밋 업데이트.",
+            "내부 코드 품질 개선.",
+            "Zbic과 함께 일반 Zstd 압축도 지원하도록 추가.",
             "",
-            "Horizon-OC & loader.kip: 2.4.0.rev3 → 2.4.2.rev5",
-            "자동 RAM CPU OC 관련 클럭 및 일부 버그 수정, UI의 일관성이 향상됨.",
+            "Horizon-OC & loader.kip",
+            "메모리 사용량 절감을 위해 -Os 옵션 빌드.",
+            "t2 제한 등 기타 문제 수정.",
             "",
             "System Modules & Overlays & Homebrew",
-            "MissionControl: 0.15.1 → 0.15.2",
-            "Ultrahand-Overlay: 2.4.5 → 2.5.1",
-            "ovl-sysmodules: 1.5.1 → 1.5.2",
-            "Status-Monitor-Overlay: 1.4.1+ → 1.4.1+r2",
-            "Linkalho: 한글화가 적용되지 않는 버그가 수정됨."
+            "sys-con: 1.6.1 → 1.6.3",
+            "Ultrahand-Overlay: 2.5.1 → 2.5.2",
+            "ovl-sysmodules: 1.5.2 → 1.5.3",
+            "Status-Monitor-Overlay: 1.4.1+r2 → 1.4.1+r3"
         ]
     },
     "cfws": {
