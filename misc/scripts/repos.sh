@@ -44,7 +44,7 @@ if [[ "${ENABLE_CUSTOM:-0}" == "1" ]]; then
     "ppkantorski/ovl-sysmodules@32f1045"
     "masagrator/ReverseNX-RT@725eb27"
     "ppkantorski/Status-Monitor-Overlay@50153ec"
-    "Yorunokyujitsu/Horizon-OC@personal" # d80d59d
+    "Yorunokyujitsu/Horizon-OC@personal" # 859b225
 
     # Homebrews
     "HamletDuFromage/aio-switch-updater=ASAP-Updater@3d38eaa"
