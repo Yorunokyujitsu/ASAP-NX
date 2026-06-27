@@ -12,15 +12,12 @@ RES_DIR = SCRIPT_DIR.parents[2] / "res" / "screens"
 CONTENTS_ROOT = SCRIPT_DIR.parents[3] / "contents"
 OUT_BOOT_DIRS = [
     CONTENTS_ROOT / "Atmosphere" / "stratosphere" / "boot" / "source",
-    CONTENTS_ROOT / "Atmosphere_8GB" / "stratosphere" / "boot" / "source",
 ]
 OUT_FATAL_DIRS = [
     CONTENTS_ROOT / "Atmosphere" / "stratosphere" / "fatal" / "source",
-    CONTENTS_ROOT / "Atmosphere_8GB" / "stratosphere" / "fatal" / "source",
 ]
 OUT_IMG_DIRS = [
     CONTENTS_ROOT / "Atmosphere" / "img",
-    CONTENTS_ROOT / "Atmosphere_8GB" / "img",
 ]
 ALLOWED_EXTS = {".png", ".jpg", ".jpeg", ".bmp", ".webp"}
 
