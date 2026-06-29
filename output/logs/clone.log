@@ -4,7 +4,7 @@
 ==========================
 
 [CLONE] hekate - Yorunokyujitsu
-  branch    : custom (125f4e85)
+  branch    : custom (2b110298)
 
 [CLONE] Atmosphere - Yorunokyujitsu
   branch    : custom (a7437c852)
@@ -43,7 +43,7 @@
   submodule : libultrahand (270757c)
 
 [CLONE] Horizon-OC - Yorunokyujitsu
-  branch    : personal (41957981)
+  branch    : personal (3710d84b)
   submodule : Atmosphere-libs (82f1553)
   submodule : libultrahand (3e54f2a)
   submodule : libultrahand (3e54f2a)
