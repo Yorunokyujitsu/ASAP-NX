@@ -75,7 +75,7 @@
             "   ㄴ Quick Guide+에서 에러 코드 확인.\n",
             "◇ 8GB RAM:",
             "   실제 램이 8GB인 기기에서만 작동합니다.\n",
-            "◇ 0626 변경내역:",
+            "◇ 0630 변경내역:",
             "   - Atmosphère",
             "     ㄴ 내부 코드 품질 및 Zstd-Zbic 통합 개선.",
             "   - Hekate & Nyx",
@@ -83,6 +83,9 @@
             "   - Horizon-OC",
             "     ㄴ 메모리 사용량 절감을 위해 -Os 옵션 빌드.",
             "     ㄴ t2 제한 등 기타 문제 수정.",
+            "     ㄴ KIP 감지 기능 추가.",
+            "     ㄴ 자동 CPU RAM OC 수정.",
+            "     ㄴ 기본 GPU High UV 한계를 1305MHz로 상향.",
             "   - sys-con 1.6.1 > 1.6.3",
             "     ㄴ 게임큐브, Wii 호환성 및 지연 문제 수정.",
             "     ㄴ HID 컨트롤러 버튼 매핑 문제 수정.",
@@ -595,7 +598,7 @@
         "github_api": "",
         "url": "https://wiki.switchroot.org/wiki/android/android-14-15",
         "download": "https://www.dropbox.com/scl/fi/7cdwxpa17ccyvm6kfh1op/Android_tab.zip?rlkey=ucipv9iedej34xyaym2u7oy22&dl=1",
-        "pack_ver": "22.2-260621"
+        "pack_ver": "22.2-260628"
     },
     "Ubuntu Bionic": {
         "description": [
