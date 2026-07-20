@@ -1,23 +1,22 @@
 {
     "changelog": {
         "22.5.0": [
-            "Hekate & Nyx",
-            "오탈자 및 잘못 표시되는 아이콘 문제 수정.",
+            "Atmosphère: e468f59 커밋 빌드",
+            "MITM 서비스에서 발생하던 메모리 누수 해결.",
+            "AM, NS, USB, ES, NIFM, NIM 패치를 패턴에서 고정 오프셋으로 변경.",
             "",
-            "Atmosphère",
-            "3ace80c 커밋 업데이트.",
-            "내부 코드 품질 개선.",
-            "Zbic과 함께 일반 Zstd 압축도 지원하도록 추가.",
+            "Horizon-OC & loader.kip: d9906a7 커밋 빌드",
+            "GPU 전압 및 오버클럭 기능 대폭 강화, 안정성 및 버그 수정, UI 및 설정, Erista 타이밍 개선.",
             "",
-            "Horizon-OC & loader.kip",
-            "메모리 사용량 절감을 위해 -Os 옵션 빌드.",
-            "t2 제한 등 기타 문제 수정.",
+            "ovlloader: 2.0.2 → 2.0.3",
+            "HOS 오버레이 힙 4MB 고정, 내부 힙 32KB 확대 및 안정성 개선.",
             "",
-            "System Modules & Overlays & Homebrew",
-            "sys-con: 1.6.1 → 1.6.3",
-            "Ultrahand-Overlay: 2.5.1 → 2.5.2",
-            "ovl-sysmodules: 1.5.2 → 1.5.3",
-            "Status-Monitor-Overlay: 1.4.1+r2 → 1.4.1+r3"
+            "System Modules & Overlays & Hombrews",
+            "Ultrahand-Overlay: 2.5.2 → 2.5.3",
+            "NX-FanControl: 1.0.4 → 1.0.4+r1",
+            "Status-Monitor-Overlay: 1.4.1+r3 → 1.4.1+r4",
+            "Ultrahand-reload: 1.0.0 → 1.0.1",
+            "DBI: 895 → 898, 905"
         ]
     },
     "cfws": {
@@ -40,7 +39,7 @@
     "firmwares": {
         "22.5.0": "https://github.com/THZoria/NX_Firmware/releases/download/22.5.0/Firmware.22.5.0.zip",
         "22.1.0": "https://github.com/THZoria/NX_Firmware/releases/download/22.1.0/Firmware.22.1.0.zip",
-        "22.0.0": "https://github.com/THZoria/NX_Firmware/releases/download/22.0.0/Firmware_22.0.0.zip",
+        "22.0.0": "https://github.com/THZoria/NX_Firmware/releases/download/22.0.0/Firmware.22.0.0.zip",
         "21.2.0": "https://github.com/THZoria/NX_Firmware/releases/download/21.2.0/Firmware.21.2.0.zip",
         "21.1.0": "https://github.com/THZoria/NX_Firmware/releases/download/21.1.0/Firmware.21.1.0.zip",
         "21.0.1": "https://github.com/THZoria/NX_Firmware/releases/download/21.0.1/Firmware.21.0.1.zip",
