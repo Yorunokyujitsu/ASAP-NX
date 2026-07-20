@@ -39,7 +39,7 @@ Done
 =============================
 
 
-Apply: Atmosphere-libs.patch
+Skip: Atmosphere-libs.patch (not found)
 Apply: borealis.patch
 Apply: libfancontrol.patch
 Apply: zipper.patch

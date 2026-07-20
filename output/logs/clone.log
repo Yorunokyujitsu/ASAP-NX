@@ -7,46 +7,44 @@
   branch    : custom (2b110298)
 
 [CLONE] Atmosphere - Yorunokyujitsu
-  branch    : custom (a7437c852)
+  branch    : custom (6078b48f8)
 
 [CLONE] nx-hbloader - switchbrew
   branch    : default (82b9512)
 
 [CLONE] Ultrahand-Overlay - ppkantorski
-  branch    : commit (fc343dca)
-  submodule : libultrahand (2f0b721)
+  branch    : commit (2d0621a8)
+  submodule : libultrahand (856ddbd)
 
 [CLONE] EdiZon-Overlay - ppkantorski
-  branch    : commit (769344a)
-  submodule : libultrahand (f4fdce0)
+  branch    : commit (91e64f7)
+  submodule : libultrahand (0706ee3)
 
 [CLONE] FPSLocker - masagrator
   branch    : commit (7b316c9)
 
 [CLONE] NX-FanControl - ppkantorski
-  branch    : commit (2580291)
+  branch    : commit (acf6d39)
   submodule : libfancontrol (2cb987c)
-  submodule : libultrahand (f4fdce0)
+  submodule : libultrahand (69b6815)
 
 [CLONE] ovl-sysmodules - ppkantorski
   branch    : commit (32f1045)
   submodule : libultrahand (35fdeb4)
 
-[CLONE] ReverseNX-RT - masagrator
-  branch    : commit (725eb27)
-  submodule : Atmosphere-libs (2d522dc)
-  submodule : libtesla (779b4ea)
+[CLONE] ReverseNX-RT - ppkantorski
+  branch    : commit (748f6be)
+  submodule : Atmosphere-libs (82f1553)
+  submodule : libultrahand (0706ee3)
 
 [CLONE] Status-Monitor-Overlay - ppkantorski
-  branch    : commit (50153ec)
+  branch    : commit (84fe9cd)
   submodule : Atmosphere-libs (6e2c09c)
-  submodule : libultrahand (270757c)
+  submodule : libultrahand (856ddbd)
 
 [CLONE] Horizon-OC - Yorunokyujitsu
-  branch    : personal (d54b4ae8)
-  submodule : Atmosphere-libs (82f1553)
-  submodule : libultrahand (3e54f2a)
-  submodule : libultrahand (3e54f2a)
+  branch    : test (b2307b56)
+  submodule : libultrahand (f7ab6c9)
 
 [CLONE] aio-switch-updater - HamletDuFromage
   branch    : commit (3d38eaa)
