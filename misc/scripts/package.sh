@@ -32,7 +32,8 @@ require_file() {
 
 # URLs"
 EMUIIBO_URL="$(gh_release_latest Yorunokyujitsu emuiibo emuiibo.zip)"
-OVLLDR_URL="$(gh_release_latest ppkantorski nx-ovlloader nx-ovlloader.zip)"
+# OVLLDR_URL="$(gh_release_latest ppkantorski nx-ovlloader nx-ovlloader.zip)"
+OVLLDR_URL="$(gh_release_tag ppkantorski nx-ovlloader v2.0.3 nx-ovlloader.zip)"
 DBI_KO_URL="$(gh_release_latest Yorunokyujitsu DBIPatcher DBI_ko.zip)"
 DBI_EN_URL="$(gh_release_latest Yorunokyujitsu DBIPatcher DBI_en.zip)"
 SALTYNX_URL="$(gh_release_latest masagrator SaltyNX SaltyNX.zip)"
@@ -206,6 +207,7 @@ package_asap() {
   cp -r "${APP_DIR}/NX-FanControl/out/atmosphere" "${DIST_DIR}"
   cp -r "${APP_DIR}/NX-FanControl/out/switch" "${DIST_DIR}"
   cp -r "${APP_DIR}/uh_pack/"* "${DIST_DIR}/switch/.packages"
+  cp -r "${APP_DIR}/Ultrahand-Overlay/common/audio_mastervolume" "${DIST_DIR}/atmosphere/exefs_patches"
   cp -r "${MISC_DIR}/tools/aeskey" "${DIST_DIR}/backup/keys/PartialAesKeyCrack"
   #cp -r "${MISC_DIR}/cache" "${DIST_DIR}/warmboot_mariko"
 
