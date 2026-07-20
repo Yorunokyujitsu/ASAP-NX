@@ -1,5 +1,5 @@
 diff --git a/Makefile b/Makefile
-index ed2ae41..d30c115 100644
+index ed2ae41..ce77da2 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -1,21 +1,31 @@
@@ -49,15 +49,15 @@ index ed2ae41..d30c115 100644
 +	@find ./overlay -type f \( -name '*.elf' -o -name '*.nacp' -o -name '*.ovl' \) -exec rm -f {} \;
 \ No newline at end of file
 diff --git a/overlay/Makefile b/overlay/Makefile
-index 0b74a01..bda75ca 100644
+index c8a6529..47cdb3e 100644
 --- a/overlay/Makefile
 +++ b/overlay/Makefile
 @@ -38,7 +38,7 @@ include $(DEVKITPRO)/libnx/switch_rules
  #   NACP building is skipped as well.
  #---------------------------------------------------------------------------------
  APP_TITLE	:=	NX-FanControl
--APP_VERSION :=	1.0.3+r3
-+APP_VERSION :=	1.0.4
+-APP_VERSION :=	1.0.3+r4
++APP_VERSION :=	1.0.4+r1
  
  TARGET		:=	$(APP_TITLE)
  BUILD		:=	build
@@ -71,23 +71,10 @@ index 0b74a01..bda75ca 100644
  
  # For theme / wallpaper loading in GUI class method (add to project if theme does not appear)
 diff --git a/overlay/source/main_menu.cpp b/overlay/source/main_menu.cpp
-index 9dba0d6..472e489 100644
+index 81b1e35..a02fa1a 100644
 --- a/overlay/source/main_menu.cpp
 +++ b/overlay/source/main_menu.cpp
-@@ -5,19 +5,19 @@ MainMenu::MainMenu()
- {
-     ReadConfigFile(&this->_fanCurveTable);
- 
--    this->_p0Label = new tsl::elm::ListItem("P0: " + std::to_string(this->_fanCurveTable->temperature_c) + "C | " + std::to_string((int)(this->_fanCurveTable->fanLevel_f * 100)) + "%");
--    this->_p1Label = new tsl::elm::ListItem("P1: " + std::to_string((this->_fanCurveTable + 1)->temperature_c) + "C | " + std::to_string((int)((this->_fanCurveTable + 1)->fanLevel_f * 100)) + "%");
--    this->_p2Label = new tsl::elm::ListItem("P2: " + std::to_string((this->_fanCurveTable + 2)->temperature_c) + "C | " + std::to_string((int)((this->_fanCurveTable + 2)->fanLevel_f * 100)) + "%");
--    this->_p3Label = new tsl::elm::ListItem("P3: " + std::to_string((this->_fanCurveTable + 3)->temperature_c) + "C | " + std::to_string((int)((this->_fanCurveTable + 3)->fanLevel_f * 100)) + "%");
--    this->_p4Label = new tsl::elm::ListItem("P4: " + std::to_string((this->_fanCurveTable + 4)->temperature_c) + "C | " + std::to_string((int)((this->_fanCurveTable + 4)->fanLevel_f * 100)) + "%");
-+    this->_p0Label = new tsl::elm::ListItem("P0: " + std::to_string(this->_fanCurveTable->temperature_c) + "°C | " + std::to_string((int)(this->_fanCurveTable->fanLevel_f * 100)) + "%");
-+    this->_p1Label = new tsl::elm::ListItem("P1: " + std::to_string((this->_fanCurveTable + 1)->temperature_c) + "°C | " + std::to_string((int)((this->_fanCurveTable + 1)->fanLevel_f * 100)) + "%");
-+    this->_p2Label = new tsl::elm::ListItem("P2: " + std::to_string((this->_fanCurveTable + 2)->temperature_c) + "°C | " + std::to_string((int)((this->_fanCurveTable + 2)->fanLevel_f * 100)) + "%");
-+    this->_p3Label = new tsl::elm::ListItem("P3: " + std::to_string((this->_fanCurveTable + 3)->temperature_c) + "°C | " + std::to_string((int)((this->_fanCurveTable + 3)->fanLevel_f * 100)) + "%");
-+    this->_p4Label = new tsl::elm::ListItem("P4: " + std::to_string((this->_fanCurveTable + 4)->temperature_c) + "°C | " + std::to_string((int)((this->_fanCurveTable + 4)->fanLevel_f * 100)) + "%");
+@@ -13,11 +13,11 @@ MainMenu::MainMenu()
  
      if (IsRunning() != 0)
      {
@@ -108,7 +95,7 @@ index 9dba0d6..472e489 100644
 +    list->addItem(new tsl::elm::CategoryHeader("팬 쿨링", true));
      this->_enabledBtn->setStateChangedListener([this](bool state)
      {
- 	    if (state)
+         if (state)
 @@ -50,7 +51,7 @@ tsl::elm::Element* MainMenu::createUI()
      });
      list->addItem(this->_enabledBtn);
@@ -117,70 +104,44 @@ index 9dba0d6..472e489 100644
 +    list->addItem(new tsl::elm::CategoryHeader("팬 커브", true));
      this->_p0Label->setClickListener([this](uint64_t keys)
      {
- 	    if (keys & HidNpadButton_A) 
-@@ -121,11 +122,11 @@ void MainMenu::update()
- {
-     if(this->_tableIsChanged)
-     {
--        this->_p0Label->setText("P0: " + std::to_string(this->_fanCurveTable->temperature_c) + "C | " + std::to_string((int)(this->_fanCurveTable->fanLevel_f * 100)) + "%");
--        this->_p1Label->setText("P1: " + std::to_string((this->_fanCurveTable + 1)->temperature_c) + "C | " + std::to_string((int)((this->_fanCurveTable + 1)->fanLevel_f * 100)) + "%");
--        this->_p2Label->setText("P2: " + std::to_string((this->_fanCurveTable + 2)->temperature_c) + "C | " + std::to_string((int)((this->_fanCurveTable + 2)->fanLevel_f * 100)) + "%");
--        this->_p3Label->setText("P3: " + std::to_string((this->_fanCurveTable + 3)->temperature_c) + "C | " + std::to_string((int)((this->_fanCurveTable + 3)->fanLevel_f * 100)) + "%");
--        this->_p4Label->setText("P4: " + std::to_string((this->_fanCurveTable + 4)->temperature_c) + "C | " + std::to_string((int)((this->_fanCurveTable + 4)->fanLevel_f * 100)) + "%");
-+        this->_p0Label->setText("P0: " + std::to_string(this->_fanCurveTable->temperature_c) + "°C | " + std::to_string((int)(this->_fanCurveTable->fanLevel_f * 100)) + "%");
-+        this->_p1Label->setText("P1: " + std::to_string((this->_fanCurveTable + 1)->temperature_c) + "°C | " + std::to_string((int)((this->_fanCurveTable + 1)->fanLevel_f * 100)) + "%");
-+        this->_p2Label->setText("P2: " + std::to_string((this->_fanCurveTable + 2)->temperature_c) + "°C | " + std::to_string((int)((this->_fanCurveTable + 2)->fanLevel_f * 100)) + "%");
-+        this->_p3Label->setText("P3: " + std::to_string((this->_fanCurveTable + 3)->temperature_c) + "°C | " + std::to_string((int)((this->_fanCurveTable + 3)->fanLevel_f * 100)) + "%");
-+        this->_p4Label->setText("P4: " + std::to_string((this->_fanCurveTable + 4)->temperature_c) + "°C | " + std::to_string((int)((this->_fanCurveTable + 4)->fanLevel_f * 100)) + "%");
-         
-         this->_tableIsChanged = false;
-     }
+         if (keys & HidNpadButton_A) 
 diff --git a/overlay/source/select_menu.cpp b/overlay/source/select_menu.cpp
-index 0d4e631..8216b90 100644
+index d223166..938c87c 100644
 --- a/overlay/source/select_menu.cpp
 +++ b/overlay/source/select_menu.cpp
-@@ -7,8 +7,8 @@ SelectMenu::SelectMenu(int i, TemperaturePoint* fanCurveTable, bool* tableIsChan
+@@ -7,7 +7,7 @@ SelectMenu::SelectMenu(int i, TemperaturePoint* fanCurveTable, bool* tableIsChan
      this->_fanCurveTable = fanCurveTable;
      this->_tableIsChanged = tableIsChanged;
  
 -    this->_saveBtn = new tsl::elm::ListItem("Save");
--    this->_tempLabel = new tsl::elm::CategoryHeader(std::to_string((this->_fanCurveTable + this->_i)->temperature_c) + "C", true);
 +    this->_saveBtn = new tsl::elm::ListItem("저장");
-+    this->_tempLabel = new tsl::elm::CategoryHeader(std::to_string((this->_fanCurveTable + this->_i)->temperature_c) + "°C", true);
+     this->_tempLabel = new tsl::elm::CategoryHeader(std::to_string((this->_fanCurveTable + this->_i)->temperature_c) + "°C", true);
      this->_fanLabel = new tsl::elm::CategoryHeader(std::to_string((int)((this->_fanCurveTable + this->_i)->fanLevel_f * 100)) + "%", true);
  }
- 
-@@ -17,12 +17,12 @@ tsl::elm::Element* SelectMenu::createUI(){
-     auto list = new tsl::elm::List();
- 
-     list->addItem(this->_tempLabel);
--    auto stepTemp = new tsl::elm::StepTrackBar("C", 21);
-+    auto stepTemp = new tsl::elm::StepTrackBar("°C", 21);
-     stepTemp->setValueChangedListener([this](u8 value)
+@@ -22,7 +22,7 @@ tsl::elm::Element* SelectMenu::createUI(){
      {
--        this->_tempLabel->setText(std::to_string(value * 5) + "C");
-+        this->_tempLabel->setText(std::to_string(value * 5) + "°C");
-         (this->_fanCurveTable + this->_i)->temperature_c = value * 5;
+         this->_tempLabel->setText(std::to_string(value) + "°C");
+         (this->_fanCurveTable + this->_i)->temperature_c = value;
 -        this->_saveBtn->setText("Save");
 +        this->_saveBtn->setText("저장");
      });
-     stepTemp->setProgress(((this->_fanCurveTable + this->_i)->temperature_c) / 5);
-     list->addItem(stepTemp);
+     trackTemp->setProgress((this->_fanCurveTable + this->_i)->temperature_c);
+     list->addItem(trackTemp);
 @@ -33,7 +33,7 @@ tsl::elm::Element* SelectMenu::createUI(){
      {
-         this->_fanLabel->setText(std::to_string(value * 5) + "%");
-         (this->_fanCurveTable + this->_i)->fanLevel_f = (float)(value * 5)/100;
+         this->_fanLabel->setText(std::to_string(value) + "%");
+         (this->_fanCurveTable + this->_i)->fanLevel_f = (float)value / 100;
 -        this->_saveBtn->setText("Save");
 +        this->_saveBtn->setText("저장");
      });
-     stepFanL->setProgress(((int)((this->_fanCurveTable + this->_i)->fanLevel_f * 100)) / 5);
-     list->addItem(stepFanL);
-@@ -56,7 +56,7 @@ tsl::elm::Element* SelectMenu::createUI(){
+     trackFanL->setProgress((int)((this->_fanCurveTable + this->_i)->fanLevel_f * 100));
+     list->addItem(trackFanL);
+@@ -58,7 +58,7 @@ tsl::elm::Element* SelectMenu::createUI(){
                  pmshellLaunchProgram(0, &programLocation, &pid);
              }
                  
 -            this->_saveBtn->setText("Saved!");
 +            this->_saveBtn->setText("설정 저장됨!");
              *this->_tableIsChanged = true;
- 		    return true;
- 		}
+             return true;
+         }

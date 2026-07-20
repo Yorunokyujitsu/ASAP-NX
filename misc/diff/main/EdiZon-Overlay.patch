@@ -1,18 +1,18 @@
 diff --git a/Makefile b/Makefile
-index 6038546..41973fd 100644
+index 255f81b..9a2c423 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -12,7 +12,7 @@ include $(DEVKITPRO)/libnx/switch_rules
  APP_TITLE		:=	EdiZon
  APP_FILENAME	:=  ovlEdiZon
  APP_AUTHOR		:=	WerWolv, proferabg, and ppkantorski
--APP_VERSION		:=	v1.0.15
-+APP_VERSION		:=	1.0.15
+-APP_VERSION		:=	v1.0.16
++APP_VERSION		:=	1.0.16
  
  ifeq ($(RELEASE), 1)
  	APP_VERSION	:=	$(APP_VERSION)-$(shell git describe --always)
 diff --git a/source/main.cpp b/source/main.cpp
-index 31ea3c2..c233058 100644
+index c9ce669..c233058 100644
 --- a/source/main.cpp
 +++ b/source/main.cpp
 @@ -49,26 +49,26 @@ public:
@@ -238,8 +238,8 @@ index 31ea3c2..c233058 100644
 +                renderer->drawString("WiFi 신호:", false, 63, 400, 18, (tsl::defaultTextColor));
 +                renderer->drawString(formatString("%d dBm", signalStrength).c_str(), false, 258, 400, 18, (tsl::onTextColor)); 
              }
--            renderer->drawString("Credits:", false, 63, 600, 18, (tsl::style::color::ColorText));
--            renderer->drawString(APP_AUTHOR, false, 63, 630, 18, (tsl::style::color::ColorHighlight)); 
+-            renderer->drawString("Credits:", false, 56, 600, 18, (tsl::style::color::ColorText));
+-            renderer->drawString(APP_AUTHOR, false, 56, 630, 18, (tsl::style::color::ColorHighlight)); 
          });
          rootFrame->setContent(infos);
      
