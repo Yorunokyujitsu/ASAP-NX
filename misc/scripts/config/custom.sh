@@ -25,8 +25,6 @@ LIB_PATHS=(
   "ovl-sysmodules/libs/"
   "ReverseNX-RT/Overlay/libs/"
   "Status-Monitor-Overlay/lib/"
-  #"sys-clk/overlay/lib/"
-  #"sys-patch/overlay/"
   "Ultrahand-Overlay/lib/"
   "Horizon-OC/Source/hoc-clk/overlay/lib/"
 )
@@ -106,7 +104,6 @@ apply_libs_diff_patches() {
     ["libfancontrol"]="${APP_DIR}/NX-FanControl/lib/libfancontrol"
     ["borealis"]="${APP_DIR}/linkalho/lib/borealis"
     ["zipper"]="${APP_DIR}/linkalho/lib/zipper"
-    ["Atmosphere-libs"]="${APP_DIR}/ReverseNX-RT/Overlay/libs/Atmosphere-libs"
   )
 
   for patch in "${MISC_DIR}/diff/libs"/*.patch; do
