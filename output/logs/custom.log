@@ -209,8 +209,8 @@ lv_label_set_text(label, LV_SYMBOL_THERMOMETER_EMPTY LV_SYMBOL_TINT             
 [append] ubuntu_entry    →  offset: 0x2600B8, size: 211968 bytes
 [append] user_profile    →  offset: 0x293CB8, size: 760384 bytes
 [append] background      →  offset: 0x34D6F8, size: 3686400 bytes
-[append] fichiercle.bin  →  offset: 0x6D16F8, size: 104654 bytes
-[DONE] res.pak updated   →  offset: 0x6EAFC6, size: 7253958 bytes
+[append] fichiercle.bin  →  offset: 0x6D16F8, size: 110370 bytes
+[DONE] res.pak updated   →  offset: 0x6EC61A, size: 7259674 bytes
 [DONE] generated asap_custom.h → /__w/ASAP-NX/ASAP-NX/contents/hekate/nyx/nyx_gui/gfx/asap_custom.h
 Done
 
