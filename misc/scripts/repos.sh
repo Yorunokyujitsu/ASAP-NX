@@ -64,7 +64,7 @@ else
     "switchbrew/nx-hbloader"
     "switchbrew/nx-hbmenu"
     "suchmememanyskill/TegraExplorer"
-    "impeeza/Lockpick_RCMDecScots=Lockpick_RCM"
+    "THZoria/Lockpick_RCMaster=Lockpick_RCM"
     "HamletDuFromage/aio-switch-updater"
     "impeeza/linkalho"
   )
