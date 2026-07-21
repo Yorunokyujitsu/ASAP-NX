@@ -6,13 +6,13 @@ current_nyx=1.9.3
 
 [latest_version]
 supported_hos=22.5.0
-tester_version=0720
+tester_version=0721
 ldr_kip_version=2.5.0.rev6
 
 hekate=6.5.3
 nyx=1.9.3
 atmosphere=1.11.2
-atlas=1.2.0
+atlas=1.3.0
 missioncontrol=0.15.2
 nx_fancontrol=1.0.4+r1
 ovlloader=2.0.3
