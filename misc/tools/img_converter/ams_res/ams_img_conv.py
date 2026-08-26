@@ -206,10 +206,8 @@ def main(argv: list[str]) -> int:
     if "splash" in to_run:
         generated += gen_splash_bin()
 
-    if generated:
-        print("Converted:")
-        for name in sorted(set(generated)):
-            print(f"  - {name}")
+    for name in sorted(set(generated)):
+        print(f"Converted: {name}")
 
     return 0
 
