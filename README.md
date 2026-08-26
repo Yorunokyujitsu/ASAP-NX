@@ -47,7 +47,7 @@ Final build artifacts and logs are uploaded as GitHub Actions Artifacts.<br><br>
 > **CTCaer** - Custom [bootloader and GUI](https://github.com/CTCaer/hekate).<br>
 > **Atmosphere-NX** - [Custom firmware](https://github.com/Atmosphere-NX/Atmosphere) for Nintendo Switch.<br>
 > **switchbrew** - [Loader](https://github.com/switchbrew/nx-hbloader) for running homebrew applications.<br>
-> **ITotalJustice** - [Homebrew menu](https://github.com/ITotalJustice/sphaira) for Atmosphère.<br>
+> **ITotalJustice, NaGaa95** - [Homebrew menu](https://github.com/NaGaa95/sphaira) for Atmosphère.<br>
 > **suchmememanyskill** - Payload-based [file manager](https://github.com/suchmememanyskill/TegraExplorer).<br>
 > **shchmue** - Device encryption keys dumper.<br>
 > **hwfly-nx**, **sthetix** and **rehius** - Arduino flashing management toolboxes.<br>
@@ -57,7 +57,7 @@ Final build artifacts and logs are uploaded as GitHub Actions Artifacts.<br><br>
 > **proferabg** - System module for [managing user cheats](https://github.com/proferabg/EdiZon-Overlay).<br>
 > **masagrator** - Tools and a [supporting module](https://github.com/masagrator/SaltyNX) for [FPS customization](https://github.com/masagrator/FPSLocker) and [mode switching](https://github.com/masagrator/ReverseNX-RT).<br>
 > **Horizon-OC** - Clock-patched [loader.kip and custom sys-clk, bench tools](https://github.com/Horizon-OC/Horizon-OC).<br>
-> **ppkantorski** - [Overlay menu](https://github.com/ppkantorski/Ultrahand-Overlay), [loader](https://github.com/ppkantorski/nx-ovlloader), and various forked apps [[1]](https://github.com/ppkantorski/nx-ovlreloader), [[2]](https://github.com/ppkantorski/ovl-sysmodules), [[3]](https://github.com/ppkantorski/Status-Monitor-Overlay), [[4]](https://github.com/ppkantorski/FPSLocker).<br>
+> **ppkantorski** - [Overlay menu](https://github.com/ppkantorski/Ultrahand-Overlay), [loader](https://github.com/ppkantorski/nx-ovlloader), and various forked apps [[1]](https://github.com/ppkantorski/nx-ovlreloader), [[2]](https://github.com/ppkantorski/ovl-sysmodules), [[3]](https://github.com/ppkantorski/Status-Monitor-Overlay), [[4]](https://github.com/ppkantorski/ReverseNX-RT).<br>
 > **XorTroll** and **yusufakg** - [Homebrew](https://github.com/yusufakg/AmiiboGenerator) and [system module](https://github.com/XorTroll/emuiibo) for managing virtual amiibo.<br>
 > **rdmrocha**, **impeeza** - Tool for managing NNID linking and unlinking.<br>
 > **duckbill**, **Morce3232** and **rashevskyv** - DBI and [translation patch tools](https://github.com/rashevskyv/DBIPatcher).<br>
