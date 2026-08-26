@@ -1,6 +1,6 @@
 diff --git a/ASAP-forwarder/Makefile b/ASAP-forwarder/Makefile
 new file mode 100644
-index 0000000..f5d7aa2
+index 0000000..aa6ea31
 --- /dev/null
 +++ b/ASAP-forwarder/Makefile
 @@ -0,0 +1,225 @@
@@ -231,7 +231,7 @@ index 0000000..f5d7aa2
 +#---------------------------------------------------------------------------------------
 diff --git a/ASAP-forwarder/source/main.cpp b/ASAP-forwarder/source/main.cpp
 new file mode 100644
-index 0000000..8d5a977
+index 0000000..01f9db2
 --- /dev/null
 +++ b/ASAP-forwarder/source/main.cpp
 @@ -0,0 +1,46 @@
@@ -342,7 +342,7 @@ index b34d110..18cd741 100644
 +sed -nr 's|^\s*(\S+):.*\(\S+ \+ (0x[0-9a-f]+)\).*$|echo -n \1 : ; aarch64-none-elf-addr2line -e release-ASAP-Updater.elf -pCf -si \2|ep' $1
 \ No newline at end of file
 diff --git a/include/ams_tab.hpp b/include/ams_tab.hpp
-index 363a0a4..ada5964 100644
+index 363a0a4..449b0d2 100644
 --- a/include/ams_tab.hpp
 +++ b/include/ams_tab.hpp
 @@ -2,7 +2,6 @@
@@ -402,7 +402,7 @@ index 363a0a4..ada5964 100644
  };
 \ No newline at end of file
 diff --git a/include/app_page.hpp b/include/app_page.hpp
-index acbdfca..77c5f1a 100644
+index acbdfca..bbf5af7 100644
 --- a/include/app_page.hpp
 +++ b/include/app_page.hpp
 @@ -2,7 +2,6 @@
@@ -449,7 +449,7 @@ index acbdfca..77c5f1a 100644
  
  class AppPage_Exclude : public AppPage
 diff --git a/include/changelog_page.hpp b/include/changelog_page.hpp
-index 83d81cd..d050057 100644
+index 83d81cd..57f397a 100644
 --- a/include/changelog_page.hpp
 +++ b/include/changelog_page.hpp
 @@ -1,14 +1,10 @@
@@ -489,7 +489,7 @@ index 5bcd828..c9ae705 100644
  {
  public:
 diff --git a/include/constants.hpp b/include/constants.hpp
-index 10ad7d8..71e5c0c 100644
+index 10ad7d8..6e1cf72 100644
 --- a/include/constants.hpp
 +++ b/include/constants.hpp
 @@ -1,49 +1,32 @@
@@ -513,7 +513,8 @@ index 10ad7d8..71e5c0c 100644
  
  constexpr const char RCM_PAYLOAD_PATH[] = "romfs:/aio_rcm.bin";
  constexpr const char MARIKO_PAYLOAD_PATH[] = "/payload.bin";
- constexpr const char MARIKO_PAYLOAD_PATH_TEMP[] = "/payload.bin.aio";
+-constexpr const char MARIKO_PAYLOAD_PATH_TEMP[] = "/payload.bin.aio";
++constexpr const char MARIKO_PAYLOAD_PATH_TEMP[] = "/payload.bin.asap";
  
 -constexpr const char CHANGELOG_URL[] = "https://github.com/HamletDuFromage/aio-switch-updater/releases";
 +constexpr const char NXLINKS_URL[] = "https://raw.githubusercontent.com/Yorunokyujitsu/ASAP-NX/main/misc/json/updater.json";
@@ -660,7 +661,7 @@ index 10ad7d8..71e5c0c 100644
  };
 \ No newline at end of file
 diff --git a/include/current_cfw.hpp b/include/current_cfw.hpp
-index 0cce0b4..e512b7e 100644
+index 0cce0b4..2dc4d82 100644
 --- a/include/current_cfw.hpp
 +++ b/include/current_cfw.hpp
 @@ -1,6 +1,8 @@
@@ -706,7 +707,7 @@ index 2fb1c9c..90d05e9 100644
  {
  private:
 diff --git a/include/extract.hpp b/include/extract.hpp
-index 3be07a6..4612fec 100644
+index 3be07a6..8c910d2 100644
 --- a/include/extract.hpp
 +++ b/include/extract.hpp
 @@ -2,7 +2,6 @@
@@ -728,7 +729,7 @@ index 3be07a6..4612fec 100644
      std::vector<std::string> excludeTitles(const std::string& path, const std::vector<std::string>& listedTitles);
      void writeTitlesToFile(const std::set<std::string>& titles, const std::string& path);
 diff --git a/include/tools_tab.hpp b/include/tools_tab.hpp
-index 54ba262..2c08a9c 100644
+index 54ba262..10964a2 100644
 --- a/include/tools_tab.hpp
 +++ b/include/tools_tab.hpp
 @@ -7,8 +7,8 @@
@@ -744,7 +745,7 @@ index 54ba262..2c08a9c 100644
  };
 \ No newline at end of file
 diff --git a/include/utils.hpp b/include/utils.hpp
-index 7ff2ce2..542b8d7 100644
+index 7ff2ce2..54749d5 100644
 --- a/include/utils.hpp
 +++ b/include/utils.hpp
 @@ -36,6 +36,7 @@ namespace util {
@@ -764,7 +765,7 @@ index 7ff2ce2..542b8d7 100644
      std::string getContentsPath();
      bool getBoolValue(const nlohmann::ordered_json& jsonFile, const std::string& key);
 diff --git a/include/worker_page.hpp b/include/worker_page.hpp
-index fca97b8..71f1d20 100644
+index fca97b8..4bd3053 100644
 --- a/include/worker_page.hpp
 +++ b/include/worker_page.hpp
 @@ -13,15 +13,18 @@ private:
@@ -814,7 +815,7 @@ index ea27fb7..92e94f2 100755
 +zip -FSr ASAP-Updater.zip switch/
 \ No newline at end of file
 diff --git a/resources/i18n/en-US/menus.json b/resources/i18n/en-US/menus.json
-index 0e4b11c..ad21054 100644
+index 0e4b11c..e4d1b27 100644
 --- a/resources/i18n/en-US/menus.json
 +++ b/resources/i18n/en-US/menus.json
 @@ -1,218 +1,146 @@
@@ -1000,14 +1001,14 @@ index 0e4b11c..ad21054 100644
 -    "selected": "Selected",
 -    "applet_mode_not_supported": "This feature isn't available in applet mode. Please launch AIO-Switch-Updater through title override to access it.",
 -    "nothing_to_see": "Nothing to see here!"
+-  },
+-  "changelog": {
+-    "changelog": "Changelog"
 +    "hour": "Hour",
 +    "min": "Min",
 +    "sec": "Sec",
 +    "time_left": "Remaining"
    },
--  "changelog": {
--    "changelog": "Changelog"
--  },
 -  "payloads": {
 -    "dl_payloads": "Download payloads",
 -    "select": "Select a payload to reboot to.",
@@ -1164,7 +1165,7 @@ index 0e4b11c..ad21054 100644
 \ No newline at end of file
 +}
 diff --git a/resources/i18n/ja/menus.json b/resources/i18n/ja/menus.json
-index 26650d6..bd5b875 100644
+index 26650d6..696af8f 100644
 --- a/resources/i18n/ja/menus.json
 +++ b/resources/i18n/ja/menus.json
 @@ -1,199 +1,146 @@
@@ -1349,11 +1350,7 @@ index 26650d6..bd5b875 100644
 -    "selected": "選択済み",
 -    "applet_mode_not_supported": "この機能はアプレットモードの状態で使用できません。アクセスするには、タイトルリダイレクトを介してAIO-Switch-Updaterを起動してください。",
 -    "nothing_to_see": "特に見るべきものはありません!"
-+    "hour": "時",
-+    "min": "分",
-+    "sec": "秒",
-+    "time_left": "残り"
-   },
+-  },
 -  "changelog": {
 -    "changelog": "更新履歴"
 -  },
@@ -1469,7 +1466,11 @@ index 26650d6..bd5b875 100644
 -  },
 -  "firmware": {
 -    "launch_daybreak": "ダウンロードをしたsysupdateをインストールするためにDaybreakを起動しますか?"
--  },
++    "hour": "時",
++    "min": "分",
++    "sec": "秒",
++    "time_left": "残り"
+   },
 -  "net": {
 -    "title": "インターネットの設定"
 +  "controller": {
@@ -1500,7 +1501,7 @@ index 26650d6..bd5b875 100644
 \ No newline at end of file
 +}
 diff --git a/resources/i18n/ko/brls.json b/resources/i18n/ko/brls.json
-index d2d587d..4b68895 100644
+index d2d587d..89b005b 100644
 --- a/resources/i18n/ko/brls.json
 +++ b/resources/i18n/ko/brls.json
 @@ -1,7 +1,7 @@
@@ -1513,7 +1514,7 @@ index d2d587d..4b68895 100644
      },
      "crash_frame": {
 diff --git a/resources/i18n/ko/menus.json b/resources/i18n/ko/menus.json
-index 795603f..77c67bc 100644
+index 795603f..be3db30 100644
 --- a/resources/i18n/ko/menus.json
 +++ b/resources/i18n/ko/menus.json
 @@ -1,218 +1,146 @@
@@ -1859,7 +1860,7 @@ index 795603f..77c67bc 100644
    }
  }
 diff --git a/source/JC_page.cpp b/source/JC_page.cpp
-index 3de3546..56054a3 100644
+index 3de3546..a1fcb91 100644
 --- a/source/JC_page.cpp
 +++ b/source/JC_page.cpp
 @@ -9,17 +9,17 @@ namespace i18n = brls::i18n;
@@ -1910,7 +1911,7 @@ index 3de3546..56054a3 100644
  }
 \ No newline at end of file
 diff --git a/source/PC_page.cpp b/source/PC_page.cpp
-index ca915d2..51849bd 100644
+index ca915d2..5d883ce 100644
 --- a/source/PC_page.cpp
 +++ b/source/PC_page.cpp
 @@ -9,18 +9,18 @@ namespace i18n = brls::i18n;
@@ -1962,7 +1963,7 @@ index ca915d2..51849bd 100644
  }
 \ No newline at end of file
 diff --git a/source/about_tab.cpp b/source/about_tab.cpp
-index d6c4a74..eef426d 100644
+index d6c4a74..5d4e082 100644
 --- a/source/about_tab.cpp
 +++ b/source/about_tab.cpp
 @@ -5,27 +5,36 @@ using namespace i18n::literals;
@@ -2376,7 +2377,7 @@ index f104c8d..0076521 100644
 +    CreateDownloadItems(util::getValueFromKey(cfws, "lakka"));
  }
 diff --git a/source/app_page.cpp b/source/app_page.cpp
-index b1bf429..5807f55 100644
+index b1bf429..fc4373b 100644
 --- a/source/app_page.cpp
 +++ b/source/app_page.cpp
 @@ -7,7 +7,6 @@
@@ -2564,7 +2565,7 @@ index b1bf429..5807f55 100644
 \ No newline at end of file
 diff --git a/source/changelog_page.cpp b/source/changelog_page.cpp
 new file mode 100644
-index 0000000..a367e6c
+index 0000000..59dced0
 --- /dev/null
 +++ b/source/changelog_page.cpp
 @@ -0,0 +1,57 @@
@@ -2626,7 +2627,7 @@ index 0000000..a367e6c
 +    this->setContentView(list);
 +}
 diff --git a/source/cheats_page.cpp b/source/cheats_page.cpp
-index 5baab77..f977323 100644
+index 5baab77..6abe6a6 100644
 --- a/source/cheats_page.cpp
 +++ b/source/cheats_page.cpp
 @@ -14,7 +14,7 @@ namespace i18n = brls::i18n;
@@ -2650,7 +2651,7 @@ index 5baab77..f977323 100644
              stagedFrame->setTitle("menus/cheats/dl_all"_i18n);
              stagedFrame->addStage(
 diff --git a/source/choice_page.cpp b/source/choice_page.cpp
-index f441a3c..2f80c65 100644
+index f441a3c..97d6409 100644
 --- a/source/choice_page.cpp
 +++ b/source/choice_page.cpp
 @@ -4,9 +4,9 @@ namespace i18n = brls::i18n;
@@ -2666,7 +2667,7 @@ index f441a3c..2f80c65 100644
  
      this->label = new brls::Label(brls::LabelStyle::DIALOG, text, true);
 diff --git a/source/confirm_page.cpp b/source/confirm_page.cpp
-index 4cb37c4..176eafc 100644
+index 4cb37c4..165e273 100644
 --- a/source/confirm_page.cpp
 +++ b/source/confirm_page.cpp
 @@ -12,9 +12,9 @@ namespace i18n = brls::i18n;
@@ -2714,7 +2715,7 @@ index 4cb37c4..176eafc 100644
          }
      });
 diff --git a/source/current_cfw.cpp b/source/current_cfw.cpp
-index 513b8a0..bb81213 100644
+index 513b8a0..1605aeb 100644
 --- a/source/current_cfw.cpp
 +++ b/source/current_cfw.cpp
 @@ -1,59 +1,60 @@
@@ -2734,8 +2735,7 @@ index 513b8a0..bb81213 100644
      namespace {
 -
 -        bool isServiceRunning(const char* serviceName)
-+        static inline std::string trim(const std::string& s)
-         {
+-        {
 -            Handle handle;
 -            SmServiceName service_name = smEncodeName(serviceName);
 -            bool running = R_FAILED(smRegisterService(&handle, service_name, false, 1));
@@ -2744,28 +2744,29 @@ index 513b8a0..bb81213 100644
 -                smUnregisterService(service_name);
 -
 -            return running;
-+            size_t a = s.find_first_not_of(" \t\r\n");
-+            if (a == std::string::npos) return "";
-+            size_t b = s.find_last_not_of(" \t\r\n");
-+            return s.substr(a, b - a + 1);
-         }
- 
+-        }
+-
 -        Result smAtmosphereHasService(bool* out, SmServiceName name, bool v019)
-+        static bool parse_asap_versions(const char* path,
-+                                        std::string& hekate_v,
-+                                        std::string& nyx_v,
-+                                        std::string& asap_current_v,
-+                                        std::string& supported_hos)
++        static inline std::string trim(const std::string& s)
          {
 -            u8 tmp = 0;
 -            Result rc = v019 ? tipcDispatchInOut(smGetServiceSessionTipc(), 65100, name, tmp) : serviceDispatchInOut(smGetServiceSession(), 65100, name, tmp);
 -            if (R_SUCCEEDED(rc) && out)
 -                *out = tmp;
 -            return rc;
--        }
--
++            size_t a = s.find_first_not_of(" \t\r\n");
++            if (a == std::string::npos) return "";
++            size_t b = s.find_last_not_of(" \t\r\n");
++            return s.substr(a, b - a + 1);
+         }
+ 
 -        bool isPost019()
--        {
++        static bool parse_asap_versions(const char* path,
++                                        std::string& hekate_v,
++                                        std::string& nyx_v,
++                                        std::string& asap_current_v,
++                                        std::string& supported_hos)
+         {
 -            u64 version;
 -            if (R_SUCCEEDED(splGetConfig((SplConfigItem)65000, &version))) {
 -                if (((version >> 56) & ((1 << 8) - 1)) > 0 || ((version >> 48) & ((1 << 8) - 1)) >= 19) {
@@ -2937,7 +2938,7 @@ index fd20812..80ac8d4 100644
  {
      this->button2->getClickEvent()->subscribe([this](View* view) {
 diff --git a/source/download.cpp b/source/download.cpp
-index 4f148e6..4b25470 100644
+index 4f148e6..8a1b9aa 100644
 --- a/source/download.cpp
 +++ b/source/download.cpp
 @@ -2,6 +2,7 @@
@@ -2964,7 +2965,7 @@ index 4f148e6..4b25470 100644
          } ntwrk_struct_t;
  
 diff --git a/source/download_cheats_page.cpp b/source/download_cheats_page.cpp
-index dd8a122..7aa7afe 100644
+index dd8a122..d922118 100644
 --- a/source/download_cheats_page.cpp
 +++ b/source/download_cheats_page.cpp
 @@ -2,6 +2,8 @@
@@ -3095,7 +3096,7 @@ index dd8a122..7aa7afe 100644
                  });
                  this->list->addView(listItem);
 diff --git a/source/exclude_page.cpp b/source/exclude_page.cpp
-index c38fbf6..56757f0 100644
+index c38fbf6..002849d 100644
 --- a/source/exclude_page.cpp
 +++ b/source/exclude_page.cpp
 @@ -1,6 +1,7 @@
@@ -3158,7 +3159,7 @@ index c38fbf6..56757f0 100644
          i++;
      }
 diff --git a/source/extract.cpp b/source/extract.cpp
-index 285d8be..c86c6eb 100644
+index 285d8be..3889c46 100644
 --- a/source/extract.cpp
 +++ b/source/extract.cpp
 @@ -2,23 +2,20 @@
@@ -3305,7 +3306,7 @@ index 285d8be..c86c6eb 100644
 -                }
 +            if (appPath != filename && UNZ_OK == unzOpenCurrentFile(zfile)) {
 +                if (filename == "/atmosphere/package3" || filename == "/atmosphere/stratosphere.romfs")
-+                    extractEntry(filename + ".aio", zfile);
++                    extractEntry(filename + ".asap", zfile);
 +                else
 +                    extractEntry(filename, zfile);
 +                unzCloseCurrentFile(zfile);
@@ -3464,7 +3465,7 @@ index 285d8be..c86c6eb 100644
          return true;
      }
 diff --git a/source/fs.cpp b/source/fs.cpp
-index ebb2a60..5d5bbe6 100644
+index ebb2a60..9387a2c 100644
 --- a/source/fs.cpp
 +++ b/source/fs.cpp
 @@ -3,6 +3,7 @@
@@ -3544,7 +3545,7 @@ index ebb2a60..5d5bbe6 100644
          return error;
      }
 diff --git a/source/list_download_tab.cpp b/source/list_download_tab.cpp
-index 681f1f6..b1c2b2e 100644
+index 681f1f6..b05368c 100644
 --- a/source/list_download_tab.cpp
 +++ b/source/list_download_tab.cpp
 @@ -6,7 +6,6 @@
@@ -3699,7 +3700,7 @@ index 681f1f6..b1c2b2e 100644
          }
          return true;
 diff --git a/source/main.cpp b/source/main.cpp
-index 842c971..b80feb9 100644
+index 842c971..fc19b6b 100644
 --- a/source/main.cpp
 +++ b/source/main.cpp
 @@ -59,7 +59,10 @@ int main(int argc, char* argv[])
@@ -3715,7 +3716,7 @@ index 842c971..b80feb9 100644
  
      while (brls::Application::mainLoop())
 diff --git a/source/main_frame.cpp b/source/main_frame.cpp
-index 2bfe9e3..a308af9 100644
+index 2bfe9e3..2043b74 100644
 --- a/source/main_frame.cpp
 +++ b/source/main_frame.cpp
 @@ -17,7 +17,7 @@ using json = nlohmann::ordered_json;
@@ -3753,26 +3754,26 @@ index 2bfe9e3..a308af9 100644
  
 -    if (!util::getBoolValue(hideStatus, "about"))
 -        this->addTab("menus/main/about"_i18n, new AboutTab());
-+    this->addTab("menus/about/about"_i18n, new AboutTab());
- 
+-
 -    if (!util::getBoolValue(hideStatus, "atmosphere"))
 -        this->addTab("menus/main/update_ams"_i18n, new AmsTab_Regular(nxlinks, erista));
-+    this->addTab("menus/aio_tab/aios"_i18n, new AmsTab_Regular(nxlinks, erista));
- 
+-
 -    if (!util::getBoolValue(hideStatus, "cfw"))
 -        this->addTab("menus/main/update_bootloaders"_i18n, new ListDownloadTab(contentType::bootloaders, nxlinks));
-+    this->addTab("menus/firmware/firmwares"_i18n, new ListDownloadTab(contentType::fw, nxlinks));
++    this->addTab("menus/about/about"_i18n, new AboutTab());
  
 -    if (!util::getBoolValue(hideStatus, "firmwares"))
 -        this->addTab("menus/main/download_firmware"_i18n, new ListDownloadTab(contentType::fw, nxlinks));
-+    this->addTab("menus/cheats/cheats"_i18n, new ListDownloadTab(contentType::cheats));
++    this->addTab("menus/aio_tab/aios"_i18n, new AmsTab_Regular(nxlinks, erista));
  
 -    if (!util::getBoolValue(hideStatus, "cheats"))
 -        this->addTab("menus/main/download_cheats"_i18n, new ListDownloadTab(contentType::cheats));
--
++    this->addTab("menus/firmware/firmwares"_i18n, new ListDownloadTab(contentType::fw, nxlinks));
+ 
 -    if (!util::getBoolValue(hideStatus, "custom"))
 -        this->addTab("menus/main/custom_downloads"_i18n, new AmsTab_Custom(nxlinks, erista));
--
++    this->addTab("menus/cheats/cheats"_i18n, new ListDownloadTab(contentType::cheats));
+ 
 -    if (!util::getBoolValue(hideStatus, "tools"))
 -        this->addTab("menus/main/tools"_i18n, new ToolsTab(tag, util::getValueFromKey(nxlinks, "payloads"), erista, hideStatus));
 +    this->addTab("menus/tools/tools"_i18n, new ToolsTab(nxlinks, erista));
@@ -3780,7 +3781,7 @@ index 2bfe9e3..a308af9 100644
      this->registerAction("", brls::Key::B, [this] { return true; });
  }
 diff --git a/source/tools_tab.cpp b/source/tools_tab.cpp
-index 43c91c1..b8a209b 100644
+index 43c91c1..a1dc90b 100644
 --- a/source/tools_tab.cpp
 +++ b/source/tools_tab.cpp
 @@ -5,59 +5,36 @@
@@ -3968,7 +3969,7 @@ index 43c91c1..b8a209b 100644
 +    this->addView(language);
  }
 diff --git a/source/utils.cpp b/source/utils.cpp
-index 4a3ffaa..e3e4823 100644
+index 4a3ffaa..e96d6fb 100644
 --- a/source/utils.cpp
 +++ b/source/utils.cpp
 @@ -7,6 +7,10 @@
@@ -4243,7 +4244,7 @@ index 4a3ffaa..e3e4823 100644
  }  // namespace util
 \ No newline at end of file
 diff --git a/source/worker_page.cpp b/source/worker_page.cpp
-index 2a01e8f..ee0751b 100644
+index 2a01e8f..2c11da2 100644
 --- a/source/worker_page.cpp
 +++ b/source/worker_page.cpp
 @@ -35,27 +35,28 @@ WorkerPage::WorkerPage(brls::StagedAppletFrame* frame, const std::string& text,
@@ -4257,7 +4258,11 @@ index 2a01e8f..ee0751b 100644
 +    const double fileSizeCurrentMB = fileSizeCurrent / MB;
 +    const double fileSizeFinalMB   = fileSizeFinal   / MB;
 +    const double speedMB           = speed           / MB;
-+
+ 
+-    double timeRemaining = (fileSizeFinal - fileSizeCurrent) / speed;
+-    int hours = static_cast<int>(timeRemaining / 3600);
+-    int minutes = static_cast<int>((timeRemaining - hours * 3600) / 60);
+-    int seconds = static_cast<int>(timeRemaining - hours * 3600 - minutes * 60);
 +    std::string labelText = fmt::format("({:.1f} MB / {:.1f} MB - {:.1f} MB/s)", fileSizeCurrentMB, fileSizeFinalMB, speedMB);
 +
 +    if (speed > 0.0) {
@@ -4266,11 +4271,6 @@ index 2a01e8f..ee0751b 100644
 +        const int minutes = static_cast<int>((timeRemaining - hours * 3600.0) / 60.0);
 +        const int seconds = static_cast<int>(timeRemaining - hours * 3600.0 - minutes * 60.0);
  
--    double timeRemaining = (fileSizeFinal - fileSizeCurrent) / speed;
--    int hours = static_cast<int>(timeRemaining / 3600);
--    int minutes = static_cast<int>((timeRemaining - hours * 3600) / 60);
--    int seconds = static_cast<int>(timeRemaining - hours * 3600 - minutes * 60);
--
 -    std::string labelText = fmt::format("menus/worker/download_progress"_i18n, fileSizeCurrentMB, fileSizeFinalMB, speedMB);
 -    if (speedMB > 0) {
          std::string eta;
