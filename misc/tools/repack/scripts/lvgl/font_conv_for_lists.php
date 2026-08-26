@@ -30,14 +30,14 @@ $configs = require __DIR__ . '/font_configs.php';
 
     $decimal_ncrs = $decimal_ncrs . $decimal;
 
-    echo "\n";
-    echo "Unicode: $unicode\n";
-    echo "Decimal NCRs: $decimal_ncrs\n";
-    echo "Url Encoded: $encoded\n";
-    echo "UTF-8: $utf8";
-    echo "\n";
+    //echo "\n";
+    //echo "Unicode: $unicode\n";
+    //echo "Decimal NCRs: $decimal_ncrs\n";
+    //echo "Url Encoded: $encoded\n";
+    //echo "UTF-8: $utf8";
+    //echo "\n";
   }
-  echo "\n";
+  //echo "\n";
 
   // b. Convert
   $output_dir = __DIR__ . "/../../build/fonts/";
@@ -59,7 +59,7 @@ $configs = require __DIR__ . '/font_configs.php';
            . "&uni_first=$uni_first&uni_last=$uni_last"
            . "&built_in_sym=0&list=$encodeds\"";
 
-      echo "Running: $cmd\n";
+      //echo "Running: $cmd\n";
       shell_exec($cmd);
 
       shell_exec("mkdir -p $output_dir");
@@ -71,7 +71,7 @@ $configs = require __DIR__ . '/font_configs.php';
   //shell_exec("mv " . __DIR__ . "/$name_with_c $output_dir/$name_with_c");
 
   // d. Usage
-  usage($name, $unicodes, $height);
+  //usage($name, $unicodes, $height);
 
   function usage($name, $unicodes, $height)
   {
