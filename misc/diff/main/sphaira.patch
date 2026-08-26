@@ -1,0 +1,2617 @@
+diff --git a/CMakePresets.json b/CMakePresets.json
+index 520aac4..4ec3910 100644
+--- a/CMakePresets.json
++++ b/CMakePresets.json
+@@ -33,6 +33,8 @@
+                 "ENABLE_NSZ": false,
+ 
+                 "ENABLE_LIBUSBHSFS": false,
++                "ENABLE_NTFS": false,
++                "ENABLE_EXT4": false,
+                 "ENABLE_LIBUSBDVD": false,
+                 "ENABLE_FTPSRV": false,
+                 "ENABLE_LIBHAZE": false,
+diff --git a/README.md b/README.md
+index cfa996f..c17831c 100644
+--- a/README.md
++++ b/README.md
+@@ -62,15 +62,35 @@ The USB protocol is the same as tinfoil, so tools such as [ns-usbloader](https:/
+ 
+ Once you have connected your ftp client to your switch, you can upload files to install into the `install` folder.
+ 
++### Usb HDD (install)
++
++Connected USB mass storage devices show up in the file browser (and as a dump location) under `mounts:/`,
++installing from them works the same as installing from the sd card.
++
++Supported filesystems are FAT12/16/32, exFAT and NTFS. NTFS is provided by
++[NTFS-3G](https://github.com/tuxera/ntfs-3g) and can be turned off at build time with `-DENABLE_NTFS=OFF`.
++EXT2/3/4 is supported as well but off by default, enable it with `-DENABLE_EXT4=ON`.
++
++A few NTFS notes:
++
++- Always eject the drive properly on Windows. If the journal is left dirty, sphaira replays it on mount, but only
++  when `HDD write protect` is off.
++- A drive left behind by Windows fast startup / hibernation is not mounted by default. `Mount hibernated NTFS`
++  in the HDD options forces it, at the cost of the saved Windows session.
++- NTFS is noticeably slower than exFAT. For installing large files, exFAT is the better choice.
++
+ ## Building from source
+ 
+ You will first need to install [devkitPro](https://devkitpro.org/wiki/Getting_Started).
+ 
+ Next you will need to install the dependencies:
+ ```sh
+-sudo pacman -S switch-dev deko3d switch-cmake switch-curl switch-glm switch-zlib switch-mbedtls
++sudo pacman -S switch-dev deko3d switch-cmake switch-curl switch-glm switch-zlib switch-mbedtls switch-ntfs-3g
+ ```
+ 
++`switch-ntfs-3g` is only needed for NTFS support on USB HDDs, configure with `-DENABLE_NTFS=OFF` to build without it.
++For EXT2/3/4 support (`-DENABLE_EXT4=ON`) you also need `switch-lwext4`.
++
+ Also you need to have on your environment the packages `git`, `make`, `zip` and `cmake`
+ 
+ Once devkitPro and all dependencies are installed, you can now build sphaira.
+diff --git a/sphaira/CMakeLists.txt b/sphaira/CMakeLists.txt
+index c0524d7..200becf 100644
+--- a/sphaira/CMakeLists.txt
++++ b/sphaira/CMakeLists.txt
+@@ -6,6 +6,13 @@ option(ENABLE_NSZ "enables exporting to nsz" ON)
+ 
+ # lib options.
+ option(ENABLE_LIBUSBHSFS "enables FAT/exFAT hdd mounting" ON)
++# ntfs is provided by ntfs-3g (GPLv2+, compatible with sphaira's GPLv3).
++# needs the portlib: (dkp-)pacman -S switch-ntfs-3g
++option(ENABLE_NTFS "enables NTFS hdd mounting, requires switch-ntfs-3g" ON)
++# ext is provided by lwext4 (GPLv2). off by default, it adds a lot to the final
++# binary size and next to no usb hdd is formatted with it.
++# needs the portlib: (dkp-)pacman -S switch-lwext4
++option(ENABLE_EXT4 "enables EXT2/3/4 hdd mounting, requires switch-lwext4" OFF)
+ option(ENABLE_LIBUSBDVD "enables cd/dvd/iso/cue mounting" ON)
+ option(ENABLE_FTPSRV "enables MTP server support" ON)
+ option(ENABLE_LIBHAZE "enables MTP server support" ON)
+@@ -75,6 +82,7 @@ add_executable(sphaira
+     source/ui/menus/main_menu.cpp
+     source/ui/menus/menu_base.cpp
+     source/ui/menus/save_menu.cpp
++    source/ui/menus/storage_menu.cpp
+     source/ui/menus/themezer.cpp
+     source/ui/menus/ghdl.cpp
+     source/ui/menus/usb_menu.cpp
+@@ -291,10 +299,28 @@ if (ENABLE_NSZ)
+ endif()
+ 
+ if (ENABLE_LIBUSBHSFS)
+-    # enable this if you want ntfs and ext4 support, at the cost of a huge final binary size.
++    # USBHSFS_GPL turns on both ntfs *and* ext4, they can also be enabled
++    # individually, which is what we do here as ext4 is what costs the most
++    # binary size.
+     set(USBHSFS_GPL OFF)
++    set(USBHSFS_NTFS ${ENABLE_NTFS})
++    set(USBHSFS_EXT4 ${ENABLE_EXT4})
+     set(USBHSFS_SXOS_DISABLE ON)
+ 
++    if (ENABLE_NTFS)
++        find_library(ntfs_3g_lib ntfs-3g)
++        if (NOT ntfs_3g_lib)
++            message(FATAL_ERROR "NTFS support is enabled but ntfs-3g is not installed, run '(dkp-)pacman -S switch-ntfs-3g' or configure with -DENABLE_NTFS=OFF")
++        endif()
++    endif()
++
++    if (ENABLE_EXT4)
++        find_library(lwext4_lib lwext4)
++        if (NOT lwext4_lib)
++            message(FATAL_ERROR "EXT4 support is enabled but lwext4 is not installed, run '(dkp-)pacman -S switch-lwext4' or configure with -DENABLE_EXT4=OFF")
++        endif()
++    endif()
++
+     FetchContent_Declare(libusbhsfs
+         GIT_REPOSITORY https://github.com/ITotalJustice/libusbhsfs.git
+         GIT_TAG 625269b
+@@ -304,6 +330,14 @@ if (ENABLE_LIBUSBHSFS)
+ 
+     target_compile_definitions(sphaira PRIVATE ENABLE_LIBUSBHSFS)
+     target_link_libraries(sphaira PRIVATE libusbhsfs)
++
++    if (ENABLE_NTFS)
++        target_compile_definitions(sphaira PRIVATE ENABLE_NTFS)
++    endif()
++
++    if (ENABLE_EXT4)
++        target_compile_definitions(sphaira PRIVATE ENABLE_EXT4)
++    endif()
+ else()
+     target_sources(sphaira PRIVATE source/ff16/ffunicode.c)
+ endif()
+diff --git a/sphaira/include/app.hpp b/sphaira/include/app.hpp
+index c7c768c..df0c47e 100644
+--- a/sphaira/include/app.hpp
++++ b/sphaira/include/app.hpp
+@@ -88,6 +88,8 @@ public:
+     static auto GetNxlinkEnable() -> bool;
+     static auto GetHddEnable() -> bool;
+     static auto GetWriteProtect() -> bool;
++    static auto GetHddShowSystemFiles() -> bool;
++    static auto GetHddIgnoreHibernation() -> bool;
+     static auto GetLogEnable() -> bool;
+     static auto GetReplaceHbmenuEnable() -> bool;
+     static auto GetInstallEnable() -> bool;
+@@ -107,6 +109,11 @@ public:
+     static void SetNxlinkEnable(bool enable);
+     static void SetHddEnable(bool enable);
+     static void SetWriteProtect(bool enable);
++    static void SetHddShowSystemFiles(bool enable);
++    static void SetHddIgnoreHibernation(bool enable);
++    // re-mounts every connected usb device so that changed mount options
++    // (and the ntfs specific ones in particular) take effect right away.
++    static void RemountHdd();
+     static void SetLogEnable(bool enable);
+     static void SetReplaceHbmenuEnable(bool enable);
+     static void SetInstallSysmmcEnable(bool enable);
+@@ -306,6 +313,9 @@ public:
+     option::OptionBool m_ftp_enabled{INI_SECTION, "ftp_enabled", false};
+     option::OptionBool m_hdd_enabled{INI_SECTION, "hdd_enabled", true};
+     option::OptionBool m_hdd_write_protect{INI_SECTION, "hdd_write_protect", false};
++    // ntfs only, see App::GetHddMountFlags().
++    option::OptionBool m_hdd_show_system_files{INI_SECTION, "hdd_show_system_files", false};
++    option::OptionBool m_hdd_ignore_hibernation{INI_SECTION, "hdd_ignore_hibernation", false};
+ 
+     option::OptionBool m_log_enabled{INI_SECTION, "log_enabled", false};
+     option::OptionBool m_replace_hbmenu{INI_SECTION, "replace_hbmenu", false};
+diff --git a/sphaira/include/ftpsrv_helper.hpp b/sphaira/include/ftpsrv_helper.hpp
+index 176e6ad..6db3ee3 100644
+--- a/sphaira/include/ftpsrv_helper.hpp
++++ b/sphaira/include/ftpsrv_helper.hpp
+@@ -13,6 +13,13 @@ using OnInstallWrite = std::function<bool(const void* buf, size_t size)>;
+ using OnInstallClose = std::function<void()>;
+ 
+ void InitInstallMode(const OnInstallStart& on_start, const OnInstallWrite& on_write, const OnInstallClose& on_close);
++
++// false once install mode has been (or is being) torn down. polled by the
++// install callbacks so that they never block indefinitely.
++bool IsInstallModeEnabled();
++
++// stops accepting installs and waits for every in-flight install callback to
++// return. never call this whilst holding a lock that a callback may need.
+ void DisableInstallMode();
+ 
+ unsigned GetPort();
+diff --git a/sphaira/include/haze_helper.hpp b/sphaira/include/haze_helper.hpp
+index 664e6c9..e536e41 100644
+--- a/sphaira/include/haze_helper.hpp
++++ b/sphaira/include/haze_helper.hpp
+@@ -13,6 +13,13 @@ using OnInstallWrite = std::function<bool(const void* buf, size_t size)>;
+ using OnInstallClose = std::function<void()>;
+ 
+ void InitInstallMode(const OnInstallStart& on_start, const OnInstallWrite& on_write, const OnInstallClose& on_close);
++
++// false once install mode has been (or is being) torn down. polled by the
++// install callbacks so that they never block indefinitely.
++bool IsInstallModeEnabled();
++
++// stops accepting installs and waits for every in-flight install callback to
++// return. never call this whilst holding a lock that a callback may need.
+ void DisableInstallMode();
+ 
+ } // namespace sphaira::libhaze
+diff --git a/sphaira/include/ui/menus/ftp_menu.hpp b/sphaira/include/ui/menus/ftp_menu.hpp
+index 27ece1d..f6718c4 100644
+--- a/sphaira/include/ui/menus/ftp_menu.hpp
++++ b/sphaira/include/ui/menus/ftp_menu.hpp
+@@ -13,6 +13,7 @@ struct Menu final : stream::Menu {
+     void Update(Controller* controller, TouchInfo* touch) override;
+     void Draw(NVGcontext* vg, Theme* theme) override;
+     void OnDisableInstallMode() override;
++    bool IsInstallModeActive() const override;
+ 
+ private:
+     const char* m_user{};
+diff --git a/sphaira/include/ui/menus/install_stream_menu_base.hpp b/sphaira/include/ui/menus/install_stream_menu_base.hpp
+index 796d522..de1f77d 100644
+--- a/sphaira/include/ui/menus/install_stream_menu_base.hpp
++++ b/sphaira/include/ui/menus/install_stream_menu_base.hpp
+@@ -3,6 +3,10 @@
+ #include "ui/menus/menu_base.hpp"
+ #include "yati/source/stream.hpp"
+ 
++#include <atomic>
++#include <memory>
++#include <vector>
++
+ namespace sphaira::ui::menu::stream {
+ 
+ enum class State {
+@@ -25,21 +29,36 @@ using OnInstallClose = std::function<void()>;
+ struct Stream final : yati::source::Stream {
+     Stream(const fs::FsPath& path, std::stop_token token);
+ 
++    // called by the installer thread.
+     Result ReadChunk(void* buf, s64 size, u64* bytes_read) override;
++
++    // called by the transport thread, blocks whilst the buffer is full.
+     bool Push(const void* buf, s64 size);
++
++    // no more data will be pushed, the installer drains what is left.
+     void Disable();
++
++    // the installer is no longer reading from this stream, this makes any
++    // pending (and future) Push() return immediately rather than block.
++    void SetInstallFinished();
++
+     auto& GetPath() const { return m_path; }
+ 
++private:
++    // waits on cv until signalled or the (short) timeout expires.
++    // m_mutex must be held, no result is returned as a timeout is not an error,
++    // the caller re-checks its condition on every iteration.
++    void Wait(CondVar* cv);
++
+ private:
+     fs::FsPath m_path{};
+     std::stop_token m_token{};
+     std::vector<u8> m_buffer{};
+     CondVar m_can_read{};
+     CondVar m_can_write{};
+-
+-public:
+     Mutex m_mutex{};
+     std::atomic_bool m_active{};
++    std::atomic_bool m_install_done{};
+ };
+ 
+ struct Menu : MenuBase {
+@@ -48,17 +67,40 @@ struct Menu : MenuBase {
+ 
+     virtual void Update(Controller* controller, TouchInfo* touch);
+     virtual void Draw(NVGcontext* vg, Theme* theme);
++
++    // tells the transport to stop accepting new installs.
+     virtual void OnDisableInstallMode() = 0;
++    // returns false once the transport is no longer accepting installs, used
++    // to break out of the blocking callbacks below.
++    virtual bool IsInstallModeActive() const = 0;
+ 
+ protected:
++    // the below are called from the transport (mtp / ftp) thread and may block
++    // for a long time, they must never be called whilst the transport holds a
++    // lock that the ui thread can also take.
+     bool OnInstallStart(const char* path);
+     bool OnInstallWrite(const void* buf, size_t size);
+     void OnInstallClose();
+ 
++    // unblocks every in-flight transport callback and disables install mode.
++    // derived classes MUST call this as the first thing in their destructor,
++    // before tearing the transport down, otherwise the transport thread may
++    // still be sat inside one of the callbacks above.
++    void CancelInstallMode();
++
++    // true when the menu is going away or the transport stopped accepting data.
++    bool IsCancelled() const;
++
+ private:
+-    std::unique_ptr<Stream> m_source{};
+-    Thread m_thread{};
+-    Mutex m_mutex{};
++    // blocks until the current transfer (and its ui teardown) has completed.
++    // returns false if it was cancelled instead.
++    bool WaitForIdle(u64 poll_ns);
++
++private:
++    // shared_ptr as the installer thread keeps the stream alive for the
++    // duration of the install, regardless of what the transport does next.
++    std::shared_ptr<Stream> m_source{};
++    mutable Mutex m_mutex{};
+     State m_state{State::None};
+ };
+ 
+diff --git a/sphaira/include/ui/menus/mtp_menu.hpp b/sphaira/include/ui/menus/mtp_menu.hpp
+index acff3ff..ece6bb9 100644
+--- a/sphaira/include/ui/menus/mtp_menu.hpp
++++ b/sphaira/include/ui/menus/mtp_menu.hpp
+@@ -11,6 +11,7 @@ struct Menu final : stream::Menu {
+     auto GetShortTitle() const -> const char* override { return "MTP"; };
+     void Update(Controller* controller, TouchInfo* touch) override;
+     void OnDisableInstallMode() override;
++    bool IsInstallModeActive() const override;
+ 
+ private:
+     bool m_was_mtp_enabled{};
+diff --git a/sphaira/include/ui/menus/storage_menu.hpp b/sphaira/include/ui/menus/storage_menu.hpp
+new file mode 100644
+index 0000000..128c73a
+--- /dev/null
++++ b/sphaira/include/ui/menus/storage_menu.hpp
+@@ -0,0 +1,156 @@
++#pragma once
++
++#include "ui/menus/menu_base.hpp"
++#include "ui/menus/game_menu.hpp"
++#include "ui/list.hpp"
++#include "ui/scrolling_text.hpp"
++#include "option.hpp"
++
++#include <memory>
++#include <unordered_map>
++#include <vector>
++
++namespace sphaira::ui::menu::storage {
++
++// space used by a single application, split by content type and by storage.
++// game card content is never counted, as it lives on the cart rather than
++// on the console.
++struct Entry {
++    game::Entry game{};
++
++    s64 size_base{};
++    s64 size_update{};
++    s64 size_dlc{};
++
++    s64 size_sd{};
++    s64 size_nand{};
++
++    s64 size_total{};
++
++    auto GetName() const -> const char* {
++        return game.GetName();
++    }
++
++    auto GetAuthor() const -> const char* {
++        return game.GetAuthor();
++    }
++};
++
++enum SortType {
++    SortType_Size,
++    SortType_Title,
++    SortType_TitleID,
++};
++
++enum OrderType {
++    OrderType_Descending,
++    OrderType_Ascending,
++};
++
++enum FilterType {
++    FilterType_All,
++    FilterType_Sd,
++    FilterType_Nand,
++};
++
++struct Menu final : MenuBase {
++    Menu(u32 flags);
++    ~Menu();
++
++    auto GetShortTitle() const -> const char* override { return "Storage"; };
++    void Update(Controller* controller, TouchInfo* touch) override;
++    void Draw(NVGcontext* vg, Theme* theme) override;
++    void OnFocusGained() override;
++
++private:
++    // a previously measured application. the fingerprint covers every
++    // installed content meta, so it changes as soon as the game is updated,
++    // has dlc added / removed, is moved between storages, or is deleted.
++    struct CacheValue {
++        u64 fingerprint{};
++        s64 size_base{};
++        s64 size_update{};
++        s64 size_dlc{};
++        s64 size_sd{};
++        s64 size_nand{};
++    };
++
++    void SetIndex(s64 index);
++    void UpdateSubHeading();
++
++    // lists every application record, sizes are fetched afterwards.
++    void ScanRecords();
++    // sizes a handful of entries per call so that the ui stays responsive
++    // whilst a large library is being measured.
++    void ScanSizeStep();
++    void OnScanComplete();
++    void CalculateSize(Entry& e);
++    // cpu boost is held for the duration of the scan rather than toggled
++    // every frame.
++    void SetBoost(bool enable);
++
++    void LoadCache();
++    void SaveCache();
++    void ClearCache();
++
++    static void ClearSizes(Entry& e);
++    static void ApplyCacheValue(Entry& e, const CacheValue& value);
++
++    void FilterAndSort();
++    void FreeEntries();
++
++    void DrawStorageBar(NVGcontext* vg, Theme* theme, float x, float y, float w, const std::string& name, s64 games, s64 free, s64 total) const;
++    void DrawDetails(NVGcontext* vg, Theme* theme);
++
++    auto HasEntry() const -> bool {
++        return !m_view.empty() && m_index < (s64)m_view.size();
++    }
++
++    auto GetEntry() -> Entry& {
++        return m_entries[m_view[m_index]];
++    }
++
++    auto GetEntry() const -> const Entry& {
++        return m_entries[m_view[m_index]];
++    }
++
++private:
++    static constexpr inline const char* INI_SECTION = "storage";
++
++    // every application that owns installed content, owns the icons.
++    std::vector<Entry> m_entries{};
++    // indices into m_entries, filtered and sorted for display.
++    std::vector<u32> m_view{};
++
++    s64 m_index{};
++    std::unique_ptr<List> m_list{};
++
++    // index of the next entry in m_entries to be sized.
++    std::size_t m_scan_index{};
++    bool m_scanning{};
++    bool m_dirty{true};
++    bool m_boost{};
++
++    // totals across every scanned entry.
++    s64 m_games_sd{};
++    s64 m_games_nand{};
++    // largest entry in the current view, used to scale the per game bars.
++    s64 m_largest{1};
++
++    // measured sizes from previous scans, keyed by application id. loaded
++    // from and written back to the sd card so that re-opening the menu
++    // doesn't have to walk ncm again.
++    std::unordered_map<u64, CacheValue> m_cache{};
++    bool m_cache_loaded{};
++    bool m_cache_dirty{};
++    std::size_t m_cache_hits{};
++
++    ScrollingText m_scroll_name{};
++    ScrollingText m_scroll_detail_name{};
++
++    option::OptionLong m_sort{INI_SECTION, "sort", SortType::SortType_Size};
++    option::OptionLong m_order{INI_SECTION, "order", OrderType::OrderType_Descending};
++    option::OptionLong m_filter{INI_SECTION, "filter", FilterType::FilterType_All};
++};
++
++} // namespace sphaira::ui::menu::storage
+diff --git a/sphaira/source/app.cpp b/sphaira/source/app.cpp
+index 00b6fdf..f73d845 100644
+--- a/sphaira/source/app.cpp
++++ b/sphaira/source/app.cpp
+@@ -48,6 +48,49 @@ extern "C" {
+ } // extern "C"
+ 
+ namespace sphaira {
++
++#ifdef ENABLE_LIBUSBHSFS
++namespace {
++
++// builds the libusbhsfs mount flags out of the user's hdd options and pushes
++// them to the library. only affects devices mounted *after* this call, use
++// App::RemountHdd() if the change should be visible right away.
++//
++// most of these are NTFS only, they are ignored for FAT/exFAT volumes.
++void ApplyHddMountFlags() {
++    u32 flags = UsbHsFsMountFlags_None;
++
++    if (App::GetWriteProtect()) {
++        flags |= UsbHsFsMountFlags_ReadOnly;
++    } else {
++        // an NTFS volume with a dirty journal (the normal state after the drive
++        // was pulled out of a pc without ejecting it) is refused for writing
++        // unless the journal is replayed first.
++        flags |= UsbHsFsMountFlags_ReplayJournal;
++    }
++
++    // windows marks plenty of ordinary folders as hidden, without this they
++    // would silently not show up in the file browser.
++    flags |= UsbHsFsMountFlags_ShowHiddenFiles;
++
++    // deliberately *not* setting UsbHsFsMountFlags_UpdateAccessTimes (which is
++    // part of the library default), writing back an access time after every
++    // read costs a lot of speed when installing from an NTFS drive.
++
++    if (App::GetHddShowSystemFiles()) {
++        flags |= UsbHsFsMountFlags_ShowSystemFiles;
++    }
++
++    if (App::GetHddIgnoreHibernation()) {
++        flags |= UsbHsFsMountFlags_IgnoreHibernation;
++    }
++
++    usbHsFsSetFileSystemMountFlags(flags);
++}
++
++} // namespace
++#endif // ENABLE_LIBUSBHSFS
++
+ namespace {
+ 
+ constexpr const u8 DEFAULT_IMAGE_DATA[]{
+@@ -705,6 +748,14 @@ auto App::GetWriteProtect() -> bool {
+     return g_app->m_hdd_write_protect.Get();
+ }
+ 
++auto App::GetHddShowSystemFiles() -> bool {
++    return g_app->m_hdd_show_system_files.Get();
++}
++
++auto App::GetHddIgnoreHibernation() -> bool {
++    return g_app->m_hdd_ignore_hibernation.Get();
++}
++
+ auto App::GetLogEnable() -> bool {
+     return g_app->m_log_enabled.Get();
+ }
+@@ -781,9 +832,7 @@ void App::SetHddEnable(bool enable) {
+         g_app->m_hdd_enabled.Set(enable);
+ #ifdef ENABLE_LIBUSBHSFS
+         if (enable) {
+-            if (App::GetWriteProtect()) {
+-                usbHsFsSetFileSystemMountFlags(UsbHsFsMountFlags_ReadOnly);
+-            }
++            ApplyHddMountFlags();
+             usbHsFsInitialize(1);
+         } else {
+             usbHsFsExit();
+@@ -795,15 +844,35 @@ void App::SetHddEnable(bool enable) {
+ void App::SetWriteProtect(bool enable) {
+     if (App::GetWriteProtect() != enable) {
+         g_app->m_hdd_write_protect.Set(enable);
++        App::RemountHdd();
++    }
++}
++
++void App::SetHddShowSystemFiles(bool enable) {
++    if (App::GetHddShowSystemFiles() != enable) {
++        g_app->m_hdd_show_system_files.Set(enable);
++        App::RemountHdd();
++    }
++}
+ 
++void App::SetHddIgnoreHibernation(bool enable) {
++    if (App::GetHddIgnoreHibernation() != enable) {
++        g_app->m_hdd_ignore_hibernation.Set(enable);
++        App::RemountHdd();
++    }
++}
++
++void App::RemountHdd() {
+ #ifdef ENABLE_LIBUSBHSFS
+-        if (enable) {
+-            usbHsFsSetFileSystemMountFlags(UsbHsFsMountFlags_ReadOnly);
+-        } else {
+-            usbHsFsSetFileSystemMountFlags(0);
+-        }
+-#endif // ENABLE_LIBUSBHSFS
++    ApplyHddMountFlags();
++
++    // mount flags are only read when a device is mounted, so cycle the library
++    // to pick them up, otherwise the user would have to unplug the drive.
++    if (App::GetHddEnable()) {
++        usbHsFsExit();
++        usbHsFsInitialize(1);
+     }
++#endif // ENABLE_LIBUSBHSFS
+ }
+ 
+ void App::SetLogEnable(bool enable) {
+@@ -1587,6 +1656,8 @@ App::App(const char* argv0) {
+             else if (app->m_ftp_enabled.LoadFrom(Key, Value)) {}
+             else if (app->m_hdd_enabled.LoadFrom(Key, Value)) {}
+             else if (app->m_hdd_write_protect.LoadFrom(Key, Value)) {}
++            else if (app->m_hdd_show_system_files.LoadFrom(Key, Value)) {}
++            else if (app->m_hdd_ignore_hibernation.LoadFrom(Key, Value)) {}
+             else if (app->m_log_enabled.LoadFrom(Key, Value)) {}
+             else if (app->m_replace_hbmenu.LoadFrom(Key, Value)) {}
+             else if (app->m_default_music.LoadFrom(Key, Value)) {}
+@@ -1778,10 +1849,7 @@ App::App(const char* argv0) {
+ #ifdef ENABLE_LIBUSBHSFS
+         if (App::GetHddEnable()) {
+             SCOPED_TIMESTAMP("hdd init");
+-            if (App::GetWriteProtect()) {
+-                usbHsFsSetFileSystemMountFlags(UsbHsFsMountFlags_ReadOnly);
+-            }
+-
++            ApplyHddMountFlags();
+             usbHsFsInitialize(1);
+         }
+ #endif // ENABLE_LIBUSBHSFS
+@@ -2704,6 +2772,24 @@ void App::DisplayHddOptions(bool left_side) {
+     options->Add<ui::SidebarEntryBool>("HDD write protect"_i18n, App::GetWriteProtect(), [](bool& enable){
+         App::SetWriteProtect(enable);
+     },  "Makes the connected HDD read-only."_i18n);
++
++#ifdef ENABLE_NTFS
++    options->Add<ui::SidebarEntryBool>("Show system files"_i18n, App::GetHddShowSystemFiles(), [](bool& enable){
++        App::SetHddShowSystemFiles(enable);
++    },  i18n::get("hdd_show_system_files_info",
++            "NTFS only. Shows entries that Windows marked as system files, such as $Recycle.Bin. "
++            "Leave this off unless you know what you are doing."
++        )
++    );
++
++    options->Add<ui::SidebarEntryBool>("Mount hibernated NTFS"_i18n, App::GetHddIgnoreHibernation(), [](bool& enable){
++        App::SetHddIgnoreHibernation(enable);
++    },  i18n::get("hdd_ignore_hibernation_info",
++            "NTFS only. Mounts a drive that Windows left in a hibernated state (fast startup). "
++            "WARNING: the saved Windows session on that drive is lost."
++        )
++    );
++#endif // ENABLE_NTFS
+ }
+ 
+ void App::ShowEnableInstallPrompt() {
+diff --git a/sphaira/source/ftpsrv_helper.cpp b/sphaira/source/ftpsrv_helper.cpp
+index ce98748..02c8e76 100644
+--- a/sphaira/source/ftpsrv_helper.cpp
++++ b/sphaira/source/ftpsrv_helper.cpp
+@@ -7,6 +7,7 @@
+ #include "utils/thread.hpp"
+ 
+ #include <algorithm>
++#include <atomic>
+ #include <ftpsrv.h>
+ #include <ftpsrv_vfs.h>
+ #include <nx/vfs_nx.h>
+@@ -19,6 +20,7 @@ namespace {
+ 
+ struct InstallSharedData {
+     Mutex mutex;
++    CondVar cv;
+     std::deque<std::string> queued_files;
+ 
+     void* user;
+@@ -27,7 +29,10 @@ struct InstallSharedData {
+     OnInstallClose on_close;
+ 
+     bool in_progress;
+-    bool enabled;
++    // number of install callbacks currently executing. the callbacks block for
++    // as long as an install takes, so they are *never* run whilst holding
++    // mutex, this counter is what keeps them alive instead.
++    u32 in_flight;
+ };
+ 
+ FtpSrvConfig g_ftpsrv_config{};
+@@ -61,10 +66,50 @@ void ftp_nro_change_callback(const char* path) {
+ 
+ InstallSharedData g_shared_data{};
+ 
++// kept as an atomic (rather than a field of the struct above) so that it can be
++// polled by an in-flight callback without taking any lock.
++std::atomic_bool g_install_enabled{false};
++
+ const char* SUPPORTED_EXT[] = {
+     ".nsp", ".xci", ".nsz", ".xcz", ".msp",
+ };
+ 
++// holds a reference to the install callbacks whilst one of them is running.
++// DisableInstallMode() waits for every reference to be dropped before clearing
++// the callbacks, so they stay valid for as long as the guard is alive, and the
++// shared mutex stays free the whole time the (blocking) callback runs.
++struct InstallCallbackGuard {
++    InstallCallbackGuard() {
++        SCOPED_MUTEX(&g_shared_data.mutex);
++        if (!g_install_enabled) {
++            return;
++        }
++
++        m_data = std::addressof(g_shared_data);
++        m_data->in_flight++;
++    }
++
++    ~InstallCallbackGuard() {
++        if (!m_data) {
++            return;
++        }
++
++        SCOPED_MUTEX(&m_data->mutex);
++        m_data->in_flight--;
++        condvarWakeAll(std::addressof(m_data->cv));
++    }
++
++    InstallCallbackGuard(const InstallCallbackGuard&) = delete;
++    void operator=(const InstallCallbackGuard&) = delete;
++
++    explicit operator bool() const {
++        return m_data != nullptr;
++    }
++
++private:
++    InstallSharedData* m_data{};
++};
++
+ struct VfsUserData {
+     char* path;
+     int valid;
+@@ -73,20 +118,37 @@ struct VfsUserData {
+ // ive given up with good names.
+ void on_thing() {
+     log_write("[FTP] doing on_thing\n");
+-    SCOPED_MUTEX(&g_shared_data.mutex);
+-    log_write("[FTP] locked on_thing\n");
+-
+-    if (!g_shared_data.in_progress) {
+-        if (!g_shared_data.queued_files.empty()) {
+-            log_write("[FTP] pushing new file data\n");
+-            if (!g_shared_data.on_start || !g_shared_data.on_start(g_shared_data.queued_files[0].c_str())) {
+-                g_shared_data.queued_files.clear();
+-            } else {
+-                log_write("[FTP] success on new file push\n");
+-                g_shared_data.in_progress = true;
+-            }
++
++    InstallCallbackGuard guard;
++    if (!guard) {
++        return;
++    }
++
++    OnInstallStart on_start;
++    std::string path;
++    {
++        SCOPED_MUTEX(&g_shared_data.mutex);
++        if (g_shared_data.in_progress || g_shared_data.queued_files.empty()) {
++            return;
+         }
++
++        on_start = g_shared_data.on_start;
++        path = g_shared_data.queued_files[0];
+     }
++
++    log_write("[FTP] pushing new file data\n");
++
++    // called without the lock held, on_start blocks until the previous install
++    // has finished, which can take minutes.
++    if (!on_start || !on_start(path.c_str())) {
++        SCOPED_MUTEX(&g_shared_data.mutex);
++        g_shared_data.queued_files.clear();
++        return;
++    }
++
++    log_write("[FTP] success on new file push\n");
++    SCOPED_MUTEX(&g_shared_data.mutex);
++    g_shared_data.in_progress = true;
+ }
+ 
+ int vfs_install_open(void* user, const char* path, enum FtpVfsOpenMode mode) {
+@@ -100,7 +162,7 @@ int vfs_install_open(void* user, const char* path, enum FtpVfsOpenMode mode) {
+             return -1;
+         }
+ 
+-        if (!g_shared_data.enabled) {
++        if (!g_install_enabled) {
+             errno = EACCES;
+             return -1;
+         }
+@@ -147,19 +209,27 @@ int vfs_install_read(void* user, void* buf, size_t size) {
+ }
+ 
+ int vfs_install_write(void* user, const void* buf, size_t size) {
+-    SCOPED_MUTEX(&g_shared_data.mutex);
+-    if (!g_shared_data.enabled) {
++    InstallCallbackGuard guard;
++    if (!guard) {
+         errno = EACCES;
+         return -1;
+     }
+ 
+-    auto data = static_cast<VfsUserData*>(user);
+-    if (!data->valid) {
+-        errno = EACCES;
+-        return -1;
++    OnInstallWrite on_write;
++    {
++        SCOPED_MUTEX(&g_shared_data.mutex);
++        auto data = static_cast<VfsUserData*>(user);
++        if (!data->valid) {
++            errno = EACCES;
++            return -1;
++        }
++
++        on_write = g_shared_data.on_write;
+     }
+ 
+-    if (!g_shared_data.on_write || !g_shared_data.on_write(buf, size)) {
++    // called without the lock held, on_write blocks whilst the installer
++    // catches up with the data already sent to it.
++    if (!on_write || !on_write(buf, size)) {
+         errno = EIO;
+         return -1;
+     }
+@@ -188,27 +258,49 @@ int vfs_install_isfile_ready(void* user) {
+ int vfs_install_close(void* user) {
+     {
+         log_write("[FTP] closing file\n");
+-        SCOPED_MUTEX(&g_shared_data.mutex);
+         auto data = static_cast<VfsUserData*>(user);
+         if (data->valid) {
+             log_write("[FTP] closing valid file\n");
+ 
+-            auto it = std::find(g_shared_data.queued_files.cbegin(), g_shared_data.queued_files.cend(), data->path);
+-            if (it != g_shared_data.queued_files.cend()) {
+-                if (it == g_shared_data.queued_files.cbegin()) {
+-                    log_write("[FTP] closing current file\n");
+-                    if (g_shared_data.on_close) {
+-                        g_shared_data.on_close();
+-                    }
++            OnInstallClose on_close;
++            bool queued = false;
++            {
++                SCOPED_MUTEX(&g_shared_data.mutex);
++                const auto it = std::find(g_shared_data.queued_files.cbegin(), g_shared_data.queued_files.cend(), data->path);
++                queued = it != g_shared_data.queued_files.cend();
+ 
+-                    g_shared_data.in_progress = false;
+-                } else {
++                if (queued && it == g_shared_data.queued_files.cbegin()) {
++                    on_close = g_shared_data.on_close;
++                } else if (queued) {
+                     log_write("[FTP] closing other file...\n");
++                } else {
++                    log_write("[FTP] could not find file in queue...\n");
+                 }
++            }
+ 
+-                g_shared_data.queued_files.erase(it);
+-            } else {
+-                log_write("[FTP] could not find file in queue...\n");
++            if (on_close) {
++                log_write("[FTP] closing current file\n");
++
++                InstallCallbackGuard guard;
++                if (guard) {
++                    // called without the lock held, on_close blocks until the
++                    // install of this file has finished.
++                    on_close();
++                }
++            }
++
++            // done after on_close so that the queue keeps gating the other
++            // sessions whilst this file is still being installed.
++            if (queued) {
++                SCOPED_MUTEX(&g_shared_data.mutex);
++                const auto it = std::find(g_shared_data.queued_files.cbegin(), g_shared_data.queued_files.cend(), data->path);
++                if (it != g_shared_data.queued_files.cend()) {
++                    if (it == g_shared_data.queued_files.cbegin()) {
++                        g_shared_data.in_progress = false;
++                    }
++
++                    g_shared_data.queued_files.erase(it);
++                }
+             }
+ 
+             if (data->path) {
+@@ -621,6 +713,11 @@ bool Init() {
+ }
+ 
+ void Exit() {
++    // done before taking g_mutex, and before joining the ftp thread, as that
++    // thread may still be sat inside a blocking install callback.
++    // DisableInstallMode() is what releases it.
++    DisableInstallMode();
++
+     SCOPED_MUTEX(&g_mutex);
+     if (!g_is_running) {
+         return;
+@@ -646,15 +743,35 @@ void ExitSignal() {
+ 
+ void InitInstallMode(const OnInstallStart& on_start, const OnInstallWrite& on_write, const OnInstallClose& on_close) {
+     SCOPED_MUTEX(&g_shared_data.mutex);
++    condvarInit(std::addressof(g_shared_data.cv));
+     g_shared_data.on_start = on_start;
+     g_shared_data.on_write = on_write;
+     g_shared_data.on_close = on_close;
+-    g_shared_data.enabled = true;
++    g_shared_data.in_progress = false;
++    g_shared_data.queued_files.clear();
++    g_install_enabled = true;
++}
++
++bool IsInstallModeEnabled() {
++    return g_install_enabled;
+ }
+ 
+ void DisableInstallMode() {
++    // published first so that any callback which is currently blocked can see
++    // it and return, otherwise the wait below would never finish.
++    g_install_enabled = false;
++
+     SCOPED_MUTEX(&g_shared_data.mutex);
+-    g_shared_data.enabled = false;
++    while (g_shared_data.in_flight) {
++        condvarWaitTimeout(std::addressof(g_shared_data.cv), std::addressof(g_shared_data.mutex), 1e+8);
++    }
++
++    // safe to drop the callbacks now, nothing can be using them.
++    g_shared_data.on_start = {};
++    g_shared_data.on_write = {};
++    g_shared_data.on_close = {};
++    g_shared_data.in_progress = false;
++    g_shared_data.queued_files.clear();
+ }
+ 
+ unsigned GetPort() {
+diff --git a/sphaira/source/haze_helper.cpp b/sphaira/source/haze_helper.cpp
+index eb16623..dd22809 100644
+--- a/sphaira/source/haze_helper.cpp
++++ b/sphaira/source/haze_helper.cpp
+@@ -7,6 +7,7 @@
+ #include "i18n.hpp"
+ 
+ #include <algorithm>
++#include <atomic>
+ #include <haze.h>
+ #include <limits>
+ #include <map>
+@@ -16,6 +17,7 @@ namespace {
+ 
+ struct InstallSharedData {
+     Mutex mutex;
++    CondVar cv;
+     std::string current_file;
+ 
+     void* user;
+@@ -24,7 +26,10 @@ struct InstallSharedData {
+     OnInstallClose on_close;
+ 
+     bool in_progress;
+-    bool enabled;
++    // number of install callbacks currently executing. the callbacks block for
++    // as long as an install takes, so they are *never* run whilst holding
++    // mutex, this counter is what keeps them alive instead.
++    u32 in_flight;
+ };
+ 
+ constexpr int THREAD_PRIO = 0x20;
+@@ -33,24 +38,78 @@ std::atomic_bool g_should_exit = false;
+ bool g_is_running{false};
+ Mutex g_mutex{};
+ 
++// kept as an atomic (rather than a field of the struct above) so that it can be
++// polled by an in-flight callback without taking any lock.
++std::atomic_bool g_install_enabled{false};
++
+ InstallSharedData g_shared_data{};
+ 
+ const char* SUPPORTED_EXT[] = {
+     ".nsp", ".xci", ".nsz", ".xcz", ".msp",
+ };
+ 
++// holds a reference to the install callbacks whilst one of them is running.
++// DisableInstallMode() waits for every reference to be dropped before clearing
++// the callbacks, so they stay valid for as long as the guard is alive, and the
++// shared mutex stays free the whole time the (blocking) callback runs.
++struct InstallCallbackGuard {
++    InstallCallbackGuard() {
++        SCOPED_MUTEX(&g_shared_data.mutex);
++        if (!g_install_enabled) {
++            return;
++        }
++
++        m_data = std::addressof(g_shared_data);
++        m_data->in_flight++;
++    }
++
++    ~InstallCallbackGuard() {
++        if (!m_data) {
++            return;
++        }
++
++        SCOPED_MUTEX(&m_data->mutex);
++        m_data->in_flight--;
++        condvarWakeAll(std::addressof(m_data->cv));
++    }
++
++    InstallCallbackGuard(const InstallCallbackGuard&) = delete;
++    void operator=(const InstallCallbackGuard&) = delete;
++
++    explicit operator bool() const {
++        return m_data != nullptr;
++    }
++
++private:
++    InstallSharedData* m_data{};
++};
++
+ bool StartInstall(std::string path) {
+-    SCOPED_MUTEX(&g_shared_data.mutex);
+-    if (!g_shared_data.enabled || g_shared_data.in_progress || !g_shared_data.current_file.empty() || !g_shared_data.on_start) {
++    InstallCallbackGuard guard;
++    if (!guard) {
+         return false;
+     }
+ 
+-    g_shared_data.current_file = std::move(path);
+-    if (!g_shared_data.on_start(g_shared_data.current_file.c_str())) {
++    OnInstallStart on_start;
++    {
++        SCOPED_MUTEX(&g_shared_data.mutex);
++        if (g_shared_data.in_progress || !g_shared_data.current_file.empty() || !g_shared_data.on_start) {
++            return false;
++        }
++
++        g_shared_data.current_file = path;
++        on_start = g_shared_data.on_start;
++    }
++
++    // called without the lock held, on_start blocks until the previous install
++    // has finished, which can take minutes.
++    if (!on_start(path.c_str())) {
++        SCOPED_MUTEX(&g_shared_data.mutex);
+         g_shared_data.current_file.clear();
+         return false;
+     }
+ 
++    SCOPED_MUTEX(&g_shared_data.mutex);
+     g_shared_data.in_progress = true;
+     return true;
+ }
+@@ -763,8 +822,7 @@ struct FsInstallProxy final : FsProxyVfs {
+     using FsProxyVfs::FsProxyVfs;
+ 
+     Result FailedIfNotEnabled() {
+-        SCOPED_MUTEX(&g_shared_data.mutex);
+-        if (!g_shared_data.enabled) {
++        if (!g_install_enabled) {
+             App::Notify("Please launch MTP install menu before trying to install"_i18n);
+             R_THROW(FsError_NotImplemented);
+         }
+@@ -844,14 +902,27 @@ struct FsInstallProxy final : FsProxyVfs {
+         auto f = static_cast<File*>(file->impl);
+         R_UNLESS(f && f->entry, FsError_PathNotFound);
+ 
+-        SCOPED_MUTEX(&g_shared_data.mutex);
+-        if (!g_shared_data.enabled) {
+-            log_write("[MTP] failing as not enabled\n");
+-            R_THROW(FsError_NotImplemented);
+-        }
++        if (f->installing) {
++            InstallCallbackGuard guard;
++            if (!guard) {
++                log_write("[MTP] failing as not enabled\n");
++                R_THROW(FsError_NotImplemented);
++            }
++
++            OnInstallWrite on_write;
++            {
++                SCOPED_MUTEX(&g_shared_data.mutex);
++                on_write = g_shared_data.on_write;
++            }
+ 
+-        if (f->installing && (!g_shared_data.on_write || !g_shared_data.on_write(buf, write_size))) {
+-            log_write("[MTP] failing as not written\n");
++            // called without the lock held, on_write blocks whilst the
++            // installer catches up with the data already sent to it.
++            if (!on_write || !on_write(buf, write_size)) {
++                log_write("[MTP] failing as not written\n");
++                R_THROW(FsError_NotImplemented);
++            }
++        } else if (!g_install_enabled) {
++            log_write("[MTP] failing as not enabled\n");
+             R_THROW(FsError_NotImplemented);
+         }
+ 
+@@ -865,17 +936,28 @@ struct FsInstallProxy final : FsProxyVfs {
+             return;
+         }
+ 
+-        {
+-            SCOPED_MUTEX(&g_shared_data.mutex);
+-            if (f->installing) {
+-                log_write("[MTP] closing current file\n");
+-                if (g_shared_data.on_close) {
+-                    g_shared_data.on_close();
++        if (f->installing) {
++            log_write("[MTP] closing current file\n");
++
++            {
++                InstallCallbackGuard guard;
++
++                OnInstallClose on_close;
++                if (guard) {
++                    SCOPED_MUTEX(&g_shared_data.mutex);
++                    on_close = g_shared_data.on_close;
+                 }
+ 
+-                g_shared_data.in_progress = false;
+-                g_shared_data.current_file.clear();
++                // called without the lock held, on_close blocks until the
++                // install of this file has finished.
++                if (on_close) {
++                    on_close();
++                }
+             }
++
++            SCOPED_MUTEX(&g_shared_data.mutex);
++            g_shared_data.in_progress = false;
++            g_shared_data.current_file.clear();
+         }
+ 
+         FsProxyVfs::CloseFile(file);
+@@ -979,6 +1061,11 @@ bool IsInit() {
+ }
+ 
+ void Exit() {
++    // done before taking g_mutex, and before haze::Exit() joins the haze
++    // thread, as that thread may still be sat inside a blocking install
++    // callback. DisableInstallMode() is what releases it.
++    DisableInstallMode();
++
+     SCOPED_MUTEX(&g_mutex);
+     if (!g_is_running) {
+         return;
+@@ -995,15 +1082,35 @@ void Exit() {
+ 
+ void InitInstallMode(const OnInstallStart& on_start, const OnInstallWrite& on_write, const OnInstallClose& on_close) {
+     SCOPED_MUTEX(&g_shared_data.mutex);
++    condvarInit(std::addressof(g_shared_data.cv));
+     g_shared_data.on_start = on_start;
+     g_shared_data.on_write = on_write;
+     g_shared_data.on_close = on_close;
+-    g_shared_data.enabled = true;
++    g_shared_data.in_progress = false;
++    g_shared_data.current_file.clear();
++    g_install_enabled = true;
++}
++
++bool IsInstallModeEnabled() {
++    return g_install_enabled;
+ }
+ 
+ void DisableInstallMode() {
++    // published first so that any callback which is currently blocked can see
++    // it and return, otherwise the wait below would never finish.
++    g_install_enabled = false;
++
+     SCOPED_MUTEX(&g_shared_data.mutex);
+-    g_shared_data.enabled = false;
++    while (g_shared_data.in_flight) {
++        condvarWaitTimeout(std::addressof(g_shared_data.cv), std::addressof(g_shared_data.mutex), 1e+8);
++    }
++
++    // safe to drop the callbacks now, nothing can be using them.
++    g_shared_data.on_start = {};
++    g_shared_data.on_write = {};
++    g_shared_data.on_close = {};
++    g_shared_data.in_progress = false;
++    g_shared_data.current_file.clear();
+ }
+ 
+ } // namespace sphaira::libhaze
+diff --git a/sphaira/source/ui/menus/ftp_menu.cpp b/sphaira/source/ui/menus/ftp_menu.cpp
+index 524f655..819f6bc 100644
+--- a/sphaira/source/ui/menus/ftp_menu.cpp
++++ b/sphaira/source/ui/menus/ftp_menu.cpp
+@@ -30,8 +30,9 @@ Menu::Menu(u32 flags) : stream::Menu{"FTP Install"_i18n, flags} {
+ }
+ 
+ Menu::~Menu() {
+-    // signal for thread to exit and wait.
+-    ftpsrv::DisableInstallMode();
++    // unblocks any ftp callback that is currently waiting on us and then
++    // disables install mode. must happen before the server is torn down.
++    CancelInstallMode();
+ 
+     if (!m_was_ftp_enabled) {
+         log_write("[FTP] disabling on exit\n");
+@@ -103,4 +104,8 @@ void Menu::OnDisableInstallMode() {
+     ftpsrv::DisableInstallMode();
+ }
+ 
++bool Menu::IsInstallModeActive() const {
++    return ftpsrv::IsInstallModeEnabled();
++}
++
+ } // namespace sphaira::ui::menu::ftp
+diff --git a/sphaira/source/ui/menus/game_menu.cpp b/sphaira/source/ui/menus/game_menu.cpp
+index 3df8808..109f20e 100644
+--- a/sphaira/source/ui/menus/game_menu.cpp
++++ b/sphaira/source/ui/menus/game_menu.cpp
+@@ -611,6 +611,10 @@ Menu::Menu(u32 flags) : grid::Menu{"Games"_i18n, flags} {
+             }
+ 
+             if (m_entries.size()) {
++                options->Add<SidebarEntryCallback>("View application content"_i18n, [this](){
++                    App::Push<meta::Menu>(m_entries[m_index]);
++                });
++
+                 options->Add<SidebarEntryCallback>("Launch random game"_i18n, [this](){
+                     const auto random_index = randomGet64() % std::size(m_entries);
+                     auto& e = m_entries[random_index];
+diff --git a/sphaira/source/ui/menus/install_stream_menu_base.cpp b/sphaira/source/ui/menus/install_stream_menu_base.cpp
+index 4eba9dc..a1fce0b 100644
+--- a/sphaira/source/ui/menus/install_stream_menu_base.cpp
++++ b/sphaira/source/ui/menus/install_stream_menu_base.cpp
+@@ -10,14 +10,13 @@
+ namespace sphaira::ui::menu::stream {
+ namespace {
+ 
+-enum class InstallState {
+-    None,
+-    Progress,
+-    Finished,
+-};
+-
+ constexpr u64 MAX_BUFFER_SIZE = 1024ULL*1024ULL*1ULL;
+-std::atomic<InstallState> INSTALL_STATE{InstallState::None};
++
++// every wait in here is bounded, a missed wakeup then costs a few ms rather
++// than hanging the transport (and with it the whole app) forever.
++constexpr u64 WAIT_TIMEOUT = 1e+8; // 100ms.
++constexpr u64 POLL_INTERVAL_FAST = 1e+6; // 1ms.
++constexpr u64 POLL_INTERVAL_SLOW = 1e+7; // 10ms.
+ 
+ } // namespace
+ 
+@@ -32,29 +31,31 @@ Stream::Stream(const fs::FsPath& path, std::stop_token token) {
+     condvarInit(&m_can_write);
+ }
+ 
++void Stream::Wait(CondVar* cv) {
++    // a timeout is expected and not an error, the caller loops and re-checks.
++    condvarWaitTimeout(cv, std::addressof(m_mutex), WAIT_TIMEOUT);
++}
++
+ Result Stream::ReadChunk(void* _buf, s64 size, u64* bytes_read) {
+     auto buf = static_cast<u8*>(_buf);
+     *bytes_read = 0;
+ 
+-    log_write("[Stream::ReadChunk] inside\n");
+-    ON_SCOPE_EXIT(
+-        log_write("[Stream::ReadChunk] exiting\n");
+-    );
+-
+     while (!m_token.stop_requested()) {
+         SCOPED_MUTEX(&m_mutex);
+-        if (m_active && m_buffer.empty()) {
+-            R_TRY(condvarWait(std::addressof(m_can_read), std::addressof(m_mutex)));
+-        }
+ 
+-        if ((!m_active && m_buffer.empty()) || m_token.stop_requested()) {
+-            break;
++        if (m_buffer.empty()) {
++            if (!m_active) {
++                break;
++            }
++
++            Wait(std::addressof(m_can_read));
++            continue;
+         }
+ 
+         const auto rsize = std::min<s64>(size, m_buffer.size());
+         std::memcpy(buf, m_buffer.data(), rsize);
+         m_buffer.erase(m_buffer.begin(), m_buffer.begin() + rsize);
+-        condvarWakeOne(&m_can_write);
++        condvarWakeAll(std::addressof(m_can_write));
+ 
+         size -= rsize;
+         buf += rsize;
+@@ -65,6 +66,12 @@ Result Stream::ReadChunk(void* _buf, s64 size, u64* bytes_read) {
+         }
+     }
+ 
++    // a short read is still a success, yati treats zero bytes read as a
++    // cancelled transfer.
++    if (*bytes_read) {
++        R_SUCCEED();
++    }
++
+     log_write("[Stream::ReadChunk] failed to read\n");
+     R_THROW(Result_TransferCancelled);
+ }
+@@ -75,20 +82,14 @@ bool Stream::Push(const void* _buf, s64 size) {
+         return true;
+     }
+ 
+-    log_write("[Stream::Push] inside\n");
+-    ON_SCOPE_EXIT(
+-        log_write("[Stream::Push] exiting\n");
+-    );
+-
+     while (!m_token.stop_requested()) {
+-        if (INSTALL_STATE == InstallState::Finished) {
+-            log_write("[Stream::Push] install has finished\n");
+-            return true;
+-        }
+-
+         SCOPED_MUTEX(&m_mutex);
+-        if (m_active && m_buffer.size() >= MAX_BUFFER_SIZE) {
+-            R_TRY(condvarWait(std::addressof(m_can_write), std::addressof(m_mutex)));
++
++        // the installer already finished (or gave up) reading this file, the
++        // remaining data is not needed, pretend it was consumed so that the
++        // transport can move on to the next file.
++        if (m_install_done) {
++            return true;
+         }
+ 
+         if (!m_active) {
+@@ -96,12 +97,17 @@ bool Stream::Push(const void* _buf, s64 size) {
+             break;
+         }
+ 
++        if (m_buffer.size() >= MAX_BUFFER_SIZE) {
++            Wait(std::addressof(m_can_write));
++            continue;
++        }
++
+         const auto wsize = std::min<s64>(size, MAX_BUFFER_SIZE - m_buffer.size());
+         const auto offset = m_buffer.size();
+         m_buffer.resize(offset + wsize);
+ 
+         std::memcpy(m_buffer.data() + offset, buf, wsize);
+-        condvarWakeOne(&m_can_read);
++        condvarWakeAll(std::addressof(m_can_read));
+ 
+         size -= wsize;
+         buf += wsize;
+@@ -119,8 +125,15 @@ void Stream::Disable() {
+ 
+     SCOPED_MUTEX(&m_mutex);
+     m_active = false;
+-    condvarWakeOne(&m_can_read);
+-    condvarWakeOne(&m_can_write);
++    condvarWakeAll(std::addressof(m_can_read));
++    condvarWakeAll(std::addressof(m_can_write));
++}
++
++void Stream::SetInstallFinished() {
++    SCOPED_MUTEX(&m_mutex);
++    m_install_done = true;
++    condvarWakeAll(std::addressof(m_can_read));
++    condvarWakeAll(std::addressof(m_can_write));
+ }
+ 
+ Menu::Menu(const std::string& title, u32 flags) : MenuBase{title, flags} {
+@@ -134,61 +147,143 @@ Menu::Menu(const std::string& title, u32 flags) : MenuBase{title, flags} {
+ 
+     App::SetAutoSleepDisabled(true);
+     mutexInit(&m_mutex);
+-
+-    INSTALL_STATE = InstallState::None;
+ }
+ 
+ Menu::~Menu() {
+-    // signal for thread to exit and wait.
++    // derived destructors already called CancelInstallMode(), this is only a
++    // safety net in case one of them forgot to.
+     m_stop_source.request_stop();
+ 
+-    if (m_source) {
+-        m_source->Disable();
++    std::shared_ptr<Stream> source;
++    {
++        SCOPED_MUTEX(&m_mutex);
++        source = m_source;
++    }
++
++    if (source) {
++        source->Disable();
++        source->SetInstallFinished();
+     }
+ 
+     App::SetAutoSleepDisabled(false);
+ }
+ 
++bool Menu::IsCancelled() const {
++    // check the cheap, non-virtual condition first, the transport may already
++    // be halfway through tearing us down.
++    if (GetToken().stop_requested()) {
++        return true;
++    }
++
++    return !IsInstallModeActive();
++}
++
++void Menu::CancelInstallMode() {
++    // 1. unblock the transport callbacks that poll this.
++    m_stop_source.request_stop();
++
++    // 2. unblock a transfer that is sat waiting on the installer.
++    //    the stream is taken out of the lock before use, the transport thread
++    //    may be inside Push() with the stream mutex held.
++    std::shared_ptr<Stream> source;
++    {
++        SCOPED_MUTEX(&m_mutex);
++        source = m_source;
++    }
++
++    if (source) {
++        source->Disable();
++        source->SetInstallFinished();
++    }
++
++    // 3. tell the transport to stop accepting installs, this waits for any
++    //    in-flight callback to return, which steps 1 and 2 just guaranteed.
++    OnDisableInstallMode();
++}
++
++bool Menu::WaitForIdle(u64 poll_ns) {
++    for (;;) {
++        {
++            SCOPED_MUTEX(&m_mutex);
++            // Connected means a stream is waiting to be picked up by the ui
++            // thread, Progress means the installer still owns it. In both
++            // cases the previous transfer is not done with yet.
++            if (m_state != State::Connected && m_state != State::Progress) {
++                return true;
++            }
++        }
++
++        if (IsCancelled()) {
++            return false;
++        }
++
++        svcSleepThread(poll_ns);
++    }
++}
++
+ void Menu::Update(Controller* controller, TouchInfo* touch) {
+     MenuBase::Update(controller, touch);
+ 
+-    SCOPED_MUTEX(&m_mutex);
++    std::shared_ptr<Stream> source;
++    {
++        SCOPED_MUTEX(&m_mutex);
++        if (m_state != State::Connected) {
++            return;
++        }
+ 
+-    if (m_state == State::Connected) {
+         m_state = State::Progress;
+-        App::Push<ui::ProgressBox>(0, "Installing "_i18n, m_source->GetPath(), [this](auto pbox) -> Result {
+-            INSTALL_STATE = InstallState::Progress;
+-            const auto rc = yati::InstallFromSource(pbox, m_source.get(), m_source->GetPath());
+-            INSTALL_STATE = InstallState::Finished;
+-
+-            if (R_FAILED(rc)) {
+-                m_source->Disable();
+-                R_THROW(rc);
+-            }
++        source = m_source;
++    }
+ 
+-            R_SUCCEED();
+-        }, [this](Result rc){
+-            App::PushErrorBox(rc, "Install failed!"_i18n);
++    // pushed outside of the lock, creating the progress box spawns a thread
++    // whilst the transport thread is polling m_state.
++    App::Push<ui::ProgressBox>(0, "Installing "_i18n, source->GetPath(), [source](auto pbox) -> Result {
++        // whatever happens, stop the transport from blocking on this stream.
++        ON_SCOPE_EXIT(source->SetInstallFinished());
++
++        const auto rc = yati::InstallFromSource(pbox, source.get(), source->GetPath());
++        if (R_FAILED(rc)) {
++            source->Disable();
++            R_THROW(rc);
++        }
++
++        R_SUCCEED();
++    }, [this](Result rc){
++        App::PushErrorBox(rc, "Install failed!"_i18n);
+ 
++        bool failed;
++        {
+             SCOPED_MUTEX(&m_mutex);
+ 
+             if (R_SUCCEEDED(rc)) {
+                 App::Notify("Install success!"_i18n);
+                 m_state = State::Done;
++                failed = false;
+             } else {
+                 m_state = State::Failed;
+-                OnDisableInstallMode();
++                failed = true;
+             }
+-        }, ui::ProgressBoxOption::ScreenToggle);
+-    }
++        }
++
++        // must be done *without* m_mutex held. the transport thread can be
++        // blocked inside one of our callbacks whilst holding its own lock, and
++        // disabling install mode takes that same lock, which would deadlock.
++        if (failed) {
++            CancelInstallMode();
++        }
++    }, ui::ProgressBoxOption::ScreenToggle);
+ }
+ 
+ void Menu::Draw(NVGcontext* vg, Theme* theme) {
+     MenuBase::Draw(vg, theme);
+ 
+-    SCOPED_MUTEX(&m_mutex);
++    State state;
++    {
++        SCOPED_MUTEX(&m_mutex);
++        state = m_state;
++    }
+ 
+-    switch (m_state) {
++    switch (state) {
+         case State::None:
+         case State::Done:
+             gfx::drawTextArgs(vg, SCREEN_WIDTH / 2.f, SCREEN_HEIGHT / 2.f, 36.f, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE, theme->GetColour(ThemeEntryID_TEXT_INFO), "Drag'n'Drop (NSP, XCI, NSZ, XCZ, MSP) to the install folder"_i18n.c_str());
+@@ -205,51 +300,26 @@ void Menu::Draw(NVGcontext* vg, Theme* theme) {
+ }
+ 
+ bool Menu::OnInstallStart(const char* path) {
+-    log_write("[Menu::OnInstallStart] inside\n");
+-
+-    for (;;) {
+-        {
+-            SCOPED_MUTEX(&m_mutex);
+-
+-            if (m_state != State::Progress) {
+-                break;
+-            }
+-
+-            if (GetToken().stop_requested()) {
+-                return false;
+-            }
+-        }
+-
+-        svcSleepThread(1e+6);
++    log_write("[Menu::OnInstallStart] inside: %s\n", path);
++
++    // wait for the previous transfer to fully complete. the state only leaves
++    // Progress once the progress box has been destroyed, and that joins the
++    // installer thread first, so by this point nothing can still be using the
++    // old stream.
++    if (!WaitForIdle(POLL_INTERVAL_FAST)) {
++        log_write("[Menu::OnInstallStart] cancelled whilst waiting\n");
++        return false;
+     }
+ 
+-    log_write("[Menu::OnInstallStart] got state: %u\n", (u8)m_state);
+-
+-    if (m_source) {
+-        log_write("[Menu::OnInstallStart] we have source\n");
+-        for (;;) {
+-            {
+-                SCOPED_MUTEX(&m_source->m_mutex);
+-
+-                if (!m_source->m_active && INSTALL_STATE != InstallState::Progress) {
+-                    break;
+-                }
+-
+-                if (GetToken().stop_requested()) {
+-                    return false;
+-                }
+-            }
+-
+-            svcSleepThread(1e+6);
+-        }
++    SCOPED_MUTEX(&m_mutex);
+ 
+-        log_write("[Menu::OnInstallStart] stopped polling source\n");
++    // a failed install ends the session, don't accept anything else.
++    if (m_state == State::Failed || GetToken().stop_requested()) {
++        log_write("[Menu::OnInstallStart] rejecting, state: %u\n", (u8)m_state);
++        return false;
+     }
+ 
+-    SCOPED_MUTEX(&m_mutex);
+-
+-    m_source = std::make_unique<Stream>(path, GetToken());
+-    INSTALL_STATE = InstallState::None;
++    m_source = std::make_shared<Stream>(path, GetToken());
+     m_state = State::Connected;
+     log_write("[Menu::OnInstallStart] exiting\n");
+ 
+@@ -257,19 +327,40 @@ bool Menu::OnInstallStart(const char* path) {
+ }
+ 
+ bool Menu::OnInstallWrite(const void* buf, size_t size) {
+-    log_write("[Menu::OnInstallWrite] inside\n");
+-    return m_source->Push(buf, size);
++    std::shared_ptr<Stream> source;
++    {
++        SCOPED_MUTEX(&m_mutex);
++        source = m_source;
++    }
++
++    if (!source) {
++        log_write("[Menu::OnInstallWrite] no source\n");
++        return false;
++    }
++
++    return source->Push(buf, size);
+ }
+ 
+ void Menu::OnInstallClose() {
+     log_write("[Menu::OnInstallClose] inside\n");
+ 
+-    m_source->Disable();
++    std::shared_ptr<Stream> source;
++    {
++        SCOPED_MUTEX(&m_mutex);
++        source = m_source;
++    }
+ 
+-    // wait until the install has finished before returning.
+-    while (INSTALL_STATE == InstallState::Progress) {
+-        svcSleepThread(1e+7);
++    if (source) {
++        // the file has been fully received, let the installer drain whatever
++        // is still buffered.
++        source->Disable();
+     }
++
++    // wait until the install has finished before returning. without this the
++    // transport opens the next file whilst this one is still installing, which
++    // with a queue of many (small) files ends up replacing the stream from
++    // under the installer.
++    WaitForIdle(POLL_INTERVAL_SLOW);
+ }
+ 
+ } // namespace sphaira::ui::menu::stream
+diff --git a/sphaira/source/ui/menus/main_menu.cpp b/sphaira/source/ui/menus/main_menu.cpp
+index 504b6d1..c009bc3 100644
+--- a/sphaira/source/ui/menus/main_menu.cpp
++++ b/sphaira/source/ui/menus/main_menu.cpp
+@@ -19,6 +19,7 @@
+ #include "ui/menus/gc_menu.hpp"
+ #include "ui/menus/game_menu.hpp"
+ #include "ui/menus/save_menu.hpp"
++#include "ui/menus/storage_menu.hpp"
+ #include "ui/menus/appstore.hpp"
+ 
+ #include "app.hpp"
+@@ -310,6 +311,10 @@ const MiscMenuEntry MISC_MENU_ENTRIES[] = {
+         "View all installed games. "
+         "In this menu you can launch, backup, create savedata and much more." },
+ 
++    { .name = "Storage", .title = "Data Management", .func = MiscMenuFuncGenerator<ui::menu::storage::Menu>, .flag = MiscMenuFlag_Shortcut, .info =
++        "See how much space each game uses on the microSD card and in system memory. "
++        "Games are listed largest first, so it's easy to find what to remove." },
++
+     { .name = "FileBrowser", .title = "FileBrowser", .func = MiscMenuFuncGenerator<ui::menu::filebrowser::Menu>, .flag = MiscMenuFlag_Shortcut, .info =
+         "Browse files on you SD Card. "
+         "You can move, copy, delete, extract zip, create zip, upload and much more.\n\n"
+diff --git a/sphaira/source/ui/menus/mtp_menu.cpp b/sphaira/source/ui/menus/mtp_menu.cpp
+index 6aadd4d..4527a21 100644
+--- a/sphaira/source/ui/menus/mtp_menu.cpp
++++ b/sphaira/source/ui/menus/mtp_menu.cpp
+@@ -24,8 +24,10 @@ Menu::Menu(u32 flags) : stream::Menu{"MTP Install"_i18n, flags} {
+ }
+ 
+ Menu::~Menu() {
+-    // signal for thread to exit and wait.
+-    libhaze::DisableInstallMode();
++    // unblocks any haze callback that is currently waiting on us and then
++    // disables install mode. must happen before libhaze::Exit(), which joins
++    // the haze thread.
++    CancelInstallMode();
+ 
+     if (!m_was_mtp_enabled) {
+         log_write("[MTP] disabling on exit\n");
+@@ -56,4 +58,8 @@ void Menu::OnDisableInstallMode() {
+     libhaze::DisableInstallMode();
+ }
+ 
++bool Menu::IsInstallModeActive() const {
++    return libhaze::IsInstallModeEnabled();
++}
++
+ } // namespace sphaira::ui::menu::mtp
+diff --git a/sphaira/source/ui/menus/storage_menu.cpp b/sphaira/source/ui/menus/storage_menu.cpp
+new file mode 100644
+index 0000000..221bf13
+--- /dev/null
++++ b/sphaira/source/ui/menus/storage_menu.cpp
+@@ -0,0 +1,850 @@
++#include "ui/menus/storage_menu.hpp"
++#include "ui/menus/game_meta_menu.hpp"
++
++#include "ui/nvg_util.hpp"
++#include "ui/sidebar.hpp"
++
++#include "yati/nx/ncm.hpp"
++#include "yati/nx/ns.hpp"
++
++#include "utils/utils.hpp"
++
++#include "title_info.hpp"
++#include "app.hpp"
++#include "defines.hpp"
++#include "fs.hpp"
++#include "log.hpp"
++#include "i18n.hpp"
++#include "image.hpp"
++
++#include <algorithm>
++#include <array>
++#include <cstring>
++#include <unordered_set>
++
++namespace sphaira::ui::menu::storage {
++namespace {
++
++// sizing an entry costs a handful of ncm queries, so it is spread over
++// multiple frames rather than blocking the ui for several seconds on a large
++// library. a cached entry only costs the meta listing, so budget by time and
++// let a warm cache burn through far more entries per frame.
++constexpr std::size_t SCAN_MIN_PER_FRAME = 4;
++constexpr std::size_t SCAN_MAX_PER_FRAME = 64;
++constexpr u64 SCAN_BUDGET_MS = 4;
++// max images uploaded per frame, in order to not hit io / gpu too hard.
++constexpr int IMAGE_LOAD_MAX = 2;
++
++constexpr float BAR_ROUNDING = 2.f;
++
++// measured sizes are kept next to the other sphaira state, walking ncm for
++// every game is by far the slowest part of this menu.
++constexpr fs::FsPath CACHE_PATH{"/config/sphaira/storage_cache.bin"};
++constexpr u32 CACHE_MAGIC = 0x53535053; // 'SPSS'
++constexpr u32 CACHE_VERSION = 1;
++
++struct CacheHeader {
++    u32 magic;
++    u32 version;
++    u64 count;
++};
++static_assert(sizeof(CacheHeader) == 0x10);
++
++struct CacheRecord {
++    u64 app_id;
++    u64 fingerprint;
++    s64 size_base;
++    s64 size_update;
++    s64 size_dlc;
++    s64 size_sd;
++    s64 size_nand;
++};
++static_assert(sizeof(CacheRecord) == 0x38);
++
++// left side panel.
++constexpr Vec4 PANEL{30, 90, 375, 555};
++constexpr float PANEL_X = PANEL.x + 20;
++constexpr float PANEL_W = PANEL.w - 40;
++
++bool LoadControlImage(game::Entry& e, title::ThreadResultData* result) {
++    if (!e.image && result && !result->icon.empty()) {
++        const auto image = ImageLoadFromMemory(result->icon, ImageFlag_JPEG);
++        if (!image.data.empty()) {
++            e.image = nvgCreateImageRGBA(App::GetVg(), image.w, image.h, 0, image.data.data());
++            return true;
++        }
++    }
++
++    return false;
++}
++
++void LoadResultIntoEntry(game::Entry& e, title::ThreadResultData* result) {
++    if (result) {
++        e.status = result->status;
++        e.lang = result->lang;
++    }
++}
++
++// blocking control load, only used when sorting by name.
++void LoadControlEntry(game::Entry& e) {
++    if (e.status != title::NacpLoadStatus::Loaded) {
++        LoadResultIntoEntry(e, title::Get(e.app_id));
++    }
++}
++
++// identifies the exact set of content that is installed for an application.
++// the order that ns returns the metas in isn't documented, so sort first to
++// keep the value stable across scans.
++auto MakeFingerprint(const title::MetaEntries& entries) -> u64 {
++    std::vector<std::array<u64, 2>> keys;
++    keys.reserve(entries.size());
++
++    for (const auto& e : entries) {
++        keys.emplace_back(std::array<u64, 2>{
++            e.application_id,
++            ((u64)e.version << 16) | ((u64)e.meta_type << 8) | (u64)e.storageID,
++        });
++    }
++
++    std::ranges::sort(keys);
++
++    // fnv-1a.
++    u64 hash = 0xCBF29CE484222325ULL;
++    const auto mix = [&hash](u64 value) {
++        for (int i = 0; i < 8; i++) {
++            hash ^= (value >> (i * 8)) & 0xFF;
++            hash *= 0x100000001B3ULL;
++        }
++    };
++
++    mix(keys.size());
++    for (const auto& key : keys) {
++        mix(key[0]);
++        mix(key[1]);
++    }
++
++    return hash;
++}
++
++// draws the outline and the empty portion of a bar, returns the area that
++// the filled segments should be drawn into.
++Vec4 DrawBarFrame(NVGcontext* vg, Theme* theme, const Vec4& v) {
++    gfx::drawRect(vg, v, theme->GetColour(ThemeEntryID_TEXT_INFO), BAR_ROUNDING);
++    gfx::drawRect(vg, v.x + 1, v.y + 1, v.w - 2, v.h - 2, theme->GetColour(ThemeEntryID_PROGRESSBAR_BACKGROUND), BAR_ROUNDING);
++    return Vec4{v.x + 2, v.y + 2, v.w - 4, v.h - 4};
++}
++
++// draws value/total of the bar, starting at offset, returns the new offset.
++float DrawBarSegment(NVGcontext* vg, Theme* theme, const Vec4& inner, float offset, s64 value, s64 total, ThemeEntryID id) {
++    if (value <= 0 || total <= 0 || offset >= inner.w) {
++        return offset;
++    }
++
++    auto width = (float)((double)value / (double)total * (double)inner.w);
++    width = std::min(width, inner.w - offset);
++    if (width <= 0.f) {
++        return offset;
++    }
++
++    gfx::drawRect(vg, inner.x + offset, inner.y, width, inner.h, theme->GetColour(id), BAR_ROUNDING);
++    return offset + width;
++}
++
++} // namespace
++
++Menu::Menu(u32 flags) : MenuBase{"Data Management"_i18n, flags} {
++    this->SetActions(
++        std::make_pair(Button::B, Action{"Back"_i18n, [this](){
++            SetPop();
++        }}),
++        std::make_pair(Button::A, Action{"View Content"_i18n, [this](){
++            if (!HasEntry()) {
++                return;
++            }
++            App::Push<game::meta::Menu>(GetEntry().game);
++        }}),
++        std::make_pair(Button::X, Action{"Options"_i18n, [this](){
++            auto options = std::make_unique<Sidebar>("Storage Options"_i18n, Sidebar::Side::RIGHT);
++            ON_SCOPE_EXIT(App::Push(std::move(options)));
++
++            SidebarEntryArray::Items sort_items;
++            sort_items.push_back("Size"_i18n);
++            sort_items.push_back("Title"_i18n);
++            sort_items.push_back("Title ID"_i18n);
++
++            SidebarEntryArray::Items order_items;
++            order_items.push_back("Descending"_i18n);
++            order_items.push_back("Ascending"_i18n);
++
++            SidebarEntryArray::Items filter_items;
++            filter_items.push_back("All"_i18n);
++            filter_items.push_back("microSD card"_i18n);
++            filter_items.push_back("System memory"_i18n);
++
++            options->Add<SidebarEntryArray>("Sort"_i18n, sort_items, [this](s64& index_out){
++                m_sort.Set(index_out);
++                FilterAndSort();
++                SetIndex(0);
++            }, m_sort.Get());
++
++            options->Add<SidebarEntryArray>("Order"_i18n, order_items, [this](s64& index_out){
++                m_order.Set(index_out);
++                FilterAndSort();
++                SetIndex(0);
++            }, m_order.Get());
++
++            options->Add<SidebarEntryArray>("Storage"_i18n, filter_items, [this](s64& index_out){
++                m_filter.Set(index_out);
++                FilterAndSort();
++                SetIndex(0);
++            }, m_filter.Get(),
++                "Only list games that have content installed on the selected storage."_i18n);
++
++            options->Add<SidebarEntryCallback>("Refresh"_i18n, [this](){
++                m_dirty = true;
++                App::PopToMenu();
++            }, "Looks for new or removed games. Sizes are only recalculated for games whose content has changed."_i18n);
++
++            options->Add<SidebarEntryCallback>("Rebuild cache"_i18n, [this](){
++                ClearCache();
++                m_dirty = true;
++                App::PopToMenu();
++            }, "Discards the saved sizes and measures every game again from scratch."_i18n);
++        }})
++    );
++
++    const Vec4 v{485, GetY() + 1.f + 42.f, 720, 70};
++    m_list = std::make_unique<List>(1, 7, m_pos, v);
++
++    ns::Initialize();
++    title::Init();
++}
++
++Menu::~Menu() {
++    // a scan that was left part way through still measured some games,
++    // don't throw that work away.
++    if (m_cache_dirty) {
++        SaveCache();
++    }
++
++    FreeEntries();
++    SetBoost(false);
++    title::Exit();
++    ns::Exit();
++}
++
++void Menu::SetBoost(bool enable) {
++    if (m_boost == enable) {
++        return;
++    }
++
++    m_boost = enable;
++    App::SetBoostMode(enable);
++}
++
++void Menu::OnFocusGained() {
++    MenuBase::OnFocusGained();
++
++    if (m_dirty) {
++        ScanRecords();
++    }
++}
++
++void Menu::Update(Controller* controller, TouchInfo* touch) {
++    if (m_dirty) {
++        ScanRecords();
++    }
++
++    if (m_scanning) {
++        ScanSizeStep();
++    }
++
++    MenuBase::Update(controller, touch);
++    m_list->OnUpdate(controller, touch, m_index, m_view.size(), [this](bool touch, auto i) {
++        if (touch && m_index == i) {
++            FireAction(Button::A);
++        } else {
++            App::PlaySoundEffect(SoundEffect::Focus);
++            SetIndex(i);
++        }
++    });
++}
++
++void Menu::Draw(NVGcontext* vg, Theme* theme) {
++    MenuBase::Draw(vg, theme);
++
++    const auto pdata = GetPolledData();
++
++    // left side panel, storage summary followed by the selected game.
++    gfx::drawRect(vg, PANEL, theme->GetColour(ThemeEntryID_GRID));
++
++    DrawStorageBar(vg, theme, PANEL_X, PANEL.y + 20, PANEL_W, "microSD card"_i18n, m_games_sd, pdata.sd_free, pdata.sd_total);
++    DrawStorageBar(vg, theme, PANEL_X, PANEL.y + 144, PANEL_W, "System memory"_i18n, m_games_nand, pdata.emmc_free, pdata.emmc_total);
++
++    gfx::drawRect(vg, PANEL_X, PANEL.y + 266, PANEL_W, 1.f, theme->GetColour(ThemeEntryID_LINE_SEPARATOR));
++
++    DrawDetails(vg, theme);
++
++    if (m_view.empty()) {
++        const auto text = m_scanning ? "Calculating..."_i18n : "Empty..."_i18n;
++        gfx::drawTextArgs(vg, 845.f, GetY() + GetH() / 2.f, 36.f, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE, theme->GetColour(ThemeEntryID_TEXT_INFO), "%s", text.c_str());
++        return;
++    }
++
++    int image_load_count = 0;
++    const auto count = (s64)m_view.size();
++
++    m_list->Draw(vg, theme, count, [this, count, &image_load_count](auto* vg, auto* theme, auto& v, auto i) {
++        const auto& [x, y, w, h] = v;
++        auto& entry = m_entries[m_view[i]];
++        auto& game = entry.game;
++
++        if (game.status == title::NacpLoadStatus::None) {
++            title::PushAsync(game.app_id);
++            game.status = title::NacpLoadStatus::Progress;
++        } else if (game.status == title::NacpLoadStatus::Progress) {
++            LoadResultIntoEntry(game, title::GetAsync(game.app_id));
++        }
++
++        // lazy load image.
++        if (image_load_count < IMAGE_LOAD_MAX) {
++            if (LoadControlImage(game, title::GetAsync(game.app_id))) {
++                image_load_count++;
++            }
++        }
++
++        const auto selected = m_index == i;
++        auto text_id = ThemeEntryID_TEXT;
++        auto info_id = ThemeEntryID_TEXT_INFO;
++
++        if (selected) {
++            text_id = info_id = ThemeEntryID_TEXT_SELECTED;
++            gfx::drawRectOutline(vg, theme, 4.f, v);
++        } else if (i + 1 < count) {
++            gfx::drawRect(vg, x, y + h, w, 1.f, theme->GetColour(ThemeEntryID_LINE_SEPARATOR));
++        }
++
++        gfx::drawImage(vg, x + 14, y + 11, 48, 48, game.image ? game.image : App::GetDefaultImage(), 4);
++
++        constexpr float text_x = 76;
++        constexpr float bar_w = 470;
++        m_scroll_name.Draw(vg, selected, x + text_x, y + 12, bar_w, 20.f, NVG_ALIGN_LEFT | NVG_ALIGN_TOP, theme->GetColour(text_id), game.GetName());
++
++        // bar is relative to the largest game in the list, which makes the
++        // difference between entries readable no matter the library size.
++        const Vec4 bar{x + text_x, y + 44, bar_w, 12};
++        const auto inner = DrawBarFrame(vg, theme, bar);
++        DrawBarSegment(vg, theme, inner, 0.f, entry.size_total, m_largest, ThemeEntryID_PROGRESSBAR);
++
++        gfx::drawTextArgs(vg, x + w - 16, y + 16, 21.f, NVG_ALIGN_RIGHT | NVG_ALIGN_TOP, theme->GetColour(text_id), "%s", utils::formatSizeStorage(entry.size_total).c_str());
++
++        std::string location;
++        if (entry.size_sd && entry.size_nand) {
++            location = "microSD card"_i18n + " + " + "System memory"_i18n;
++        } else if (entry.size_nand) {
++            location = "System memory"_i18n;
++        } else {
++            location = "microSD card"_i18n;
++        }
++
++        gfx::drawTextArgs(vg, x + w - 16, y + 44, 15.f, NVG_ALIGN_RIGHT | NVG_ALIGN_TOP, theme->GetColour(info_id), "%s", location.c_str());
++    });
++}
++
++void Menu::DrawStorageBar(NVGcontext* vg, Theme* theme, float x, float y, float w, const std::string& name, s64 games, s64 free, s64 total) const {
++    // GetPolledData() reports 1/1 when the size lookup fails, guard against
++    // drawing a completely full bar in that case.
++    if (total <= 1) {
++        total = 0;
++        free = 0;
++    }
++
++    const auto used = std::max<s64>(0, total - free);
++    const auto other = std::max<s64>(0, used - games);
++
++    gfx::drawTextArgs(vg, x, y, 19.f, NVG_ALIGN_LEFT | NVG_ALIGN_TOP, theme->GetColour(ThemeEntryID_TEXT), "%s", name.c_str());
++    gfx::drawTextArgs(vg, x + w, y + 2, 16.f, NVG_ALIGN_RIGHT | NVG_ALIGN_TOP, theme->GetColour(ThemeEntryID_TEXT_INFO), "%s / %s", utils::formatSizeStorage(used).c_str(), utils::formatSizeStorage(total).c_str());
++
++    const Vec4 bar{x, y + 26, w, 14};
++    const auto inner = DrawBarFrame(vg, theme, bar);
++    auto offset = DrawBarSegment(vg, theme, inner, 0.f, games, total, ThemeEntryID_PROGRESSBAR);
++    DrawBarSegment(vg, theme, inner, offset, other, total, ThemeEntryID_TEXT_INFO);
++
++    // legend, one row per segment.
++    const auto draw_legend = [&](float row_y, ThemeEntryID colour, bool outline, const std::string& label, s64 value) {
++        const Vec4 swatch{x, row_y + 2, 12, 12};
++        if (outline) {
++            gfx::drawRect(vg, swatch, theme->GetColour(ThemeEntryID_TEXT_INFO), BAR_ROUNDING);
++            gfx::drawRect(vg, swatch.x + 1, swatch.y + 1, swatch.w - 2, swatch.h - 2, theme->GetColour(colour), BAR_ROUNDING);
++        } else {
++            gfx::drawRect(vg, swatch, theme->GetColour(colour), BAR_ROUNDING);
++        }
++
++        gfx::drawTextArgs(vg, x + 20, row_y, 16.f, NVG_ALIGN_LEFT | NVG_ALIGN_TOP, theme->GetColour(ThemeEntryID_TEXT), "%s", label.c_str());
++        gfx::drawTextArgs(vg, x + w, row_y, 16.f, NVG_ALIGN_RIGHT | NVG_ALIGN_TOP, theme->GetColour(ThemeEntryID_TEXT_INFO), "%s", utils::formatSizeStorage(value).c_str());
++    };
++
++    draw_legend(y + 50, ThemeEntryID_PROGRESSBAR, false, "Games"_i18n, games);
++    draw_legend(y + 72, ThemeEntryID_TEXT_INFO, false, "Other"_i18n, other);
++    draw_legend(y + 94, ThemeEntryID_PROGRESSBAR_BACKGROUND, true, "Free"_i18n, free);
++}
++
++void Menu::DrawDetails(NVGcontext* vg, Theme* theme) {
++    if (!HasEntry()) {
++        return;
++    }
++
++    const auto& e = GetEntry();
++    const auto& game = e.game;
++
++    gfx::drawImage(vg, PANEL_X, PANEL.y + 284, 84, 84, game.image ? game.image : App::GetDefaultImage(), 5);
++
++    const auto text_x = PANEL_X + 100;
++    const auto text_w = PANEL_W - 100;
++    m_scroll_detail_name.Draw(vg, true, text_x, PANEL.y + 286, text_w, 19.f, NVG_ALIGN_LEFT | NVG_ALIGN_TOP, theme->GetColour(ThemeEntryID_TEXT), game.GetName());
++    gfx::drawTextArgs(vg, text_x, PANEL.y + 314, 15.f, NVG_ALIGN_LEFT | NVG_ALIGN_TOP, theme->GetColour(ThemeEntryID_TEXT_INFO), "%016lX", game.app_id);
++    gfx::drawTextArgs(vg, text_x, PANEL.y + 340, 22.f, NVG_ALIGN_LEFT | NVG_ALIGN_TOP, theme->GetColour(ThemeEntryID_TEXT), "%s", utils::formatSizeStorage(e.size_total).c_str());
++
++    const auto draw_row = [&](float row_y, const std::string& label, s64 value) {
++        gfx::drawTextArgs(vg, PANEL_X, row_y, 17.f, NVG_ALIGN_LEFT | NVG_ALIGN_TOP, theme->GetColour(ThemeEntryID_TEXT), "%s", label.c_str());
++        gfx::drawTextArgs(vg, PANEL_X + PANEL_W, row_y, 17.f, NVG_ALIGN_RIGHT | NVG_ALIGN_TOP, theme->GetColour(ThemeEntryID_TEXT_INFO), "%s", utils::formatSizeStorage(value).c_str());
++    };
++
++    draw_row(PANEL.y + 396, "Base game"_i18n, e.size_base);
++    draw_row(PANEL.y + 422, "Update data"_i18n, e.size_update);
++    draw_row(PANEL.y + 448, "DLC"_i18n, e.size_dlc);
++
++    gfx::drawRect(vg, PANEL_X, PANEL.y + 478, PANEL_W, 1.f, theme->GetColour(ThemeEntryID_LINE_SEPARATOR));
++
++    draw_row(PANEL.y + 490, "microSD card"_i18n, e.size_sd);
++    draw_row(PANEL.y + 516, "System memory"_i18n, e.size_nand);
++}
++
++void Menu::SetIndex(s64 index) {
++    if (m_view.empty()) {
++        m_index = 0;
++    } else {
++        m_index = std::clamp<s64>(index, 0, (s64)m_view.size() - 1);
++    }
++
++    if (!m_index) {
++        m_list->SetYoff(0);
++    }
++
++    UpdateSubHeading();
++}
++
++void Menu::UpdateSubHeading() {
++    const auto count = m_view.size();
++    const auto index = count ? m_index + 1 : 0;
++    this->SetSubHeading(std::to_string(index) + " / " + std::to_string(count));
++
++    // with a warm cache the list is already on screen, so the scan is a
++    // background detail rather than something to wait on.
++    if (m_scanning && m_view.empty()) {
++        this->SetTitleSubHeading(
++            "Calculating..."_i18n + " " + std::to_string(m_scan_index) + " / " + std::to_string(m_entries.size()));
++    } else {
++        this->SetTitleSubHeading(
++            std::to_string(count) + " " + "Games"_i18n + " | " + utils::formatSizeStorage(m_games_sd + m_games_nand));
++    }
++}
++
++void Menu::ScanRecords() {
++    constexpr auto ENTRY_CHUNK_COUNT = 1000;
++
++    SetBoost(true);
++    FreeEntries();
++    m_dirty = false;
++
++    if (!m_cache_loaded) {
++        m_cache_loaded = true;
++        LoadCache();
++    }
++
++    m_cache_hits = 0;
++
++    std::vector<NsApplicationRecord> record_list(ENTRY_CHUNK_COUNT);
++    s32 offset{};
++
++    while (true) {
++        s32 record_count{};
++        if (R_FAILED(nsListApplicationRecord(record_list.data(), record_list.size(), offset, &record_count))) {
++            log_write("[STORAGE] failed to list application records at offset: %d\n", offset);
++            break;
++        }
++
++        // finished parsing all entries.
++        if (!record_count) {
++            break;
++        }
++
++        for (s32 i = 0; i < record_count; i++) {
++            auto& entry = m_entries.emplace_back();
++            entry.game.app_id = record_list[i].application_id;
++            entry.game.last_event = record_list[i].last_event;
++        }
++
++        offset += record_count;
++    }
++
++    // seed from the cache so the list is usable on the first frame. every
++    // entry is still verified below, that just happens in the background
++    // instead of behind a "Calculating..." screen.
++    for (auto& e : m_entries) {
++        if (const auto it = m_cache.find(e.game.app_id); it != m_cache.end()) {
++            ApplyCacheValue(e, it->second);
++            m_games_sd += e.size_sd;
++            m_games_nand += e.size_nand;
++        }
++    }
++
++    m_scan_index = 0;
++    m_scanning = !m_entries.empty();
++
++    if (!m_scanning) {
++        OnScanComplete();
++        return;
++    }
++
++    FilterAndSort();
++    SetIndex(0);
++}
++
++void Menu::ScanSizeStep() {
++    const TimeStamp ts;
++    const auto end = std::min(m_scan_index + SCAN_MAX_PER_FRAME, m_entries.size());
++
++    for (std::size_t done = 0; m_scan_index < end; m_scan_index++, done++) {
++        // always make some progress, then keep going for as long as the
++        // frame budget allows.
++        if (done >= SCAN_MIN_PER_FRAME && ts.GetMs() >= SCAN_BUDGET_MS) {
++            break;
++        }
++
++        auto& e = m_entries[m_scan_index];
++
++        // the seeded contribution is replaced by the verified one.
++        m_games_sd -= e.size_sd;
++        m_games_nand -= e.size_nand;
++
++        CalculateSize(e);
++
++        m_games_sd += e.size_sd;
++        m_games_nand += e.size_nand;
++    }
++
++    if (m_scan_index >= m_entries.size()) {
++        OnScanComplete();
++    } else {
++        UpdateSubHeading();
++    }
++}
++
++void Menu::OnScanComplete() {
++    m_scanning = false;
++    SetBoost(false);
++
++    // the list was already browsable during the scan, so keep whatever the
++    // user had highlighted rather than snapping back to the top.
++    const u64 selected_id = HasEntry() ? GetEntry().game.app_id : 0;
++
++    // drop cache entries for games that are no longer installed. this is only
++    // safe here, where every application record has just been visited.
++    std::unordered_set<u64> live;
++    live.reserve(m_entries.size());
++    for (const auto& e : m_entries) {
++        if (e.size_total > 0) {
++            live.emplace(e.game.app_id);
++        }
++    }
++
++    if (std::erase_if(m_cache, [&live](const auto& entry) { return !live.contains(entry.first); })) {
++        m_cache_dirty = true;
++    }
++
++    // records without installed content (archived games, or a game card that
++    // isn't inserted) don't use any space, so drop them from the list.
++    std::erase_if(m_entries, [](const auto& e) {
++        return e.size_total <= 0;
++    });
++
++    log_write("[STORAGE] scanned %zu games using %s (%zu from cache)\n", m_entries.size(), utils::formatSizeStorage(m_games_sd + m_games_nand).c_str(), m_cache_hits);
++
++    if (m_cache_dirty) {
++        SaveCache();
++    }
++
++    FilterAndSort();
++
++    s64 index = 0;
++    for (u32 i = 0; i < m_view.size(); i++) {
++        if (m_entries[m_view[i]].game.app_id == selected_id) {
++            index = i;
++            break;
++        }
++    }
++
++    SetIndex(index);
++}
++
++void Menu::ClearSizes(Entry& e) {
++    e.size_base = 0;
++    e.size_update = 0;
++    e.size_dlc = 0;
++    e.size_sd = 0;
++    e.size_nand = 0;
++    e.size_total = 0;
++}
++
++void Menu::ApplyCacheValue(Entry& e, const CacheValue& value) {
++    e.size_base = value.size_base;
++    e.size_update = value.size_update;
++    e.size_dlc = value.size_dlc;
++    e.size_sd = value.size_sd;
++    e.size_nand = value.size_nand;
++    e.size_total = value.size_sd + value.size_nand;
++}
++
++void Menu::CalculateSize(Entry& e) {
++    // anything already seeded from the cache is unverified, drop it and
++    // rebuild from what ncm reports now.
++    ClearSizes(e);
++
++    title::MetaEntries meta_entries;
++    if (R_FAILED(title::GetMetaEntries(e.game.app_id, meta_entries))) {
++        return;
++    }
++
++    // listing the metas costs two ipc calls, walking them costs several more
++    // per meta. when the fingerprint still matches, the walk is skipped and
++    // the previously measured sizes are reused.
++    const auto fingerprint = MakeFingerprint(meta_entries);
++
++    if (const auto it = m_cache.find(e.game.app_id); it != m_cache.end() && it->second.fingerprint == fingerprint) {
++        ApplyCacheValue(e, it->second);
++        m_cache_hits++;
++        return;
++    }
++
++    for (const auto& status : meta_entries) {
++        // game card content lives on the cart, not on the console.
++        if (status.storageID != NcmStorageId_SdCard && status.storageID != NcmStorageId_BuiltInUser) {
++            continue;
++        }
++
++        game::NcmMetaData meta;
++        if (R_FAILED(game::GetNcmMetaFromMetaStatus(status, meta))) {
++            continue;
++        }
++
++        std::vector<NcmContentInfo> infos;
++        if (R_FAILED(ncm::GetContentInfos(meta.db, &meta.key, infos))) {
++            continue;
++        }
++
++        s64 size{};
++        for (const auto& info : infos) {
++            u64 content_size;
++            ncmContentInfoSizeToU64(&info, &content_size);
++            size += content_size;
++        }
++
++        switch (status.meta_type) {
++            case NcmContentMetaType_Application:
++                e.size_base += size;
++                break;
++            case NcmContentMetaType_Patch:
++                e.size_update += size;
++                break;
++            case NcmContentMetaType_AddOnContent:
++            case NcmContentMetaType_DataPatch:
++                e.size_dlc += size;
++                break;
++        }
++
++        if (status.storageID == NcmStorageId_SdCard) {
++            e.size_sd += size;
++        } else {
++            e.size_nand += size;
++        }
++
++        e.size_total += size;
++    }
++
++    if (e.size_total > 0) {
++        m_cache[e.game.app_id] = CacheValue{fingerprint, e.size_base, e.size_update, e.size_dlc, e.size_sd, e.size_nand};
++        m_cache_dirty = true;
++    } else if (m_cache.erase(e.game.app_id)) {
++        // nothing is installed on the console anymore.
++        m_cache_dirty = true;
++    }
++}
++
++void Menu::LoadCache() {
++    m_cache.clear();
++    m_cache_dirty = false;
++
++    fs::FsNativeSd fs;
++    if (R_FAILED(fs.GetFsOpenResult())) {
++        return;
++    }
++
++    std::vector<u8> data;
++    if (R_FAILED(fs.read_entire_file(CACHE_PATH, data)) || data.size() < sizeof(CacheHeader)) {
++        return;
++    }
++
++    CacheHeader header;
++    std::memcpy(&header, data.data(), sizeof(header));
++
++    if (header.magic != CACHE_MAGIC || header.version != CACHE_VERSION) {
++        log_write("[STORAGE] discarding cache, magic / version mismatch\n");
++        return;
++    }
++
++    // tolerate a truncated file rather than throwing the whole cache away.
++    const auto available = (data.size() - sizeof(CacheHeader)) / sizeof(CacheRecord);
++    const auto count = std::min<u64>(header.count, available);
++
++    m_cache.reserve(count);
++    for (u64 i = 0; i < count; i++) {
++        CacheRecord record;
++        std::memcpy(&record, data.data() + sizeof(CacheHeader) + i * sizeof(CacheRecord), sizeof(record));
++
++        m_cache.emplace(record.app_id, CacheValue{
++            record.fingerprint,
++            record.size_base, record.size_update, record.size_dlc,
++            record.size_sd, record.size_nand,
++        });
++    }
++
++    log_write("[STORAGE] loaded %zu cached sizes\n", m_cache.size());
++}
++
++void Menu::SaveCache() {
++    fs::FsNativeSd fs;
++    if (R_FAILED(fs.GetFsOpenResult())) {
++        return;
++    }
++
++    std::vector<u8> data(sizeof(CacheHeader) + m_cache.size() * sizeof(CacheRecord));
++
++    const CacheHeader header{CACHE_MAGIC, CACHE_VERSION, m_cache.size()};
++    std::memcpy(data.data(), &header, sizeof(header));
++
++    auto offset = sizeof(CacheHeader);
++    for (const auto& [app_id, value] : m_cache) {
++        const CacheRecord record{
++            app_id, value.fingerprint,
++            value.size_base, value.size_update, value.size_dlc,
++            value.size_sd, value.size_nand,
++        };
++
++        std::memcpy(data.data() + offset, &record, sizeof(record));
++        offset += sizeof(record);
++    }
++
++    fs.CreateDirectoryRecursivelyWithPath(CACHE_PATH);
++
++    const auto rc = fs.write_entire_file(CACHE_PATH, data);
++    if (R_FAILED(rc)) {
++        log_write("[STORAGE] failed to write size cache: 0x%X\n", R_VALUE(rc));
++        return;
++    }
++
++    m_cache_dirty = false;
++    log_write("[STORAGE] wrote %zu cached sizes\n", m_cache.size());
++}
++
++void Menu::ClearCache() {
++    m_cache.clear();
++    m_cache_loaded = true;
++    m_cache_dirty = false;
++
++    fs::FsNativeSd fs;
++    if (R_SUCCEEDED(fs.GetFsOpenResult())) {
++        fs.DeleteFile(CACHE_PATH);
++    }
++}
++
++void Menu::FilterAndSort() {
++    const auto filter = m_filter.Get();
++
++    m_view.clear();
++    m_view.reserve(m_entries.size());
++
++    for (u32 i = 0; i < m_entries.size(); i++) {
++        const auto& e = m_entries[i];
++
++        // not measured yet, or nothing installed on the console.
++        if (e.size_total <= 0) {
++            continue;
++        }
++        if (filter == FilterType_Sd && !e.size_sd) {
++            continue;
++        }
++        if (filter == FilterType_Nand && !e.size_nand) {
++            continue;
++        }
++
++        m_view.emplace_back(i);
++    }
++
++    switch (m_sort.Get()) {
++        case SortType_Title:
++            for (auto i : m_view) {
++                LoadControlEntry(m_entries[i].game);
++            }
++            std::ranges::sort(m_view, [this](auto lhs, auto rhs) {
++                return strcasecmp(m_entries[lhs].GetName(), m_entries[rhs].GetName()) < 0;
++            });
++            break;
++
++        case SortType_TitleID:
++            std::ranges::sort(m_view, [this](auto lhs, auto rhs) {
++                return m_entries[lhs].game.app_id < m_entries[rhs].game.app_id;
++            });
++            break;
++
++        case SortType_Size:
++        default:
++            std::ranges::sort(m_view, [this](auto lhs, auto rhs) {
++                return m_entries[lhs].size_total > m_entries[rhs].size_total;
++            });
++            break;
++    }
++
++    if (m_order.Get() == OrderType_Ascending) {
++        std::ranges::reverse(m_view);
++    }
++
++    // the per game bars are drawn relative to the biggest entry.
++    m_largest = 1;
++    for (auto i : m_view) {
++        m_largest = std::max(m_largest, m_entries[i].size_total);
++    }
++
++    m_scroll_name.Reset();
++    m_scroll_detail_name.Reset();
++}
++
++void Menu::FreeEntries() {
++    auto vg = App::GetVg();
++
++    for (auto& e : m_entries) {
++        nvgDeleteImage(vg, e.game.image);
++        e.game.image = 0;
++    }
++
++    m_entries.clear();
++    m_view.clear();
++    m_index = 0;
++    m_scan_index = 0;
++    m_scanning = false;
++    m_games_sd = 0;
++    m_games_nand = 0;
++    m_largest = 1;
++}
++
++} // namespace sphaira::ui::menu::storage
+diff --git a/sphaira/source/yati/yati.cpp b/sphaira/source/yati/yati.cpp
+index 01654d1..5130343 100644
+--- a/sphaira/source/yati/yati.cpp
++++ b/sphaira/source/yati/yati.cpp
+@@ -369,6 +369,14 @@ struct Yati {
+     std::unique_ptr<container::Base> container{};
+     Config config{};
+     keys::Keys keys{};
++
++    // tracks what Setup() actually managed to acquire. these services are
++    // refcounted process wide and other parts of sphaira (the game menu, the
++    // game:/ devoptab, ...) hold them at the same time, so releasing one that
++    // we never acquired would close the session out from under them.
++    bool spl_crypto_init{};
++    bool ns_init{};
++    bool es_init{};
+ };
+ 
+ auto ThreadData::GetResults() volatile -> Result {
+@@ -866,9 +874,21 @@ Yati::Yati(ui::ProgressBox* _pbox, source::Base* _source) : pbox{_pbox}, source{
+ }
+ 
+ Yati::~Yati() {
+-    splCryptoExit();
+-    ns::Exit();
+-    es::Exit();
++    // released in reverse order of acquisition, and only what Setup() got as
++    // far as acquiring, see the comment on the flags.
++    // note: the ncm handles below don't need the same treatment, they are
++    // zero initialised and closing an unopened one is a no-op.
++    if (es_init) {
++        es::Exit();
++    }
++
++    if (ns_init) {
++        ns::Exit();
++    }
++
++    if (spl_crypto_init) {
++        splCryptoExit();
++    }
+ 
+     for (size_t i = 0; i < std::size(NCM_STORAGE_IDS); i++) {
+         ncmContentMetaDatabaseClose(std::addressof(ncm_db[i]));
+@@ -902,9 +922,15 @@ Result Yati::Setup(const ConfigOverride& override) {
+     storage_id = config.sd_card_install ? NcmStorageId_SdCard : NcmStorageId_BuiltInUser;
+ 
+     R_TRY(source->GetOpenResult());
++
+     R_TRY(splCryptoInitialize());
++    spl_crypto_init = true;
++
+     R_TRY(ns::Initialize());
++    ns_init = true;
++
+     R_TRY(es::Initialize());
++    es_init = true;
+ 
+     for (size_t i = 0; i < std::size(NCM_STORAGE_IDS); i++) {
+         R_TRY(ncmOpenContentMetaDatabase(std::addressof(ncm_db[i]), NCM_STORAGE_IDS[i]));

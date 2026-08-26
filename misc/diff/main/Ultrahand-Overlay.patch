@@ -1,5 +1,5 @@
 diff --git a/source/main.cpp b/source/main.cpp
-index e434e4d5..d5f41755 100644
+index e434e4d5..9bbae9b3 100644
 --- a/source/main.cpp
 +++ b/source/main.cpp
 @@ -201,7 +201,7 @@ static std::string lastPackageMenu;
@@ -120,7 +120,7 @@ index e434e4d5..d5f41755 100644
                  cmds.push_back({"delete", dlSounds});
                  cmds.push_back({"cp", LOADED_SOUNDS_PATH, dlSounds});
                  if (disableLoaderUpdate) {
-@@ -914,7 +965,29 @@ private:
+@@ -914,7 +965,32 @@ private:
              addBackup();
              cmds.push_back({"unzip", sdoutZip, ROOT_PATH});
              cmds.push_back({"delete", sdoutZip});
@@ -133,7 +133,9 @@ index e434e4d5..d5f41755 100644
 +                cmds.push_back({"unzip", ROOT_PATH+"update.zip", ROOT_PATH});
 +                cmds.push_back({"delete", HEKATE_PATH+"payloads/ATLAS.bin"});
 +                cmds.push_back({"delete", ROOT_PATH+"update.zip"});
-+                cmds.push_back({"reboot", "ini", "CFW"});
++                cmds.push_back({"set-ini-val", ATMOSPHERE_PATH+"config/exosphere.ini exosphere enable_40mb_mem_mode 0"});
++                cmds.push_back({"set-ini-val", ATMOSPHERE_PATH+"config/exosphere.ini exosphere enable_8gb_mem_mode 0"});
++                cmds.push_back({"reboot"});
 +            } else if (isFile(SETTINGS_PATH + "ram_8gb.ini")) {
 +                cmds.push_back({"download", LATEST_ASAP_URL, ROOT_PATH});
 +                cmds.push_back({"delete", ATMOSPHERE_PATH+"reboot_payload.bin"});
@@ -145,13 +147,14 @@ index e434e4d5..d5f41755 100644
 +                cmds.push_back({"copy", EXPANSION_RAM_PATH+"hekate_8gb.bin", ROOT_PATH+"payload.bin"});
 +                cmds.push_back({"delete", HEKATE_PATH+"payloads/ATLAS.bin"});
 +                cmds.push_back({"delete", ROOT_PATH+"update.zip"});
-+                cmds.push_back({"set-ini-val", ATMOSPHERE_PATH+"config/exosphere.ini exosphere enable_mem_mode 1"});
-+                cmds.push_back({"reboot", "ini", "CFW"});
++                cmds.push_back({"set-ini-val", ATMOSPHERE_PATH+"config/exosphere.ini exosphere enable_40mb_mem_mode 0"});
++                cmds.push_back({"set-ini-val", ATMOSPHERE_PATH+"config/exosphere.ini exosphere enable_8gb_mem_mode 1"});
++                cmds.push_back({"reboot"});
 +            }
          
              runningInterpreter.store(true, release);
              executeInterpreterCommands(std::move(cmds), "", "");
-@@ -1021,11 +1094,11 @@ public:
+@@ -1021,11 +1097,11 @@ public:
          inSubSettingsMenu = !dropdownSelection.empty();
          
          const std::array<const std::string*, 14> defaultLanguagesRepresentation = {
@@ -165,7 +168,7 @@ index e434e4d5..d5f41755 100644
          
          auto* list = new tsl::elm::List();
          
-@@ -1074,13 +1147,13 @@ public:
+@@ -1074,13 +1150,13 @@ public:
              
              // Apply defaults and processing
              trim(keyCombo);
@@ -181,7 +184,7 @@ index e434e4d5..d5f41755 100644
              else
                  currentSounds = currentSounds.empty() ? OPTION_SYMBOL : currentSounds;
  
-@@ -1119,7 +1192,7 @@ public:
+@@ -1119,7 +1195,7 @@ public:
  
              for (const auto& defaultLangMode : defaultLanguages) {
                  langFile = LANG_PATH + defaultLangMode + ".json";
@@ -190,7 +193,7 @@ index e434e4d5..d5f41755 100644
  
                  tsl::elm::ListItem* listItem = new tsl::elm::ListItem(*defaultLanguagesRepresentation[index]);
                  listItem->setRadioLabelSelector();
-@@ -1149,7 +1222,7 @@ public:
+@@ -1149,7 +1225,7 @@ public:
                          setUltrahandConfig(DEFAULT_LANG_STR, defaultLangMode);
                          reloadMenu = reloadMenu2 = true;
                          parseLanguage(langFile);
@@ -199,7 +202,7 @@ index e434e4d5..d5f41755 100644
                          if (lastSelectedListItem)
                              lastSelectedListItem->setValue(lastSelectedListItemFooter);
                          if (selectedListItem)
-@@ -1172,26 +1245,35 @@ public:
+@@ -1172,26 +1248,35 @@ public:
                  index++;
              }
          } else if (dropdownSelection == "softwareUpdateMenu") {
@@ -246,7 +249,7 @@ index e434e4d5..d5f41755 100644
              }
  
              addPackageInfo(list, overlayHeader, OVERLAY_STR, defaultLang);
-@@ -1243,7 +1325,7 @@ public:
+@@ -1243,7 +1328,7 @@ public:
              
              // Version info formatting - stack allocated, optimal size
              char versionString[32];
@@ -255,7 +258,7 @@ index e434e4d5..d5f41755 100644
                       hosVersion, amsVersion);
              
              const std::string hekateVersion = extractVersionFromBinary("sdmc:/bootloader/update.bin");
-@@ -1254,14 +1336,14 @@ public:
+@@ -1254,14 +1339,14 @@ public:
              setsysGetProductModel(&model);
              
              // Switch is optimal for enum - generates jump table on ARMv8-A
@@ -277,7 +280,7 @@ index e434e4d5..d5f41755 100644
                  default: modelRev = UNAVAILABLE_SELECTION.c_str(); break;
              }
              
-@@ -1270,14 +1352,14 @@ public:
+@@ -1270,14 +1355,14 @@ public:
              tableData.reserve(7); // Max size needed is 7 rows
              
              // Cache bootloader string to avoid redundant empty() check
@@ -295,7 +298,7 @@ index e434e4d5..d5f41755 100644
              
              // Hardware and storage info - clear() is cheap, reuses capacity
              tableData.clear();
-@@ -1286,15 +1368,15 @@ public:
+@@ -1286,15 +1371,15 @@ public:
                  {MEMORY, memorySize},
                  {"└ " + VENDOR, memoryVendor},
                  {"└ " + MODEL, memoryModel},
@@ -315,7 +318,7 @@ index e434e4d5..d5f41755 100644
              addTable(list, tableData, "", 163, 9, 3, 0, DEFAULT_STR, "section", "section", RIGHT_STR, true);
              
              tableData.clear();
-@@ -1311,7 +1393,7 @@ public:
+@@ -1311,7 +1396,7 @@ public:
                      {"IDDQ",   "⋯    "+DIVIDER_SYMBOL+"    ⋯    "+DIVIDER_SYMBOL+"    ⋯  "}
                  };
              }
@@ -324,7 +327,7 @@ index e434e4d5..d5f41755 100644
  
              //addGap(list, 3);
              
-@@ -1324,7 +1406,7 @@ public:
+@@ -1324,7 +1409,7 @@ public:
              
              char ramString[24];
              const float freeRamMB = static_cast<float>(RAM_Total_system_u - RAM_Used_system_u) / (1024.0f * 1024.0f);
@@ -333,7 +336,7 @@ index e434e4d5..d5f41755 100644
              
              const char* ramColor = freeRamMB >= 9.0f ? "healthy_ram" : (freeRamMB >= 5.0f ? "neutral_ram" : "bad_ram");
              
-@@ -1450,7 +1532,7 @@ public:
+@@ -1450,7 +1535,7 @@ public:
              // Add an "Exit Overlay System" menu item
              auto* exitItem = new tsl::elm::ListItem(EXIT_OVERLAY_SYSTEM, "", true);
              exitItem->enableTouchHolding();
@@ -342,7 +345,7 @@ index e434e4d5..d5f41755 100644
  
              exitItem->setClickListener([this, exitItem](uint64_t keys) {
                  if ((keys & KEY_A) && !(keys & ~KEY_A & ALL_KEYS_MASK)) {
-@@ -1476,7 +1558,7 @@ public:
+@@ -1476,7 +1561,7 @@ public:
              addHeader(list, THEME);
              std::string currentTheme = parseValueFromIniSection(ULTRAHAND_CONFIG_INI_PATH, ULTRAHAND_PROJECT_NAME, "current_theme");
              currentTheme = currentTheme.empty() ? DEFAULT_STR : currentTheme;
@@ -351,7 +354,7 @@ index e434e4d5..d5f41755 100644
              listItem->setRadioSelector();
              if (currentTheme == DEFAULT_STR) {
                  listItem->setValue(CHECKMARK_SYMBOL);
-@@ -1498,7 +1580,7 @@ public:
+@@ -1498,7 +1583,7 @@ public:
                      if (lastSelectedListItem)
                          lastSelectedListItem->setValue("");
                      if (selectedListItem)
@@ -360,7 +363,7 @@ index e434e4d5..d5f41755 100644
                      listItem->setValue(CHECKMARK_SYMBOL);
                      lastSelectedListItem = listItem;
                      //tsl::shiftItemFocus(listItem);
-@@ -1794,8 +1876,8 @@ public:
+@@ -1794,8 +1879,8 @@ public:
                  };
                  
                  std::vector<std::string> infoLines = {
@@ -371,7 +374,7 @@ index e434e4d5..d5f41755 100644
                  };
                  
                  size_t maxInfoWidth = 0;
-@@ -1831,7 +1913,7 @@ public:
+@@ -1831,7 +1916,7 @@ public:
  
              useStickNavigation = getBoolValue("stick_navigation", true);
              createToggleListItem(list, STICK_NAVIGATION, useStickNavigation, "stick_navigation");
@@ -380,7 +383,7 @@ index e434e4d5..d5f41755 100644
              auto* holdDurationTrackbar = new tsl::elm::NamedStepTrackBarV2(
                  HOLD_DURATION,
                  "",
-@@ -1871,8 +1953,8 @@ public:
+@@ -1871,8 +1956,8 @@ public:
              addHeader(list, MENU_SETTINGS);
              hidePackages = getBoolValue("hide_packages", false); // FALSE_STR default
              createToggleListItem(list, PACKAGES_MENU, hidePackages, "hide_packages", true, true, true);
@@ -391,7 +394,7 @@ index e434e4d5..d5f41755 100644
              hideHidden = getBoolValue("hide_hidden", false); // FALSE_STR default
              createToggleListItem(list, SHOW_HIDDEN, hideHidden, "hide_hidden", true, true);
              hideDelete = getBoolValue("hide_delete", false); // FALSE_STR default
-@@ -1900,7 +1982,7 @@ public:
+@@ -1900,7 +1985,7 @@ public:
              addHeader(list, THEME_SETTINGS);
              useSwitch2Style = getBoolValue("switch_2_style", true); // TRUE_STR default
              createToggleListItem(list, SWITCH_2_STYLE, useSwitch2Style, "switch_2_style");
@@ -400,7 +403,7 @@ index e434e4d5..d5f41755 100644
              createToggleListItem(list, DYNAMIC_LOGO, useDynamicLogo, "dynamic_logo");
              useDynamicTableColors = getBoolValue("dynamic_tables", true); // TRUE_STR default
              createToggleListItem(list, DYNAMIC_TABLES, useDynamicTableColors, "dynamic_tables");
-@@ -2218,7 +2300,7 @@ public:
+@@ -2218,7 +2303,7 @@ public:
          addGap(list, 12);
  
          auto* deleteListItem = new tsl::elm::ListItem(isOverlay ? DELETE_OVERLAY : DELETE_PACKAGE);
@@ -409,7 +412,7 @@ index e434e4d5..d5f41755 100644
          
          deleteListItem->setClickListener([this, deleteListItem](uint64_t keys) -> bool {
              if (runningInterpreter.load(std::memory_order_acquire))
-@@ -4119,14 +4201,14 @@ public:
+@@ -4119,14 +4204,14 @@ public:
                          return true;
                      }
      
@@ -426,7 +429,7 @@ index e434e4d5..d5f41755 100644
      
                      return false;
                  });
-@@ -4221,7 +4303,7 @@ public:
+@@ -4221,7 +4306,7 @@ public:
                  });
                                  
                  // Set the script key listener (for SCRIPT_KEY)
@@ -435,7 +438,7 @@ index e434e4d5..d5f41755 100644
                      // Initialize currentSelectedItem for this index if it does not exist
                      if (isInitialized.find(i) == isInitialized.end() || !isInitialized[i]) {
                          currentSelectedItems[i] = selectedItem;
-@@ -4233,7 +4315,7 @@ public:
+@@ -4233,7 +4318,7 @@ public:
                      applyPlaceholderReplacementsToCommands(modifiedCmds, filePath);
                      //tsl::shiftItemFocus(toggleListItem);
                      tsl::changeTo<ScriptOverlay>(std::move(modifiedCmds), filePath, itemName, "selection", false, currentPackageHeader, showWidget);
@@ -444,7 +447,7 @@ index e434e4d5..d5f41755 100644
      
                  list->addItem(toggleListItem);
              }
-@@ -5029,12 +5111,12 @@ bool drawCommandsMenu(
+@@ -5029,12 +5114,12 @@ bool drawCommandsMenu(
                                      
                                      return true;
                                  
@@ -459,7 +462,7 @@ index e434e4d5..d5f41755 100644
                                  return false;
                              });
                              listItem->disableClickAnimation();
-@@ -5053,13 +5135,13 @@ bool drawCommandsMenu(
+@@ -5053,13 +5138,13 @@ bool drawCommandsMenu(
                                      //tsl::shiftItemFocus(listItem);
                                      tsl::changeTo<MainMenu>("", optionName);
                                      return true;
@@ -475,7 +478,7 @@ index e434e4d5..d5f41755 100644
                                      setSystemSettingsReturn(cleanOptionName);
                                      return true;
                                  }
-@@ -5528,7 +5610,7 @@ bool drawCommandsMenu(
+@@ -5528,7 +5613,7 @@ bool drawCommandsMenu(
                          interpretAndExecuteCommands, getSourceReplacement, commands, originalOptionName, false, false, -1, unlockedTrackbar, onEveryTick);
                  
                      // Set the SCRIPT_KEY listener
@@ -484,7 +487,7 @@ index e434e4d5..d5f41755 100644
  
                          // Use trackbar's CURRENT state instead of reading from file
                          const std::string valueStr = ult::to_string(trackBar->getProgress());
-@@ -5559,7 +5641,7 @@ bool drawCommandsMenu(
+@@ -5559,7 +5644,7 @@ bool drawCommandsMenu(
  
                          //tsl::shiftItemFocus(trackBar);
                          tsl::changeTo<ScriptOverlay>(std::move(modifiedCmds), packagePath, keyName, isFromMainMenu ? "main" : "package", false, lastPackageHeader, showWidget);
@@ -493,7 +496,7 @@ index e434e4d5..d5f41755 100644
                  
                      // Add the TrackBarV2 to the list after setting the necessary listeners
                      list->addItem(trackBar);
-@@ -5575,7 +5657,7 @@ bool drawCommandsMenu(
+@@ -5575,7 +5660,7 @@ bool drawCommandsMenu(
                          interpretAndExecuteCommands, getSourceReplacement, commands, originalOptionName, false, unlockedTrackbar, onEveryTick);
                      
                      // Set the SCRIPT_KEY listener
@@ -502,7 +505,7 @@ index e434e4d5..d5f41755 100644
                          const bool isFromMainMenu = (packagePath == PACKAGE_PATH);
  
                          // Use stepTrackBar's CURRENT state
-@@ -5606,7 +5688,7 @@ bool drawCommandsMenu(
+@@ -5606,7 +5691,7 @@ bool drawCommandsMenu(
  
                          //tsl::shiftItemFocus(stepTrackBar);
                          tsl::changeTo<ScriptOverlay>(std::move(modifiedCmds), packagePath, keyName, isFromMainMenu ? "main" : "package", false, lastPackageHeader, showWidget);
@@ -511,7 +514,7 @@ index e434e4d5..d5f41755 100644
                      
                      // Add the StepTrackBarV2 to the list
                      list->addItem(stepTrackBar);
-@@ -5694,7 +5776,7 @@ bool drawCommandsMenu(
+@@ -5694,7 +5779,7 @@ bool drawCommandsMenu(
                          interpretAndExecuteCommands, getSourceReplacement, commands, originalOptionName, unlockedTrackbar, onEveryTick);
                      
                      // Set the SCRIPT_KEY listener
@@ -520,7 +523,7 @@ index e434e4d5..d5f41755 100644
                          const bool isFromMainMenu = (packagePath == PACKAGE_PATH);
  
                          // Use namedStepTrackBar's CURRENT state
-@@ -5727,7 +5809,7 @@ bool drawCommandsMenu(
+@@ -5727,7 +5812,7 @@ bool drawCommandsMenu(
  
                          //tsl::shiftItemFocus(namedStepTrackBar);
                          tsl::changeTo<ScriptOverlay>(std::move(modifiedCmds), packagePath, keyName, isFromMainMenu ? "main" : "package", false, lastPackageHeader, showWidget);
@@ -529,7 +532,7 @@ index e434e4d5..d5f41755 100644
                      entryList.clear();
                      
                      // Add the NamedStepTrackBarV2 to the list
-@@ -5809,7 +5891,7 @@ bool drawCommandsMenu(
+@@ -5809,7 +5894,7 @@ bool drawCommandsMenu(
                                  tsl::swapTo<PackageMenu>(forwarderPackagePath, "", LEFT_STR, forwarderPackageIniName, nestedMenuCount, lastPackageHeader);
                                  
                                  return true;
@@ -538,7 +541,7 @@ index e434e4d5..d5f41755 100644
                                  const bool isFromMainMenu = (packagePath == PACKAGE_PATH);
                                  
                                  std::string selectionItem = keyName;
-@@ -5820,7 +5902,7 @@ bool drawCommandsMenu(
+@@ -5820,7 +5905,7 @@ bool drawCommandsMenu(
                                  // add lines ;mode=forwarder and package_source 'forwarderPackagePath' to front of modifiedCmds
                                  tsl::changeTo<ScriptOverlay>(std::move(getSourceReplacement(commands, keyName, i, packagePath)), packagePath, selectionItem, isFromMainMenu ? "main" : "package", true, lastPackageHeader, showWidget);
                                  return true;
@@ -547,7 +550,7 @@ index e434e4d5..d5f41755 100644
                                  setSystemSettingsReturn(cleanOptionName);
                                  return true;
                              }
-@@ -5898,7 +5980,7 @@ bool drawCommandsMenu(
+@@ -5898,7 +5983,7 @@ bool drawCommandsMenu(
                                      tsl::changeTo<SelectionOverlay>(packagePath, keyName, newKey, lastPackageHeader, commands, showWidget);
                                  }
                                  return true;
@@ -556,7 +559,7 @@ index e434e4d5..d5f41755 100644
                                  const bool isFromMainMenu = (packagePath == PACKAGE_PATH);
  
                                  std::string selectionItem = keyName;
-@@ -5908,7 +5990,7 @@ bool drawCommandsMenu(
+@@ -5908,7 +5993,7 @@ bool drawCommandsMenu(
                                  //tsl::shiftItemFocus(listItem);
                                  tsl::changeTo<ScriptOverlay>(std::move(modifiedCmds), packagePath, selectionItem, isFromMainMenu ? "main" : "package", true, lastPackageHeader, showWidget);
                                  return true;
@@ -565,7 +568,7 @@ index e434e4d5..d5f41755 100644
                                  setSystemSettingsReturn(cleanOptionName);
                                  return true;
                              }
-@@ -5993,14 +6075,14 @@ bool drawCommandsMenu(
+@@ -5993,14 +6078,14 @@ bool drawCommandsMenu(
                                  if (lastSelectedListItem)
                                      lastSelectedListItem->triggerClickAnimation();
                                  return true;
@@ -582,7 +585,7 @@ index e434e4d5..d5f41755 100644
                                  setSystemSettingsReturn(cleanOptionName);
                                  return true;
                              }
-@@ -6093,7 +6175,7 @@ bool drawCommandsMenu(
+@@ -6093,7 +6178,7 @@ bool drawCommandsMenu(
                          });
  
                          // Set the script key listener (for SCRIPT_KEY)
@@ -591,7 +594,7 @@ index e434e4d5..d5f41755 100644
                              pathPatternOn, pathPatternOff, lastPackageHeader, showWidget](bool state) {
  
                              const bool isFromMainMenu = (packagePath == PACKAGE_PATH);
-@@ -6106,7 +6188,7 @@ bool drawCommandsMenu(
+@@ -6106,7 +6191,7 @@ bool drawCommandsMenu(
  
                              //tsl::shiftItemFocus(toggleListItem);
                              tsl::changeTo<ScriptOverlay>(std::move(modifiedCmds), packagePath, keyName, isFromMainMenu ? "main" : "package", false, lastPackageHeader, showWidget);
@@ -600,7 +603,7 @@ index e434e4d5..d5f41755 100644
  
  
                          onlyTables = false;
-@@ -6295,7 +6377,7 @@ public:
+@@ -6295,7 +6380,7 @@ public:
  
          auto* rootFrame = new tsl::elm::OverlayFrame(
             (!packageHeader.title.empty()) ? packageHeader.title : (!packageRootLayerTitle.empty() ? packageRootLayerTitle : getNameFromPath(packagePath)),
@@ -609,7 +612,7 @@ index e434e4d5..d5f41755 100644
             noClickableItems,
             "",
             packageHeader.color,
-@@ -7166,17 +7248,33 @@ public:
+@@ -7166,17 +7251,33 @@ public:
  
              FILE* packageFileOut = fopen((PACKAGE_PATH + PACKAGE_FILENAME).c_str(), "w");
              if (packageFileOut) {
@@ -621,7 +624,7 @@ index e434e4d5..d5f41755 100644
 +                           "[Master Volume]\n;mode=step_trackbar\n;unlocked=false\n;min_value=0\n;max_value=150\n;units=%\n;steps=31\n;on_every_tick=true\nvolume {value}\n\n"
 +                           "[blank]\n;mode=table\n;background=false\n;gap=30\n\n"
 +                           "[kip]\n;mode=table\n;background=false\n;header_indent=true\n;section_text_color=header\n;info_text_color=notice\n'KIP Patch' = ' " + HOC_KIP + "'\n\n"
-+                           "[Horizon-OC]\n;mode=toggle\n;mini=true\non:\nset-ini-val './config.ini' 'Horizon-OC' footer On\ncp '/backup/kips/.OC/loader.kip' '/atmosphere/kips/loader.kip'\n"
++                           "[Horizon-OC]\n;mode=toggle\n;mini=true\non:\nset-ini-val './config.ini' 'Horizon-OC' footer On\ncp '/backup/configs/loader.kip' '/atmosphere/kips/loader.kip'\n"
 +                           "rename '/atmosphere/config/exosphere_.bin' '/atmosphere/config/exosphere.bin'\nrefresh\n"
 +                           "off:\nset-ini-val './config.ini' 'Horizon-OC' footer Off\ndel '/atmosphere/kips/loader.kip'\nrename '/atmosphere/config/exosphere.bin' '/atmosphere/config/exosphere_.bin'\nrefresh\n\n"
 +                           "[blank]\n;mode=table\n;background=false\n;gap=30\n\n"
@@ -651,7 +654,7 @@ index e434e4d5..d5f41755 100644
      
          inOverlaysPage.store(false, std::memory_order_release);
          inPackagesPage.store(true, std::memory_order_release);
-@@ -7235,7 +7333,7 @@ public:
+@@ -7235,7 +7336,7 @@ public:
                          packageSet.emplace(std::move(entry));
                      } else {
                          const std::string hide = (packageIt->second.find(HIDE_STR) != packageIt->second.end()) ? packageIt->second[HIDE_STR] : FALSE_STR;
@@ -660,7 +663,7 @@ index e434e4d5..d5f41755 100644
                          
                          if (inHiddenMode.load(std::memory_order_acquire) == (hide == TRUE_STR)) {
                              const PackageHeader packageHeader = getPackageHeaderFromIni(PACKAGE_PATH + packageName+ "/" +PACKAGE_FILENAME);
-@@ -7407,7 +7505,7 @@ public:
+@@ -7407,7 +7508,7 @@ public:
  
                          std::string defaultLang = parseValueFromIniSection(ULTRAHAND_CONFIG_INI_PATH, ULTRAHAND_PROJECT_NAME, DEFAULT_LANG_STR);
                          if (defaultLang.empty()) {
@@ -669,7 +672,7 @@ index e434e4d5..d5f41755 100644
                          }
                          const std::string translationJsonPath = packageFilePath+"lang/"+defaultLang+".json";
  
-@@ -7808,7 +7906,12 @@ void initializeSettingsAndDirectories() {
+@@ -7808,7 +7909,12 @@ void initializeSettingsAndDirectories() {
      versionLabel = cleanVersionLabel(APP_VERSION) + " " + DIVIDER_SYMBOL + " " + loaderTitle + " " + cleanVersionLabel(loaderInfo);
  
      // Create necessary directories
@@ -683,7 +686,7 @@ index e434e4d5..d5f41755 100644
      createDirectory(LANG_PATH);
      createDirectory(FLAGS_PATH);
      createDirectory(NOTIFICATIONS_FLAGS_PATH);
-@@ -7818,8 +7921,12 @@ void initializeSettingsAndDirectories() {
+@@ -7818,8 +7924,12 @@ void initializeSettingsAndDirectories() {
      createDirectory(SOUNDS_PATH);
      createDirectory(LOADED_SOUNDS_PATH);
      createDirectory(ASSETS_PATH);
@@ -696,7 +699,7 @@ index e434e4d5..d5f41755 100644
      bool needsUpdate = false;
      std::map<std::string, std::map<std::string, std::string>> iniData;
  
-@@ -7845,12 +7952,12 @@ void initializeSettingsAndDirectories() {
+@@ -7845,12 +7955,12 @@ void initializeSettingsAndDirectories() {
      };
  
      // Shared keys (variables set by parseOverlaySettings — INI write-back only)
@@ -711,7 +714,7 @@ index e434e4d5..d5f41755 100644
      ensureDefault("launch_combos",            TRUE_STR);
      ensureDefault("sound_effects",            TRUE_STR);
      ensureDefault("haptic_feedback",          FALSE_STR);
-@@ -7864,16 +7971,16 @@ void initializeSettingsAndDirectories() {
+@@ -7864,16 +7974,16 @@ void initializeSettingsAndDirectories() {
      ensureDefault("max_notifications",        "3");
      ensureDefault("hold_duration",            "3000");
      ensureDefault("hide_clock",               FALSE_STR);
@@ -731,7 +734,7 @@ index e434e4d5..d5f41755 100644
  
      // Launcher-only keys (variables also set by parseOverlaySettings where accessible,
      // the rest are static to main.cpp so setDefaultValue is still needed here)
-@@ -7882,7 +7989,7 @@ void initializeSettingsAndDirectories() {
+@@ -7882,7 +7992,7 @@ void initializeSettingsAndDirectories() {
          else { sec[key] = def; flag = (def == TRUE_STR); needsUpdate = true; }
      };
  
@@ -740,7 +743,7 @@ index e434e4d5..d5f41755 100644
      setDefaultValue("hide_packages",          FALSE_STR, hidePackages);
      setDefaultValue("hide_hidden",            FALSE_STR, hideHidden);  // also set by parseOverlaySettings
      setDefaultValue("hide_delete",            FALSE_STR, hideDelete);
-@@ -7892,7 +7999,7 @@ void initializeSettingsAndDirectories() {
+@@ -7892,7 +8002,7 @@ void initializeSettingsAndDirectories() {
      setDefaultValue("hide_overlay_versions",  FALSE_STR, hideOverlayVersions);
      setDefaultValue("hide_package_versions",  FALSE_STR, hidePackageVersions);
      setDefaultValue("libultrahand_titles",    FALSE_STR, useLibultrahandTitles);
@@ -749,7 +752,7 @@ index e434e4d5..d5f41755 100644
      setDefaultValue("package_titles",         FALSE_STR, usePackageTitles);
      setDefaultValue("package_versions",       TRUE_STR,  usePackageVersions);
      setDefaultValue("in_package_titles",      TRUE_STR,  useInPackageTitles);
-@@ -7918,7 +8025,7 @@ void initializeSettingsAndDirectories() {
+@@ -7918,7 +8028,7 @@ void initializeSettingsAndDirectories() {
          saveIniFileData(ULTRAHAND_CONFIG_INI_PATH, iniData);
  
      // Sync combo and set initial menu page (run once)
@@ -758,7 +761,7 @@ index e434e4d5..d5f41755 100644
  
      static bool hasInitialized = false;
      if (!hasInitialized) {
-@@ -8195,7 +8302,7 @@ public:
+@@ -8195,7 +8305,7 @@ public:
              }
          }
          if (firstBoot && tsl::notification && useStartupNotification) {
@@ -768,7 +771,7 @@ index e434e4d5..d5f41755 100644
  
          // Default behavior - load main menu
 diff --git a/source/utils.hpp b/source/utils.hpp
-index ed6893ef..4ea7f26c 100644
+index ed6893ef..8cd1ba63 100644
 --- a/source/utils.hpp
 +++ b/source/utils.hpp
 @@ -218,6 +218,7 @@ void removeKeyComboFromOthers(const std::string& keyCombo, const std::string& cu
@@ -833,7 +836,15 @@ index ed6893ef..4ea7f26c 100644
  }
  
  // Load once at startup, store globally
-@@ -4056,7 +4059,7 @@ void handleMakeDirCommand(const std::vector<std::string>& cmd, const std::string
+@@ -4049,14 +4052,14 @@ void handleMakeDirCommand(const std::vector<std::string>& cmd, const std::string
+     }
+ }
+ 
+-// If destPath exactly matches a PROTECTED_FILES entry, redirects it to destPath + ".ultra"
++// If destPath exactly matches a PROTECTED_FILES entry, redirects it to destPath + ".asap"
+ // BEFORE the operation so the live file is never touched.
+ // For directory destinations (unzip, dir copy), renames any protected file that landed
+ // at its exact path after the operation.
  static inline void redirectIfProtected(std::string& destPath) {
      for (const std::string& file : PROTECTED_FILES) {
          if (destPath == file) {
