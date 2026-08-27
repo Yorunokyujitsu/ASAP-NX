@@ -4,16 +4,19 @@
 ==========================
 
 [CLONE] hekate - Yorunokyujitsu
-  branch    : custom (2b110298)
+  branch    : custom (89822f7e)
 
 [CLONE] Atmosphere - Yorunokyujitsu
-  branch    : custom (6078b48f8)
+  branch    : custom (4e4465e3b)
 
 [CLONE] nx-hbloader - switchbrew
   branch    : default (82b9512)
 
+[CLONE] sphaira - Yorunokyujitsu
+  branch    : commit (eacb54b)
+
 [CLONE] Ultrahand-Overlay - ppkantorski
-  branch    : commit (2d0621a8)
+  branch    : commit (896d25fd)
   submodule : libultrahand (856ddbd)
 
 [CLONE] EdiZon-Overlay - ppkantorski
@@ -43,7 +46,7 @@
   submodule : libultrahand (856ddbd)
 
 [CLONE] Horizon-OC - Yorunokyujitsu
-  branch    : test (b2307b56)
+  branch    : personal (4c9eecb7)
   submodule : libultrahand (f7ab6c9)
 
 [CLONE] aio-switch-updater - HamletDuFromage
@@ -57,8 +60,6 @@
   submodule : borealis (25651d2)
 
 [SKIP] local project: HOC_Patch
-
-[SKIP] local project: AMS_40MB
 
 [SKIP] local project: hekate_8GB
 
