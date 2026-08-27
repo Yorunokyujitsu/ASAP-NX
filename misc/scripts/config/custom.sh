@@ -75,23 +75,28 @@ apply_main_diff_patches() {
 
   for patch in "${MISC_DIR}/diff/main"/*.patch; do
     local name
+    local target
+
     name="$(basename "${patch}" .patch)"
-    local target="${APP_DIR}/${name}"
+    target="${APP_DIR}/${name}"
 
     if [[ ! -d "${target}" ]]; then
-      echo "Skip: ${name}.patch (not found)"
+      echo "Skip: ${name}.patch (target not found)"
       continue
     fi
 
-    echo "Apply: ${name}.patch"
+    printf "Apply: %s.patch..." "${name}"
 
-    (
+    if (
       cd "${target}"
-      git apply --3way --ignore-whitespace --whitespace=nowarn "${patch}"
-    ) || {
+      git apply --3way --ignore-whitespace --whitespace=nowarn "${patch}" >/dev/null 2>&1
+    ); then
+      echo "Done"
+    else
+      echo "Failed"
       echo "[ERROR] Failed to apply patch: ${patch}"
       exit 1
-    }
+    fi
   done
 
   shopt -u nullglob
@@ -108,23 +113,28 @@ apply_libs_diff_patches() {
 
   for patch in "${MISC_DIR}/diff/libs"/*.patch; do
     local name
+    local target
+
     name="$(basename "${patch}" .patch)"
-    local target="${LIB_PATCH_MAP[${name}]:-}"
+    target="${LIB_PATCH_MAP[${name}]:-}"
 
     if [[ -z "${target}" || ! -d "${target}" ]]; then
-      echo "Skip: ${name}.patch (not found)"
+      echo "Skip: ${name}.patch (target not found)"
       continue
     fi
 
-    echo "Apply: ${name}.patch"
+    printf "Apply: %s.patch..." "${name}"
 
-    (
+    if (
       cd "${target}"
-      git apply --3way --ignore-whitespace --whitespace=nowarn "${patch}"
-    ) || {
+      git apply --3way --ignore-whitespace --whitespace=nowarn "${patch}" >/dev/null 2>&1
+    ); then
+      echo "Done"
+    else
+      echo "Failed"
       echo "[ERROR] Failed to apply patch: ${patch}"
       exit 1
-    }
+    fi
   done
 
   shopt -u nullglob
@@ -136,7 +146,6 @@ apply_libs_diff_patches() {
 print_title "[1/7] Patch repositories"
 echo
 apply_main_diff_patches
-echo "Done"
 echo
 
 
@@ -166,7 +175,6 @@ echo
 print_title "[3/7] Patch libraries"
 echo
 apply_libs_diff_patches
-echo "Done"
 echo
 
 
@@ -185,30 +193,30 @@ safe_rm \
   "${APP_DIR}/ASAP-Updater/resources/deepsea_icon.png"
 
 # sphaira
-#safe_rm \
-#  "${APP_DIR}/sphaira/assets/romfs/github/sphaira.json"
+safe_rm \
+  "${APP_DIR}/sphaira/assets/romfs/github/sphaira.json"
 
-#echo "Deleted: aio-switch-updater"
-#echo "Deleted: sphaira.json"
+echo "Deleted: aio-switch-updater"
+echo "Deleted: sphaira.json"
 
 # Create New configs
-#install -D /dev/null "${APP_DIR}/sphaira/assets/romfs/github/dbi.json" && {
-#  printf '{    \n"url": "https://github.com/Yorunokyujitsu/DBIPatcher",\n';
-#  printf '    "assets": [\n    {\n      "path": "/switch/DBI/"\n    }\n  ]\n}\n';
-#} > "${APP_DIR}/sphaira/assets/romfs/github/dbi.json"
-#echo "Created: dbi.json"
+install -D /dev/null "${APP_DIR}/sphaira/assets/romfs/github/dbi.json" && {
+  printf '{    \n"url": "https://github.com/Yorunokyujitsu/DBIPatcher",\n';
+  printf '    "assets": [\n    {\n      "path": "/switch/DBI/"\n    }\n  ]\n}\n';
+} > "${APP_DIR}/sphaira/assets/romfs/github/dbi.json"
+echo "Created: dbi.json"
 
-#install -D /dev/null "${APP_DIR}/sphaira/assets/romfs/github/horizon.json" && {
-#  printf '{    \n"url": "https://github.com/THZoria/NX_Firmware",\n    "assets": [\n';
-#  printf '    {\n      "name": "Firmware",\n      "path": "/Firmware/"\n    }\n  ]\n}\n';
-#} > "${APP_DIR}/sphaira/assets/romfs/github/horizon.json"
-#echo "Created: horizon.json"
+install -D /dev/null "${APP_DIR}/sphaira/assets/romfs/github/horizon.json" && {
+  printf '{    \n"url": "https://github.com/THZoria/NX_Firmware",\n    "assets": [\n';
+  printf '    {\n      "name": "Firmware",\n      "path": "/Firmware/"\n    }\n  ]\n}\n';
+} > "${APP_DIR}/sphaira/assets/romfs/github/horizon.json"
+echo "Created: horizon.json"
 
-#install -D /dev/null "${APP_DIR}/sphaira/assets/romfs/github/picofly.json" && {
-#  printf '{    \n"url": "https://github.com/abal1000x/usk",\n    "assets": [\n';
-#  printf '    {\n      "name": "update",\n      "path": "/update.bin"\n    }\n  ]\n}\n';
-#} > "${APP_DIR}/sphaira/assets/romfs/github/picofly.json"
-#echo "Created: picofly.json"
+install -D /dev/null "${APP_DIR}/sphaira/assets/romfs/github/picofly.json" && {
+  printf '{    \n"url": "https://github.com/abal1000x/usk",\n    "assets": [\n';
+  printf '    {\n      "name": "update",\n      "path": "/update.bin"\n    }\n  ]\n}\n';
+} > "${APP_DIR}/sphaira/assets/romfs/github/picofly.json"
+echo "Created: picofly.json"
 echo "Done"
 echo
 
@@ -250,11 +258,13 @@ echo
 # Atmosphere boot, fatal logo conversion
 python "${MISC_DIR}/tools/img_converter/ams_res/ams_img_conv.py"
 
+# Hekate bootlogo conversion
+python "${MISC_DIR}/tools/img_converter/hekate_res/bootlogo.py"
 
 # Icon replacements
-#cp -f "${MISC_DIR}/res/icons/sphaira_icon.jpg" \
-#  "${APP_DIR}/sphaira/assets/icon.jpg" || true
-#echo "Replaced: sphaira icon"
+cp -f "${MISC_DIR}/res/icons/sphaira_icon.jpg" \
+  "${APP_DIR}/sphaira/assets/icon.jpg" || true
+echo "Replaced: sphaira icon"
 
 cp -f "${MISC_DIR}/res/icons/updater_icon.jpg" \
   "${APP_DIR}/ASAP-Updater/icon.jpg" || true
@@ -262,6 +272,13 @@ cp -f "${MISC_DIR}/res/icons/updater_icon.jpg" \
 cp -f "${MISC_DIR}/res/icons/updater_sub_icon.png" \
   "${APP_DIR}/ASAP-Updater/resources/gui_icon.png" || true
 echo "Replaced: ASAP-Updater icon"
+
+cp -f "${MISC_DIR}/res/icons/hoc_bench_icon.jpg" \
+  "${APP_DIR}/Horizon-OC/Source/Benchmark-Toolbox/icon.jpg" || true
+
+cp -f "${MISC_DIR}/res/icons/hoc_bench_sub_icon.png" \
+  "${APP_DIR}/Horizon-OC/Source/Benchmark-Toolbox/resources/img/logo.png" || true
+echo "Replaced: Horizon-OC icon"
 
 # Convert LVGL Korean fonts into Hekate and Nyx Custom
 python "${MISC_DIR}/tools/repack/main.py"
@@ -281,7 +298,7 @@ else
   echo "[ERROR] hekate not found, skipping"
 fi
 
-# Hekate 8GB DRAM
+# Hekate 8GB DRAM (RSVD_FLAG_DRAM_8GB = 0x01)
 if [[ -f "${APP_DIR}/hekate_8GB/loader/loader.c" ]]; then
   echo "Patching: loader.c"
 
@@ -293,33 +310,23 @@ else
   echo "[ERROR] loader.c not found, skipping 8GB DRAM Mode"
 fi
 
-# Atmosphere 40mb patch
-if [[ -d "${APP_DIR}/Atmosphere" ]]; then
-  MEMPATCH_SRC="${APP_DIR}/AMS_40MB/libraries/libmesosphere/source/board/nintendo/nx"
-  cp -a "${APP_DIR}/Atmosphere" "${APP_DIR}/AMS_40MB"
-  cp -v "${APP_DIR}/AMS_40MB/40mb_patch.cpp" "${MEMPATCH_SRC}/kern_k_system_control.cpp"
-  echo "Duplicated: Atmosphere > AMS_40MB"
-else
-  echo "[ERROR] Atmosphere not found, skipping"
-fi
-
 # loader.kip, exosphere.bin
 if [[ -d "${APP_DIR}/Atmosphere" ]]; then
   EXO_SRC="${APP_DIR}/Horizon-OC/Source/Atmosphere-Patches"
   cp -a "${APP_DIR}/Atmosphere" "${APP_DIR}/HOC_Patch"
   rm -rf "${APP_DIR}/HOC_Patch/stratosphere/loader/source/oc"
   cp -a "${APP_DIR}/Horizon-OC/Source/Atmosphere/stratosphere/"* "${APP_DIR}/HOC_Patch/stratosphere"
-  cp -v "${EXO_SRC}/secmon_emc_access_table_data.inc" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
-  cp -v "${EXO_SRC}/secmon_define_emc_access_table.inc" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
-  cp -v "${EXO_SRC}/secmon_rtc_pmc_access_table_data.inc" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
-  cp -v "${EXO_SRC}/secmon_define_rtc_pmc_access_table.inc" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
-  cp -v "${EXO_SRC}/secmon_smc_register_access.cpp" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
-  cp -v "${EXO_SRC}/secmon_smc_handler.cpp" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
-  cp -v "${EXO_SRC}/secmon_memory_layout.hpp" "${APP_DIR}/HOC_Patch/libraries/libexosphere/include/exosphere/secmon"
+  cp "${EXO_SRC}/secmon_emc_access_table_data.inc" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
+  cp "${EXO_SRC}/secmon_define_emc_access_table.inc" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
+  cp "${EXO_SRC}/secmon_rtc_pmc_access_table_data.inc" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
+  cp "${EXO_SRC}/secmon_define_rtc_pmc_access_table.inc" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
+  cp "${EXO_SRC}/secmon_smc_register_access.cpp" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
+  cp "${EXO_SRC}/secmon_smc_handler.cpp" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
+  cp "${EXO_SRC}/secmon_memory_layout.hpp" "${APP_DIR}/HOC_Patch/libraries/libexosphere/include/exosphere/secmon"
   echo "Duplicated: exosphere and stratosphere"
+  echo "Atmosphere: supported horizon-oc"
 else
   echo "[ERROR] exosphere or stratosphere not found, skipping"
 fi
 
-echo
 echo "Done"
