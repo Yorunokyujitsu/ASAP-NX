@@ -39,7 +39,7 @@ DBI_EN_URL="$(gh_release_latest Yorunokyujitsu DBIPatcher DBI_en.zip)"
 SALTYNX_URL="$(gh_release_latest masagrator SaltyNX SaltyNX.zip)"
 TINFOIL_URL="https://tinfoil.media/repo/Tinfoil%20Applet%20Mode%20%5B20.0%5D%5Bv2%5D.zip"
 AMIIBO_GEN_URL="$(gh_release_latest yusufakg AmiiboGenerator AmiiboGenerator.nro)"
-SPHAIRA_URL="$(gh_release_latest Yorunokyujitsu sphaira sphaira.nro)"
+# SPHAIRA_URL="$(gh_release_latest Yorunokyujitsu sphaira sphaira.nro)"
 
 # Dynamic name zips URLs
 HEKATE_URL="$(gh_dynamic_name CTCaer hekate '^hekate_ctcaer.*\.zip$')"
@@ -81,12 +81,12 @@ package_asap() {
   fi
 
   # Make AIO directories
-  mkdir -p "${DIST_DIR}"/atmosphere/{contents/010B6ECF3B30D000/tools,contents/00FF0000636C6BFF/flags,hosts,spl}
-  mkdir -p "${DIST_DIR}"/backup/{keys,kips/.OC}
+  mkdir -p "${DIST_DIR}"/atmosphere/{contents/010B6ECF3B30D000/tools,contents/010B6ECF3B30D000/cache,contents/00FF0000636C6BFF/flags,hosts,spl}
+  mkdir -p "${DIST_DIR}"/backup/{configs,keys}
   mkdir -p "${DIST_DIR}"/bootloader/{payloads,sys,res}
   mkdir -p "${DIST_DIR}"/config/{ftpsrv,ultrahand/sounds,ultrahand/assets/notifications}
   mkdir -p "${DIST_DIR}"/switch/{.packages/.offload/ram_expansion,AmiiboGenerator}
-  mkdir -p "${DIST_DIR}"/switch/{ASAP-Updater,DBI,linkalho,sphaira,tinfoil/themes/ASAP_Custom}
+  mkdir -p "${DIST_DIR}"/switch/{ASAP-Updater,Benchmark-Toolbox,DBI,linkalho,sphaira,tinfoil/themes/ASAP_Custom}
   mkdir -p "${DIST_DIR}/warmboot_mariko"
 
   # Downloads ZIP
@@ -101,7 +101,7 @@ package_asap() {
 
   # Download file
   download 5 -o "${DIST_DIR}/switch/AmiiboGenerator/AmiiboGenerator.nro" "${AMIIBO_GEN_URL}"
-  download 5 -o "${DIST_DIR}/switch/sphaira/sphaira.nro" "${SPHAIRA_URL}"
+  # download 5 -o "${DIST_DIR}/switch/sphaira/sphaira.nro" "${SPHAIRA_URL}"
 
   # Extract
   unzip -oq "${DIST_DIR}/hekate.zip" "bootloader/sys/*" -d "${DIST_DIR}"
@@ -139,15 +139,6 @@ package_asap() {
     printf '[Stock]\npkg3=atmosphere/package3\nstock=1\nemummc_force_disable=1\nlogopath=bootloader/res/asap.bmp';
   } > "${DIST_DIR}/bootloader/ini/ams_wbfix.ini"
 
-  #install -D -m 0644 /dev/null "${DIST_DIR}/config/sys-clk/config_.ini" && {
-  #  printf '# App config options example: Zelda BOTW\n# Add tid line: [Application Title ID]\n';
-  #  printf '# Options: docked, handheld, handheld_charging, handheld_charging_usb, handheld_charging_official\n';
-  #  printf '# Add at the end of options: _cpu, _gpu, _mem = value\n;[01007EF00011E000]\n;docked_cpu=1224\n';
-  #  printf ';handheld_charging_cpu=1224\n;handheld_mem=1600\n\n# Default settings\n';
-  #  printf '[values]\ngpu_vmin_offset=0\nauto_gpu_vmin=1\nreversenx_sync=0\n';
-  #  printf 'auto_cpu_boost=0\nboost_gpu_override=0\nuncapped_clocks=1\n';
-  #} > "${DIST_DIR}/config/sys-clk/config_.ini"
-
   install -D -m 0644 /dev/null "${DIST_DIR}/config/sys-clk/config_.ini" && {
     printf '[values]\n; Defines how often sys-clk log temperatures, in milliseconds (set 0 to disable)\n';
     printf 'temp_log_interval_ms=0\n; Defines how often sys-clk writes to the CSV, in milliseconds (set 0 to disable)\n';
@@ -161,15 +152,12 @@ package_asap() {
     printf '[config]\nftp_enabled=1\nmtp_enabled=1\nnxlink_enabled=0\ninstall_emummc=1\n';
     printf 'skip_nca_hash_verify=0\nskip_rsa_header_fixed_key_verify=1\n';
     printf 'skip_rsa_npdm_fixed_key_verify=0\nlower_system_version=0\n';
-    printf '[dump]\nappend_folder_with_xci=0\nuse_nacp_name=1\n';
+    printf '[dump]\npath=/backup/dumps\nappend_folder_with_xci=0\n';
+    printf '[filebrowser]\nignore_read_only=1';
   } > "${DIST_DIR}/config/sphaira/config_.ini"
 
-  install -D /dev/null "${DIST_DIR}/config/ultrahand/ram_4gb.ini" && {
-    printf '[config]\n8gb=1';
-  } > "${DIST_DIR}/config/ultrahand/ram_4gb.ini"
-
   install -D /dev/null "${DIST_DIR}/config/ultrahand/packages.ini" && {
-    printf '[Extra Setting+]\npriority=0\n\n[System Clock+]\npriority=1\n\n[OC Toolkit]\npriority=2\nhide=true';
+    printf '[Extra Setting+]\npriority=0\n\n[Quick Guide+]\npriority=1';
    } > "${DIST_DIR}/config/ultrahand/packages.ini"
 
   install -D /dev/null "${DIST_DIR}/switch/.packages/config.ini" && {
@@ -190,6 +178,7 @@ package_asap() {
        "${DIST_DIR}/config/MissionControl/missioncontrol_.ini"
   fi
 
+  touch "${DIST_DIR}/config/ultrahand/ram_4gb.ini"
   touch "${DIST_DIR}/atmosphere/contents/00FF0000636C6BFF/flags/boot2.flag"
   touch "${DIST_DIR}/atmosphere/contents/010B6ECF3B30D000/flag"
 
@@ -199,7 +188,6 @@ package_asap() {
 
   # Packaging
   AMS_DIR="${APP_DIR}/Atmosphere/out/nintendo_nx_arm64_armv8a/release/atmosphere-out"
-  MEM_DIR="${APP_DIR}/AMS_40MB/out/nintendo_nx_arm64_armv8a/release/atmosphere-out"
 
   cp -r "${AMS_DIR}/atmosphere/config" "${DIST_DIR}/atmosphere"
   cp -r "${AMS_DIR}/atmosphere/hbl_html" "${DIST_DIR}/atmosphere"
@@ -215,25 +203,22 @@ package_asap() {
   cp -f -T "${MISC_DIR}/mod/instinct_toolbox.bin" "${DIST_DIR}/atmosphere/contents/010B6ECF3B30D000/tools/itb"
   cp -f -T "${MISC_DIR}/mod/picofly_toolbox.bin" "${DIST_DIR}/atmosphere/contents/010B6ECF3B30D000/tools/ptb"
   cp -f -T "${MISC_DIR}/ini/cleanup.ini" "${DIST_DIR}/atmosphere/contents/010B6ECF3B30D000/clup"
+  cp -f -T "${MISC_DIR}/ini/update.ini" "${DIST_DIR}/atmosphere/contents/010B6ECF3B30D000/upd"
 
   cp -f "${APP_DIR}/Ultrahand-Overlay/sounds/"*.wav "${DIST_DIR}/config/ultrahand/sounds"
 
   cp "${MISC_DIR}/tools/img_converter/hekate_res/background.bmp" "${DIST_DIR}/bootloader/res/asap.bmp"
   cp "${TOP_DIR}/version.inc" "${DIST_DIR}/atmosphere/config"
   cp "${APP_DIR}/HOC_Patch/exosphere/out/nintendo_nx_arm64_armv8a/release/exosphere.bin" "${DIST_DIR}/atmosphere/config/exosphere.bin"
-  cp "${KIP_DIR}/hoc.kip" "${DIST_DIR}/backup/kips/.OC/loader.kip"
+  cp "${KIP_DIR}/hoc.kip" "${DIST_DIR}/backup/configs/loader.kip"
   cp "${APP_DIR}/Horizon-OC/Source/hoc-clk/sysmodule/out/hoc-clk.nsp" "${DIST_DIR}/atmosphere/contents/00FF0000636C6BFF/exefs.nsp"
   cp "${APP_DIR}/Horizon-OC/Source/hoc-clk/overlay/out/horizon-oc-overlay.ovl" "${DIST_DIR}/switch/.overlays/horizon-oc-overlay.ovl"
   cp "${APP_DIR}/nx-hbloader/hbl.nsp" "${DIST_DIR}/atmosphere/spl/spl.nsp"
   cp "${AMS_DIR}/atmosphere/package3" "${DIST_DIR}/atmosphere"
   cp "${AMS_DIR}/atmosphere/stratosphere.romfs" "${DIST_DIR}/atmosphere"
   cp "${AMS_DIR}/bootloader/payloads/fusee.bin" "${DIST_DIR}/bootloader/payloads"
-  cp "${MEM_DIR}/atmosphere/package3" "${DIST_DIR}/switch/.packages/.offload/ram_expansion/package3_40mb"
-  cp "${MEM_DIR}/atmosphere/stratosphere.romfs" "${DIST_DIR}/switch/.packages/.offload/ram_expansion/stratosphere_40mb.romfs"
-  cp "${MEM_DIR}/bootloader/payloads/fusee.bin" "${DIST_DIR}/switch/.packages/.offload/ram_expansion/fusee_40mb.bin"
   cp "${APP_DIR}/ASAP-Updater/ATLAS/output/ATLAS.bin" "${DIST_DIR}/bootloader/payloads"
   cp "${APP_DIR}/LockPick/output/auto_lockpick.bin" "${DIST_DIR}/bootloader/payloads"
-  cp "${MISC_DIR}/ini/update.ini" "${DIST_DIR}/bootloader/update.te"
   cp "${APP_DIR}/hekate/output/hekate.bin" "${DIST_DIR}/bootloader/update.bin"
   cp "${APP_DIR}/hekate/output/hekate.bin" "${DIST_DIR}/payload.bin"
   cp "${APP_DIR}/hekate/output/nyx.bin" "${DIST_DIR}/bootloader/sys"
@@ -247,7 +232,8 @@ package_asap() {
   cp "${APP_DIR}/ASAP-Updater/ASAP-Updater.nro" "${DIST_DIR}/switch/ASAP-Updater/ASAP-Updater_.nro"
   cp "${APP_DIR}/ASAP-Updater/.ASAP-Updater.nro.star" "${DIST_DIR}/switch/ASAP-Updater"
   cp "${APP_DIR}/linkalho/linkalho.nro" "${DIST_DIR}/switch/linkalho"
-  #cp "${APP_DIR}/sphaira/build/Release/sphaira.nro" "${DIST_DIR}/switch/sphaira"
+  cp "${APP_DIR}/Horizon-OC/Source/Benchmark-Toolbox/Benchmark-Toolbox.nro" "${DIST_DIR}/switch/Benchmark-Toolbox"
+  cp "${APP_DIR}/sphaira/build/Release/sphaira.nro" "${DIST_DIR}/switch/sphaira"
   #cp "${APP_DIR}/DBIPatcher/dist/DBI.nro" "${DIST_DIR}/switch/DBI/DBI.845.nro"
   cp "${MISC_DIR}/ini/dbi.ini" "${DIST_DIR}/switch/DBI/dbi.config"
   cp "${MISC_DIR}/res/icons/logo.png" "${DIST_DIR}/switch/tinfoil/themes/ASAP_Custom"
@@ -263,7 +249,7 @@ package_asap() {
   cp "${MISC_DIR}/cache/wb_17.bin" "${DIST_DIR}/warmboot_mariko"
 
   # Temporary
-  # cp -r "${APP_DIR}/hekate" "${DIST_DIR}"
+  #cp -r "${APP_DIR}/hekate" "${DIST_DIR}"
 
   # ASAP Current version
   sed -i '/^\[latest_version\]/,/^\[/d' \
@@ -290,13 +276,9 @@ package_asap() {
   cp -r "${DIST_DIR}/ASAP/switch/.packages/.offload" "${DIST_DIR}/temp/switch/.packages"
   cp "${DIST_DIR}/ASAP/atmosphere/config/version.inc" "${DIST_DIR}/temp/atmosphere/config"
   cp "${DIST_DIR}/ASAP/atmosphere/package3" "${DIST_DIR}/temp/atmosphere"
-  cp "${DIST_DIR}/ASAP/atmosphere/package3" "${DIST_DIR}/temp/switch/.packages/.offload/ram_expansion"
   cp "${DIST_DIR}/ASAP/atmosphere/stratosphere.romfs" "${DIST_DIR}/temp/atmosphere"
-  cp "${DIST_DIR}/ASAP/atmosphere/stratosphere.romfs" "${DIST_DIR}/temp/switch/.packages/.offload/ram_expansion"
   cp "${DIST_DIR}/ASAP/bootloader/payloads/ATLAS.bin" "${DIST_DIR}/temp/bootloader/payloads"
   cp "${DIST_DIR}/ASAP/bootloader/payloads/fusee.bin" "${DIST_DIR}/temp/bootloader/payloads"
-  cp "${DIST_DIR}/ASAP/bootloader/payloads/fusee.bin" "${DIST_DIR}/temp/bootloader/payloads"
-  cp "${DIST_DIR}/ASAP/bootloader/payloads/fusee.bin" "${DIST_DIR}/temp/switch/.packages/.offload/ram_expansion"
   cp "${DIST_DIR}/ASAP/bootloader/update.bin" "${DIST_DIR}/temp/bootloader"
   cp "${DIST_DIR}/ASAP/payload.bin" "${DIST_DIR}/temp/switch/.packages/.offload/ram_expansion/hekate_4gb.bin"
   cp "${DIST_DIR}/ASAP/payload.bin" "${DIST_DIR}/temp"
@@ -310,9 +292,9 @@ package_asap() {
   # oc.zip
   mkdir -p "${DIST_DIR}/oc/"{atmosphere/{contents,config,kips},backup,config/sys-clk,switch/.overlays}
   cp -r "${DIST_DIR}/ASAP/atmosphere/contents/00FF0000636C6BFF" "${DIST_DIR}/oc/atmosphere/contents"
-  cp -r "${DIST_DIR}/ASAP/backup/kips" "${DIST_DIR}/oc/backup"
+  cp -r "${DIST_DIR}/ASAP/backup/configs" "${DIST_DIR}/oc/backup"
   cp "${DIST_DIR}/ASAP/atmosphere/config/exosphere.bin" "${DIST_DIR}/oc/atmosphere/config"
-  cp "${DIST_DIR}/ASAP/backup/kips/.OC/loader.kip" "${DIST_DIR}/oc/atmosphere/kips"
+  cp "${DIST_DIR}/ASAP/backup/configs/loader.kip" "${DIST_DIR}/oc/atmosphere/kips"
   cp "${DIST_DIR}/ASAP/config/sys-clk/config_.ini" "${DIST_DIR}/oc/config/sys-clk/config.ini"
   cp "${DIST_DIR}/ASAP/switch/.overlays/horizon-oc-overlay.ovl" "${DIST_DIR}/oc/switch/.overlays"
 
@@ -323,12 +305,12 @@ package_asap() {
   mv "${DIST_DIR}/oc/oc.zip" "${DIST_DIR}/output"
 
   # oc_ext.zip
-  mkdir -p "${DIST_DIR}/oc/switch/Benchmark-Toolbox"
+  mkdir -p "${DIST_DIR}/oc/switch"
   rm -rf "${DIST_DIR}/oc/atmosphere"
   rm -rf "${DIST_DIR}/oc/backup"
   rm -rf "${DIST_DIR}/oc/config"
   rm -rf "${DIST_DIR}/oc/switch/.overlays"
-  cp "${APP_DIR}/Horizon-OC/Source/Benchmark-Toolbox/Benchmark-Toolbox.nro" "${DIST_DIR}/oc/switch/Benchmark-Toolbox"
+  cp -r "${DIST_DIR}/switch/Benchmark-Toolbox" "${DIST_DIR}/oc/switch"
   
   (
     cd "${DIST_DIR}/oc"

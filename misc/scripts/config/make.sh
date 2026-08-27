@@ -55,15 +55,6 @@ for entry in "${REPOS[@]}"; do
     continue
   fi
 
-  # Atmosphere 40mb patch
-  if [[ "$dest" == "AMS_40MB" ]]; then
-    print_title "[BUILD] ${dest}"
-    make -C "$dir" -f atmosphere.mk dist-no-debug -j12
-    echo "Atmosphere 40MB patch build completed"
-    echo
-    continue
-  fi
-
   # Atmosphere (only loader + exosphere)
   if [[ "$dest" == "HOC_Patch" ]]; then
     print_title "[BUILD] ${dest}"

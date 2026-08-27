@@ -26,7 +26,7 @@ SKIP_BUILD=(
 if [[ "${ENABLE_CUSTOM:-0}" == "1" ]]; then
   # Custom On - ASAP
   REPOS+=(
-    # Hekate (EN: f688f65)
+    # Hekate (EN: fd82a9b, Hocate: 39417b3)
     "Yorunokyujitsu/hekate@custom"
 
     # Atmosphere
@@ -34,17 +34,17 @@ if [[ "${ENABLE_CUSTOM:-0}" == "1" ]]; then
 
     # Homebrew loader and Sphaira
     "switchbrew/nx-hbloader"
-    #"Yorunokyujitsu/sphaira@test"
+    "Yorunokyujitsu/sphaira@eacb54b"
 
-    # System modules and overlays (latest libultrahand 856ddbd)
-    "ppkantorski/Ultrahand-Overlay@2d0621a"
+    # System modules and overlays (latest libultrahand 2e4df54)
+    "ppkantorski/Ultrahand-Overlay@896d25f"
     "ppkantorski/EdiZon-Overlay@91e64f7"
     "masagrator/FPSLocker@7b316c9"
     "ppkantorski/NX-FanControl@acf6d39"
     "ppkantorski/ovl-sysmodules@32f1045"
     "ppkantorski/ReverseNX-RT@748f6be"
     "ppkantorski/Status-Monitor-Overlay@84fe9cd"
-    "Yorunokyujitsu/Horizon-OC@test" # d9906a7
+    "Yorunokyujitsu/Horizon-OC@personal" # personal ( 2.5.1: 66cfbe0 ), test ( 3.0.0: 38ab15a )
 
     # Homebrews
     "HamletDuFromage/aio-switch-updater=ASAP-Updater@3d38eaa"
@@ -52,7 +52,6 @@ if [[ "${ENABLE_CUSTOM:-0}" == "1" ]]; then
 
     # Local
     "__local__/HOC_Patch"
-    "__local__/AMS_40MB"
     "__local__/hekate_8GB"
     "__local__/LockPick"
   )
