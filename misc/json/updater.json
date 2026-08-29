@@ -17,8 +17,8 @@
             "sphaira 1.0.0 → 1.0.7",
             "릴리즈 노트 참고.",
             "",
-            "System Modules 업데이트",
-            "SaltyNX 1.8.1 → 1.9.2, sys-con 1.6.3 → 1.7.0"
+            "System Modules & Homebrew 업데이트",
+            "SaltyNX 1.9.2 → 1.9.3, sys-con 1.6.3 → 1.7.0, DBI 895 → 905"
         ]
     },
     "cfws": {
