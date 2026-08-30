@@ -118,6 +118,13 @@ package_asap() {
   find "${DIST_DIR}" -type f -iname '*.zip' -delete
 
   # Config inis
+  install -D -m 0644 /dev/null "${DIST_DIR}/atmosphere/config/exosphere.ini" && {
+    printf '[exosphere]\ndebugmode=1\ndebugmode_user=0\ndisable_user_exception_handlers=0\n';
+    printf 'enable_40mb_mem_mode=1\nenable_8gb_mem_mode=0\n';
+    printf 'enable_user_pmu_access=0\nblank_prodinfo_sysmmc=0\nblank_prodinfo_emummc=1\n';
+    printf 'allow_writing_to_cal_sysmmc=0\nlog_port=0\nlog_baud_rate=115200\nlog_inverted=0\n';
+  } > "${DIST_DIR}/atmosphere/config/exosphere.ini"
+
   install -D -m 0644 /dev/null "${DIST_DIR}/atmosphere/hosts/emummc.txt" && {
     printf '# Block Nintendo Servers\n127.0.0.1 *nintendo*\n';
     printf '95.216.149.205 *conntest.nintendowifi.net\n95.216.149.205 *ctest.cdn.nintendo.net\n';
@@ -189,7 +196,7 @@ package_asap() {
   # Packaging
   AMS_DIR="${APP_DIR}/Atmosphere/out/nintendo_nx_arm64_armv8a/release/atmosphere-out"
 
-  cp -r "${AMS_DIR}/atmosphere/config" "${DIST_DIR}/atmosphere"
+  rsync -a --exclude='exosphere.ini' "${AMS_DIR}/atmosphere/config/" "${DIST_DIR}/atmosphere/config/"
   cp -r "${AMS_DIR}/atmosphere/hbl_html" "${DIST_DIR}/atmosphere"
   cp -r "${AMS_DIR}/switch" "${DIST_DIR}"
   cp -r "${APP_DIR}/NX-FanControl/out/atmosphere" "${DIST_DIR}"
