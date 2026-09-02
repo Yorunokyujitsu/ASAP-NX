@@ -6,7 +6,7 @@ current_nyx=1.9.3
 
 [latest_version]
 supported_hos=22.5.0
-tester_version=0830
+tester_version=0902
 ldr_kip_version=2.5.1.rev6
 
 hekate=6.5.3
