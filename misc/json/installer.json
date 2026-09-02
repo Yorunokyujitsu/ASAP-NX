@@ -76,6 +76,11 @@
             "   ㄴ Quick Guide+에서 에러 코드 확인.\n",
             "◇ 8GB RAM:",
             "   실제 램이 8GB인 기기에서만 작동합니다.\n",
+            "◇ 0830 fix (26.09.02):",
+            "   - Hekate & Nyx",
+            "     ㄴ 릴리즈 노트 추가.",
+            "     ㄴ 깨진 한글 폰트 수정.",
+            "     ㄴ 이스터 에그 수정.",
             "◇ 0830 변경내역:",
             "   - Hekate & Nyx",
             "     ㄴ Hocate 기능 추가 및 커스텀.",
@@ -580,7 +585,7 @@
         "github_api": "",
         "url": "https://wiki.switchroot.org/wiki/android/android-14-15",
         "download": "https://www.dropbox.com/scl/fi/tah21kpujq9kixgukpes8/Android_tv.zip?rlkey=7d2t3k5e3rwzdg2t4j17f7yso&dl=1",
-        "pack_ver": "22.2-260825"
+        "pack_ver": "22.2-260901"
     },
     "Android Tablet": {
         "description": [
@@ -615,7 +620,7 @@
         "github_api": "",
         "url": "https://wiki.switchroot.org/wiki/android/android-14-15",
         "download": "https://www.dropbox.com/scl/fi/7cdwxpa17ccyvm6kfh1op/Android_tab.zip?rlkey=ucipv9iedej34xyaym2u7oy22&dl=1",
-        "pack_ver": "22.2-260823"
+        "pack_ver": "22.2-260830"
     },
     "Ubuntu Bionic": {
         "description": [
