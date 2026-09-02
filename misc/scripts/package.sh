@@ -160,7 +160,7 @@ package_asap() {
     printf 'skip_nca_hash_verify=0\nskip_rsa_header_fixed_key_verify=1\n';
     printf 'skip_rsa_npdm_fixed_key_verify=0\nlower_system_version=0\n';
     printf '[dump]\npath=/backup/dumps\nappend_folder_with_xci=0\n';
-    printf '[filebrowser]\nignore_read_only=1';
+    printf '[filebrowser]\nignore_read_only=0';
   } > "${DIST_DIR}/config/sphaira/config_.ini"
 
   install -D /dev/null "${DIST_DIR}/config/ultrahand/packages.ini" && {
@@ -214,6 +214,7 @@ package_asap() {
 
   cp -f "${APP_DIR}/Ultrahand-Overlay/sounds/"*.wav "${DIST_DIR}/config/ultrahand/sounds"
 
+  cp "${MISC_DIR}/ini/note.ini" "${DIST_DIR}/release_note.txt"
   cp "${MISC_DIR}/tools/img_converter/hekate_res/background.bmp" "${DIST_DIR}/bootloader/res/asap.bmp"
   cp "${TOP_DIR}/version.inc" "${DIST_DIR}/atmosphere/config"
   cp "${APP_DIR}/HOC_Patch/exosphere/out/nintendo_nx_arm64_armv8a/release/exosphere.bin" "${DIST_DIR}/atmosphere/config/exosphere.bin"
