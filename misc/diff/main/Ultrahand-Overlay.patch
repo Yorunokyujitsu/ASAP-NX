@@ -771,7 +771,7 @@ index e434e4d5..9bbae9b3 100644
  
          // Default behavior - load main menu
 diff --git a/source/utils.hpp b/source/utils.hpp
-index ed6893ef..8cd1ba63 100644
+index ed6893ef..3be22816 100644
 --- a/source/utils.hpp
 +++ b/source/utils.hpp
 @@ -218,6 +218,7 @@ void removeKeyComboFromOthers(const std::string& keyCombo, const std::string& cu
