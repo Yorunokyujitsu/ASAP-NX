@@ -62,4 +62,5 @@ Final build artifacts and logs are uploaded as GitHub Actions Artifacts.<br><br>
 > **rdmrocha**, **impeeza** - Tool for managing NNID linking and unlinking.<br>
 > **duckbill**, **Morce3232** and **rashevskyv** - DBI and [translation patch tools](https://github.com/rashevskyv/DBIPatcher).<br>
 > **HamletDuFromage** - Homebrew for [updating CFW, Cheats, L4T, and Firmware](https://github.com/HamletDuFromage/aio-switch-updater).<br>
+> **blawar** - [Title database](https://github.com/blawar/titledb).<br>
 > **Google Fonts** - [NotoSans KR](https://fonts.google.com/noto/specimen/Noto+Sans+KR), [Cascadia Mono](https://fonts.google.com/specimen/Cascadia+Mono).
