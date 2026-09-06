@@ -37,7 +37,7 @@ OVLLDR_URL="$(gh_release_tag ppkantorski nx-ovlloader v2.0.3 nx-ovlloader.zip)"
 DBI_KO_URL="$(gh_release_latest Yorunokyujitsu DBIPatcher DBI_ko.zip)"
 DBI_EN_URL="$(gh_release_latest Yorunokyujitsu DBIPatcher DBI_en.zip)"
 SALTYNX_URL="$(gh_release_latest masagrator SaltyNX SaltyNX.zip)"
-TINFOIL_URL="https://tinfoil.media/repo/Tinfoil%20Applet%20Mode%20%5B20.0%5D%5Bv2%5D.zip"
+# TINFOIL_URL="https://tinfoil.media/repo/Tinfoil%20Applet%20Mode%20%5B20.0%5D%5Bv2%5D.zip"
 AMIIBO_GEN_URL="$(gh_release_latest yusufakg AmiiboGenerator AmiiboGenerator.nro)"
 # SPHAIRA_URL="$(gh_release_latest Yorunokyujitsu sphaira sphaira.nro)"
 
@@ -86,7 +86,7 @@ package_asap() {
   mkdir -p "${DIST_DIR}"/bootloader/{payloads,sys,res}
   mkdir -p "${DIST_DIR}"/config/{ftpsrv,ultrahand/sounds,ultrahand/assets/notifications}
   mkdir -p "${DIST_DIR}"/switch/{.packages/.offload/ram_expansion,AmiiboGenerator}
-  mkdir -p "${DIST_DIR}"/switch/{ASAP-Updater,Benchmark-Toolbox,DBI,linkalho,sphaira,tinfoil/themes/ASAP_Custom}
+  mkdir -p "${DIST_DIR}"/switch/{ASAP-Updater,Benchmark-Toolbox,DBI,linkalho,sphaira} #,tinfoil/themes/ASAP_Custom}
   mkdir -p "${DIST_DIR}/warmboot_mariko"
 
   # Downloads ZIP
@@ -96,7 +96,7 @@ package_asap() {
   download 5 -o "${DIST_DIR}/ovlloader.zip"           "${OVLLDR_URL}"
   download 5 -o "${DIST_DIR}/saltynx.zip"             "${SALTYNX_URL}"
   download 5 -o "${DIST_DIR}/sys-con.zip"             "${SYSCON_URL}"
-  download 5 -o "${DIST_DIR}/tinfoil.zip"             "${TINFOIL_URL}"
+  #download 5 -o "${DIST_DIR}/tinfoil.zip"             "${TINFOIL_URL}"
   download 5 -o "${DIST_DIR}/switch/DBI/DBI.zip"      "${DBI_KO_URL}"
 
   # Download file
@@ -111,7 +111,7 @@ package_asap() {
   unzip -o "${DIST_DIR}/emuiibo.zip" -d "${DIST_DIR}"
   unzip -o "${DIST_DIR}/saltynx.zip" -d "${DIST_DIR}"
   unzip -o "${DIST_DIR}/sys-con.zip" -x "*switch/sys-con.nro" -d "${DIST_DIR}"
-  unzip -o "${DIST_DIR}/tinfoil.zip" -x "*icon*.db" -d "${DIST_DIR}"
+  #unzip -o "${DIST_DIR}/tinfoil.zip" -x "*icon*.db" -d "${DIST_DIR}"
 
   # Remove download zip files
   rm -f "${DIST_DIR}/switch/DBI/DBI.zip"
@@ -120,7 +120,7 @@ package_asap() {
   # Config inis
   install -D -m 0644 /dev/null "${DIST_DIR}/atmosphere/config/exosphere.ini" && {
     printf '[exosphere]\ndebugmode=1\ndebugmode_user=0\ndisable_user_exception_handlers=0\n';
-    printf 'enable_40mb_mem_mode=1\nenable_8gb_mem_mode=0\n';
+    printf 'enable_40mb_mem_mode=0\nenable_8gb_mem_mode=0\n';
     printf 'enable_user_pmu_access=0\nblank_prodinfo_sysmmc=0\nblank_prodinfo_emummc=1\n';
     printf 'allow_writing_to_cal_sysmmc=0\nlog_port=0\nlog_baud_rate=115200\nlog_inverted=0\n';
   } > "${DIST_DIR}/atmosphere/config/exosphere.ini"
@@ -244,10 +244,10 @@ package_asap() {
   cp "${APP_DIR}/sphaira/build/Release/sphaira.nro" "${DIST_DIR}/switch/sphaira"
   #cp "${APP_DIR}/DBIPatcher/dist/DBI.nro" "${DIST_DIR}/switch/DBI/DBI.845.nro"
   cp "${MISC_DIR}/ini/dbi.ini" "${DIST_DIR}/switch/DBI/dbi.config"
-  cp "${MISC_DIR}/res/icons/logo.png" "${DIST_DIR}/switch/tinfoil/themes/ASAP_Custom"
-  cp "${MISC_DIR}/res/screens/bg.png" "${DIST_DIR}/switch/tinfoil/themes/ASAP_Custom"
-  cp "${MISC_DIR}/json/tinfoil_theme.json" "${DIST_DIR}/switch/tinfoil/themes/ASAP_Custom/settings.json"
-  cp "${MISC_DIR}/json/tinfoil_options.json" "${DIST_DIR}/switch/tinfoil/options.json"
+  #cp "${MISC_DIR}/res/icons/logo.png" "${DIST_DIR}/switch/tinfoil/themes/ASAP_Custom"
+  #cp "${MISC_DIR}/res/screens/bg.png" "${DIST_DIR}/switch/tinfoil/themes/ASAP_Custom"
+  #cp "${MISC_DIR}/json/tinfoil_theme.json" "${DIST_DIR}/switch/tinfoil/themes/ASAP_Custom/settings.json"
+  #cp "${MISC_DIR}/json/tinfoil_options.json" "${DIST_DIR}/switch/tinfoil/options.json"
   cp "${MISC_DIR}/res/misc/hoc.rgba" "${DIST_DIR}/config/ultrahand/assets/notifications/hoc.rgba"
   cp "${MISC_DIR}/res/misc/res.pak" "${DIST_DIR}/bootloader/sys"
   cp "${MISC_DIR}/ini/overlays.ini" "${DIST_DIR}/config/ultrahand"

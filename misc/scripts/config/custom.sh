@@ -182,6 +182,12 @@ echo
 print_title "[4/7] Cleanup repositories"
 echo
 
+# atmosphere
+safe_rm \
+  "${APP_DIR}/Atmosphere/stratosphere/loader/source/ldr_embedded_am_patches.inc" \
+  "${APP_DIR}/Atmosphere/stratosphere/loader/source/ldr_embedded_usb_patches.inc"
+echo "Deleted: embedded patches inc"
+
 # aio-switch-updater
 safe_rm \
   "${APP_DIR}/ASAP-Updater/ATLAS/scripts/FirmwareDump.te" \
@@ -191,12 +197,11 @@ safe_rm \
   "${APP_DIR}/ASAP-Updater/resources/i18n" \
   "${APP_DIR}/ASAP-Updater/aiosu-forwarder" \
   "${APP_DIR}/ASAP-Updater/resources/deepsea_icon.png"
+echo "Deleted: aio-switch-updater"
 
 # sphaira
 safe_rm \
   "${APP_DIR}/sphaira/assets/romfs/github/sphaira.json"
-
-echo "Deleted: aio-switch-updater"
 echo "Deleted: sphaira.json"
 
 # Create New configs
