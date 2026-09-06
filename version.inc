@@ -6,7 +6,7 @@ current_nyx=1.9.3
 
 [latest_version]
 supported_hos=22.5.0
-tester_version=0902
+tester_version=0907
 ldr_kip_version=2.5.1.rev6
 
 hekate=6.5.3
@@ -35,5 +35,4 @@ dbi=905
 linkalho=2.0.2
 reboot_to_payload=1.0.0
 sphaira=1.0.7
-tinfoil=20.0.v2
 ovlreloader=1.0.1
