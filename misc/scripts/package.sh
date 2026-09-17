@@ -87,7 +87,6 @@ package_asap() {
   mkdir -p "${DIST_DIR}"/config/{ftpsrv,ultrahand/sounds,ultrahand/assets/notifications}
   mkdir -p "${DIST_DIR}"/switch/{.packages/.offload/ram_expansion,AmiiboGenerator}
   mkdir -p "${DIST_DIR}"/switch/{ASAP-Updater,Benchmark-Toolbox,DBI,linkalho,sphaira,tinfoil/themes/ASAP_Custom}
-  mkdir -p "${DIST_DIR}/warmboot_mariko"
 
   # Downloads ZIP
   download 5 -o "${DIST_DIR}/hekate.zip"              "${HEKATE_URL}"
@@ -120,7 +119,7 @@ package_asap() {
   # Config inis
   install -D -m 0644 /dev/null "${DIST_DIR}/atmosphere/config/exosphere.ini" && {
     printf '[exosphere]\ndebugmode=1\ndebugmode_user=0\ndisable_user_exception_handlers=0\n';
-    printf 'enable_40mb_mem_mode=1\nenable_8gb_mem_mode=0\n';
+    printf 'enable_40mb_mem_mode=0\nenable_8gb_mem_mode=0\n';
     printf 'enable_user_pmu_access=0\nblank_prodinfo_sysmmc=0\nblank_prodinfo_emummc=1\n';
     printf 'allow_writing_to_cal_sysmmc=0\nlog_port=0\nlog_baud_rate=115200\nlog_inverted=0\n';
   } > "${DIST_DIR}/atmosphere/config/exosphere.ini"
@@ -177,7 +176,7 @@ package_asap() {
 
   if [[ -f "${DIST_DIR}/config/sys-con/config.ini" ]]; then
     mv "${DIST_DIR}/config/sys-con/config.ini" \
-       "${DIST_DIR}/config/sys-con/config_.ini"
+       "${DIST_DIR}/config/sys-con/config.ini.template"
   fi
 
   if [[ -f "${DIST_DIR}/config/MissionControl/missioncontrol.ini.template" ]]; then
@@ -204,12 +203,11 @@ package_asap() {
   cp -r "${APP_DIR}/uh_pack/"* "${DIST_DIR}/switch/.packages"
   cp -r "${APP_DIR}/Ultrahand-Overlay/common/audio_mastervolume" "${DIST_DIR}/atmosphere/exefs_patches"
   cp -r "${MISC_DIR}/tools/aeskey" "${DIST_DIR}/backup/keys/PartialAesKeyCrack"
-  #cp -r "${MISC_DIR}/cache" "${DIST_DIR}/warmboot_mariko"
+  cp -r "${MISC_DIR}/cache" "${DIST_DIR}/warmboot_mariko"
 
   cp -f -T "${MISC_DIR}/mod/hwfly_toolbox.bin" "${DIST_DIR}/atmosphere/contents/010B6ECF3B30D000/tools/htb"
   cp -f -T "${MISC_DIR}/mod/instinct_toolbox.bin" "${DIST_DIR}/atmosphere/contents/010B6ECF3B30D000/tools/itb"
   cp -f -T "${MISC_DIR}/mod/picofly_toolbox.bin" "${DIST_DIR}/atmosphere/contents/010B6ECF3B30D000/tools/ptb"
-  cp -f -T "${MISC_DIR}/ini/cleanup.ini" "${DIST_DIR}/atmosphere/contents/010B6ECF3B30D000/clup"
   cp -f -T "${MISC_DIR}/ini/update.ini" "${DIST_DIR}/atmosphere/contents/010B6ECF3B30D000/upd"
 
   cp -f "${APP_DIR}/Ultrahand-Overlay/sounds/"*.wav "${DIST_DIR}/config/ultrahand/sounds"
@@ -253,8 +251,6 @@ package_asap() {
   cp "${MISC_DIR}/ini/overlays.ini" "${DIST_DIR}/config/ultrahand"
   cp "${MISC_DIR}/ini/ftpsrv.ini" "${DIST_DIR}/config/ftpsrv/config_.ini"
   cp "${MISC_DIR}/mod/boot.dat" "${DIST_DIR}"
-  cp "${MISC_DIR}/cache/wb_16.bin" "${DIST_DIR}/warmboot_mariko"
-  cp "${MISC_DIR}/cache/wb_17.bin" "${DIST_DIR}/warmboot_mariko"
 
   # Temporary
   #cp -r "${APP_DIR}/hekate" "${DIST_DIR}"

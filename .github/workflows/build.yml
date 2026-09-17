@@ -50,7 +50,7 @@ jobs:
           curl wget libzstd-dev \
           p7zip p7zip-full \
           php-cli php-gd php-mbstring \
-          libfreetype6-dev
+          libfreetype6-dev texinfo
 
           if command -v 7z >/dev/null; then
             echo "[OK] 7z found: $(command -v 7z)"

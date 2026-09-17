@@ -19,8 +19,8 @@ skip_build() {
   return 1
 }
 
-for entry in "${REPOS[@]}"; do
-  spec="$entry"
+repo_info() {
+  spec="$1"
 
   if [[ "$spec" == *"="* ]]; then
     dest="${spec#*=}"
@@ -31,6 +31,10 @@ for entry in "${REPOS[@]}"; do
 
   dest="${dest%%@*}"
   dir="${APP_DIR}/${dest}"
+}
+
+for entry in "${REPOS[@]}"; do
+  repo_info "$entry"
 
   [[ -d "$dir" ]] || continue
 
@@ -39,38 +43,44 @@ for entry in "${REPOS[@]}"; do
     continue
   fi
 
-  # Atmosphere (upstream)
-  if [[ "$dest" == "Atmosphere" ]]; then
-    [[ "$ENABLE_ATMOSPHERE" == "1" ]] || continue
-    print_title "[BUILD] ${dest}"
-
-    if [[ "${ENABLE_CUSTOM:-0}" == "1" ]]; then
-      make -C "$dir" -f atmosphere.mk dist-no-debug -j12
-    else
-      make -C "$dir" -f atmosphere.mk dist-no-debug
-    fi
-
-    echo "${dest} build completed"
-    echo
+  # Repos requiring specific libnx versions are built last.
+  if [[ "$dest" == "Ultrahand-Overlay" || "$dest" == "sphaira" || \
+        "$dest" == "Atmosphere" || "$dest" == "HOC_Patch" ]]; then
     continue
   fi
+
+  # Atmosphere (upstream)
+  #if [[ "$dest" == "Atmosphere" ]]; then
+  #  [[ "$ENABLE_ATMOSPHERE" == "1" ]] || continue
+  #  print_title "[BUILD] ${dest}"
+
+  #  if [[ "${ENABLE_CUSTOM:-0}" == "1" ]]; then
+  #    make -C "$dir" -f atmosphere.mk dist-no-debug -j12
+  #  else
+  #    make -C "$dir" -f atmosphere.mk dist-no-debug
+  #  fi
+
+  #  echo "${dest} build completed"
+  #  echo
+  #  continue
+  #fi
 
   # Atmosphere (only loader + exosphere)
-  if [[ "$dest" == "HOC_Patch" ]]; then
-    print_title "[BUILD] ${dest}"
+  #if [[ "$dest" == "HOC_Patch" ]]; then
+  #  print_title "[BUILD] ${dest}"
 
-    if [[ -d "$dir/stratosphere/loader" ]]; then
-      make -C "$dir/stratosphere/loader" -j"$(nproc)"
-    fi
+  #  if [[ -d "$dir/stratosphere/loader" ]]; then
+  #    make -C "$dir/stratosphere/loader" -j"$(nproc)"
+  #  fi
 
-    if [[ -d "$dir/exosphere" ]]; then
-      make -C "$dir/exosphere" -j"$(nproc)"
-    fi
+  #  if [[ -d "$dir/exosphere" ]]; then
+  #    make -C "$dir/exosphere" -j"$(nproc)"
+  #  fi
 
-    echo "Atmosphere partial build completed"
-    echo
-    continue
-  fi
+  #  echo "Atmosphere partial build completed"
+  #  echo
+  #  continue
+  #fi
 
   # Works only with DBIPatcher forks derived from Yorunokyujitsu’s repository.
   if [[ "$dest" == "DBIPatcher" ]]; then
@@ -143,16 +153,6 @@ for entry in "${REPOS[@]}"; do
     continue
   fi
 
-  # sphaira (cmake preset: Release, Dev)
-  if [[ "$dest" == "sphaira" ]]; then
-    print_title "[BUILD] ${dest}"
-    cmake -S "$dir" --preset Release
-    cmake --build "$dir/build/Release" --parallel "$(nproc)"
-    echo "${dest} build completed"
-    echo
-    continue
-  fi
-
   # sys-clk (script build)
   if [[ "$dest" == "sys-clk" ]]; then
     print_title "[BUILD] ${dest}"
@@ -182,6 +182,104 @@ for entry in "${REPOS[@]}"; do
   make -C "$dir" -j"$(nproc)"
   echo "${dest} build completed"
   echo
+done
+
+# Ultrahand-Overlay requires ppkantorski/libnx.
+for entry in "${REPOS[@]}"; do
+  repo_info "$entry"
+
+  [[ "$dest" == "Ultrahand-Overlay" ]] || continue
+  [[ -d "$dir" ]] || break
+  skip_build "$dest" && break
+
+  print_title "[BUILD] ${dest}"
+
+  rm -rf /tmp/ultrahand-libnx
+  git clone --recurse-submodules https://github.com/ppkantorski/libnx.git /tmp/ultrahand-libnx
+  make -C /tmp/ultrahand-libnx install -j"$(nproc)"
+
+  make -C "$dir"
+  echo "${dest} build completed"
+  echo
+  break
+done
+
+# sphaira requires the latest switchbrew/libnx
+# and the custom iosupport branch of newlib.
+for entry in "${REPOS[@]}"; do
+  repo_info "$entry"
+
+  [[ "$dest" == "sphaira" ]] || continue
+  [[ -d "$dir" ]] || break
+  skip_build "$dest" && break
+
+  print_title "[BUILD] ${dest}"
+
+  rm -rf /tmp/sphaira-newlib /tmp/sphaira-libnx
+  git clone --branch iosupport https://github.com/R-YaTian/newlib.git /tmp/sphaira-newlib
+  git clone --recurse-submodules https://github.com/switchbrew/libnx.git /tmp/sphaira-libnx
+
+  (
+    cd /tmp/sphaira-newlib
+    bash ./build-libgloss-local.sh
+  )
+  make -C /tmp/sphaira-libnx install -j"$(nproc)"
+
+  # sphaira (cmake preset: Release, Dev)
+  cmake -S "$dir" --preset Release
+  cmake --build "$dir/build/Release" --parallel "$(nproc)"
+  echo "${dest} build completed"
+  echo
+  break
+done
+
+# Atmosphere requires hexkyz/libnx.
+for entry in "${REPOS[@]}"; do
+  repo_info "$entry"
+
+  [[ "$dest" == "Atmosphere" ]] || continue
+  [[ -d "$dir" ]] || break
+  skip_build "$dest" && break
+  [[ "$ENABLE_ATMOSPHERE" == "1" ]] || break
+
+  print_title "[BUILD] ${dest}"
+
+  rm -rf /tmp/atmosphere-libnx
+  git clone --recurse-submodules https://github.com/hexkyz/libnx.git /tmp/atmosphere-libnx
+  make -C /tmp/atmosphere-libnx install -j"$(nproc)"
+
+  if [[ "${ENABLE_CUSTOM:-0}" == "1" ]]; then
+    make -C "$dir" -f atmosphere.mk dist-no-debug -j12
+  else
+    make -C "$dir" -f atmosphere.mk dist-no-debug
+  fi
+
+  echo "${dest} build completed"
+  echo
+  break
+done
+
+# HOC_Patch is built after Atmosphere.
+for entry in "${REPOS[@]}"; do
+  repo_info "$entry"
+
+  [[ "$dest" == "HOC_Patch" ]] || continue
+  [[ -d "$dir" ]] || break
+  skip_build "$dest" && break
+
+  print_title "[BUILD] ${dest}"
+
+  if [[ -d "$dir/stratosphere/loader" ]]; then
+    make -C "$dir/stratosphere/loader" -j"$(nproc)"
+  fi
+
+  if [[ -d "$dir/exosphere" ]]; then
+    make -C "$dir/exosphere" -j"$(nproc)"
+  fi
+
+  echo "Atmosphere partial build completed"
+  echo
+  break
 done
 
 echo "Done"
