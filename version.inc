@@ -5,15 +5,15 @@ current_hekate=6.5.3
 current_nyx=1.9.3
 
 [latest_version]
-supported_hos=22.5.0
-tester_version=0902
+supported_hos=23.0.0
+tester_version=0917
 ldr_kip_version=2.5.1.rev6
 
 hekate=6.5.3
 nyx=1.9.3
-atmosphere=1.11.2
-atlas=1.3.1
-missioncontrol=0.15.2
+atmosphere=1.12.0
+atlas=1.4.0
+missioncontrol=0.15.2.temp
 nx_fancontrol=1.0.4+r1
 ovlloader=2.0.3
 saltynx=1.9.3
@@ -30,10 +30,10 @@ horizon_oc=2.5.1.rev6
 asap_updater=1.0.5
 amiibogenerator=2.2.1
 benchmark_toolbox=2.0.0
-daybreak=1.0.1
+daybreak=1.0.2
 dbi=905
 linkalho=2.0.2
 reboot_to_payload=1.0.0
-sphaira=1.0.7
+sphaira=1.0.8
 tinfoil=20.0.v2
 ovlreloader=1.0.1
