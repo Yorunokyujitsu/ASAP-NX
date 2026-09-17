@@ -1,2617 +1,1726 @@
-diff --git a/CMakePresets.json b/CMakePresets.json
-index 520aac4..4ec3910 100644
---- a/CMakePresets.json
-+++ b/CMakePresets.json
-@@ -33,6 +33,8 @@
-                 "ENABLE_NSZ": false,
- 
-                 "ENABLE_LIBUSBHSFS": false,
-+                "ENABLE_NTFS": false,
-+                "ENABLE_EXT4": false,
-                 "ENABLE_LIBUSBDVD": false,
-                 "ENABLE_FTPSRV": false,
-                 "ENABLE_LIBHAZE": false,
-diff --git a/README.md b/README.md
-index cfa996f..c17831c 100644
---- a/README.md
-+++ b/README.md
-@@ -62,15 +62,35 @@ The USB protocol is the same as tinfoil, so tools such as [ns-usbloader](https:/
- 
- Once you have connected your ftp client to your switch, you can upload files to install into the `install` folder.
- 
-+### Usb HDD (install)
-+
-+Connected USB mass storage devices show up in the file browser (and as a dump location) under `mounts:/`,
-+installing from them works the same as installing from the sd card.
-+
-+Supported filesystems are FAT12/16/32, exFAT and NTFS. NTFS is provided by
-+[NTFS-3G](https://github.com/tuxera/ntfs-3g) and can be turned off at build time with `-DENABLE_NTFS=OFF`.
-+EXT2/3/4 is supported as well but off by default, enable it with `-DENABLE_EXT4=ON`.
-+
-+A few NTFS notes:
-+
-+- Always eject the drive properly on Windows. If the journal is left dirty, sphaira replays it on mount, but only
-+  when `HDD write protect` is off.
-+- A drive left behind by Windows fast startup / hibernation is not mounted by default. `Mount hibernated NTFS`
-+  in the HDD options forces it, at the cost of the saved Windows session.
-+- NTFS is noticeably slower than exFAT. For installing large files, exFAT is the better choice.
-+
- ## Building from source
- 
- You will first need to install [devkitPro](https://devkitpro.org/wiki/Getting_Started).
- 
- Next you will need to install the dependencies:
- ```sh
--sudo pacman -S switch-dev deko3d switch-cmake switch-curl switch-glm switch-zlib switch-mbedtls
-+sudo pacman -S switch-dev deko3d switch-cmake switch-curl switch-glm switch-zlib switch-mbedtls switch-ntfs-3g
- ```
- 
-+`switch-ntfs-3g` is only needed for NTFS support on USB HDDs, configure with `-DENABLE_NTFS=OFF` to build without it.
-+For EXT2/3/4 support (`-DENABLE_EXT4=ON`) you also need `switch-lwext4`.
-+
- Also you need to have on your environment the packages `git`, `make`, `zip` and `cmake`
- 
- Once devkitPro and all dependencies are installed, you can now build sphaira.
-diff --git a/sphaira/CMakeLists.txt b/sphaira/CMakeLists.txt
-index c0524d7..200becf 100644
---- a/sphaira/CMakeLists.txt
-+++ b/sphaira/CMakeLists.txt
-@@ -6,6 +6,13 @@ option(ENABLE_NSZ "enables exporting to nsz" ON)
- 
- # lib options.
- option(ENABLE_LIBUSBHSFS "enables FAT/exFAT hdd mounting" ON)
-+# ntfs is provided by ntfs-3g (GPLv2+, compatible with sphaira's GPLv3).
-+# needs the portlib: (dkp-)pacman -S switch-ntfs-3g
-+option(ENABLE_NTFS "enables NTFS hdd mounting, requires switch-ntfs-3g" ON)
-+# ext is provided by lwext4 (GPLv2). off by default, it adds a lot to the final
-+# binary size and next to no usb hdd is formatted with it.
-+# needs the portlib: (dkp-)pacman -S switch-lwext4
-+option(ENABLE_EXT4 "enables EXT2/3/4 hdd mounting, requires switch-lwext4" OFF)
- option(ENABLE_LIBUSBDVD "enables cd/dvd/iso/cue mounting" ON)
- option(ENABLE_FTPSRV "enables MTP server support" ON)
- option(ENABLE_LIBHAZE "enables MTP server support" ON)
-@@ -75,6 +82,7 @@ add_executable(sphaira
-     source/ui/menus/main_menu.cpp
-     source/ui/menus/menu_base.cpp
-     source/ui/menus/save_menu.cpp
-+    source/ui/menus/storage_menu.cpp
-     source/ui/menus/themezer.cpp
-     source/ui/menus/ghdl.cpp
-     source/ui/menus/usb_menu.cpp
-@@ -291,10 +299,28 @@ if (ENABLE_NSZ)
- endif()
- 
- if (ENABLE_LIBUSBHSFS)
--    # enable this if you want ntfs and ext4 support, at the cost of a huge final binary size.
-+    # USBHSFS_GPL turns on both ntfs *and* ext4, they can also be enabled
-+    # individually, which is what we do here as ext4 is what costs the most
-+    # binary size.
-     set(USBHSFS_GPL OFF)
-+    set(USBHSFS_NTFS ${ENABLE_NTFS})
-+    set(USBHSFS_EXT4 ${ENABLE_EXT4})
-     set(USBHSFS_SXOS_DISABLE ON)
- 
-+    if (ENABLE_NTFS)
-+        find_library(ntfs_3g_lib ntfs-3g)
-+        if (NOT ntfs_3g_lib)
-+            message(FATAL_ERROR "NTFS support is enabled but ntfs-3g is not installed, run '(dkp-)pacman -S switch-ntfs-3g' or configure with -DENABLE_NTFS=OFF")
-+        endif()
-+    endif()
-+
-+    if (ENABLE_EXT4)
-+        find_library(lwext4_lib lwext4)
-+        if (NOT lwext4_lib)
-+            message(FATAL_ERROR "EXT4 support is enabled but lwext4 is not installed, run '(dkp-)pacman -S switch-lwext4' or configure with -DENABLE_EXT4=OFF")
-+        endif()
-+    endif()
-+
-     FetchContent_Declare(libusbhsfs
-         GIT_REPOSITORY https://github.com/ITotalJustice/libusbhsfs.git
-         GIT_TAG 625269b
-@@ -304,6 +330,14 @@ if (ENABLE_LIBUSBHSFS)
- 
-     target_compile_definitions(sphaira PRIVATE ENABLE_LIBUSBHSFS)
-     target_link_libraries(sphaira PRIVATE libusbhsfs)
-+
-+    if (ENABLE_NTFS)
-+        target_compile_definitions(sphaira PRIVATE ENABLE_NTFS)
-+    endif()
-+
-+    if (ENABLE_EXT4)
-+        target_compile_definitions(sphaira PRIVATE ENABLE_EXT4)
-+    endif()
- else()
-     target_sources(sphaira PRIVATE source/ff16/ffunicode.c)
- endif()
-diff --git a/sphaira/include/app.hpp b/sphaira/include/app.hpp
-index c7c768c..df0c47e 100644
---- a/sphaira/include/app.hpp
-+++ b/sphaira/include/app.hpp
-@@ -88,6 +88,8 @@ public:
-     static auto GetNxlinkEnable() -> bool;
-     static auto GetHddEnable() -> bool;
-     static auto GetWriteProtect() -> bool;
-+    static auto GetHddShowSystemFiles() -> bool;
-+    static auto GetHddIgnoreHibernation() -> bool;
-     static auto GetLogEnable() -> bool;
-     static auto GetReplaceHbmenuEnable() -> bool;
-     static auto GetInstallEnable() -> bool;
-@@ -107,6 +109,11 @@ public:
-     static void SetNxlinkEnable(bool enable);
-     static void SetHddEnable(bool enable);
-     static void SetWriteProtect(bool enable);
-+    static void SetHddShowSystemFiles(bool enable);
-+    static void SetHddIgnoreHibernation(bool enable);
-+    // re-mounts every connected usb device so that changed mount options
-+    // (and the ntfs specific ones in particular) take effect right away.
-+    static void RemountHdd();
-     static void SetLogEnable(bool enable);
-     static void SetReplaceHbmenuEnable(bool enable);
-     static void SetInstallSysmmcEnable(bool enable);
-@@ -306,6 +313,9 @@ public:
-     option::OptionBool m_ftp_enabled{INI_SECTION, "ftp_enabled", false};
-     option::OptionBool m_hdd_enabled{INI_SECTION, "hdd_enabled", true};
-     option::OptionBool m_hdd_write_protect{INI_SECTION, "hdd_write_protect", false};
-+    // ntfs only, see App::GetHddMountFlags().
-+    option::OptionBool m_hdd_show_system_files{INI_SECTION, "hdd_show_system_files", false};
-+    option::OptionBool m_hdd_ignore_hibernation{INI_SECTION, "hdd_ignore_hibernation", false};
- 
-     option::OptionBool m_log_enabled{INI_SECTION, "log_enabled", false};
-     option::OptionBool m_replace_hbmenu{INI_SECTION, "replace_hbmenu", false};
-diff --git a/sphaira/include/ftpsrv_helper.hpp b/sphaira/include/ftpsrv_helper.hpp
-index 176e6ad..6db3ee3 100644
---- a/sphaira/include/ftpsrv_helper.hpp
-+++ b/sphaira/include/ftpsrv_helper.hpp
-@@ -13,6 +13,13 @@ using OnInstallWrite = std::function<bool(const void* buf, size_t size)>;
- using OnInstallClose = std::function<void()>;
- 
- void InitInstallMode(const OnInstallStart& on_start, const OnInstallWrite& on_write, const OnInstallClose& on_close);
-+
-+// false once install mode has been (or is being) torn down. polled by the
-+// install callbacks so that they never block indefinitely.
-+bool IsInstallModeEnabled();
-+
-+// stops accepting installs and waits for every in-flight install callback to
-+// return. never call this whilst holding a lock that a callback may need.
- void DisableInstallMode();
- 
- unsigned GetPort();
-diff --git a/sphaira/include/haze_helper.hpp b/sphaira/include/haze_helper.hpp
-index 664e6c9..e536e41 100644
---- a/sphaira/include/haze_helper.hpp
-+++ b/sphaira/include/haze_helper.hpp
-@@ -13,6 +13,13 @@ using OnInstallWrite = std::function<bool(const void* buf, size_t size)>;
- using OnInstallClose = std::function<void()>;
- 
- void InitInstallMode(const OnInstallStart& on_start, const OnInstallWrite& on_write, const OnInstallClose& on_close);
-+
-+// false once install mode has been (or is being) torn down. polled by the
-+// install callbacks so that they never block indefinitely.
-+bool IsInstallModeEnabled();
-+
-+// stops accepting installs and waits for every in-flight install callback to
-+// return. never call this whilst holding a lock that a callback may need.
- void DisableInstallMode();
- 
- } // namespace sphaira::libhaze
-diff --git a/sphaira/include/ui/menus/ftp_menu.hpp b/sphaira/include/ui/menus/ftp_menu.hpp
-index 27ece1d..f6718c4 100644
---- a/sphaira/include/ui/menus/ftp_menu.hpp
-+++ b/sphaira/include/ui/menus/ftp_menu.hpp
-@@ -13,6 +13,7 @@ struct Menu final : stream::Menu {
-     void Update(Controller* controller, TouchInfo* touch) override;
-     void Draw(NVGcontext* vg, Theme* theme) override;
-     void OnDisableInstallMode() override;
-+    bool IsInstallModeActive() const override;
- 
- private:
-     const char* m_user{};
-diff --git a/sphaira/include/ui/menus/install_stream_menu_base.hpp b/sphaira/include/ui/menus/install_stream_menu_base.hpp
-index 796d522..de1f77d 100644
---- a/sphaira/include/ui/menus/install_stream_menu_base.hpp
-+++ b/sphaira/include/ui/menus/install_stream_menu_base.hpp
-@@ -3,6 +3,10 @@
- #include "ui/menus/menu_base.hpp"
- #include "yati/source/stream.hpp"
- 
-+#include <atomic>
-+#include <memory>
-+#include <vector>
-+
- namespace sphaira::ui::menu::stream {
- 
- enum class State {
-@@ -25,21 +29,36 @@ using OnInstallClose = std::function<void()>;
- struct Stream final : yati::source::Stream {
-     Stream(const fs::FsPath& path, std::stop_token token);
- 
-+    // called by the installer thread.
-     Result ReadChunk(void* buf, s64 size, u64* bytes_read) override;
-+
-+    // called by the transport thread, blocks whilst the buffer is full.
-     bool Push(const void* buf, s64 size);
-+
-+    // no more data will be pushed, the installer drains what is left.
-     void Disable();
-+
-+    // the installer is no longer reading from this stream, this makes any
-+    // pending (and future) Push() return immediately rather than block.
-+    void SetInstallFinished();
-+
-     auto& GetPath() const { return m_path; }
- 
-+private:
-+    // waits on cv until signalled or the (short) timeout expires.
-+    // m_mutex must be held, no result is returned as a timeout is not an error,
-+    // the caller re-checks its condition on every iteration.
-+    void Wait(CondVar* cv);
-+
- private:
-     fs::FsPath m_path{};
-     std::stop_token m_token{};
-     std::vector<u8> m_buffer{};
-     CondVar m_can_read{};
-     CondVar m_can_write{};
--
--public:
-     Mutex m_mutex{};
-     std::atomic_bool m_active{};
-+    std::atomic_bool m_install_done{};
- };
- 
- struct Menu : MenuBase {
-@@ -48,17 +67,40 @@ struct Menu : MenuBase {
- 
-     virtual void Update(Controller* controller, TouchInfo* touch);
-     virtual void Draw(NVGcontext* vg, Theme* theme);
-+
-+    // tells the transport to stop accepting new installs.
-     virtual void OnDisableInstallMode() = 0;
-+    // returns false once the transport is no longer accepting installs, used
-+    // to break out of the blocking callbacks below.
-+    virtual bool IsInstallModeActive() const = 0;
- 
- protected:
-+    // the below are called from the transport (mtp / ftp) thread and may block
-+    // for a long time, they must never be called whilst the transport holds a
-+    // lock that the ui thread can also take.
-     bool OnInstallStart(const char* path);
-     bool OnInstallWrite(const void* buf, size_t size);
-     void OnInstallClose();
- 
-+    // unblocks every in-flight transport callback and disables install mode.
-+    // derived classes MUST call this as the first thing in their destructor,
-+    // before tearing the transport down, otherwise the transport thread may
-+    // still be sat inside one of the callbacks above.
-+    void CancelInstallMode();
-+
-+    // true when the menu is going away or the transport stopped accepting data.
-+    bool IsCancelled() const;
-+
- private:
--    std::unique_ptr<Stream> m_source{};
--    Thread m_thread{};
--    Mutex m_mutex{};
-+    // blocks until the current transfer (and its ui teardown) has completed.
-+    // returns false if it was cancelled instead.
-+    bool WaitForIdle(u64 poll_ns);
-+
-+private:
-+    // shared_ptr as the installer thread keeps the stream alive for the
-+    // duration of the install, regardless of what the transport does next.
-+    std::shared_ptr<Stream> m_source{};
-+    mutable Mutex m_mutex{};
-     State m_state{State::None};
- };
- 
-diff --git a/sphaira/include/ui/menus/mtp_menu.hpp b/sphaira/include/ui/menus/mtp_menu.hpp
-index acff3ff..ece6bb9 100644
---- a/sphaira/include/ui/menus/mtp_menu.hpp
-+++ b/sphaira/include/ui/menus/mtp_menu.hpp
-@@ -11,6 +11,7 @@ struct Menu final : stream::Menu {
-     auto GetShortTitle() const -> const char* override { return "MTP"; };
-     void Update(Controller* controller, TouchInfo* touch) override;
-     void OnDisableInstallMode() override;
-+    bool IsInstallModeActive() const override;
- 
- private:
-     bool m_was_mtp_enabled{};
-diff --git a/sphaira/include/ui/menus/storage_menu.hpp b/sphaira/include/ui/menus/storage_menu.hpp
-new file mode 100644
-index 0000000..128c73a
---- /dev/null
-+++ b/sphaira/include/ui/menus/storage_menu.hpp
-@@ -0,0 +1,156 @@
-+#pragma once
-+
-+#include "ui/menus/menu_base.hpp"
-+#include "ui/menus/game_menu.hpp"
-+#include "ui/list.hpp"
-+#include "ui/scrolling_text.hpp"
-+#include "option.hpp"
-+
-+#include <memory>
-+#include <unordered_map>
-+#include <vector>
-+
-+namespace sphaira::ui::menu::storage {
-+
-+// space used by a single application, split by content type and by storage.
-+// game card content is never counted, as it lives on the cart rather than
-+// on the console.
-+struct Entry {
-+    game::Entry game{};
-+
-+    s64 size_base{};
-+    s64 size_update{};
-+    s64 size_dlc{};
-+
-+    s64 size_sd{};
-+    s64 size_nand{};
-+
-+    s64 size_total{};
-+
-+    auto GetName() const -> const char* {
-+        return game.GetName();
-+    }
-+
-+    auto GetAuthor() const -> const char* {
-+        return game.GetAuthor();
-+    }
-+};
-+
-+enum SortType {
-+    SortType_Size,
-+    SortType_Title,
-+    SortType_TitleID,
-+};
-+
-+enum OrderType {
-+    OrderType_Descending,
-+    OrderType_Ascending,
-+};
-+
-+enum FilterType {
-+    FilterType_All,
-+    FilterType_Sd,
-+    FilterType_Nand,
-+};
-+
-+struct Menu final : MenuBase {
-+    Menu(u32 flags);
-+    ~Menu();
-+
-+    auto GetShortTitle() const -> const char* override { return "Storage"; };
-+    void Update(Controller* controller, TouchInfo* touch) override;
-+    void Draw(NVGcontext* vg, Theme* theme) override;
-+    void OnFocusGained() override;
-+
-+private:
-+    // a previously measured application. the fingerprint covers every
-+    // installed content meta, so it changes as soon as the game is updated,
-+    // has dlc added / removed, is moved between storages, or is deleted.
-+    struct CacheValue {
-+        u64 fingerprint{};
-+        s64 size_base{};
-+        s64 size_update{};
-+        s64 size_dlc{};
-+        s64 size_sd{};
-+        s64 size_nand{};
-+    };
-+
-+    void SetIndex(s64 index);
-+    void UpdateSubHeading();
-+
-+    // lists every application record, sizes are fetched afterwards.
-+    void ScanRecords();
-+    // sizes a handful of entries per call so that the ui stays responsive
-+    // whilst a large library is being measured.
-+    void ScanSizeStep();
-+    void OnScanComplete();
-+    void CalculateSize(Entry& e);
-+    // cpu boost is held for the duration of the scan rather than toggled
-+    // every frame.
-+    void SetBoost(bool enable);
-+
-+    void LoadCache();
-+    void SaveCache();
-+    void ClearCache();
-+
-+    static void ClearSizes(Entry& e);
-+    static void ApplyCacheValue(Entry& e, const CacheValue& value);
-+
-+    void FilterAndSort();
-+    void FreeEntries();
-+
-+    void DrawStorageBar(NVGcontext* vg, Theme* theme, float x, float y, float w, const std::string& name, s64 games, s64 free, s64 total) const;
-+    void DrawDetails(NVGcontext* vg, Theme* theme);
-+
-+    auto HasEntry() const -> bool {
-+        return !m_view.empty() && m_index < (s64)m_view.size();
-+    }
-+
-+    auto GetEntry() -> Entry& {
-+        return m_entries[m_view[m_index]];
-+    }
-+
-+    auto GetEntry() const -> const Entry& {
-+        return m_entries[m_view[m_index]];
-+    }
-+
-+private:
-+    static constexpr inline const char* INI_SECTION = "storage";
-+
-+    // every application that owns installed content, owns the icons.
-+    std::vector<Entry> m_entries{};
-+    // indices into m_entries, filtered and sorted for display.
-+    std::vector<u32> m_view{};
-+
-+    s64 m_index{};
-+    std::unique_ptr<List> m_list{};
-+
-+    // index of the next entry in m_entries to be sized.
-+    std::size_t m_scan_index{};
-+    bool m_scanning{};
-+    bool m_dirty{true};
-+    bool m_boost{};
-+
-+    // totals across every scanned entry.
-+    s64 m_games_sd{};
-+    s64 m_games_nand{};
-+    // largest entry in the current view, used to scale the per game bars.
-+    s64 m_largest{1};
-+
-+    // measured sizes from previous scans, keyed by application id. loaded
-+    // from and written back to the sd card so that re-opening the menu
-+    // doesn't have to walk ncm again.
-+    std::unordered_map<u64, CacheValue> m_cache{};
-+    bool m_cache_loaded{};
-+    bool m_cache_dirty{};
-+    std::size_t m_cache_hits{};
-+
-+    ScrollingText m_scroll_name{};
-+    ScrollingText m_scroll_detail_name{};
-+
-+    option::OptionLong m_sort{INI_SECTION, "sort", SortType::SortType_Size};
-+    option::OptionLong m_order{INI_SECTION, "order", OrderType::OrderType_Descending};
-+    option::OptionLong m_filter{INI_SECTION, "filter", FilterType::FilterType_All};
-+};
-+
-+} // namespace sphaira::ui::menu::storage
-diff --git a/sphaira/source/app.cpp b/sphaira/source/app.cpp
-index 00b6fdf..f73d845 100644
---- a/sphaira/source/app.cpp
-+++ b/sphaira/source/app.cpp
-@@ -48,6 +48,49 @@ extern "C" {
- } // extern "C"
- 
- namespace sphaira {
-+
-+#ifdef ENABLE_LIBUSBHSFS
-+namespace {
-+
-+// builds the libusbhsfs mount flags out of the user's hdd options and pushes
-+// them to the library. only affects devices mounted *after* this call, use
-+// App::RemountHdd() if the change should be visible right away.
-+//
-+// most of these are NTFS only, they are ignored for FAT/exFAT volumes.
-+void ApplyHddMountFlags() {
-+    u32 flags = UsbHsFsMountFlags_None;
-+
-+    if (App::GetWriteProtect()) {
-+        flags |= UsbHsFsMountFlags_ReadOnly;
-+    } else {
-+        // an NTFS volume with a dirty journal (the normal state after the drive
-+        // was pulled out of a pc without ejecting it) is refused for writing
-+        // unless the journal is replayed first.
-+        flags |= UsbHsFsMountFlags_ReplayJournal;
-+    }
-+
-+    // windows marks plenty of ordinary folders as hidden, without this they
-+    // would silently not show up in the file browser.
-+    flags |= UsbHsFsMountFlags_ShowHiddenFiles;
-+
-+    // deliberately *not* setting UsbHsFsMountFlags_UpdateAccessTimes (which is
-+    // part of the library default), writing back an access time after every
-+    // read costs a lot of speed when installing from an NTFS drive.
-+
-+    if (App::GetHddShowSystemFiles()) {
-+        flags |= UsbHsFsMountFlags_ShowSystemFiles;
-+    }
-+
-+    if (App::GetHddIgnoreHibernation()) {
-+        flags |= UsbHsFsMountFlags_IgnoreHibernation;
-+    }
-+
-+    usbHsFsSetFileSystemMountFlags(flags);
-+}
-+
-+} // namespace
-+#endif // ENABLE_LIBUSBHSFS
-+
- namespace {
- 
- constexpr const u8 DEFAULT_IMAGE_DATA[]{
-@@ -705,6 +748,14 @@ auto App::GetWriteProtect() -> bool {
-     return g_app->m_hdd_write_protect.Get();
- }
- 
-+auto App::GetHddShowSystemFiles() -> bool {
-+    return g_app->m_hdd_show_system_files.Get();
-+}
-+
-+auto App::GetHddIgnoreHibernation() -> bool {
-+    return g_app->m_hdd_ignore_hibernation.Get();
-+}
-+
- auto App::GetLogEnable() -> bool {
-     return g_app->m_log_enabled.Get();
- }
-@@ -781,9 +832,7 @@ void App::SetHddEnable(bool enable) {
-         g_app->m_hdd_enabled.Set(enable);
- #ifdef ENABLE_LIBUSBHSFS
-         if (enable) {
--            if (App::GetWriteProtect()) {
--                usbHsFsSetFileSystemMountFlags(UsbHsFsMountFlags_ReadOnly);
--            }
-+            ApplyHddMountFlags();
-             usbHsFsInitialize(1);
-         } else {
-             usbHsFsExit();
-@@ -795,15 +844,35 @@ void App::SetHddEnable(bool enable) {
- void App::SetWriteProtect(bool enable) {
-     if (App::GetWriteProtect() != enable) {
-         g_app->m_hdd_write_protect.Set(enable);
-+        App::RemountHdd();
-+    }
-+}
-+
-+void App::SetHddShowSystemFiles(bool enable) {
-+    if (App::GetHddShowSystemFiles() != enable) {
-+        g_app->m_hdd_show_system_files.Set(enable);
-+        App::RemountHdd();
-+    }
-+}
- 
-+void App::SetHddIgnoreHibernation(bool enable) {
-+    if (App::GetHddIgnoreHibernation() != enable) {
-+        g_app->m_hdd_ignore_hibernation.Set(enable);
-+        App::RemountHdd();
-+    }
-+}
-+
-+void App::RemountHdd() {
- #ifdef ENABLE_LIBUSBHSFS
--        if (enable) {
--            usbHsFsSetFileSystemMountFlags(UsbHsFsMountFlags_ReadOnly);
--        } else {
--            usbHsFsSetFileSystemMountFlags(0);
--        }
--#endif // ENABLE_LIBUSBHSFS
-+    ApplyHddMountFlags();
-+
-+    // mount flags are only read when a device is mounted, so cycle the library
-+    // to pick them up, otherwise the user would have to unplug the drive.
-+    if (App::GetHddEnable()) {
-+        usbHsFsExit();
-+        usbHsFsInitialize(1);
-     }
-+#endif // ENABLE_LIBUSBHSFS
- }
- 
- void App::SetLogEnable(bool enable) {
-@@ -1587,6 +1656,8 @@ App::App(const char* argv0) {
-             else if (app->m_ftp_enabled.LoadFrom(Key, Value)) {}
-             else if (app->m_hdd_enabled.LoadFrom(Key, Value)) {}
-             else if (app->m_hdd_write_protect.LoadFrom(Key, Value)) {}
-+            else if (app->m_hdd_show_system_files.LoadFrom(Key, Value)) {}
-+            else if (app->m_hdd_ignore_hibernation.LoadFrom(Key, Value)) {}
-             else if (app->m_log_enabled.LoadFrom(Key, Value)) {}
-             else if (app->m_replace_hbmenu.LoadFrom(Key, Value)) {}
-             else if (app->m_default_music.LoadFrom(Key, Value)) {}
-@@ -1778,10 +1849,7 @@ App::App(const char* argv0) {
- #ifdef ENABLE_LIBUSBHSFS
-         if (App::GetHddEnable()) {
-             SCOPED_TIMESTAMP("hdd init");
--            if (App::GetWriteProtect()) {
--                usbHsFsSetFileSystemMountFlags(UsbHsFsMountFlags_ReadOnly);
--            }
--
-+            ApplyHddMountFlags();
-             usbHsFsInitialize(1);
-         }
- #endif // ENABLE_LIBUSBHSFS
-@@ -2704,6 +2772,24 @@ void App::DisplayHddOptions(bool left_side) {
-     options->Add<ui::SidebarEntryBool>("HDD write protect"_i18n, App::GetWriteProtect(), [](bool& enable){
-         App::SetWriteProtect(enable);
-     },  "Makes the connected HDD read-only."_i18n);
-+
-+#ifdef ENABLE_NTFS
-+    options->Add<ui::SidebarEntryBool>("Show system files"_i18n, App::GetHddShowSystemFiles(), [](bool& enable){
-+        App::SetHddShowSystemFiles(enable);
-+    },  i18n::get("hdd_show_system_files_info",
-+            "NTFS only. Shows entries that Windows marked as system files, such as $Recycle.Bin. "
-+            "Leave this off unless you know what you are doing."
-+        )
-+    );
-+
-+    options->Add<ui::SidebarEntryBool>("Mount hibernated NTFS"_i18n, App::GetHddIgnoreHibernation(), [](bool& enable){
-+        App::SetHddIgnoreHibernation(enable);
-+    },  i18n::get("hdd_ignore_hibernation_info",
-+            "NTFS only. Mounts a drive that Windows left in a hibernated state (fast startup). "
-+            "WARNING: the saved Windows session on that drive is lost."
-+        )
-+    );
-+#endif // ENABLE_NTFS
- }
- 
- void App::ShowEnableInstallPrompt() {
-diff --git a/sphaira/source/ftpsrv_helper.cpp b/sphaira/source/ftpsrv_helper.cpp
-index ce98748..02c8e76 100644
---- a/sphaira/source/ftpsrv_helper.cpp
-+++ b/sphaira/source/ftpsrv_helper.cpp
-@@ -7,6 +7,7 @@
- #include "utils/thread.hpp"
- 
- #include <algorithm>
-+#include <atomic>
- #include <ftpsrv.h>
- #include <ftpsrv_vfs.h>
- #include <nx/vfs_nx.h>
-@@ -19,6 +20,7 @@ namespace {
- 
- struct InstallSharedData {
-     Mutex mutex;
-+    CondVar cv;
-     std::deque<std::string> queued_files;
- 
-     void* user;
-@@ -27,7 +29,10 @@ struct InstallSharedData {
-     OnInstallClose on_close;
- 
-     bool in_progress;
--    bool enabled;
-+    // number of install callbacks currently executing. the callbacks block for
-+    // as long as an install takes, so they are *never* run whilst holding
-+    // mutex, this counter is what keeps them alive instead.
-+    u32 in_flight;
- };
- 
- FtpSrvConfig g_ftpsrv_config{};
-@@ -61,10 +66,50 @@ void ftp_nro_change_callback(const char* path) {
- 
- InstallSharedData g_shared_data{};
- 
-+// kept as an atomic (rather than a field of the struct above) so that it can be
-+// polled by an in-flight callback without taking any lock.
-+std::atomic_bool g_install_enabled{false};
-+
- const char* SUPPORTED_EXT[] = {
-     ".nsp", ".xci", ".nsz", ".xcz", ".msp",
- };
- 
-+// holds a reference to the install callbacks whilst one of them is running.
-+// DisableInstallMode() waits for every reference to be dropped before clearing
-+// the callbacks, so they stay valid for as long as the guard is alive, and the
-+// shared mutex stays free the whole time the (blocking) callback runs.
-+struct InstallCallbackGuard {
-+    InstallCallbackGuard() {
-+        SCOPED_MUTEX(&g_shared_data.mutex);
-+        if (!g_install_enabled) {
-+            return;
-+        }
-+
-+        m_data = std::addressof(g_shared_data);
-+        m_data->in_flight++;
-+    }
-+
-+    ~InstallCallbackGuard() {
-+        if (!m_data) {
-+            return;
-+        }
-+
-+        SCOPED_MUTEX(&m_data->mutex);
-+        m_data->in_flight--;
-+        condvarWakeAll(std::addressof(m_data->cv));
-+    }
-+
-+    InstallCallbackGuard(const InstallCallbackGuard&) = delete;
-+    void operator=(const InstallCallbackGuard&) = delete;
-+
-+    explicit operator bool() const {
-+        return m_data != nullptr;
-+    }
-+
-+private:
-+    InstallSharedData* m_data{};
-+};
-+
- struct VfsUserData {
-     char* path;
-     int valid;
-@@ -73,20 +118,37 @@ struct VfsUserData {
- // ive given up with good names.
- void on_thing() {
-     log_write("[FTP] doing on_thing\n");
--    SCOPED_MUTEX(&g_shared_data.mutex);
--    log_write("[FTP] locked on_thing\n");
--
--    if (!g_shared_data.in_progress) {
--        if (!g_shared_data.queued_files.empty()) {
--            log_write("[FTP] pushing new file data\n");
--            if (!g_shared_data.on_start || !g_shared_data.on_start(g_shared_data.queued_files[0].c_str())) {
--                g_shared_data.queued_files.clear();
--            } else {
--                log_write("[FTP] success on new file push\n");
--                g_shared_data.in_progress = true;
--            }
-+
-+    InstallCallbackGuard guard;
-+    if (!guard) {
-+        return;
-+    }
-+
-+    OnInstallStart on_start;
-+    std::string path;
-+    {
-+        SCOPED_MUTEX(&g_shared_data.mutex);
-+        if (g_shared_data.in_progress || g_shared_data.queued_files.empty()) {
-+            return;
-         }
-+
-+        on_start = g_shared_data.on_start;
-+        path = g_shared_data.queued_files[0];
-     }
-+
-+    log_write("[FTP] pushing new file data\n");
-+
-+    // called without the lock held, on_start blocks until the previous install
-+    // has finished, which can take minutes.
-+    if (!on_start || !on_start(path.c_str())) {
-+        SCOPED_MUTEX(&g_shared_data.mutex);
-+        g_shared_data.queued_files.clear();
-+        return;
-+    }
-+
-+    log_write("[FTP] success on new file push\n");
-+    SCOPED_MUTEX(&g_shared_data.mutex);
-+    g_shared_data.in_progress = true;
- }
- 
- int vfs_install_open(void* user, const char* path, enum FtpVfsOpenMode mode) {
-@@ -100,7 +162,7 @@ int vfs_install_open(void* user, const char* path, enum FtpVfsOpenMode mode) {
-             return -1;
-         }
- 
--        if (!g_shared_data.enabled) {
-+        if (!g_install_enabled) {
-             errno = EACCES;
-             return -1;
-         }
-@@ -147,19 +209,27 @@ int vfs_install_read(void* user, void* buf, size_t size) {
- }
- 
- int vfs_install_write(void* user, const void* buf, size_t size) {
--    SCOPED_MUTEX(&g_shared_data.mutex);
--    if (!g_shared_data.enabled) {
-+    InstallCallbackGuard guard;
-+    if (!guard) {
-         errno = EACCES;
-         return -1;
-     }
- 
--    auto data = static_cast<VfsUserData*>(user);
--    if (!data->valid) {
--        errno = EACCES;
--        return -1;
-+    OnInstallWrite on_write;
-+    {
-+        SCOPED_MUTEX(&g_shared_data.mutex);
-+        auto data = static_cast<VfsUserData*>(user);
-+        if (!data->valid) {
-+            errno = EACCES;
-+            return -1;
-+        }
-+
-+        on_write = g_shared_data.on_write;
-     }
- 
--    if (!g_shared_data.on_write || !g_shared_data.on_write(buf, size)) {
-+    // called without the lock held, on_write blocks whilst the installer
-+    // catches up with the data already sent to it.
-+    if (!on_write || !on_write(buf, size)) {
-         errno = EIO;
-         return -1;
-     }
-@@ -188,27 +258,49 @@ int vfs_install_isfile_ready(void* user) {
- int vfs_install_close(void* user) {
-     {
-         log_write("[FTP] closing file\n");
--        SCOPED_MUTEX(&g_shared_data.mutex);
-         auto data = static_cast<VfsUserData*>(user);
-         if (data->valid) {
-             log_write("[FTP] closing valid file\n");
- 
--            auto it = std::find(g_shared_data.queued_files.cbegin(), g_shared_data.queued_files.cend(), data->path);
--            if (it != g_shared_data.queued_files.cend()) {
--                if (it == g_shared_data.queued_files.cbegin()) {
--                    log_write("[FTP] closing current file\n");
--                    if (g_shared_data.on_close) {
--                        g_shared_data.on_close();
--                    }
-+            OnInstallClose on_close;
-+            bool queued = false;
-+            {
-+                SCOPED_MUTEX(&g_shared_data.mutex);
-+                const auto it = std::find(g_shared_data.queued_files.cbegin(), g_shared_data.queued_files.cend(), data->path);
-+                queued = it != g_shared_data.queued_files.cend();
- 
--                    g_shared_data.in_progress = false;
--                } else {
-+                if (queued && it == g_shared_data.queued_files.cbegin()) {
-+                    on_close = g_shared_data.on_close;
-+                } else if (queued) {
-                     log_write("[FTP] closing other file...\n");
-+                } else {
-+                    log_write("[FTP] could not find file in queue...\n");
-                 }
-+            }
- 
--                g_shared_data.queued_files.erase(it);
--            } else {
--                log_write("[FTP] could not find file in queue...\n");
-+            if (on_close) {
-+                log_write("[FTP] closing current file\n");
-+
-+                InstallCallbackGuard guard;
-+                if (guard) {
-+                    // called without the lock held, on_close blocks until the
-+                    // install of this file has finished.
-+                    on_close();
-+                }
-+            }
-+
-+            // done after on_close so that the queue keeps gating the other
-+            // sessions whilst this file is still being installed.
-+            if (queued) {
-+                SCOPED_MUTEX(&g_shared_data.mutex);
-+                const auto it = std::find(g_shared_data.queued_files.cbegin(), g_shared_data.queued_files.cend(), data->path);
-+                if (it != g_shared_data.queued_files.cend()) {
-+                    if (it == g_shared_data.queued_files.cbegin()) {
-+                        g_shared_data.in_progress = false;
-+                    }
-+
-+                    g_shared_data.queued_files.erase(it);
-+                }
-             }
- 
-             if (data->path) {
-@@ -621,6 +713,11 @@ bool Init() {
- }
- 
- void Exit() {
-+    // done before taking g_mutex, and before joining the ftp thread, as that
-+    // thread may still be sat inside a blocking install callback.
-+    // DisableInstallMode() is what releases it.
-+    DisableInstallMode();
-+
-     SCOPED_MUTEX(&g_mutex);
-     if (!g_is_running) {
-         return;
-@@ -646,15 +743,35 @@ void ExitSignal() {
- 
- void InitInstallMode(const OnInstallStart& on_start, const OnInstallWrite& on_write, const OnInstallClose& on_close) {
-     SCOPED_MUTEX(&g_shared_data.mutex);
-+    condvarInit(std::addressof(g_shared_data.cv));
-     g_shared_data.on_start = on_start;
-     g_shared_data.on_write = on_write;
-     g_shared_data.on_close = on_close;
--    g_shared_data.enabled = true;
-+    g_shared_data.in_progress = false;
-+    g_shared_data.queued_files.clear();
-+    g_install_enabled = true;
-+}
-+
-+bool IsInstallModeEnabled() {
-+    return g_install_enabled;
- }
- 
- void DisableInstallMode() {
-+    // published first so that any callback which is currently blocked can see
-+    // it and return, otherwise the wait below would never finish.
-+    g_install_enabled = false;
-+
-     SCOPED_MUTEX(&g_shared_data.mutex);
--    g_shared_data.enabled = false;
-+    while (g_shared_data.in_flight) {
-+        condvarWaitTimeout(std::addressof(g_shared_data.cv), std::addressof(g_shared_data.mutex), 1e+8);
-+    }
-+
-+    // safe to drop the callbacks now, nothing can be using them.
-+    g_shared_data.on_start = {};
-+    g_shared_data.on_write = {};
-+    g_shared_data.on_close = {};
-+    g_shared_data.in_progress = false;
-+    g_shared_data.queued_files.clear();
- }
- 
- unsigned GetPort() {
-diff --git a/sphaira/source/haze_helper.cpp b/sphaira/source/haze_helper.cpp
-index eb16623..dd22809 100644
---- a/sphaira/source/haze_helper.cpp
-+++ b/sphaira/source/haze_helper.cpp
-@@ -7,6 +7,7 @@
- #include "i18n.hpp"
- 
- #include <algorithm>
-+#include <atomic>
- #include <haze.h>
- #include <limits>
- #include <map>
-@@ -16,6 +17,7 @@ namespace {
- 
- struct InstallSharedData {
-     Mutex mutex;
-+    CondVar cv;
-     std::string current_file;
- 
-     void* user;
-@@ -24,7 +26,10 @@ struct InstallSharedData {
-     OnInstallClose on_close;
- 
-     bool in_progress;
--    bool enabled;
-+    // number of install callbacks currently executing. the callbacks block for
-+    // as long as an install takes, so they are *never* run whilst holding
-+    // mutex, this counter is what keeps them alive instead.
-+    u32 in_flight;
- };
- 
- constexpr int THREAD_PRIO = 0x20;
-@@ -33,24 +38,78 @@ std::atomic_bool g_should_exit = false;
- bool g_is_running{false};
- Mutex g_mutex{};
- 
-+// kept as an atomic (rather than a field of the struct above) so that it can be
-+// polled by an in-flight callback without taking any lock.
-+std::atomic_bool g_install_enabled{false};
-+
- InstallSharedData g_shared_data{};
- 
- const char* SUPPORTED_EXT[] = {
-     ".nsp", ".xci", ".nsz", ".xcz", ".msp",
- };
- 
-+// holds a reference to the install callbacks whilst one of them is running.
-+// DisableInstallMode() waits for every reference to be dropped before clearing
-+// the callbacks, so they stay valid for as long as the guard is alive, and the
-+// shared mutex stays free the whole time the (blocking) callback runs.
-+struct InstallCallbackGuard {
-+    InstallCallbackGuard() {
-+        SCOPED_MUTEX(&g_shared_data.mutex);
-+        if (!g_install_enabled) {
-+            return;
-+        }
-+
-+        m_data = std::addressof(g_shared_data);
-+        m_data->in_flight++;
-+    }
-+
-+    ~InstallCallbackGuard() {
-+        if (!m_data) {
-+            return;
-+        }
-+
-+        SCOPED_MUTEX(&m_data->mutex);
-+        m_data->in_flight--;
-+        condvarWakeAll(std::addressof(m_data->cv));
-+    }
-+
-+    InstallCallbackGuard(const InstallCallbackGuard&) = delete;
-+    void operator=(const InstallCallbackGuard&) = delete;
-+
-+    explicit operator bool() const {
-+        return m_data != nullptr;
-+    }
-+
-+private:
-+    InstallSharedData* m_data{};
-+};
-+
- bool StartInstall(std::string path) {
--    SCOPED_MUTEX(&g_shared_data.mutex);
--    if (!g_shared_data.enabled || g_shared_data.in_progress || !g_shared_data.current_file.empty() || !g_shared_data.on_start) {
-+    InstallCallbackGuard guard;
-+    if (!guard) {
-         return false;
-     }
- 
--    g_shared_data.current_file = std::move(path);
--    if (!g_shared_data.on_start(g_shared_data.current_file.c_str())) {
-+    OnInstallStart on_start;
-+    {
-+        SCOPED_MUTEX(&g_shared_data.mutex);
-+        if (g_shared_data.in_progress || !g_shared_data.current_file.empty() || !g_shared_data.on_start) {
-+            return false;
-+        }
-+
-+        g_shared_data.current_file = path;
-+        on_start = g_shared_data.on_start;
-+    }
-+
-+    // called without the lock held, on_start blocks until the previous install
-+    // has finished, which can take minutes.
-+    if (!on_start(path.c_str())) {
-+        SCOPED_MUTEX(&g_shared_data.mutex);
-         g_shared_data.current_file.clear();
-         return false;
-     }
- 
-+    SCOPED_MUTEX(&g_shared_data.mutex);
-     g_shared_data.in_progress = true;
-     return true;
- }
-@@ -763,8 +822,7 @@ struct FsInstallProxy final : FsProxyVfs {
-     using FsProxyVfs::FsProxyVfs;
- 
-     Result FailedIfNotEnabled() {
--        SCOPED_MUTEX(&g_shared_data.mutex);
--        if (!g_shared_data.enabled) {
-+        if (!g_install_enabled) {
-             App::Notify("Please launch MTP install menu before trying to install"_i18n);
-             R_THROW(FsError_NotImplemented);
-         }
-@@ -844,14 +902,27 @@ struct FsInstallProxy final : FsProxyVfs {
-         auto f = static_cast<File*>(file->impl);
-         R_UNLESS(f && f->entry, FsError_PathNotFound);
- 
--        SCOPED_MUTEX(&g_shared_data.mutex);
--        if (!g_shared_data.enabled) {
--            log_write("[MTP] failing as not enabled\n");
--            R_THROW(FsError_NotImplemented);
--        }
-+        if (f->installing) {
-+            InstallCallbackGuard guard;
-+            if (!guard) {
-+                log_write("[MTP] failing as not enabled\n");
-+                R_THROW(FsError_NotImplemented);
-+            }
-+
-+            OnInstallWrite on_write;
-+            {
-+                SCOPED_MUTEX(&g_shared_data.mutex);
-+                on_write = g_shared_data.on_write;
-+            }
- 
--        if (f->installing && (!g_shared_data.on_write || !g_shared_data.on_write(buf, write_size))) {
--            log_write("[MTP] failing as not written\n");
-+            // called without the lock held, on_write blocks whilst the
-+            // installer catches up with the data already sent to it.
-+            if (!on_write || !on_write(buf, write_size)) {
-+                log_write("[MTP] failing as not written\n");
-+                R_THROW(FsError_NotImplemented);
-+            }
-+        } else if (!g_install_enabled) {
-+            log_write("[MTP] failing as not enabled\n");
-             R_THROW(FsError_NotImplemented);
-         }
- 
-@@ -865,17 +936,28 @@ struct FsInstallProxy final : FsProxyVfs {
-             return;
-         }
- 
--        {
--            SCOPED_MUTEX(&g_shared_data.mutex);
--            if (f->installing) {
--                log_write("[MTP] closing current file\n");
--                if (g_shared_data.on_close) {
--                    g_shared_data.on_close();
-+        if (f->installing) {
-+            log_write("[MTP] closing current file\n");
-+
-+            {
-+                InstallCallbackGuard guard;
-+
-+                OnInstallClose on_close;
-+                if (guard) {
-+                    SCOPED_MUTEX(&g_shared_data.mutex);
-+                    on_close = g_shared_data.on_close;
-                 }
- 
--                g_shared_data.in_progress = false;
--                g_shared_data.current_file.clear();
-+                // called without the lock held, on_close blocks until the
-+                // install of this file has finished.
-+                if (on_close) {
-+                    on_close();
-+                }
-             }
-+
-+            SCOPED_MUTEX(&g_shared_data.mutex);
-+            g_shared_data.in_progress = false;
-+            g_shared_data.current_file.clear();
-         }
- 
-         FsProxyVfs::CloseFile(file);
-@@ -979,6 +1061,11 @@ bool IsInit() {
- }
- 
- void Exit() {
-+    // done before taking g_mutex, and before haze::Exit() joins the haze
-+    // thread, as that thread may still be sat inside a blocking install
-+    // callback. DisableInstallMode() is what releases it.
-+    DisableInstallMode();
-+
-     SCOPED_MUTEX(&g_mutex);
-     if (!g_is_running) {
-         return;
-@@ -995,15 +1082,35 @@ void Exit() {
- 
- void InitInstallMode(const OnInstallStart& on_start, const OnInstallWrite& on_write, const OnInstallClose& on_close) {
-     SCOPED_MUTEX(&g_shared_data.mutex);
-+    condvarInit(std::addressof(g_shared_data.cv));
-     g_shared_data.on_start = on_start;
-     g_shared_data.on_write = on_write;
-     g_shared_data.on_close = on_close;
--    g_shared_data.enabled = true;
-+    g_shared_data.in_progress = false;
-+    g_shared_data.current_file.clear();
-+    g_install_enabled = true;
-+}
-+
-+bool IsInstallModeEnabled() {
-+    return g_install_enabled;
- }
- 
- void DisableInstallMode() {
-+    // published first so that any callback which is currently blocked can see
-+    // it and return, otherwise the wait below would never finish.
-+    g_install_enabled = false;
-+
-     SCOPED_MUTEX(&g_shared_data.mutex);
--    g_shared_data.enabled = false;
-+    while (g_shared_data.in_flight) {
-+        condvarWaitTimeout(std::addressof(g_shared_data.cv), std::addressof(g_shared_data.mutex), 1e+8);
-+    }
-+
-+    // safe to drop the callbacks now, nothing can be using them.
-+    g_shared_data.on_start = {};
-+    g_shared_data.on_write = {};
-+    g_shared_data.on_close = {};
-+    g_shared_data.in_progress = false;
-+    g_shared_data.current_file.clear();
- }
- 
- } // namespace sphaira::libhaze
-diff --git a/sphaira/source/ui/menus/ftp_menu.cpp b/sphaira/source/ui/menus/ftp_menu.cpp
-index 524f655..819f6bc 100644
---- a/sphaira/source/ui/menus/ftp_menu.cpp
-+++ b/sphaira/source/ui/menus/ftp_menu.cpp
-@@ -30,8 +30,9 @@ Menu::Menu(u32 flags) : stream::Menu{"FTP Install"_i18n, flags} {
- }
- 
- Menu::~Menu() {
--    // signal for thread to exit and wait.
--    ftpsrv::DisableInstallMode();
-+    // unblocks any ftp callback that is currently waiting on us and then
-+    // disables install mode. must happen before the server is torn down.
-+    CancelInstallMode();
- 
-     if (!m_was_ftp_enabled) {
-         log_write("[FTP] disabling on exit\n");
-@@ -103,4 +104,8 @@ void Menu::OnDisableInstallMode() {
-     ftpsrv::DisableInstallMode();
- }
- 
-+bool Menu::IsInstallModeActive() const {
-+    return ftpsrv::IsInstallModeEnabled();
-+}
-+
- } // namespace sphaira::ui::menu::ftp
-diff --git a/sphaira/source/ui/menus/game_menu.cpp b/sphaira/source/ui/menus/game_menu.cpp
-index 3df8808..109f20e 100644
---- a/sphaira/source/ui/menus/game_menu.cpp
-+++ b/sphaira/source/ui/menus/game_menu.cpp
-@@ -611,6 +611,10 @@ Menu::Menu(u32 flags) : grid::Menu{"Games"_i18n, flags} {
-             }
- 
-             if (m_entries.size()) {
-+                options->Add<SidebarEntryCallback>("View application content"_i18n, [this](){
-+                    App::Push<meta::Menu>(m_entries[m_index]);
-+                });
-+
-                 options->Add<SidebarEntryCallback>("Launch random game"_i18n, [this](){
-                     const auto random_index = randomGet64() % std::size(m_entries);
-                     auto& e = m_entries[random_index];
-diff --git a/sphaira/source/ui/menus/install_stream_menu_base.cpp b/sphaira/source/ui/menus/install_stream_menu_base.cpp
-index 4eba9dc..a1fce0b 100644
---- a/sphaira/source/ui/menus/install_stream_menu_base.cpp
-+++ b/sphaira/source/ui/menus/install_stream_menu_base.cpp
-@@ -10,14 +10,13 @@
- namespace sphaira::ui::menu::stream {
- namespace {
- 
--enum class InstallState {
--    None,
--    Progress,
--    Finished,
--};
--
- constexpr u64 MAX_BUFFER_SIZE = 1024ULL*1024ULL*1ULL;
--std::atomic<InstallState> INSTALL_STATE{InstallState::None};
-+
-+// every wait in here is bounded, a missed wakeup then costs a few ms rather
-+// than hanging the transport (and with it the whole app) forever.
-+constexpr u64 WAIT_TIMEOUT = 1e+8; // 100ms.
-+constexpr u64 POLL_INTERVAL_FAST = 1e+6; // 1ms.
-+constexpr u64 POLL_INTERVAL_SLOW = 1e+7; // 10ms.
- 
- } // namespace
- 
-@@ -32,29 +31,31 @@ Stream::Stream(const fs::FsPath& path, std::stop_token token) {
-     condvarInit(&m_can_write);
- }
- 
-+void Stream::Wait(CondVar* cv) {
-+    // a timeout is expected and not an error, the caller loops and re-checks.
-+    condvarWaitTimeout(cv, std::addressof(m_mutex), WAIT_TIMEOUT);
-+}
-+
- Result Stream::ReadChunk(void* _buf, s64 size, u64* bytes_read) {
-     auto buf = static_cast<u8*>(_buf);
-     *bytes_read = 0;
- 
--    log_write("[Stream::ReadChunk] inside\n");
--    ON_SCOPE_EXIT(
--        log_write("[Stream::ReadChunk] exiting\n");
--    );
--
-     while (!m_token.stop_requested()) {
-         SCOPED_MUTEX(&m_mutex);
--        if (m_active && m_buffer.empty()) {
--            R_TRY(condvarWait(std::addressof(m_can_read), std::addressof(m_mutex)));
--        }
- 
--        if ((!m_active && m_buffer.empty()) || m_token.stop_requested()) {
--            break;
-+        if (m_buffer.empty()) {
-+            if (!m_active) {
-+                break;
-+            }
-+
-+            Wait(std::addressof(m_can_read));
-+            continue;
-         }
- 
-         const auto rsize = std::min<s64>(size, m_buffer.size());
-         std::memcpy(buf, m_buffer.data(), rsize);
-         m_buffer.erase(m_buffer.begin(), m_buffer.begin() + rsize);
--        condvarWakeOne(&m_can_write);
-+        condvarWakeAll(std::addressof(m_can_write));
- 
-         size -= rsize;
-         buf += rsize;
-@@ -65,6 +66,12 @@ Result Stream::ReadChunk(void* _buf, s64 size, u64* bytes_read) {
-         }
-     }
- 
-+    // a short read is still a success, yati treats zero bytes read as a
-+    // cancelled transfer.
-+    if (*bytes_read) {
-+        R_SUCCEED();
-+    }
-+
-     log_write("[Stream::ReadChunk] failed to read\n");
-     R_THROW(Result_TransferCancelled);
- }
-@@ -75,20 +82,14 @@ bool Stream::Push(const void* _buf, s64 size) {
-         return true;
-     }
- 
--    log_write("[Stream::Push] inside\n");
--    ON_SCOPE_EXIT(
--        log_write("[Stream::Push] exiting\n");
--    );
--
-     while (!m_token.stop_requested()) {
--        if (INSTALL_STATE == InstallState::Finished) {
--            log_write("[Stream::Push] install has finished\n");
--            return true;
--        }
--
-         SCOPED_MUTEX(&m_mutex);
--        if (m_active && m_buffer.size() >= MAX_BUFFER_SIZE) {
--            R_TRY(condvarWait(std::addressof(m_can_write), std::addressof(m_mutex)));
-+
-+        // the installer already finished (or gave up) reading this file, the
-+        // remaining data is not needed, pretend it was consumed so that the
-+        // transport can move on to the next file.
-+        if (m_install_done) {
-+            return true;
-         }
- 
-         if (!m_active) {
-@@ -96,12 +97,17 @@ bool Stream::Push(const void* _buf, s64 size) {
-             break;
-         }
- 
-+        if (m_buffer.size() >= MAX_BUFFER_SIZE) {
-+            Wait(std::addressof(m_can_write));
-+            continue;
-+        }
-+
-         const auto wsize = std::min<s64>(size, MAX_BUFFER_SIZE - m_buffer.size());
-         const auto offset = m_buffer.size();
-         m_buffer.resize(offset + wsize);
- 
-         std::memcpy(m_buffer.data() + offset, buf, wsize);
--        condvarWakeOne(&m_can_read);
-+        condvarWakeAll(std::addressof(m_can_read));
- 
-         size -= wsize;
-         buf += wsize;
-@@ -119,8 +125,15 @@ void Stream::Disable() {
- 
-     SCOPED_MUTEX(&m_mutex);
-     m_active = false;
--    condvarWakeOne(&m_can_read);
--    condvarWakeOne(&m_can_write);
-+    condvarWakeAll(std::addressof(m_can_read));
-+    condvarWakeAll(std::addressof(m_can_write));
-+}
-+
-+void Stream::SetInstallFinished() {
-+    SCOPED_MUTEX(&m_mutex);
-+    m_install_done = true;
-+    condvarWakeAll(std::addressof(m_can_read));
-+    condvarWakeAll(std::addressof(m_can_write));
- }
- 
- Menu::Menu(const std::string& title, u32 flags) : MenuBase{title, flags} {
-@@ -134,61 +147,143 @@ Menu::Menu(const std::string& title, u32 flags) : MenuBase{title, flags} {
- 
-     App::SetAutoSleepDisabled(true);
-     mutexInit(&m_mutex);
--
--    INSTALL_STATE = InstallState::None;
- }
- 
- Menu::~Menu() {
--    // signal for thread to exit and wait.
-+    // derived destructors already called CancelInstallMode(), this is only a
-+    // safety net in case one of them forgot to.
-     m_stop_source.request_stop();
- 
--    if (m_source) {
--        m_source->Disable();
-+    std::shared_ptr<Stream> source;
-+    {
-+        SCOPED_MUTEX(&m_mutex);
-+        source = m_source;
-+    }
-+
-+    if (source) {
-+        source->Disable();
-+        source->SetInstallFinished();
-     }
- 
-     App::SetAutoSleepDisabled(false);
- }
- 
-+bool Menu::IsCancelled() const {
-+    // check the cheap, non-virtual condition first, the transport may already
-+    // be halfway through tearing us down.
-+    if (GetToken().stop_requested()) {
-+        return true;
-+    }
-+
-+    return !IsInstallModeActive();
-+}
-+
-+void Menu::CancelInstallMode() {
-+    // 1. unblock the transport callbacks that poll this.
-+    m_stop_source.request_stop();
-+
-+    // 2. unblock a transfer that is sat waiting on the installer.
-+    //    the stream is taken out of the lock before use, the transport thread
-+    //    may be inside Push() with the stream mutex held.
-+    std::shared_ptr<Stream> source;
-+    {
-+        SCOPED_MUTEX(&m_mutex);
-+        source = m_source;
-+    }
-+
-+    if (source) {
-+        source->Disable();
-+        source->SetInstallFinished();
-+    }
-+
-+    // 3. tell the transport to stop accepting installs, this waits for any
-+    //    in-flight callback to return, which steps 1 and 2 just guaranteed.
-+    OnDisableInstallMode();
-+}
-+
-+bool Menu::WaitForIdle(u64 poll_ns) {
-+    for (;;) {
-+        {
-+            SCOPED_MUTEX(&m_mutex);
-+            // Connected means a stream is waiting to be picked up by the ui
-+            // thread, Progress means the installer still owns it. In both
-+            // cases the previous transfer is not done with yet.
-+            if (m_state != State::Connected && m_state != State::Progress) {
-+                return true;
-+            }
-+        }
-+
-+        if (IsCancelled()) {
-+            return false;
-+        }
-+
-+        svcSleepThread(poll_ns);
-+    }
-+}
-+
- void Menu::Update(Controller* controller, TouchInfo* touch) {
-     MenuBase::Update(controller, touch);
- 
--    SCOPED_MUTEX(&m_mutex);
-+    std::shared_ptr<Stream> source;
-+    {
-+        SCOPED_MUTEX(&m_mutex);
-+        if (m_state != State::Connected) {
-+            return;
-+        }
- 
--    if (m_state == State::Connected) {
-         m_state = State::Progress;
--        App::Push<ui::ProgressBox>(0, "Installing "_i18n, m_source->GetPath(), [this](auto pbox) -> Result {
--            INSTALL_STATE = InstallState::Progress;
--            const auto rc = yati::InstallFromSource(pbox, m_source.get(), m_source->GetPath());
--            INSTALL_STATE = InstallState::Finished;
--
--            if (R_FAILED(rc)) {
--                m_source->Disable();
--                R_THROW(rc);
--            }
-+        source = m_source;
-+    }
- 
--            R_SUCCEED();
--        }, [this](Result rc){
--            App::PushErrorBox(rc, "Install failed!"_i18n);
-+    // pushed outside of the lock, creating the progress box spawns a thread
-+    // whilst the transport thread is polling m_state.
-+    App::Push<ui::ProgressBox>(0, "Installing "_i18n, source->GetPath(), [source](auto pbox) -> Result {
-+        // whatever happens, stop the transport from blocking on this stream.
-+        ON_SCOPE_EXIT(source->SetInstallFinished());
-+
-+        const auto rc = yati::InstallFromSource(pbox, source.get(), source->GetPath());
-+        if (R_FAILED(rc)) {
-+            source->Disable();
-+            R_THROW(rc);
-+        }
-+
-+        R_SUCCEED();
-+    }, [this](Result rc){
-+        App::PushErrorBox(rc, "Install failed!"_i18n);
- 
-+        bool failed;
-+        {
-             SCOPED_MUTEX(&m_mutex);
- 
-             if (R_SUCCEEDED(rc)) {
-                 App::Notify("Install success!"_i18n);
-                 m_state = State::Done;
-+                failed = false;
-             } else {
-                 m_state = State::Failed;
--                OnDisableInstallMode();
-+                failed = true;
-             }
--        }, ui::ProgressBoxOption::ScreenToggle);
--    }
-+        }
-+
-+        // must be done *without* m_mutex held. the transport thread can be
-+        // blocked inside one of our callbacks whilst holding its own lock, and
-+        // disabling install mode takes that same lock, which would deadlock.
-+        if (failed) {
-+            CancelInstallMode();
-+        }
-+    }, ui::ProgressBoxOption::ScreenToggle);
- }
- 
- void Menu::Draw(NVGcontext* vg, Theme* theme) {
-     MenuBase::Draw(vg, theme);
- 
--    SCOPED_MUTEX(&m_mutex);
-+    State state;
-+    {
-+        SCOPED_MUTEX(&m_mutex);
-+        state = m_state;
-+    }
- 
--    switch (m_state) {
-+    switch (state) {
-         case State::None:
-         case State::Done:
-             gfx::drawTextArgs(vg, SCREEN_WIDTH / 2.f, SCREEN_HEIGHT / 2.f, 36.f, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE, theme->GetColour(ThemeEntryID_TEXT_INFO), "Drag'n'Drop (NSP, XCI, NSZ, XCZ, MSP) to the install folder"_i18n.c_str());
-@@ -205,51 +300,26 @@ void Menu::Draw(NVGcontext* vg, Theme* theme) {
- }
- 
- bool Menu::OnInstallStart(const char* path) {
--    log_write("[Menu::OnInstallStart] inside\n");
--
--    for (;;) {
--        {
--            SCOPED_MUTEX(&m_mutex);
--
--            if (m_state != State::Progress) {
--                break;
--            }
--
--            if (GetToken().stop_requested()) {
--                return false;
--            }
--        }
--
--        svcSleepThread(1e+6);
-+    log_write("[Menu::OnInstallStart] inside: %s\n", path);
-+
-+    // wait for the previous transfer to fully complete. the state only leaves
-+    // Progress once the progress box has been destroyed, and that joins the
-+    // installer thread first, so by this point nothing can still be using the
-+    // old stream.
-+    if (!WaitForIdle(POLL_INTERVAL_FAST)) {
-+        log_write("[Menu::OnInstallStart] cancelled whilst waiting\n");
-+        return false;
-     }
- 
--    log_write("[Menu::OnInstallStart] got state: %u\n", (u8)m_state);
--
--    if (m_source) {
--        log_write("[Menu::OnInstallStart] we have source\n");
--        for (;;) {
--            {
--                SCOPED_MUTEX(&m_source->m_mutex);
--
--                if (!m_source->m_active && INSTALL_STATE != InstallState::Progress) {
--                    break;
--                }
--
--                if (GetToken().stop_requested()) {
--                    return false;
--                }
--            }
--
--            svcSleepThread(1e+6);
--        }
-+    SCOPED_MUTEX(&m_mutex);
- 
--        log_write("[Menu::OnInstallStart] stopped polling source\n");
-+    // a failed install ends the session, don't accept anything else.
-+    if (m_state == State::Failed || GetToken().stop_requested()) {
-+        log_write("[Menu::OnInstallStart] rejecting, state: %u\n", (u8)m_state);
-+        return false;
-     }
- 
--    SCOPED_MUTEX(&m_mutex);
--
--    m_source = std::make_unique<Stream>(path, GetToken());
--    INSTALL_STATE = InstallState::None;
-+    m_source = std::make_shared<Stream>(path, GetToken());
-     m_state = State::Connected;
-     log_write("[Menu::OnInstallStart] exiting\n");
- 
-@@ -257,19 +327,40 @@ bool Menu::OnInstallStart(const char* path) {
- }
- 
- bool Menu::OnInstallWrite(const void* buf, size_t size) {
--    log_write("[Menu::OnInstallWrite] inside\n");
--    return m_source->Push(buf, size);
-+    std::shared_ptr<Stream> source;
-+    {
-+        SCOPED_MUTEX(&m_mutex);
-+        source = m_source;
-+    }
-+
-+    if (!source) {
-+        log_write("[Menu::OnInstallWrite] no source\n");
-+        return false;
-+    }
-+
-+    return source->Push(buf, size);
- }
- 
- void Menu::OnInstallClose() {
-     log_write("[Menu::OnInstallClose] inside\n");
- 
--    m_source->Disable();
-+    std::shared_ptr<Stream> source;
-+    {
-+        SCOPED_MUTEX(&m_mutex);
-+        source = m_source;
-+    }
- 
--    // wait until the install has finished before returning.
--    while (INSTALL_STATE == InstallState::Progress) {
--        svcSleepThread(1e+7);
-+    if (source) {
-+        // the file has been fully received, let the installer drain whatever
-+        // is still buffered.
-+        source->Disable();
-     }
-+
-+    // wait until the install has finished before returning. without this the
-+    // transport opens the next file whilst this one is still installing, which
-+    // with a queue of many (small) files ends up replacing the stream from
-+    // under the installer.
-+    WaitForIdle(POLL_INTERVAL_SLOW);
- }
- 
- } // namespace sphaira::ui::menu::stream
-diff --git a/sphaira/source/ui/menus/main_menu.cpp b/sphaira/source/ui/menus/main_menu.cpp
-index 504b6d1..c009bc3 100644
---- a/sphaira/source/ui/menus/main_menu.cpp
-+++ b/sphaira/source/ui/menus/main_menu.cpp
-@@ -19,6 +19,7 @@
- #include "ui/menus/gc_menu.hpp"
- #include "ui/menus/game_menu.hpp"
- #include "ui/menus/save_menu.hpp"
-+#include "ui/menus/storage_menu.hpp"
- #include "ui/menus/appstore.hpp"
- 
- #include "app.hpp"
-@@ -310,6 +311,10 @@ const MiscMenuEntry MISC_MENU_ENTRIES[] = {
-         "View all installed games. "
-         "In this menu you can launch, backup, create savedata and much more." },
- 
-+    { .name = "Storage", .title = "Data Management", .func = MiscMenuFuncGenerator<ui::menu::storage::Menu>, .flag = MiscMenuFlag_Shortcut, .info =
-+        "See how much space each game uses on the microSD card and in system memory. "
-+        "Games are listed largest first, so it's easy to find what to remove." },
-+
-     { .name = "FileBrowser", .title = "FileBrowser", .func = MiscMenuFuncGenerator<ui::menu::filebrowser::Menu>, .flag = MiscMenuFlag_Shortcut, .info =
-         "Browse files on you SD Card. "
-         "You can move, copy, delete, extract zip, create zip, upload and much more.\n\n"
-diff --git a/sphaira/source/ui/menus/mtp_menu.cpp b/sphaira/source/ui/menus/mtp_menu.cpp
-index 6aadd4d..4527a21 100644
---- a/sphaira/source/ui/menus/mtp_menu.cpp
-+++ b/sphaira/source/ui/menus/mtp_menu.cpp
-@@ -24,8 +24,10 @@ Menu::Menu(u32 flags) : stream::Menu{"MTP Install"_i18n, flags} {
- }
- 
- Menu::~Menu() {
--    // signal for thread to exit and wait.
--    libhaze::DisableInstallMode();
-+    // unblocks any haze callback that is currently waiting on us and then
-+    // disables install mode. must happen before libhaze::Exit(), which joins
-+    // the haze thread.
-+    CancelInstallMode();
- 
-     if (!m_was_mtp_enabled) {
-         log_write("[MTP] disabling on exit\n");
-@@ -56,4 +58,8 @@ void Menu::OnDisableInstallMode() {
-     libhaze::DisableInstallMode();
- }
- 
-+bool Menu::IsInstallModeActive() const {
-+    return libhaze::IsInstallModeEnabled();
-+}
-+
- } // namespace sphaira::ui::menu::mtp
-diff --git a/sphaira/source/ui/menus/storage_menu.cpp b/sphaira/source/ui/menus/storage_menu.cpp
-new file mode 100644
-index 0000000..221bf13
---- /dev/null
-+++ b/sphaira/source/ui/menus/storage_menu.cpp
-@@ -0,0 +1,850 @@
-+#include "ui/menus/storage_menu.hpp"
-+#include "ui/menus/game_meta_menu.hpp"
-+
-+#include "ui/nvg_util.hpp"
-+#include "ui/sidebar.hpp"
-+
-+#include "yati/nx/ncm.hpp"
-+#include "yati/nx/ns.hpp"
-+
-+#include "utils/utils.hpp"
-+
-+#include "title_info.hpp"
-+#include "app.hpp"
-+#include "defines.hpp"
-+#include "fs.hpp"
-+#include "log.hpp"
-+#include "i18n.hpp"
-+#include "image.hpp"
-+
-+#include <algorithm>
-+#include <array>
-+#include <cstring>
-+#include <unordered_set>
-+
-+namespace sphaira::ui::menu::storage {
-+namespace {
-+
-+// sizing an entry costs a handful of ncm queries, so it is spread over
-+// multiple frames rather than blocking the ui for several seconds on a large
-+// library. a cached entry only costs the meta listing, so budget by time and
-+// let a warm cache burn through far more entries per frame.
-+constexpr std::size_t SCAN_MIN_PER_FRAME = 4;
-+constexpr std::size_t SCAN_MAX_PER_FRAME = 64;
-+constexpr u64 SCAN_BUDGET_MS = 4;
-+// max images uploaded per frame, in order to not hit io / gpu too hard.
-+constexpr int IMAGE_LOAD_MAX = 2;
-+
-+constexpr float BAR_ROUNDING = 2.f;
-+
-+// measured sizes are kept next to the other sphaira state, walking ncm for
-+// every game is by far the slowest part of this menu.
-+constexpr fs::FsPath CACHE_PATH{"/config/sphaira/storage_cache.bin"};
-+constexpr u32 CACHE_MAGIC = 0x53535053; // 'SPSS'
-+constexpr u32 CACHE_VERSION = 1;
-+
-+struct CacheHeader {
-+    u32 magic;
-+    u32 version;
-+    u64 count;
-+};
-+static_assert(sizeof(CacheHeader) == 0x10);
-+
-+struct CacheRecord {
-+    u64 app_id;
-+    u64 fingerprint;
-+    s64 size_base;
-+    s64 size_update;
-+    s64 size_dlc;
-+    s64 size_sd;
-+    s64 size_nand;
-+};
-+static_assert(sizeof(CacheRecord) == 0x38);
-+
-+// left side panel.
-+constexpr Vec4 PANEL{30, 90, 375, 555};
-+constexpr float PANEL_X = PANEL.x + 20;
-+constexpr float PANEL_W = PANEL.w - 40;
-+
-+bool LoadControlImage(game::Entry& e, title::ThreadResultData* result) {
-+    if (!e.image && result && !result->icon.empty()) {
-+        const auto image = ImageLoadFromMemory(result->icon, ImageFlag_JPEG);
-+        if (!image.data.empty()) {
-+            e.image = nvgCreateImageRGBA(App::GetVg(), image.w, image.h, 0, image.data.data());
-+            return true;
-+        }
-+    }
-+
-+    return false;
-+}
-+
-+void LoadResultIntoEntry(game::Entry& e, title::ThreadResultData* result) {
-+    if (result) {
-+        e.status = result->status;
-+        e.lang = result->lang;
-+    }
-+}
-+
-+// blocking control load, only used when sorting by name.
-+void LoadControlEntry(game::Entry& e) {
-+    if (e.status != title::NacpLoadStatus::Loaded) {
-+        LoadResultIntoEntry(e, title::Get(e.app_id));
-+    }
-+}
-+
-+// identifies the exact set of content that is installed for an application.
-+// the order that ns returns the metas in isn't documented, so sort first to
-+// keep the value stable across scans.
-+auto MakeFingerprint(const title::MetaEntries& entries) -> u64 {
-+    std::vector<std::array<u64, 2>> keys;
-+    keys.reserve(entries.size());
-+
-+    for (const auto& e : entries) {
-+        keys.emplace_back(std::array<u64, 2>{
-+            e.application_id,
-+            ((u64)e.version << 16) | ((u64)e.meta_type << 8) | (u64)e.storageID,
-+        });
-+    }
-+
-+    std::ranges::sort(keys);
-+
-+    // fnv-1a.
-+    u64 hash = 0xCBF29CE484222325ULL;
-+    const auto mix = [&hash](u64 value) {
-+        for (int i = 0; i < 8; i++) {
-+            hash ^= (value >> (i * 8)) & 0xFF;
-+            hash *= 0x100000001B3ULL;
-+        }
-+    };
-+
-+    mix(keys.size());
-+    for (const auto& key : keys) {
-+        mix(key[0]);
-+        mix(key[1]);
-+    }
-+
-+    return hash;
-+}
-+
-+// draws the outline and the empty portion of a bar, returns the area that
-+// the filled segments should be drawn into.
-+Vec4 DrawBarFrame(NVGcontext* vg, Theme* theme, const Vec4& v) {
-+    gfx::drawRect(vg, v, theme->GetColour(ThemeEntryID_TEXT_INFO), BAR_ROUNDING);
-+    gfx::drawRect(vg, v.x + 1, v.y + 1, v.w - 2, v.h - 2, theme->GetColour(ThemeEntryID_PROGRESSBAR_BACKGROUND), BAR_ROUNDING);
-+    return Vec4{v.x + 2, v.y + 2, v.w - 4, v.h - 4};
-+}
-+
-+// draws value/total of the bar, starting at offset, returns the new offset.
-+float DrawBarSegment(NVGcontext* vg, Theme* theme, const Vec4& inner, float offset, s64 value, s64 total, ThemeEntryID id) {
-+    if (value <= 0 || total <= 0 || offset >= inner.w) {
-+        return offset;
-+    }
-+
-+    auto width = (float)((double)value / (double)total * (double)inner.w);
-+    width = std::min(width, inner.w - offset);
-+    if (width <= 0.f) {
-+        return offset;
-+    }
-+
-+    gfx::drawRect(vg, inner.x + offset, inner.y, width, inner.h, theme->GetColour(id), BAR_ROUNDING);
-+    return offset + width;
-+}
-+
-+} // namespace
-+
-+Menu::Menu(u32 flags) : MenuBase{"Data Management"_i18n, flags} {
-+    this->SetActions(
-+        std::make_pair(Button::B, Action{"Back"_i18n, [this](){
-+            SetPop();
-+        }}),
-+        std::make_pair(Button::A, Action{"View Content"_i18n, [this](){
-+            if (!HasEntry()) {
-+                return;
-+            }
-+            App::Push<game::meta::Menu>(GetEntry().game);
-+        }}),
-+        std::make_pair(Button::X, Action{"Options"_i18n, [this](){
-+            auto options = std::make_unique<Sidebar>("Storage Options"_i18n, Sidebar::Side::RIGHT);
-+            ON_SCOPE_EXIT(App::Push(std::move(options)));
-+
-+            SidebarEntryArray::Items sort_items;
-+            sort_items.push_back("Size"_i18n);
-+            sort_items.push_back("Title"_i18n);
-+            sort_items.push_back("Title ID"_i18n);
-+
-+            SidebarEntryArray::Items order_items;
-+            order_items.push_back("Descending"_i18n);
-+            order_items.push_back("Ascending"_i18n);
-+
-+            SidebarEntryArray::Items filter_items;
-+            filter_items.push_back("All"_i18n);
-+            filter_items.push_back("microSD card"_i18n);
-+            filter_items.push_back("System memory"_i18n);
-+
-+            options->Add<SidebarEntryArray>("Sort"_i18n, sort_items, [this](s64& index_out){
-+                m_sort.Set(index_out);
-+                FilterAndSort();
-+                SetIndex(0);
-+            }, m_sort.Get());
-+
-+            options->Add<SidebarEntryArray>("Order"_i18n, order_items, [this](s64& index_out){
-+                m_order.Set(index_out);
-+                FilterAndSort();
-+                SetIndex(0);
-+            }, m_order.Get());
-+
-+            options->Add<SidebarEntryArray>("Storage"_i18n, filter_items, [this](s64& index_out){
-+                m_filter.Set(index_out);
-+                FilterAndSort();
-+                SetIndex(0);
-+            }, m_filter.Get(),
-+                "Only list games that have content installed on the selected storage."_i18n);
-+
-+            options->Add<SidebarEntryCallback>("Refresh"_i18n, [this](){
-+                m_dirty = true;
-+                App::PopToMenu();
-+            }, "Looks for new or removed games. Sizes are only recalculated for games whose content has changed."_i18n);
-+
-+            options->Add<SidebarEntryCallback>("Rebuild cache"_i18n, [this](){
-+                ClearCache();
-+                m_dirty = true;
-+                App::PopToMenu();
-+            }, "Discards the saved sizes and measures every game again from scratch."_i18n);
-+        }})
-+    );
-+
-+    const Vec4 v{485, GetY() + 1.f + 42.f, 720, 70};
-+    m_list = std::make_unique<List>(1, 7, m_pos, v);
-+
-+    ns::Initialize();
-+    title::Init();
-+}
-+
-+Menu::~Menu() {
-+    // a scan that was left part way through still measured some games,
-+    // don't throw that work away.
-+    if (m_cache_dirty) {
-+        SaveCache();
-+    }
-+
-+    FreeEntries();
-+    SetBoost(false);
-+    title::Exit();
-+    ns::Exit();
-+}
-+
-+void Menu::SetBoost(bool enable) {
-+    if (m_boost == enable) {
-+        return;
-+    }
-+
-+    m_boost = enable;
-+    App::SetBoostMode(enable);
-+}
-+
-+void Menu::OnFocusGained() {
-+    MenuBase::OnFocusGained();
-+
-+    if (m_dirty) {
-+        ScanRecords();
-+    }
-+}
-+
-+void Menu::Update(Controller* controller, TouchInfo* touch) {
-+    if (m_dirty) {
-+        ScanRecords();
-+    }
-+
-+    if (m_scanning) {
-+        ScanSizeStep();
-+    }
-+
-+    MenuBase::Update(controller, touch);
-+    m_list->OnUpdate(controller, touch, m_index, m_view.size(), [this](bool touch, auto i) {
-+        if (touch && m_index == i) {
-+            FireAction(Button::A);
-+        } else {
-+            App::PlaySoundEffect(SoundEffect::Focus);
-+            SetIndex(i);
-+        }
-+    });
-+}
-+
-+void Menu::Draw(NVGcontext* vg, Theme* theme) {
-+    MenuBase::Draw(vg, theme);
-+
-+    const auto pdata = GetPolledData();
-+
-+    // left side panel, storage summary followed by the selected game.
-+    gfx::drawRect(vg, PANEL, theme->GetColour(ThemeEntryID_GRID));
-+
-+    DrawStorageBar(vg, theme, PANEL_X, PANEL.y + 20, PANEL_W, "microSD card"_i18n, m_games_sd, pdata.sd_free, pdata.sd_total);
-+    DrawStorageBar(vg, theme, PANEL_X, PANEL.y + 144, PANEL_W, "System memory"_i18n, m_games_nand, pdata.emmc_free, pdata.emmc_total);
-+
-+    gfx::drawRect(vg, PANEL_X, PANEL.y + 266, PANEL_W, 1.f, theme->GetColour(ThemeEntryID_LINE_SEPARATOR));
-+
-+    DrawDetails(vg, theme);
-+
-+    if (m_view.empty()) {
-+        const auto text = m_scanning ? "Calculating..."_i18n : "Empty..."_i18n;
-+        gfx::drawTextArgs(vg, 845.f, GetY() + GetH() / 2.f, 36.f, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE, theme->GetColour(ThemeEntryID_TEXT_INFO), "%s", text.c_str());
-+        return;
-+    }
-+
-+    int image_load_count = 0;
-+    const auto count = (s64)m_view.size();
-+
-+    m_list->Draw(vg, theme, count, [this, count, &image_load_count](auto* vg, auto* theme, auto& v, auto i) {
-+        const auto& [x, y, w, h] = v;
-+        auto& entry = m_entries[m_view[i]];
-+        auto& game = entry.game;
-+
-+        if (game.status == title::NacpLoadStatus::None) {
-+            title::PushAsync(game.app_id);
-+            game.status = title::NacpLoadStatus::Progress;
-+        } else if (game.status == title::NacpLoadStatus::Progress) {
-+            LoadResultIntoEntry(game, title::GetAsync(game.app_id));
-+        }
-+
-+        // lazy load image.
-+        if (image_load_count < IMAGE_LOAD_MAX) {
-+            if (LoadControlImage(game, title::GetAsync(game.app_id))) {
-+                image_load_count++;
-+            }
-+        }
-+
-+        const auto selected = m_index == i;
-+        auto text_id = ThemeEntryID_TEXT;
-+        auto info_id = ThemeEntryID_TEXT_INFO;
-+
-+        if (selected) {
-+            text_id = info_id = ThemeEntryID_TEXT_SELECTED;
-+            gfx::drawRectOutline(vg, theme, 4.f, v);
-+        } else if (i + 1 < count) {
-+            gfx::drawRect(vg, x, y + h, w, 1.f, theme->GetColour(ThemeEntryID_LINE_SEPARATOR));
-+        }
-+
-+        gfx::drawImage(vg, x + 14, y + 11, 48, 48, game.image ? game.image : App::GetDefaultImage(), 4);
-+
-+        constexpr float text_x = 76;
-+        constexpr float bar_w = 470;
-+        m_scroll_name.Draw(vg, selected, x + text_x, y + 12, bar_w, 20.f, NVG_ALIGN_LEFT | NVG_ALIGN_TOP, theme->GetColour(text_id), game.GetName());
-+
-+        // bar is relative to the largest game in the list, which makes the
-+        // difference between entries readable no matter the library size.
-+        const Vec4 bar{x + text_x, y + 44, bar_w, 12};
-+        const auto inner = DrawBarFrame(vg, theme, bar);
-+        DrawBarSegment(vg, theme, inner, 0.f, entry.size_total, m_largest, ThemeEntryID_PROGRESSBAR);
-+
-+        gfx::drawTextArgs(vg, x + w - 16, y + 16, 21.f, NVG_ALIGN_RIGHT | NVG_ALIGN_TOP, theme->GetColour(text_id), "%s", utils::formatSizeStorage(entry.size_total).c_str());
-+
-+        std::string location;
-+        if (entry.size_sd && entry.size_nand) {
-+            location = "microSD card"_i18n + " + " + "System memory"_i18n;
-+        } else if (entry.size_nand) {
-+            location = "System memory"_i18n;
-+        } else {
-+            location = "microSD card"_i18n;
-+        }
-+
-+        gfx::drawTextArgs(vg, x + w - 16, y + 44, 15.f, NVG_ALIGN_RIGHT | NVG_ALIGN_TOP, theme->GetColour(info_id), "%s", location.c_str());
-+    });
-+}
-+
-+void Menu::DrawStorageBar(NVGcontext* vg, Theme* theme, float x, float y, float w, const std::string& name, s64 games, s64 free, s64 total) const {
-+    // GetPolledData() reports 1/1 when the size lookup fails, guard against
-+    // drawing a completely full bar in that case.
-+    if (total <= 1) {
-+        total = 0;
-+        free = 0;
-+    }
-+
-+    const auto used = std::max<s64>(0, total - free);
-+    const auto other = std::max<s64>(0, used - games);
-+
-+    gfx::drawTextArgs(vg, x, y, 19.f, NVG_ALIGN_LEFT | NVG_ALIGN_TOP, theme->GetColour(ThemeEntryID_TEXT), "%s", name.c_str());
-+    gfx::drawTextArgs(vg, x + w, y + 2, 16.f, NVG_ALIGN_RIGHT | NVG_ALIGN_TOP, theme->GetColour(ThemeEntryID_TEXT_INFO), "%s / %s", utils::formatSizeStorage(used).c_str(), utils::formatSizeStorage(total).c_str());
-+
-+    const Vec4 bar{x, y + 26, w, 14};
-+    const auto inner = DrawBarFrame(vg, theme, bar);
-+    auto offset = DrawBarSegment(vg, theme, inner, 0.f, games, total, ThemeEntryID_PROGRESSBAR);
-+    DrawBarSegment(vg, theme, inner, offset, other, total, ThemeEntryID_TEXT_INFO);
-+
-+    // legend, one row per segment.
-+    const auto draw_legend = [&](float row_y, ThemeEntryID colour, bool outline, const std::string& label, s64 value) {
-+        const Vec4 swatch{x, row_y + 2, 12, 12};
-+        if (outline) {
-+            gfx::drawRect(vg, swatch, theme->GetColour(ThemeEntryID_TEXT_INFO), BAR_ROUNDING);
-+            gfx::drawRect(vg, swatch.x + 1, swatch.y + 1, swatch.w - 2, swatch.h - 2, theme->GetColour(colour), BAR_ROUNDING);
-+        } else {
-+            gfx::drawRect(vg, swatch, theme->GetColour(colour), BAR_ROUNDING);
-+        }
-+
-+        gfx::drawTextArgs(vg, x + 20, row_y, 16.f, NVG_ALIGN_LEFT | NVG_ALIGN_TOP, theme->GetColour(ThemeEntryID_TEXT), "%s", label.c_str());
-+        gfx::drawTextArgs(vg, x + w, row_y, 16.f, NVG_ALIGN_RIGHT | NVG_ALIGN_TOP, theme->GetColour(ThemeEntryID_TEXT_INFO), "%s", utils::formatSizeStorage(value).c_str());
-+    };
-+
-+    draw_legend(y + 50, ThemeEntryID_PROGRESSBAR, false, "Games"_i18n, games);
-+    draw_legend(y + 72, ThemeEntryID_TEXT_INFO, false, "Other"_i18n, other);
-+    draw_legend(y + 94, ThemeEntryID_PROGRESSBAR_BACKGROUND, true, "Free"_i18n, free);
-+}
-+
-+void Menu::DrawDetails(NVGcontext* vg, Theme* theme) {
-+    if (!HasEntry()) {
-+        return;
-+    }
-+
-+    const auto& e = GetEntry();
-+    const auto& game = e.game;
-+
-+    gfx::drawImage(vg, PANEL_X, PANEL.y + 284, 84, 84, game.image ? game.image : App::GetDefaultImage(), 5);
-+
-+    const auto text_x = PANEL_X + 100;
-+    const auto text_w = PANEL_W - 100;
-+    m_scroll_detail_name.Draw(vg, true, text_x, PANEL.y + 286, text_w, 19.f, NVG_ALIGN_LEFT | NVG_ALIGN_TOP, theme->GetColour(ThemeEntryID_TEXT), game.GetName());
-+    gfx::drawTextArgs(vg, text_x, PANEL.y + 314, 15.f, NVG_ALIGN_LEFT | NVG_ALIGN_TOP, theme->GetColour(ThemeEntryID_TEXT_INFO), "%016lX", game.app_id);
-+    gfx::drawTextArgs(vg, text_x, PANEL.y + 340, 22.f, NVG_ALIGN_LEFT | NVG_ALIGN_TOP, theme->GetColour(ThemeEntryID_TEXT), "%s", utils::formatSizeStorage(e.size_total).c_str());
-+
-+    const auto draw_row = [&](float row_y, const std::string& label, s64 value) {
-+        gfx::drawTextArgs(vg, PANEL_X, row_y, 17.f, NVG_ALIGN_LEFT | NVG_ALIGN_TOP, theme->GetColour(ThemeEntryID_TEXT), "%s", label.c_str());
-+        gfx::drawTextArgs(vg, PANEL_X + PANEL_W, row_y, 17.f, NVG_ALIGN_RIGHT | NVG_ALIGN_TOP, theme->GetColour(ThemeEntryID_TEXT_INFO), "%s", utils::formatSizeStorage(value).c_str());
-+    };
-+
-+    draw_row(PANEL.y + 396, "Base game"_i18n, e.size_base);
-+    draw_row(PANEL.y + 422, "Update data"_i18n, e.size_update);
-+    draw_row(PANEL.y + 448, "DLC"_i18n, e.size_dlc);
-+
-+    gfx::drawRect(vg, PANEL_X, PANEL.y + 478, PANEL_W, 1.f, theme->GetColour(ThemeEntryID_LINE_SEPARATOR));
-+
-+    draw_row(PANEL.y + 490, "microSD card"_i18n, e.size_sd);
-+    draw_row(PANEL.y + 516, "System memory"_i18n, e.size_nand);
-+}
-+
-+void Menu::SetIndex(s64 index) {
-+    if (m_view.empty()) {
-+        m_index = 0;
-+    } else {
-+        m_index = std::clamp<s64>(index, 0, (s64)m_view.size() - 1);
-+    }
-+
-+    if (!m_index) {
-+        m_list->SetYoff(0);
-+    }
-+
-+    UpdateSubHeading();
-+}
-+
-+void Menu::UpdateSubHeading() {
-+    const auto count = m_view.size();
-+    const auto index = count ? m_index + 1 : 0;
-+    this->SetSubHeading(std::to_string(index) + " / " + std::to_string(count));
-+
-+    // with a warm cache the list is already on screen, so the scan is a
-+    // background detail rather than something to wait on.
-+    if (m_scanning && m_view.empty()) {
-+        this->SetTitleSubHeading(
-+            "Calculating..."_i18n + " " + std::to_string(m_scan_index) + " / " + std::to_string(m_entries.size()));
-+    } else {
-+        this->SetTitleSubHeading(
-+            std::to_string(count) + " " + "Games"_i18n + " | " + utils::formatSizeStorage(m_games_sd + m_games_nand));
-+    }
-+}
-+
-+void Menu::ScanRecords() {
-+    constexpr auto ENTRY_CHUNK_COUNT = 1000;
-+
-+    SetBoost(true);
-+    FreeEntries();
-+    m_dirty = false;
-+
-+    if (!m_cache_loaded) {
-+        m_cache_loaded = true;
-+        LoadCache();
-+    }
-+
-+    m_cache_hits = 0;
-+
-+    std::vector<NsApplicationRecord> record_list(ENTRY_CHUNK_COUNT);
-+    s32 offset{};
-+
-+    while (true) {
-+        s32 record_count{};
-+        if (R_FAILED(nsListApplicationRecord(record_list.data(), record_list.size(), offset, &record_count))) {
-+            log_write("[STORAGE] failed to list application records at offset: %d\n", offset);
-+            break;
-+        }
-+
-+        // finished parsing all entries.
-+        if (!record_count) {
-+            break;
-+        }
-+
-+        for (s32 i = 0; i < record_count; i++) {
-+            auto& entry = m_entries.emplace_back();
-+            entry.game.app_id = record_list[i].application_id;
-+            entry.game.last_event = record_list[i].last_event;
-+        }
-+
-+        offset += record_count;
-+    }
-+
-+    // seed from the cache so the list is usable on the first frame. every
-+    // entry is still verified below, that just happens in the background
-+    // instead of behind a "Calculating..." screen.
-+    for (auto& e : m_entries) {
-+        if (const auto it = m_cache.find(e.game.app_id); it != m_cache.end()) {
-+            ApplyCacheValue(e, it->second);
-+            m_games_sd += e.size_sd;
-+            m_games_nand += e.size_nand;
-+        }
-+    }
-+
-+    m_scan_index = 0;
-+    m_scanning = !m_entries.empty();
-+
-+    if (!m_scanning) {
-+        OnScanComplete();
-+        return;
-+    }
-+
-+    FilterAndSort();
-+    SetIndex(0);
-+}
-+
-+void Menu::ScanSizeStep() {
-+    const TimeStamp ts;
-+    const auto end = std::min(m_scan_index + SCAN_MAX_PER_FRAME, m_entries.size());
-+
-+    for (std::size_t done = 0; m_scan_index < end; m_scan_index++, done++) {
-+        // always make some progress, then keep going for as long as the
-+        // frame budget allows.
-+        if (done >= SCAN_MIN_PER_FRAME && ts.GetMs() >= SCAN_BUDGET_MS) {
-+            break;
-+        }
-+
-+        auto& e = m_entries[m_scan_index];
-+
-+        // the seeded contribution is replaced by the verified one.
-+        m_games_sd -= e.size_sd;
-+        m_games_nand -= e.size_nand;
-+
-+        CalculateSize(e);
-+
-+        m_games_sd += e.size_sd;
-+        m_games_nand += e.size_nand;
-+    }
-+
-+    if (m_scan_index >= m_entries.size()) {
-+        OnScanComplete();
-+    } else {
-+        UpdateSubHeading();
-+    }
-+}
-+
-+void Menu::OnScanComplete() {
-+    m_scanning = false;
-+    SetBoost(false);
-+
-+    // the list was already browsable during the scan, so keep whatever the
-+    // user had highlighted rather than snapping back to the top.
-+    const u64 selected_id = HasEntry() ? GetEntry().game.app_id : 0;
-+
-+    // drop cache entries for games that are no longer installed. this is only
-+    // safe here, where every application record has just been visited.
-+    std::unordered_set<u64> live;
-+    live.reserve(m_entries.size());
-+    for (const auto& e : m_entries) {
-+        if (e.size_total > 0) {
-+            live.emplace(e.game.app_id);
-+        }
-+    }
-+
-+    if (std::erase_if(m_cache, [&live](const auto& entry) { return !live.contains(entry.first); })) {
-+        m_cache_dirty = true;
-+    }
-+
-+    // records without installed content (archived games, or a game card that
-+    // isn't inserted) don't use any space, so drop them from the list.
-+    std::erase_if(m_entries, [](const auto& e) {
-+        return e.size_total <= 0;
-+    });
-+
-+    log_write("[STORAGE] scanned %zu games using %s (%zu from cache)\n", m_entries.size(), utils::formatSizeStorage(m_games_sd + m_games_nand).c_str(), m_cache_hits);
-+
-+    if (m_cache_dirty) {
-+        SaveCache();
-+    }
-+
-+    FilterAndSort();
-+
-+    s64 index = 0;
-+    for (u32 i = 0; i < m_view.size(); i++) {
-+        if (m_entries[m_view[i]].game.app_id == selected_id) {
-+            index = i;
-+            break;
-+        }
-+    }
-+
-+    SetIndex(index);
-+}
-+
-+void Menu::ClearSizes(Entry& e) {
-+    e.size_base = 0;
-+    e.size_update = 0;
-+    e.size_dlc = 0;
-+    e.size_sd = 0;
-+    e.size_nand = 0;
-+    e.size_total = 0;
-+}
-+
-+void Menu::ApplyCacheValue(Entry& e, const CacheValue& value) {
-+    e.size_base = value.size_base;
-+    e.size_update = value.size_update;
-+    e.size_dlc = value.size_dlc;
-+    e.size_sd = value.size_sd;
-+    e.size_nand = value.size_nand;
-+    e.size_total = value.size_sd + value.size_nand;
-+}
-+
-+void Menu::CalculateSize(Entry& e) {
-+    // anything already seeded from the cache is unverified, drop it and
-+    // rebuild from what ncm reports now.
-+    ClearSizes(e);
-+
-+    title::MetaEntries meta_entries;
-+    if (R_FAILED(title::GetMetaEntries(e.game.app_id, meta_entries))) {
-+        return;
-+    }
-+
-+    // listing the metas costs two ipc calls, walking them costs several more
-+    // per meta. when the fingerprint still matches, the walk is skipped and
-+    // the previously measured sizes are reused.
-+    const auto fingerprint = MakeFingerprint(meta_entries);
-+
-+    if (const auto it = m_cache.find(e.game.app_id); it != m_cache.end() && it->second.fingerprint == fingerprint) {
-+        ApplyCacheValue(e, it->second);
-+        m_cache_hits++;
-+        return;
-+    }
-+
-+    for (const auto& status : meta_entries) {
-+        // game card content lives on the cart, not on the console.
-+        if (status.storageID != NcmStorageId_SdCard && status.storageID != NcmStorageId_BuiltInUser) {
-+            continue;
-+        }
-+
-+        game::NcmMetaData meta;
-+        if (R_FAILED(game::GetNcmMetaFromMetaStatus(status, meta))) {
-+            continue;
-+        }
-+
-+        std::vector<NcmContentInfo> infos;
-+        if (R_FAILED(ncm::GetContentInfos(meta.db, &meta.key, infos))) {
-+            continue;
-+        }
-+
-+        s64 size{};
-+        for (const auto& info : infos) {
-+            u64 content_size;
-+            ncmContentInfoSizeToU64(&info, &content_size);
-+            size += content_size;
-+        }
-+
-+        switch (status.meta_type) {
-+            case NcmContentMetaType_Application:
-+                e.size_base += size;
-+                break;
-+            case NcmContentMetaType_Patch:
-+                e.size_update += size;
-+                break;
-+            case NcmContentMetaType_AddOnContent:
-+            case NcmContentMetaType_DataPatch:
-+                e.size_dlc += size;
-+                break;
-+        }
-+
-+        if (status.storageID == NcmStorageId_SdCard) {
-+            e.size_sd += size;
-+        } else {
-+            e.size_nand += size;
-+        }
-+
-+        e.size_total += size;
-+    }
-+
-+    if (e.size_total > 0) {
-+        m_cache[e.game.app_id] = CacheValue{fingerprint, e.size_base, e.size_update, e.size_dlc, e.size_sd, e.size_nand};
-+        m_cache_dirty = true;
-+    } else if (m_cache.erase(e.game.app_id)) {
-+        // nothing is installed on the console anymore.
-+        m_cache_dirty = true;
-+    }
-+}
-+
-+void Menu::LoadCache() {
-+    m_cache.clear();
-+    m_cache_dirty = false;
-+
-+    fs::FsNativeSd fs;
-+    if (R_FAILED(fs.GetFsOpenResult())) {
-+        return;
-+    }
-+
-+    std::vector<u8> data;
-+    if (R_FAILED(fs.read_entire_file(CACHE_PATH, data)) || data.size() < sizeof(CacheHeader)) {
-+        return;
-+    }
-+
-+    CacheHeader header;
-+    std::memcpy(&header, data.data(), sizeof(header));
-+
-+    if (header.magic != CACHE_MAGIC || header.version != CACHE_VERSION) {
-+        log_write("[STORAGE] discarding cache, magic / version mismatch\n");
-+        return;
-+    }
-+
-+    // tolerate a truncated file rather than throwing the whole cache away.
-+    const auto available = (data.size() - sizeof(CacheHeader)) / sizeof(CacheRecord);
-+    const auto count = std::min<u64>(header.count, available);
-+
-+    m_cache.reserve(count);
-+    for (u64 i = 0; i < count; i++) {
-+        CacheRecord record;
-+        std::memcpy(&record, data.data() + sizeof(CacheHeader) + i * sizeof(CacheRecord), sizeof(record));
-+
-+        m_cache.emplace(record.app_id, CacheValue{
-+            record.fingerprint,
-+            record.size_base, record.size_update, record.size_dlc,
-+            record.size_sd, record.size_nand,
-+        });
-+    }
-+
-+    log_write("[STORAGE] loaded %zu cached sizes\n", m_cache.size());
-+}
-+
-+void Menu::SaveCache() {
-+    fs::FsNativeSd fs;
-+    if (R_FAILED(fs.GetFsOpenResult())) {
-+        return;
-+    }
-+
-+    std::vector<u8> data(sizeof(CacheHeader) + m_cache.size() * sizeof(CacheRecord));
-+
-+    const CacheHeader header{CACHE_MAGIC, CACHE_VERSION, m_cache.size()};
-+    std::memcpy(data.data(), &header, sizeof(header));
-+
-+    auto offset = sizeof(CacheHeader);
-+    for (const auto& [app_id, value] : m_cache) {
-+        const CacheRecord record{
-+            app_id, value.fingerprint,
-+            value.size_base, value.size_update, value.size_dlc,
-+            value.size_sd, value.size_nand,
-+        };
-+
-+        std::memcpy(data.data() + offset, &record, sizeof(record));
-+        offset += sizeof(record);
-+    }
-+
-+    fs.CreateDirectoryRecursivelyWithPath(CACHE_PATH);
-+
-+    const auto rc = fs.write_entire_file(CACHE_PATH, data);
-+    if (R_FAILED(rc)) {
-+        log_write("[STORAGE] failed to write size cache: 0x%X\n", R_VALUE(rc));
-+        return;
-+    }
-+
-+    m_cache_dirty = false;
-+    log_write("[STORAGE] wrote %zu cached sizes\n", m_cache.size());
-+}
-+
-+void Menu::ClearCache() {
-+    m_cache.clear();
-+    m_cache_loaded = true;
-+    m_cache_dirty = false;
-+
-+    fs::FsNativeSd fs;
-+    if (R_SUCCEEDED(fs.GetFsOpenResult())) {
-+        fs.DeleteFile(CACHE_PATH);
-+    }
-+}
-+
-+void Menu::FilterAndSort() {
-+    const auto filter = m_filter.Get();
-+
-+    m_view.clear();
-+    m_view.reserve(m_entries.size());
-+
-+    for (u32 i = 0; i < m_entries.size(); i++) {
-+        const auto& e = m_entries[i];
-+
-+        // not measured yet, or nothing installed on the console.
-+        if (e.size_total <= 0) {
-+            continue;
-+        }
-+        if (filter == FilterType_Sd && !e.size_sd) {
-+            continue;
-+        }
-+        if (filter == FilterType_Nand && !e.size_nand) {
-+            continue;
-+        }
-+
-+        m_view.emplace_back(i);
-+    }
-+
-+    switch (m_sort.Get()) {
-+        case SortType_Title:
-+            for (auto i : m_view) {
-+                LoadControlEntry(m_entries[i].game);
-+            }
-+            std::ranges::sort(m_view, [this](auto lhs, auto rhs) {
-+                return strcasecmp(m_entries[lhs].GetName(), m_entries[rhs].GetName()) < 0;
-+            });
-+            break;
-+
-+        case SortType_TitleID:
-+            std::ranges::sort(m_view, [this](auto lhs, auto rhs) {
-+                return m_entries[lhs].game.app_id < m_entries[rhs].game.app_id;
-+            });
-+            break;
-+
-+        case SortType_Size:
-+        default:
-+            std::ranges::sort(m_view, [this](auto lhs, auto rhs) {
-+                return m_entries[lhs].size_total > m_entries[rhs].size_total;
-+            });
-+            break;
-+    }
-+
-+    if (m_order.Get() == OrderType_Ascending) {
-+        std::ranges::reverse(m_view);
-+    }
-+
-+    // the per game bars are drawn relative to the biggest entry.
-+    m_largest = 1;
-+    for (auto i : m_view) {
-+        m_largest = std::max(m_largest, m_entries[i].size_total);
-+    }
-+
-+    m_scroll_name.Reset();
-+    m_scroll_detail_name.Reset();
-+}
-+
-+void Menu::FreeEntries() {
-+    auto vg = App::GetVg();
-+
-+    for (auto& e : m_entries) {
-+        nvgDeleteImage(vg, e.game.image);
-+        e.game.image = 0;
-+    }
-+
-+    m_entries.clear();
-+    m_view.clear();
-+    m_index = 0;
-+    m_scan_index = 0;
-+    m_scanning = false;
-+    m_games_sd = 0;
-+    m_games_nand = 0;
-+    m_largest = 1;
-+}
-+
-+} // namespace sphaira::ui::menu::storage
-diff --git a/sphaira/source/yati/yati.cpp b/sphaira/source/yati/yati.cpp
-index 01654d1..5130343 100644
---- a/sphaira/source/yati/yati.cpp
-+++ b/sphaira/source/yati/yati.cpp
-@@ -369,6 +369,14 @@ struct Yati {
-     std::unique_ptr<container::Base> container{};
-     Config config{};
-     keys::Keys keys{};
-+
-+    // tracks what Setup() actually managed to acquire. these services are
-+    // refcounted process wide and other parts of sphaira (the game menu, the
-+    // game:/ devoptab, ...) hold them at the same time, so releasing one that
-+    // we never acquired would close the session out from under them.
-+    bool spl_crypto_init{};
-+    bool ns_init{};
-+    bool es_init{};
- };
- 
- auto ThreadData::GetResults() volatile -> Result {
-@@ -866,9 +874,21 @@ Yati::Yati(ui::ProgressBox* _pbox, source::Base* _source) : pbox{_pbox}, source{
- }
- 
- Yati::~Yati() {
--    splCryptoExit();
--    ns::Exit();
--    es::Exit();
-+    // released in reverse order of acquisition, and only what Setup() got as
-+    // far as acquiring, see the comment on the flags.
-+    // note: the ncm handles below don't need the same treatment, they are
-+    // zero initialised and closing an unopened one is a no-op.
-+    if (es_init) {
-+        es::Exit();
-+    }
-+
-+    if (ns_init) {
-+        ns::Exit();
-+    }
-+
-+    if (spl_crypto_init) {
-+        splCryptoExit();
-+    }
- 
-     for (size_t i = 0; i < std::size(NCM_STORAGE_IDS); i++) {
-         ncmContentMetaDatabaseClose(std::addressof(ncm_db[i]));
-@@ -902,9 +922,15 @@ Result Yati::Setup(const ConfigOverride& override) {
-     storage_id = config.sd_card_install ? NcmStorageId_SdCard : NcmStorageId_BuiltInUser;
- 
-     R_TRY(source->GetOpenResult());
-+
-     R_TRY(splCryptoInitialize());
-+    spl_crypto_init = true;
-+
-     R_TRY(ns::Initialize());
-+    ns_init = true;
-+
-     R_TRY(es::Initialize());
-+    es_init = true;
- 
-     for (size_t i = 0; i < std::size(NCM_STORAGE_IDS); i++) {
-         R_TRY(ncmOpenContentMetaDatabase(std::addressof(ncm_db[i]), NCM_STORAGE_IDS[i]));
+diff --git a/assets/romfs/i18n/de.json b/assets/romfs/i18n/de.json
+index c3e15f4..3a00e7c 100644
+--- a/assets/romfs/i18n/de.json
++++ b/assets/romfs/i18n/de.json
+@@ -160,6 +160,7 @@
+   "Change the export options.": "Ändern Sie die Exportoptionen.",
+   "Install Options": "Installationsoptionen",
+   "System memory": "NAND Systemspeicher",
++  "Nand memory": "NAND",
+   "microSD card": "SD-Karte",
+   "Data Management": "Datenverwaltung",
+   "Storage": "Speicher",
+@@ -254,8 +255,9 @@
+     "Es wird empfohlen, dies deaktiviert zu lassen."
+   ],
+   "Export Options": "Exportoptionen",
+-  "Fix export filenames": "Exportdateinamen korrigieren",
+-  "fix_export_filenames_info": "Verwendet den englischen Titel für Exportdateinamen und greift auf die Titel-ID zurück, wenn keiner verfügbar ist. Deaktivieren Sie diese Option, um lokalisierte und Unicode-Titel auf kompatiblen Zielen beizubehalten.",
++  "Export path": "Exportpfad",
++  "Enter export path...": "Exportpfad eingeben...",
++  "dump_path_info": "Legt den Basisordner für Exporte fest.\nZum Beispiel: /backup/dumps\n\nAlle exportierten Dateien werden in diesem Ordner gespeichert.",
+   "Created nested folder": "Verschachtelten Ordner erstellt",
+   "game_folder_info": [
+     "Erstellt einen Ordner mit dem Namen des Spiels.",
+@@ -439,7 +441,6 @@
+   "Installing is disabled, enable now?": "Die Installation ist deaktiviert. Jetzt aktivieren?",
+   "WARNING: Installing apps will lead to a ban!": "ACHTUNG: Die Installation von Apps führt zu einem Verbot!",
+   "Installing enabled!": "Installation aktiviert!",
+-  "microSD card (/dumps/)": "microSD-Karte (/dumps/)",
+   "USB export to PC (usb_export.py)": "USB-Export auf PC (usb_export.py)",
+   "USB transfer (Switch 2 Switch)": "USB-Transfer (Switch zu Switch)",
+   "/dev/null (Speed Test)": "/dev/null (Speed-Test)",
+@@ -596,6 +597,8 @@
+   "Create Forwarder": "Forwarder erstellen",
+   "36-bit (Default)": "36-Bit (Standard)",
+   "39-bit": "39-Bit",
++  "32-bit": "32-Bit",
++  "32-bit (no alias)": "32-Bit (ohne Alias)",
+   "The title and icon must be non-empty!": "Der Titel und das Symbol dürfen nicht leer sein!",
+   "Name": "Name",
+   "Set the name of the application": "Legen Sie den Namen der Anwendung fest",
+@@ -976,6 +979,11 @@
+     "Speicherdaten für jeden Benutzer anzeigen. Sie können Spielstände sichern und wiederherstellen.\n",
+     "Eine experimentelle Unterstützung für die Sicherung von Systemspeicherungen ist möglich."
+   ],
++  "Download themes from themezer.net. Themes are downloaded to /themes/sphaira\nTo install the themes, NXThemesInstaller needs to be installed (can be downloaded via the AppStore).": [
++    "Lade Themes von themezer.net herunter. ",
++    "Themes werden nach /themes/sphaira heruntergeladen.",
++    "Zum Installieren der Themes muss NXThemesInstaller installiert sein (kann über den AppStore heruntergeladen werden)."
++  ],
+   "Download releases directly from GitHub. Custom entries can be added to /config/sphaira/github": [
+     "Laden Sie Veröffentlichungen direkt von GitHub herunter. Benutzerdefinierte Einträge können sein ",
+     "zu /config/sphaira/github hinzugefügt"
+diff --git a/assets/romfs/i18n/en.json b/assets/romfs/i18n/en.json
+index 79a9a06..be96317 100644
+--- a/assets/romfs/i18n/en.json
++++ b/assets/romfs/i18n/en.json
+@@ -159,6 +159,7 @@
+   "Change the export options.": "Change the export options.",
+   "Install Options": "Install Options",
+   "System memory": "System memory",
++  "Nand memory": "NAND",
+   "microSD card": "microSD card",
+   "Data Management": "Data Management",
+   "Storage": "Storage",
+@@ -254,8 +255,9 @@
+     "It is recommended to keep this disabled."
+   ],
+   "Export Options": "Export Options",
+-  "Fix export filenames": "Fix export filenames",
+-  "fix_export_filenames_info": "Uses the English title for export filenames and falls back to the Title ID when unavailable. Disable this to preserve localized and Unicode titles on destinations that support them.",
++  "Export path": "Export path",
++  "Enter export path...": "Enter export path...",
++  "dump_path_info": "Sets the base folder used for exports.\nFor example, /backup/dumps\n\nAll exported files will be saved inside this folder.",
+   "Created nested folder": "Created nested folder",
+   "game_folder_info": [
+     "Creates a folder using the name of the game.",
+@@ -439,7 +441,6 @@
+   "Installing is disabled, enable now?": "Installing is disabled, enable now?",
+   "WARNING: Installing apps will lead to a ban!": "WARNING: Installing apps will lead to a ban!",
+   "Installing enabled!": "Installing enabled!",
+-  "microSD card (/dumps/)": "microSD card (/dumps/)",
+   "USB export to PC (usb_export.py)": "USB export to PC (usb_export.py)",
+   "USB transfer (Switch 2 Switch)": "USB transfer (Switch 2 Switch)",
+   "/dev/null (Speed Test)": "/dev/null (Speed Test)",
+@@ -594,8 +595,10 @@
+   "Video Capture": "Video Capture",
+   "Profile Selection": "Profile Selection",
+   "Create Forwarder": "Create Forwarder",
+-  "36-bit (Default)": "36-bit (Default)",
+-  "39-bit": "39-bit",
++  "36-bit (Default)": "36-Bit (Standard)",
++  "39-bit": "39-Bit",
++  "32-bit": "32-Bit",
++  "32-bit (no alias)": "32-Bit (no alias)",
+   "The title and icon must be non-empty!": "The title and icon must be non-empty!",
+   "Name": "Name",
+   "Set the name of the application": "Set the name of the application",
+@@ -978,6 +981,11 @@
+     "View save data for each user. You can backup and restore saves.\n",
+     "Experimental support for backing up system saves is possible."
+   ],
++  "Download themes from themezer.net. Themes are downloaded to /themes/sphaira\nTo install the themes, NXThemesInstaller needs to be installed (can be downloaded via the AppStore).": [
++    "Download themes from themezer.net. ",
++    "Themes are downloaded to /themes/sphaira",
++    "To install the themes, NXThemesInstaller needs to be installed (can be downloaded via the AppStore)."
++  ],
+   "Download releases directly from GitHub. Custom entries can be added to /config/sphaira/github": [
+     "Download releases directly from GitHub. Custom entries can be ",
+     "added to /config/sphaira/github"
+diff --git a/assets/romfs/i18n/es.json b/assets/romfs/i18n/es.json
+index a62a59e..7dbb178 100644
+--- a/assets/romfs/i18n/es.json
++++ b/assets/romfs/i18n/es.json
+@@ -159,6 +159,7 @@
+   "Change the export options.": "Cambia las opciones de exportación.",
+   "Install Options": "Opciones de Instalación",
+   "System memory": "Memoria del sistema",
++  "Nand memory": "",
+   "microSD card": "Tarjeta microSD",
+   "Data Management": "Gestión de datos",
+   "Storage": "Almacenamiento",
+@@ -255,8 +256,9 @@
+     "Se recomienda dejarlo deshabilitado."
+   ],
+   "Export Options": "Opciones de Exportación",
+-  "Fix export filenames": "Corregir nombres de exportación",
+-  "fix_export_filenames_info": "Usa el título en inglés para los archivos exportados y recurre al ID del título cuando no está disponible. Desactiva esta opción para conservar títulos localizados y Unicode en destinos compatibles.",
++  "Export path": "Ruta de exportación",
++  "Enter export path...": "Introduce la ruta de exportación...",
++  "dump_path_info": "Establece la carpeta base utilizada para las exportaciones.\nPor ejemplo: /backup/dumps\n\nTodos los archivos exportados se guardarán en esta carpeta.",
+   "Created nested folder": "Carpeta anidada creada",
+   "game_folder_info": [
+     "Crea una carpeta usando el nombre del juego.",
+@@ -426,11 +428,20 @@
+     "Los dispositivos conectados pueden usarse en el Explorador de Archivos, así como ubicación de respaldo al dumpear juegos y partidas."
+   ],
+   "HDD write protect": "Protección de escritura HDD",
++  "Show system files": "Mostrar archivos del sistema",
++  "hdd_show_system_files_info": [
++    "Solo NTFS. Muestra elementos marcados por Windows como archivos del sistema, como $Recycle.Bin. ",
++    "Déjalo desactivado a menos que sepas lo que estás haciendo."
++  ],
++  "Mount hibernated NTFS": "Montar NTFS hibernado",
++  "hdd_ignore_hibernation_info": [
++    "Solo NTFS. Monta una unidad que Windows dejó en estado de hibernación (inicio rápido). ",
++    "ADVERTENCIA: la sesión de Windows guardada en esa unidad se perderá."
++  ],
+   "Makes the connected HDD read-only.": "Hace que el HDD conectado sea de solo lectura.",
+   "Installing is disabled, enable now?": "La instalación está deshabilitada, ¿habilitar ahora?",
+   "WARNING: Installing apps will lead to a ban!": "ADVERTENCIA: ¡Instalar apps puede resultar en un ban!",
+   "Installing enabled!": "Instalación habilitada!",
+-  "microSD card (/dumps/)": "Tarjeta microSD (/dumps/)",
+   "USB export to PC (usb_export.py)": "Exportar por USB al PC (usb_export.py)",
+   "USB transfer (Switch 2 Switch)": "Transferencia USB (Switch a Switch)",
+   "/dev/null (Speed Test)": "/dev/null (Prueba de velocidad)",
+@@ -585,8 +596,10 @@
+   "Video Capture": "Captura de vídeo",
+   "Profile Selection": "Selección de perfil",
+   "Create Forwarder": "Crear forwarder",
+-  "36-bit (Default)": "36 bits (predeterminado)",
++  "36-bit (Default)": "36 bits (Estándar)",
+   "39-bit": "39 bits",
++  "32-bit": "32 bits",
++  "32-bit (no alias)": "32 bits (sin alias)",
+   "The title and icon must be non-empty!": "¡El título y el ícono no deben estar vacíos!",
+   "Name": "Nombre",
+   "Set the name of the application": "Establecer el nombre de la aplicación",
+@@ -969,6 +982,11 @@
+     "Ver datos guardados por usuario. Puedes respaldar y restaurar saves.\n",
+     "Es posible un soporte experimental para respaldar saves del sistema."
+   ],
++  "Download themes from themezer.net. Themes are downloaded to /themes/sphaira\nTo install the themes, NXThemesInstaller needs to be installed (can be downloaded via the AppStore).": [
++    "Descarga temas de themezer.net. ",
++    "Los temas se descargan en /themes/sphaira.",
++    "Para instalar los temas, es necesario tener NXThemesInstaller instalado (se puede descargar desde AppStore)."
++  ],
+   "Download releases directly from GitHub. Custom entries can be added to /config/sphaira/github": [
+     "Descargar lanzamientos directamente desde GitHub. Entradas personalizadas pueden ",
+     "agregarse en /config/sphaira/github"
+diff --git a/assets/romfs/i18n/fr.json b/assets/romfs/i18n/fr.json
+index f05ce2d..ba8465d 100644
+--- a/assets/romfs/i18n/fr.json
++++ b/assets/romfs/i18n/fr.json
+@@ -160,6 +160,7 @@
+   "Change the export options.": "Modifiez les options d'exportation.",
+   "Install Options": "Options d'Installation",
+   "System memory": "Mémoire système",
++  "Nand memory": "NAND",
+   "microSD card": "Carte microSD",
+   "Data Management": "Gestion des données",
+   "Storage": "Stockage",
+@@ -254,8 +255,9 @@
+     "Il est recommandé de garder cette option désactivée."
+   ],
+   "Export Options": "Options d'exportation",
+-  "Fix export filenames": "Corriger les noms de fichiers exportés",
+-  "fix_export_filenames_info": "Utilise le titre anglais pour les fichiers exportés et l'identifiant du titre s'il n'est pas disponible. Désactivez cette option pour conserver les titres localisés et Unicode sur les destinations compatibles.",
++  "Export path": "Chemin d’exportation",
++  "Enter export path...": "Saisissez le chemin d’exportation...",
++  "dump_path_info": "Définit le dossier de base utilisé pour les exportations.\nPar exemple : /backup/dumps\n\nTous les fichiers exportés seront enregistrés dans ce dossier.",
+   "Created nested folder": "Créer un dossier imbriqué",
+   "game_folder_info": [
+     "Crée un dossier en utilisant le nom du jeu.",
+@@ -425,13 +427,22 @@
+     "Les appareils connectés peuvent être utilisés dans FileBrowser, ainsi qu'un emplacement de sauvegarde lors du dumping de jeux et de sauvegardes."
+   ],
+   "HDD write protect": "Protection en écriture HDD",
++  "Show system files": "Afficher les fichiers système",
++  "hdd_show_system_files_info": [
++    "NTFS uniquement. Affiche les éléments marqués par Windows comme fichiers système, tels que $Recycle.Bin. ",
++    "Laissez cette option désactivée sauf si vous savez ce que vous faites."
++  ],
++  "Mount hibernated NTFS": "Monter un NTFS en veille prolongée",
++  "hdd_ignore_hibernation_info": [
++    "NTFS uniquement. Monte un lecteur laissé en veille prolongée par Windows (démarrage rapide). ",
++    "AVERTISSEMENT : la session Windows enregistrée sur ce lecteur sera perdue."
++  ],
+   "Makes the connected HDD read-only.": "Rend le HDD connecté en lecture seule.",
+   "Installing is disabled, enable now?": "L'installation est désactivée, l'activer maintenant ?",
+   "WARNING: Installing apps will lead to a ban!": "AVERTISSEMENT : l'installation d'applications entraînera un bannissement !",
+   "Installing enabled!": "Installation activée !",
+-  "microSD card (/dumps/)": "carte microSD (/dumps/)",
+   "USB export to PC (usb_export.py)": "Exportation USB vers PC (usb_export.py)",
+-  "USB transfer (Switch 2 Switch)": "Transfert USB (Switch à Switch",
++  "USB transfer (Switch 2 Switch)": "Transfert USB (Switch à Switch)",
+   "/dev/null (Speed Test)": "/dev/null (test de vitesse)",
+   "Waiting for USB connection...": "En attente de connexion USB...",
+   "USB connected, sending file list": "USB connecté, envoi de la liste des fichiers",
+@@ -584,8 +595,10 @@
+   "Video Capture": "Capture vidéo",
+   "Profile Selection": "Sélection de profil",
+   "Create Forwarder": "Créer le forwarder",
+-  "36-bit (Default)": "36 bits (par défaut)",
++  "36-bit (Default)": "36 bits (Standard)",
+   "39-bit": "39 bits",
++  "32-bit": "32 bits",
++  "32-bit (no alias)": "32 bits (sans alias)",
+   "The title and icon must be non-empty!": "Le titre et l'icône ne doivent pas être vides !",
+   "Name": "Nom",
+   "Set the name of the application": "Définir le nom de l'application",
+@@ -966,6 +979,11 @@
+     "Afficher les données de sauvegarde pour chaque utilisateur. Vous pouvez sauvegarder et restaurer des sauvegardes.\n",
+     "Une prise en charge expérimentale de la sauvegarde des sauvegardes du système est possible."
+   ],
++  "Download themes from themezer.net. Themes are downloaded to /themes/sphaira\nTo install the themes, NXThemesInstaller needs to be installed (can be downloaded via the AppStore).": [
++    "Téléchargez des thèmes depuis themezer.net. ",
++    "Les thèmes sont téléchargés dans /themes/sphaira.",
++    "Pour installer les thèmes, NXThemesInstaller doit être installé (il peut être téléchargé via l’AppStore)."
++  ],
+   "Download releases directly from GitHub. Custom entries can be added to /config/sphaira/github": [
+     "Téléchargez les versions directement depuis GitHub. Les entrées personnalisées peuvent être ",
+     "ajouté à /config/sphaira/github"
+diff --git a/assets/romfs/i18n/it.json b/assets/romfs/i18n/it.json
+index b59ab10..2232dae 100644
+--- a/assets/romfs/i18n/it.json
++++ b/assets/romfs/i18n/it.json
+@@ -160,6 +160,7 @@
+   "Change the export options.": "Modifica le opzioni di esportazione.",
+   "Install Options": "Opzioni di installazione",
+   "System memory": "Memoria di sistema",
++  "Nand memory": "NAND",
+   "microSD card": "Scheda microSD",
+   "Data Management": "Gestione dati",
+   "Storage": "Memoria",
+@@ -254,8 +255,9 @@
+     "Si consiglia di mantenerlo disabilitato."
+   ],
+   "Export Options": "Opzioni di esportazione",
+-  "Fix export filenames": "Correggi nomi dei file esportati",
+-  "fix_export_filenames_info": "Usa il titolo inglese per i file esportati e, se non disponibile, usa l'ID titolo. Disattiva questa opzione per mantenere i titoli localizzati e Unicode sulle destinazioni compatibili.",
++  "Export path": "Percorso di esportazione",
++  "Enter export path...": "Inserisci il percorso di esportazione...",
++  "dump_path_info": "Imposta la cartella di base utilizzata per le esportazioni.\nAd esempio: /backup/dumps\n\nTutti i file esportati verranno salvati in questa cartella.",
+   "Created nested folder": "Cartella nidificata creata",
+   "game_folder_info": [
+     "Crea una cartella utilizzando il nome del gioco.",
+@@ -425,11 +427,20 @@
+     "I dispositivi collegati possono essere utilizzati nel FileBrowser, nonché come posizione di backup durante il dump di giochi e salvataggi."
+   ],
+   "HDD write protect": "HDD protezione da scrittura",
++  "Show system files": "Mostra file di sistema",
++  "hdd_show_system_files_info": [
++    "Solo NTFS. Mostra gli elementi contrassegnati da Windows come file di sistema, ad esempio $Recycle.Bin. ",
++    "Lascia questa opzione disattivata se non sai cosa stai facendo."
++  ],
++  "Mount hibernated NTFS": "Monta NTFS ibernato",
++  "hdd_ignore_hibernation_info": [
++    "Solo NTFS. Monta un'unità lasciata da Windows in stato di ibernazione (avvio rapido). ",
++    "AVVISO: la sessione Windows salvata su quell'unità andrà persa."
++  ],
+   "Makes the connected HDD read-only.": "Rende di sola lettura lo HDD collegato.",
+   "Installing is disabled, enable now?": "L'installazione è disabilitata, abilitarla adesso?",
+   "WARNING: Installing apps will lead to a ban!": "ATTENZIONE: l'installazione di app porterà al ban!",
+   "Installing enabled!": "Installazione abilitata!",
+-  "microSD card (/dumps/)": "Scheda microSD (/dumps/)",
+   "USB export to PC (usb_export.py)": "USB esporta su PC (usb_export.py)",
+   "USB transfer (Switch 2 Switch)": "Trasferimento USB (Interruttore 2 Interruttore)",
+   "/dev/null (Speed Test)": "/dev/null (prova di velocità)",
+@@ -584,8 +595,10 @@
+   "Video Capture": "Acquisizione video",
+   "Profile Selection": "Selezione del profilo",
+   "Create Forwarder": "Crea forwarder",
+-  "36-bit (Default)": "36 bit (predefinito)",
++  "36-bit (Default)": "36 bit (Standard)",
+   "39-bit": "39 bit",
++  "32-bit": "32 bit",
++  "32-bit (no alias)": "32 bit (senza alias)",
+   "The title and icon must be non-empty!": "Il titolo e l'icona non devono essere vuoti!",
+   "Name": "Nome",
+   "Set the name of the application": "Imposta il nome dell'applicazione",
+@@ -966,6 +979,11 @@
+     "Visualizza i dati di salvataggio per ciascun utente. È possibile eseguire il backup e ripristinare i salvataggi.\n",
+     "È possibile il supporto sperimentale per il backup dei salvataggi di sistema."
+   ],
++  "Download themes from themezer.net. Themes are downloaded to /themes/sphaira\nTo install the themes, NXThemesInstaller needs to be installed (can be downloaded via the AppStore).": [
++    "Scarica temi da themezer.net. ",
++    "I temi vengono scaricati in /themes/sphaira.",
++    "Per installare i temi, è necessario che NXThemesInstaller sia installato (può essere scaricato tramite AppStore)."
++  ],
+   "Download releases directly from GitHub. Custom entries can be added to /config/sphaira/github": [
+     "Scarica le versioni direttamente da GitHub. Le voci personalizzate possono essere ",
+     "aggiunto a /config/sphaira/github"
+diff --git a/assets/romfs/i18n/ja.json b/assets/romfs/i18n/ja.json
+index 41ccc9f..4a295d8 100644
+--- a/assets/romfs/i18n/ja.json
++++ b/assets/romfs/i18n/ja.json
+@@ -1,7 +1,7 @@
+ {
+-  "Homebrew": "自作",
++  "Homebrew": "Homebrew",
+   "FileBrowser": "ファイルブラウザ",
+-  "Appstore": "アプリストア",
++  "Appstore": "AppStore",
+   "Corrupted": "データが壊れています",
+   "enable_install_info": [
+     "インストールが無効化されています。\n",
+@@ -16,33 +16,33 @@
+   "Files": "ファイル",
+   "FTP": "FTP",
+   "Games": "ゲーム",
+-  "Meta": "メタ",
+-  "Nca": "ノースカロライナ州",
++  "Meta": "Meta",
++  "Nca": "Nca",
+   "GC": "ゲームカード",
+   "GitHub": "GitHub",
+   "Add": "追加",
+   "GitHub Repository": "GitHubリポジトリ",
+   "Enter a GitHub repository URL": "GitHubリポジトリのURLを入力",
+-  "Enter a valid GitHub repository URL": "有効なGitHubリポジトリのURLを入力してください",
+-  "GitHub repository is already saved": "GitHubリポジトリはすでに保存されています",
+-  "Failed to save GitHub repository": "GitHubリポジトリを保存できませんでした",
+-  "GitHub repository saved": "GitHubリポジトリを保存しました",
+-  "Remove saved GitHub repository?": "保存済みのGitHubリポジトリを削除しますか？",
+-  "Failed to remove GitHub repository": "GitHubリポジトリを削除できませんでした",
++  "Enter a valid GitHub repository URL": "正しいGitHubリポジトリのURLを入力してください",
++  "GitHub repository is already saved": "すでに登録されているリポジトリです",
++  "Failed to save GitHub repository": "GitHubリポジトリの登録に失敗しました",
++  "GitHub repository saved": "GitHubリポジトリを登録しました",
++  "Remove saved GitHub repository?": "このGitHubリポジトリを削除しますか?",
++  "Failed to remove GitHub repository": "GitHubリポジトリの削除に失敗しました",
+   "Direct Link": "ダイレクトリンク",
+-  "Enter a direct ZIP URL": "ZIPファイルの直接URLを入力",
+-  "Enter a valid HTTP or HTTPS URL": "有効なHTTPまたはHTTPS URLを入力してください",
+-  "Save this direct link?": "このダイレクトリンクを保存しますか？",
+-  "Direct link is already saved": "ダイレクトリンクはすでに保存されています",
+-  "Failed to save direct link": "ダイレクトリンクを保存できませんでした",
+-  "Direct link saved": "ダイレクトリンクを保存しました",
+-  "Remove saved direct link?": "保存済みのダイレクトリンクを削除しますか？",
+-  "Failed to remove direct link": "ダイレクトリンクを削除できませんでした",
+-  "The ZIP contains an unsafe file path.": "ZIPに安全でないファイルパスが含まれています。",
+-  "The downloaded file is not a valid ZIP archive.": "ダウンロードしたファイルは有効なZIPアーカイブではありません。",
++  "Enter a direct ZIP URL": "ZIPファイルのダウンロードリンクを入力",
++  "Enter a valid HTTP or HTTPS URL": "正しいHTTPまたはHTTPSのURLを入力してください",
++  "Save this direct link?": "このリンクを保存しますか?",
++  "Direct link is already saved": "すでに登録されているリンクです",
++  "Failed to save direct link": "ダイレクトリンクの保存に失敗しました",
++  "Direct link saved": "ダイレクトリンクを登録しました",
++  "Remove saved direct link?": "このダイレクトリンクを削除しますか?",
++  "Failed to remove direct link": "ダイレクトリンクの削除に失敗しました",
++  "The ZIP contains an unsafe file path.": "ZIPファイルに安全でないパスが含まれています。",
++  "The downloaded file is not a valid ZIP archive.": "ダウンロードしたファイルは正しいZIPアーカイブではありません。",
+   "There is not enough free space on the SD card.": "SDカードの空き容量が不足しています。",
+   "Apps": "アプリ",
+-  "IRS": "IRS",
++  "IRS": "Joy-Con IR カメラ",
+   "MTP": "MTP",
+   "Saves": "セーブデータ",
+   "USB": "USBインストール",
+@@ -60,17 +60,17 @@
+   "2": "2",
+   "3 (default)": "3 (基本)",
+   "4": "4",
+-  "16 KB": "16KB",
+-  "32 KB": "32KB",
+-  "64 KB": "64KB",
+-  "128 KB": "128KB",
+-  "256 KB": "256KB",
+-  "512 KB": "512KB",
++  "16 KB": "16 KB",
++  "32 KB": "32 KB",
++  "64 KB": "64 KB",
++  "128 KB": "128 KB",
++  "256 KB": "256 KB",
++  "512 KB": "512 KB",
+   "1 MB (default)": "1 MB (基本)",
+-  "2 MB": "2MB",
+-  "4 MB": "4MB",
+-  "8 MB": "8MB",
+-  "16 MB": "16MB",
++  "2 MB": "2 MB",
++  "4 MB": "4 MB",
++  "8 MB": "8 MB",
++  "16 MB": "16 MB",
+   "Switch-Handheld!": "ハンドヘルドになりました!",
+   "Switch-Docked!": "ドックに接続しました!",
+   "Nxlink Connected": "Nxlinkに接続しました!",
+@@ -121,7 +121,7 @@
+     "案内: 機能が非常に制限されており、一部ウェブサイトは正しく表示されません。\n",
+     "また、30分のタイムアウトで自動的に\nウェブブラウザーを終了します。"
+   ],
+-  "Advanced Options": "詳細オプション",
++  "Advanced Options": "高度な",
+   "Slow": "遅く",
+   "Normal": "普通",
+   "Fast": "速く",
+@@ -157,12 +157,13 @@
+   "Set the menu that appears on the left tab.": "左側タブに表示されるメニューを\n指定します。",
+   "Set right-side menu": "右側メニュー設定",
+   "Set the menu that appears on the right tab.": "右側タブに表示されるメニューを\n指定します。",
+-  "Install options": "インストールオプション",
++  "Install options": "インストール設定",
+   "install_options_info": "インストール設定を変更します。\nゲームインストールを有効にできます。",
+-  "Export options": "エクスポートオプション",
++  "Export options": "抽出設定",
+   "Change the export options.": "抽出の設定を変更します。",
+   "Install Options": "インストール設定",
+   "System memory": "本体保存メモリー",
++  "Nand memory": "本体メモリー",
+   "microSD card": "SDカード",
+   "Data Management": "データ管理",
+   "Storage": "ストレージ",
+@@ -170,22 +171,30 @@
+   "Calculating...": "計算中...",
+   "Other": "その他",
+   "Free": "空き容量",
+-  "Base game": "ゲーム本体",
++  "Base game": "ゲーム本編",
+   "Update data": "更新データ",
+   "DLC": "追加コンテンツ",
+   "SD + System": "SD + 本体",
+   "Only list games that have content installed on the selected storage.": "選択したストレージにインストールされているゲームのみを表示します。",
+-  "Rebuild cache": "キャッシュを再作成",
+-  "Looks for new or removed games. Sizes are only recalculated for games whose content has changed.": "追加または削除されたゲームを検出します。容量を再計算するのは内容が変更されたゲームのみです。",
+-  "Discards the saved sizes and measures every game again from scratch.": "保存された容量を破棄し、すべてのゲームを最初から計算し直します。",
+-  "See how much space each game uses on the microSD card and in system memory. Games are listed largest first, so it's easy to find what to remove.": "各ゲームがSDカードと本体保存メモリーで使用している容量を表示します。容量の大きい順に並ぶため、削除するゲームを見つけやすくなります。",
++  "Rebuild cache": "キャッシュを再構築",
++  "Looks for new or removed games. Sizes are only recalculated for games whose content has changed.": [
++    "追加または削除されたゲームを確認します。\n",
++    "容量は内容が変更されたゲームのみ再計算します。"
++  ],
++  "Discards the saved sizes and measures every game again from scratch.": "保存されている容量情報を削除し、すべてのゲームを最初から再計算します。",
++  "See how much space each game uses on the microSD card and in system memory. Games are listed largest first, so it's easy to find what to remove.": [
++    "各ゲームがSDカードと本体保存メモリーで使用している容量を表示します。\n",
++    "容量の大きい順に並ぶため、削除するゲームを簡単に見つけられます。"
++  ],
+   "Enable sysmmc": "SYSNANDを有効化",
+   "Enables installing whilst in sysMMC mode.": "SYSNANDでのゲームインストールが\n可能になります。",
+   "Enable emummc": "EMUNANDを有効化",
+   "Enables installing whilst in emuMMC mode.": "EMUNANDでのゲームインストールが\n可能になります。",
+   "Install location": "インストールパス",
+   "Allow downgrade": "ダウングレード許容",
+-  "Allows for installing title updates that are lower than the currently installed update.": "現在インストールされているバージョンより低いバージョンのインストールを許容します。",
++  "Allows for installing title updates that are lower than the currently installed update.": [
++    "現在インストールされているバージョンより低いバージョンのインストールを許容します。"
++  ],
+   "Skip if already installed": "インストール済みをスキップ",
+   "Skips installing titles / ncas if they're already installed.": "既にインストールされているNCAを\nスキップします。",
+   "Ticket only": "チケットのみインストール",
+@@ -256,8 +265,9 @@
+     "このオプションは推奨されません。"
+   ],
+   "Export Options": "抽出設定",
+-  "Fix export filenames": "エクスポートファイル名を修正",
+-  "fix_export_filenames_info": "エクスポートファイル名には英語タイトルを使用し、存在しない場合はタイトルIDを使用します。対応する保存先でローカライズ名やUnicode名を維持するには、このオプションを無効にしてください。",
++  "Export path": "抽出先",
++  "Enter export path...": "抽出先を入力...",
++  "dump_path_info": "抽出に使用する基本フォルダーを設定します。\n例: /backup/dumps\n\n抽出されたすべてのファイルはこのフォルダー内に保存されます。",
+   "Created nested folder": "ゲーム名のフォルダーを作成",
+   "game_folder_info": "ゲーム名のフォルダーを作成します。\n\nオン: name/name.xci\nオフ: name.xci",
+   "Append folder with .xci": ".xciをフォルダ名に追加",
+@@ -268,9 +278,13 @@
+     "一部のデバイスではフォルダー名とファイル名が一致しないと正常に動作しない場合があります。"
+   ],
+   "Trim XCI": "XCIをトリム",
+-  "Removes the unused data at the end of the XCI, making the output smaller.": "XCIファイル末尾の未使用データを\n削除して抽出サイズを削減します。",
++  "Removes the unused data at the end of the XCI, making the output smaller.": [
++    "XCIファイル末尾の未使用データを\n削除して抽出サイズを削減します。"
++  ],
+   "Label trimmed XCI": "トリム済みXCIのラベルを指定",
+-  "Names the trimmed xci.\nFor example, /name/name (trimmed).xci": "トリムの状態を表示します。\n\n例: name (trimmed).xci",
++  "Names the trimmed xci.\nFor example, /name/name (trimmed).xci": [
++    "トリムの状態を表示します。\n\n例: name (trimmed).xci"
++  ],
+   "Converts personalised ticket to a fake common ticket.": "パーソナライズされたチケットを\n偽のチケットに変換します。",
+   "NSZ level": "NSZレベル",
+   "compress_level_info": [
+@@ -314,9 +328,13 @@
+     "オフにした場合、下のオプションの設定が必要です。"
+   ],
+   "User": "ユーザー",
+-  "Sets the username, must be set if anon is disabled.": "ユーザー名を入力します。\n\n匿名オプションをオフにしている場合は\n必ず設定する必要があります。",
++  "Sets the username, must be set if anon is disabled.": [
++    "ユーザー名を入力します。\n\n匿名オプションをオフにしている場合は\n必ず設定する必要があります。"
++  ],
+   "Pass": "パスワード",
+-  "Sets the password, must be set if anon is disabled.": "パスワードを入力します。\n\n匿名オプションをオフにしている場合は\n必ず設定する必要があります。",
++  "Sets the password, must be set if anon is disabled.": [
++    "パスワードを入力します。\n\n匿名オプションをオフにしている場合は\n必ず設定する必要があります。"
++  ],
+   "Show album": "アルバム",
+   "Shows the microSD card album folder.": [
+     "- FTP\n名前: album_nand・album_sd\n",
+@@ -417,15 +435,24 @@
+     "デバイスはファイルブラウザから確認でき、転送・インストール・バックアップ用のデバイスとして使用できます。"
+   ],
+   "HDD write protect": "HDDへの書き込みを保護",
++  "Show system files": "システムファイルを表示",
++  "hdd_show_system_files_info": [
++    "NTFS専用。$Recycle.Binなど、Windowsでシステムファイルに設定された項目を表示します。 ",
++    "必要な場合を除き、このオプションはオフにしてください。"
++  ],
++  "Mount hibernated NTFS": "休止状態のNTFSを接続",
++  "hdd_ignore_hibernation_info": [
++    "NTFS専用。Windowsの高速スタートアップにより完全に終了していないドライブを強制的に接続します。 ",
++    "警告: そのドライブで作業中だったWindowsのデータが失われる可能性があります。"
++  ],
+   "Makes the connected HDD read-only.": "接続されたHDDを読み取り専用にし、\n書き込みを防ぎます。",
+   "Installing is disabled, enable now?": "インストールが無効化状態です。\n有効にしますか?",
+   "WARNING: Installing apps will lead to a ban!": "警告: アプリをインストールするとBANの原因になります!",
+   "Installing enabled!": "インストールが有効になりました!",
+-  "microSD card (/dumps/)": "SDカード (/dumps/)",
+   "USB export to PC (usb_export.py)": "PCへ抽出 (usb_export.py)",
+   "USB transfer (Switch 2 Switch)": "USBで転送 (Switch 2 Switch)",
+-  "/dev/null (Speed Test)": "/dev/null (スピードテスト)",
+-  "Waiting for USB connection...": "USB 接続を待機しています...",
++  "/dev/null (Speed Test)": "/dev/null (Speed Test)",
++  "Waiting for USB connection...": "USB接続を待っています",
+   "USB connected, sending file list": "接続されました、ファイルリスト送信します",
+   "Sent file list, waiting for command...": "ファイルリストを送信しました、入力を待っています",
+   "waiting for usb connection...": "USBの接続を待っています",
+@@ -435,10 +462,10 @@
+   "Select export location": "抽出先を選択",
+   "Please launch MTP install menu before trying to install": "インストールする前にMTPインストールメニューを起動してください。",
+   "Album": "アルバム",
+-  "Install (NSP, XCI, NSZ, XCZ, MSP)": "インストール (NSP、XCI、NSZ、XCZ、MSP)",
++  "Install (NSP, XCI, NSZ, XCZ, MSP)": "Install (NSP, XCI, NSZ, XCZ, MSP)",
+   " (Read Only)": " (読み取り専用)",
+   "Unknown": "不明",
+-  "Application": "アプリケーション",
++  "Application": "Application",
+   "Creating Program": "Program作成中",
+   "Creating Control": "Control作成中",
+   "Creating Meta": "Meta作成中",
+@@ -468,10 +495,10 @@
+   "Misc": "その他",
+   "Updated": "アップデート順",
+   "Title": "タイトル",
+-  "Publisher": "発売元",
+-  "Title ID": "タイトルID",
+-  "Last played": "最後にプレイした",
+-  "Total playtime": "総プレイ時間",
++  "Publisher": "メーカー",
++  "Title ID": "Title ID",
++  "Last played": "最近プレイした順",
++  "Total playtime": "プレイ時間順",
+   "Downloads": "ダウンロード順",
+   "Size": "サイズ順",
+   "Alphabetical": "アルファベット順",
+@@ -501,7 +528,7 @@
+   "Launch": "起動",
+   "Remove": "削除",
+   "Completely remove ": "を削除しますか",
+-  "AppStore": "アプリストア",
++  "AppStore": "AppStore",
+   "Info": "情報",
+   "AppStore Options": "AppStore設定",
+   "Descending": "降順",
+@@ -515,170 +542,175 @@
+   "Layout": "レイアウト",
+   "Search": "検索",
+   "Enter title name...": "タイトル名を入力してください...",
+-  "Missing updates or DLC": "未導入のアップデート・DLC",
++  "Missing updates or DLC": "未インストールの更新データ・追加コンテンツ",
+   "h ": "時間 ",
+   "m": "分",
+-  "Updating play statistics": "プレイ統計の更新",
+-  "Failed to update play statistics!": "プレイ統計を更新できませんでした。",
+-  "Play statistics unavailable": "プレイ統計は利用できません",
+-  "Play statistics": "プレイ統計",
+-  "Shows playtime and enables the play statistic sorts. Disable for faster list refreshes and fewer SD card writes on large libraries.": "プレイ時間を表示し、プレイ統計による並べ替えを有効にします。無効にすると、大きなライブラリでのリスト更新が速くなり、SDカードへの書き込みが減ります。",
+-  "No statistics": "統計はありません",
++  "Updating play statistics": "プレイ記録を更新中",
++  "Failed to update play statistics!": "プレイ記録を更新できませんでした。",
++  "Play statistics unavailable": "プレイ記録を利用できません",
++  "Play statistics": "プレイ記録",
++  "Shows playtime and enables the play statistic sorts. Disable for faster list refreshes and fewer SD card writes on large libraries.": [
++    "プレイ時間を表示し、プレイ記録による並べ替えを有効にします。",
++    "無効にすると、ゲーム数が多い場合のリスト更新が速くなり、SDカードへの書き込み回数を減らせます。"
++  ],
++  "No statistics": "プレイ記録なし",
+   "Empty!": "何も見つかりません",
+   "Filter: %s | Sort: %s | Order: %s": "フィルター: %s | 並べ替え: %s | 順番: %s",
+   "File Picker": "ファイルピッカー",
+   "Failed to parse nro": "NROの解析に失敗しました!",
+-  "Forwarder Creation": "フォワーダーの作成",
+-  "App Title": "アプリのタイトル",
+-  "Set the title displayed on the HOME Menu": "HOMEメニューに表示されるタイトルを設定します",
++  "Forwarder Creation": "ショートカット",
++  "App Title": "名前",
++  "Set the title displayed on the HOME Menu": "HOMEメニューに表示する名前を設定します",
+   "Address Space": "アドレス空間",
+-  "Select the address space mode for the forwarder": "フォワーダーのアドレス空間モードを選択します",
+-  "Enable Screenshots": "スクリーンショットを有効にする",
+-  "Allow screenshots while the forwarder is running": "フォワーダーの実行中にスクリーンショットを許可する",
+-  "Enable Video Capture": "ビデオキャプチャを有効にする",
+-  "Allow video capture while the forwarder is running": "フォワーダーの実行中にビデオキャプチャを許可する",
++  "Select the address space mode for the forwarder": "ショートカットのアドレス空間モードを選択します",
++  "Enable Screenshots": "スクリーンショットを有効化",
++  "Allow screenshots while the forwarder is running": "ショートカット実行中のスクリーンショットを許可します",
++  "Enable Video Capture": "動画撮影を有効化",
++  "Allow video capture while the forwarder is running": "ショートカット実行中の動画撮影を許可します",
+   "svcDebug Mode": "svcDebugモード",
+-  "Automatic (Default)": "自動 (デフォルト)",
++  "Automatic (Default)": "自動（標準）",
+   "Enabled": "有効",
+-  "Disabled": "障害者",
+-  "Automatically select the compatible debug flag or override it": "互換性のあるデバッグ フラグを自動的に選択するか、それを上書きします",
+-  "Choose an NRO, PNG, or JPEG icon": "NRO、PNG、または JPEG アイコンを選択してください",
++  "Disabled": "無効",
++  "Automatically select the compatible debug flag or override it": "互換性のあるデバッグフラグを自動で選択するか、手動で指定します",
++  "Choose an NRO, PNG, or JPEG icon": "NRO、PNG、JPEGなどの画像ファイルを選択してください",
+   "Search SteamGridDB": "SteamGridDBを検索",
+-  "Search SteamGridDB for a new forwarder icon": "SteamGridDBで新しいフォワーダーアイコンを検索します",
++  "Search SteamGridDB for a new forwarder icon": "SteamGridDBで新しいショートカットアイコンを検索します",
+   "SteamGridDB": "SteamGridDB",
+-  "SteamGridDB API Key": "SteamGridDB API キー",
+-  "Enter your API key from steamgriddb.com": "steamgriddb.com から API キーを入力してください",
+-  "A SteamGridDB API key is required": "SteamGridDB API キーが必要です",
+-  "Searching SteamGridDB": "SteamGridDBを検索しています",
+-  "Searching for matching titles": "一致するタイトルを検索する",
+-  "Loading available icons": "利用可能なアイコンを読み込んでいます",
+-  "Downloading icon": "ダウンロード中のアイコン",
+-  "Loading more SteamGridDB icons": "SteamGridDB アイコンをさらに読み込んでいます",
+-  "Load 4 More": "さらに4つロードする",
+-  "remaining": "残り",
+-  "No more SteamGridDB icons could be downloaded": "これ以上 SteamGridDB アイコンをダウンロードできませんでした",
++  "SteamGridDB API Key": "SteamGridDB APIキー",
++  "Enter your API key from steamgriddb.com": "SteamGridDBで発行されたAPIキーを入力",
++  "A SteamGridDB API key is required": "SteamGridDB APIキーが必要です",
++  "Searching SteamGridDB": "SteamGridDBを検索中",
++  "Searching for matching titles": "一致するタイトルを検索中",
++  "Loading available icons": "利用可能なアイコンを読み込み中",
++  "Downloading icon": "アイコンをダウンロード中",
++  "Loading more SteamGridDB icons": "SteamGridDBアイコンをさらに読み込み中",
++  "Load 4 More": "さらに4件読み込む",
++  "remaining": "件残り",
++  "No more SteamGridDB icons could be downloaded": "SteamGridDBアイコンをこれ以上ダウンロードできません",
+   "Choose an Icon": "アイコンを選択してください",
+-  "Use Icon": "アイコンを使用する",
+-  "The SteamGridDB API key was rejected; try again": "SteamGridDB API キーは拒否されました。もう一度試してください",
+-  "Could not connect to SteamGridDB": "SteamGridDB に接続できませんでした",
+-  "No matching SteamGridDB icons were found": "一致する SteamGridDB アイコンが見つかりませんでした",
+-  "SteamGridDB returned an invalid response": "SteamGridDB が無効な応答を返しました",
+-  "Enter an App Title before searching": "検索する前にアプリのタイトルを入力してください",
++  "Use Icon": "アイコンを使用",
++  "The SteamGridDB API key was rejected; try again": "SteamGridDB APIキーが拒否されました。もう一度お試しください",
++  "Could not connect to SteamGridDB": "SteamGridDBに接続できませんでした",
++  "No matching SteamGridDB icons were found": "一致するSteamGridDBアイコンが見つかりませんでした",
++  "SteamGridDB returned an invalid response": "SteamGridDBから無効な応答が返されました",
++  "Enter an App Title before searching": "検索する前にアプリの名前を入力してください",
+   "Local Icon": "ローカルアイコン",
+-  "Press A or tap the icon to change it": "Aを押すかアイコンをタップして変更します",
+-  "Choose Icon Source": "アイコンソースの選択",
++  "Press A or tap the icon to change it": "ボタンまたはアイコンをタッチ",
++  "Choose Icon Source": "アイコンの取得元を選択",
+   "Local File": "ローカルファイル",
+   "The selected icon is not a valid image": "選択したアイコンは有効な画像ではありません",
+-  "The required fields and icon must be non-empty": "必須フィールドとアイコンは空であってはなりません",
++  "The required fields and icon must be non-empty": "必須項目とアイコンは空にできません",
+   "NRO Icon": "NROアイコン",
+   "ROM Artwork": "ROMアートワーク",
+   "Screenshots": "スクリーンショット",
+-  "Video Capture": "ビデオキャプチャ",
+-  "Profile Selection": "プロファイルの選択",
+-  "Create Forwarder": "フォワーダーを作成",
+-  "36-bit (Default)": "36 ビット (デフォルト)",
++  "Video Capture": "動画撮影",
++  "Profile Selection": "プロフィール選択",
++  "Create Forwarder": "ショートカットを作成",
++  "36-bit (Default)": "36ビット (標準)",
+   "39-bit": "39ビット",
+-  "The title and icon must be non-empty!": "タイトルとアイコンは空であってはなりません。",
++  "32-bit": "32ビット",
++  "32-bit (no alias)": "32ビット (エイリアスなし)",
++  "The title and icon must be non-empty!": "タイトルとアイコンは空にできません！",
+   "Name": "名前",
+   "Set the name of the application": "アプリの名前を設定します。",
+   "Author": "作者",
+   "Set the author of the application": "アプリの作者を設定します。",
+   "Version": "バージョン",
+   "Set the display version of the application": "アプリの表示バージョンを設定します。",
+-  "Set the path to the icon for the forwarder": "フォワーダー用アイコンのパスを設定します",
++  "Set the path to the icon for the forwarder": "Forwarder用アイコンのパスを設定します。",
+   "Create": "作成",
+   "Failed to load icon": "アイコンの読み込みに失敗しました!",
+-  "Create the forwarder.": "フォワーダーを作成します。",
+-  "Edit as text": "テキストとして編集する",
++  "Create the forwarder.": "Forwarderを作成します。",
++  "Edit as text": "テキスト編集",
+   "Edit": "編集",
+-  "Edit Line ": "行の編集 ",
+-  "Line actions": "ラインアクション",
++  "Edit Line ": "行目を編集",
++  "Line actions": "ツール",
+   "Line: ": "行: ",
+-  "Line:": "行:",
++  "Line:": "移動先の行番号を入力",
+   "New line": "新しい行",
+   "Delete line": "行を削除",
+-  "Join with next line": "次の行と結合する",
+-  "Go to line...": "ラインに行く...",
++  "Join with next line": "次の行と結合",
++  "Go to line...": "行へ移動",
+   "Undo": "元に戻す",
+-  "Redo": "やり直し",
+-  "Save All": "すべて保存",
+-  "Nothing to undo": "元に戻すものはありません",
+-  "Nothing to redo": "やり直すことは何もありません",
+-  "No next line to join": "参加する次の行はありません",
+-  "No changes to save": "保存する変更はありません",
+-  "Save failed!": "保存に失敗しました!",
+-  "Saved successfully.": "正常に保存されました。",
+-  "Unsaved changes. Exit without saving?": "保存されていない変更。保存せずに終了しますか?",
+-  "Keep Editing": "編集を続ける",
+-  "Discard": "廃棄する",
+-  "Modified - use Line actions to save": "変更 - ラインアクションを使用して保存します",
+-  "UTF-8 text editor": "UTF-8テキストエディタ",
+-  "Customize Homebrew": "自作をカスタマイズする",
+-  "Homebrew Name": "自作名",
+-  "Save Changes": "変更を保存",
+-  "Change the name and icon embedded in the selected NRO.": "選択したNROに埋め込まれている名前とアイコンを変更します。",
+-  "This NRO does not contain editable application information.": "この NRO には、編集可能なアプリケーション情報は含まれません。",
+-  "This homebrew does not contain a customizable icon": "この自作にはカスタマイズ可能なアイコンが含まれていません",
+-  "Failed to save NRO information": "NRO情報の保存に失敗しました",
+-  "Homebrew name and icon saved successfully.": "Homebrew の名前とアイコンが正常に保存されました。",
+-  "Store Source": "ストアソース",
+-  "Select store source": "ストアソースを選択",
+-  "Current store: ": "現在の店舗: ",
+-  "Selected store: ": "選択した店舗: ",
+-  "Add Custom Store...": "カスタム ストアを追加...",
++  "Redo": "やり直す",
++  "Save All": "保存",
++  "Nothing to undo": "元に戻せる項目がありません",
++  "Nothing to redo": "やり直せる項目がありません",
++  "No next line to join": "結合できる次の行がありません",
++  "No changes to save": "保存する変更がありません",
++  "Save failed!": "保存に失敗しました！",
++  "Saved successfully.": "保存しました",
++  "Unsaved changes. Exit without saving?": "変更を保存せずに終了しますか?",
++  "Keep Editing": "いいえ",
++  "Discard": "はい",
++  "Modified - use Line actions to save": "編集中 - ツールから保存してください",
++  "UTF-8 text editor": "UTF-8テキストエディター",
++  "Customize Homebrew": "Homebrewカスタマイズ",
++  "Homebrew Name": "名前",
++  "Save Changes": "変更を適用",
++  "Change the name and icon embedded in the selected NRO.": "選択したHomebrewの名前とアイコンを変更します。",
++  "This NRO does not contain editable application information.": "このHomebrewには編集可能な情報がありません。",
++  "This homebrew does not contain a customizable icon": "このHomebrewには変更可能なアイコンがありません。",
++  "Failed to save NRO information": "変更を適用できませんでした",
++  "Homebrew name and icon saved successfully.": "変更を適用しました",
++  "Store Source": "ストア",
++  "Select store source": "ストアを選択",
++  "Current store: ": "現在のストア: ",
++  "Selected store: ": "選択したストア: ",
++  "Add Custom Store...": "ストアを追加",
+   "Delete Current Store": "現在のストアを削除",
+-  "Delete custom store ": " カスタム ストアを削除します",
+-  "Store Name": "店名",
+-  "Enter a name for the store": "ストアの名前を入力してください",
++  "Delete custom store ": " ストアを削除しますか?",
++  "Store Name": "ストア名",
++  "Enter a name for the store": "ストア名を入力",
+   "Store URL": "ストアURL",
+-  "Enter custom store API (URL)": "カスタムストア API (URL) を入力してください",
+-  "Store URL must be a valid HTTP or HTTPS address": "ストア URL は有効な HTTP または HTTPS アドレスである必要があります",
+-  "The store source limit has been reached": "ストアのソース制限に達しました",
+-  "Loading store catalog...": "ストアカタログを読み込んでいます...",
+-  "Failed to load store catalog": "ストアカタログのロードに失敗しました",
+-  "Failed to queue store download": "ストアのダウンロードをキューに入れることができませんでした",
+-  "The selected store returned an invalid catalog": "選択したストアが無効なカタログを返しました",
++  "Enter custom store API (URL)": "カスタムストアAPI (URL)を入力",
++  "Store URL must be a valid HTTP or HTTPS address": "有効なHTTPまたはHTTPSアドレスを入力してください",
++  "The store source limit has been reached": "ストアの登録上限に達しました",
++  "Loading store catalog...": "ストアを読み込み中...",
++  "Failed to load store catalog": "ストアを読み込めませんでした",
++  "Failed to queue store download": "ダウンロード待ちリストに追加できませんでした",
++  "The selected store returned an invalid catalog": "選択したストアのカタログが無効です",
+   "This store has no packages": "このストアにはパッケージがありません",
+-  "Checking SHA-256": "SHA-256を確認しています",
++  "Checking SHA-256": "SHA-256を確認中",
+   "Failed to install app": "アプリのインストールに失敗しました",
+   "Failed to remove app": "アプリの削除に失敗しました",
+   "Search for app": "アプリを検索",
+   "Themezer": "Themezer",
+-  "Themezer Options": "Themezer オプション",
++  "Themezer Options": "Themezer設定",
+   "Download theme?": "テーマをダウンロードしますか?",
+-  "Theme downloaded, install now?": "テーマをダウンロードしました。今すぐインストールしますか?",
++  "Theme downloaded, install now?": "テーマをダウンロードしました。インストールしますか?",
+   "Failed to download theme": "テーマのダウンロードに失敗しました",
+-  "NXthemes_Installer.nro not found, download now?": "NXthemes_Installer.nro が見つかりません。今すぐダウンロードしますか?",
++  "NXthemes_Installer.nro not found, download now?": "NXthemes_Installer.nroが見つかりません。ダウンロードしますか?",
+   "Launch NXthemes_Installer.nro": "NXthemes_Installer.nroを起動",
+   "Failed to launch NXthemes_Installer.nro": "NXthemes_Installer.nroの起動に失敗しました",
+-  "Not Ready...": "準備ができていません...",
++  "Not Ready...": "準備できていません...",
+   "Loading": "読み込み中",
+-  "Error loading page!": "ページの読み込みエラー!",
++  "Error loading page!": "ページの読み込みエラー！",
+   "Page": "ページ",
+   "Page %zu / %zu": "ページ %zu / %zu",
+-  "Enter Page Number": "ページ番号を入力してください",
+-  "Bad Page": "不正なページ",
+-  "Nsfw": "NSFW",
+-  "Created": "作成されました",
+-  "Descending (down)": "降順（ダウン）",
+-  "Ascending (Up)": "昇順（上向き）",
+-  "Update Checker": "アップデートチェッカー",
+-  "Check for Updates": "アップデートをチェックする",
+-  "Check for Sphaira updates and view the changelog.": "Sphaira の更新を確認し、変更ログを表示します。",
+-  "Checking for updates": "アップデートをチェックしています",
+-  "Failed to check for updates": "アップデートの確認に失敗しました",
+-  "Update available: ": "利用可能なアップデート: ",
+-  "View the changelog and install the available update.": "変更ログを表示し、利用可能なアップデートをインストールします。",
+-  "Open Network Options to view the changelog.": "ネットワーク オプションを開いて変更ログを表示します。",
+-  "Open Menu Options to view the changelog.": "メニュー オプションを開いて変更ログを表示します。",
+-  "New version available": "新しいバージョンが利用可能になりました",
++  "Enter Page Number": "ページ番号を入力",
++  "Bad Page": "無効なページ番号です",
++  "Nsfw": "成人向けテーマ",
++  "Created": "作成済み",
++  "Descending (down)": "降順",
++  "Ascending (Up)": "昇順",
++  "Update Checker": "リリースノート",
++  "Check for Updates": "リリースノート",
++  "Check for Sphaira updates and view the changelog.": "Sphairaの最新バージョンの変更内容を確認します。",
++  "Checking for updates": "アップデートを確認中",
++  "Failed to check for updates": "アップデートを確認できませんでした",
++  "Update available: ": "アップデート: ",
++  "View the changelog and install the available update.": "リリースノートの確認とアップデートのインストールを行います。",
++  "Open Network Options to view the changelog.": "ネットワーク設定からリリースノートを確認してください",
++  "Open Menu Options to view the changelog.": "メニュー設定からリリースノートを確認してください",
++  "New version available": "新しいバージョンをインストールできます",
+   "You are already on the latest version.": "すでに最新バージョンを使用しています。",
+-  "No changelog available.": "利用可能な変更ログはありません。",
+-  "Update Now": "今すぐアップデート",
+-  "Backing up current version": "現在のバージョンをバックアップする",
+-  "Installing validated update": "検証済みのアップデートをインストールしています",
++  "No changelog available.": "リリースノートがありません。",
++  "Update Now": "アップデート",
++  "Backing up current version": "現在のバージョンをバックアップ中",
++  "Installing validated update": "検証済みのアップデートをインストール中",
+   "Failed to install update": "アップデートのインストールに失敗しました",
+-  "Update complete. Restarting Sphaira.": "アップデートが完了しました。 Sphaira を再起動します。",
++  "Update complete. Restarting Sphaira.": "アップデートが完了しました。Sphairaを再起動してください",
+   "All fields must be non-empty!": "すべての項目を入力する必要があります!",
+   "Open": "開く",
+   "Empty...": "このフォルダーは空です。",
+@@ -713,7 +745,7 @@
+   "Mount": "マウント",
+   "Sort By": "並べ替え",
+   "Sort Options": "並べ替え",
+-  "Show Hidden": "非表示を表示",
++  "Show Hidden": "非表示ファイルを表示",
+   "Folders First": "フォルダーを優先表示",
+   "Hidden Last": "非表示ファイルを最後に表示",
+   "Cut": "切り取り",
+@@ -815,17 +847,19 @@
+   "Display Version: %s": "表示バージョン: %s",
+   "Not Installed": "未インストール",
+   "Update Available": "アップデートあり",
+-  "Available Version: v%u (%u)": "利用可能なバージョン: v%u (%u)",
++  "Available Version: v%u (%u)": "最新バージョン: v%u (%u)",
+   "Update version list": "バージョンリストを更新",
+-  "Version list is missing or outdated. Download it now?": "バージョンリストがないか、古くなっています。今すぐダウンロードしますか？",
++  "Version list is missing or outdated. Download it now?": "バージョンリストがないか、古くなっています。今すぐダウンロードしますか?",
+   "Version List": "バージョンリスト",
+-  "Failed to update version list": "バージョンリストの更新に失敗しました",
++  "Failed to update version list": "バージョンリストを更新できませんでした",
+   "Mount Fs": "マウント",
+   "Failed to mount NCA": "NCAのマウントに失敗しました!",
+   "NCA Options": "NCA設定",
+   "Export NCA": "NCAを抽出",
+   "Export NCA decrypted": "復号済みNCAを抽出",
+-  "Exports the NCA with all fs sections decrypted (NCA header is still encrypted).": "すべてのファイルシステムセクションを復号したNCAを抽出します。(NCAヘッダーは暗号化されたまま)",
++  "Exports the NCA with all fs sections decrypted (NCA header is still encrypted).": [
++    "すべてのファイルシステムセクションを復号したNCAを抽出します。(NCAヘッダーは暗号化されたまま)"
++  ],
+   "Verify NCA 256 hash": "NCA256ハッシュ検証",
+   "NCA hash missmatch!": "NCAハッシュが一致しません!",
+   "NCA hash valid.": "NCAハッシュは有効です!",
+@@ -892,10 +926,14 @@
+   "Shows all hidden homebrew.": "非表示されたアプリケーションをすべて表示します。",
+   "Test": "テスト",
+   "Hide": "非表示",
+-  "Hides the selected homebrew.\n\nTo unhide homebrew, enable \"Show hidden\" in the sort options.": "選択したHomebrewを隠します。\n\n再表示するには?\n並べ替え  非表示の項目を表示  オン",
++  "Hides the selected homebrew.\n\nTo unhide homebrew, enable \"Show hidden\" in the sort options.": [
++    "選択したHomebrewを隠します。\n\n再表示するには?\n並べ替え  非表示の項目を表示  オン"
++  ],
+   "Mount NRO Fs": "NROマウント",
+   "Failed to mount NRO FileSystem": "NROマウントに失敗しました!",
+-  "Mounts the NRO FileSystem (icon, nacp and RomFS).": "NROシステムにマウントします。\n\n対象: RomFS・NACP・ICON",
++  "Mounts the NRO FileSystem (icon, nacp and RomFS).": [
++    "NROシステムにマウントします。\n\n対象: RomFS・NACP・ICON"
++  ],
+   "hb_remove_info": [
+     "Homebrewを完全に削除します。\n",
+     "作成されたフォルダーやファイルは残るため、必要に応じてファイルブラウザから削除してください。"
+@@ -919,7 +957,7 @@
+   "Bright group": "明るいグループ",
+   "Dim group": "薄暗いグループ",
+   "Normal image": "通常画像",
+-  "Negative image": "ネガティブなイメージ",
++  "Negative image": "ネガティブイメージ",
+   "Controller": "コントローラー",
+   "Rotation": "回転",
+   "Colour": "色",
+@@ -940,8 +978,12 @@
+     "Homebrewを管理します。\n",
+     "起動・非表示・NROの確認・削除や\nホーム画面へのショートカット作成など\nさまざまな機能を利用できます。"
+   ],
+-  "Download and update apps.\n\nInternet connection required.": "アプリをダウンロード・アップデート\nできます。\n\nインターネット接続が必須です。",
+-  "View all installed games. In this menu you can launch, backup, create savedata and much more.": "インストール済みゲームを確認します。\n\nゲーム起動・抽出・関連フォルダー作成など、さまざまな機能を利用できます。",
++  "Download and update apps.\n\nInternet connection required.": [
++    "アプリをダウンロード・アップデート\nできます。\n\nインターネット接続が必須です。"
++  ],
++  "View all installed games. In this menu you can launch, backup, create savedata and much more.": [
++    "インストール済みゲームを確認します。\n\nゲーム起動・抽出・関連フォルダー作成など、さまざまな機能を利用できます。"
++  ],
+   "Browse files on you SD Card. You can move, copy, delete, extract zip, create zip, upload and much more.\n\nA connected USB/HDD can be opened by mounting it in the advanced options.": [
+     "SDカード内のファイルを確認できます。\n",
+     "移動・コピー・削除・圧縮・解凍・アップロードなど、幅広い操作に対応しています。\n",
+@@ -951,7 +993,9 @@
+     "各ユーザーのセーブを確認します。\nバックアップ・復元が可能です。\n",
+     "参考: システムセーブのバックアップは実験的機能です。"
+   ],
+-  "Download releases directly from GitHub. Custom entries can be added to /config/sphaira/github": "GitHubから直接リリースをダウンロードします。\n\nカスタム項目は sdmc:/config/sphaira/github に追加できます。",
++  "Download releases directly from GitHub. Custom entries can be added to /config/sphaira/github": [
++    "GitHubから直接リリースをダウンロードします。\n\nカスタム項目は sdmc:/config/sphaira/github に追加できます。"
++  ],
+   "Install apps via FTP.": "ゲームのインストールができます。",
+   "MTP Install": "MTPインストール",
+   "Install apps via MTP.": "ゲームのインストールができます。",
+@@ -962,7 +1006,9 @@
+     "メニューを終了せずにゲームカードを取り出してそのまま新しいカードに入れ替えることができます。"
+   ],
+   "IRS (Infrared Joycon Camera)": "Joy-Con IR カメラ",
+-  "InfraRed Sensor (IRS) is the small camera found on right JoyCon.": "IRS (右 Joy-Con の赤外線センサー)を\n利用し赤外線カメラとして使用します。",
++  "InfraRed Sensor (IRS) is the small camera found on right JoyCon.": [
++    "IRS (右 Joy-Con の赤外線センサー)を\n利用し赤外線カメラとして使用します。"
++  ],
+   "Update avaliable: ": "アップデート可能: ",
+   "Download via the Network options!": "ネットワーク設定からダウンロードしました!",
+   "Menu": "メニュー",
+@@ -994,20 +1040,20 @@
+     "FTP・MTP・HDD・NXlinkのトグルを\n切り替えできます。\n",
+     "Sphairaのアップデートがある時は\nこのメニューから更新できます。"
+   ],
+-  "network_options_info": "FTP、MTP、HDD、NXlinkを切り替えます",
++  "network_options_info": "FTP、MTP、HDD、NXlinkの有効・無効を切り替えます",
+   "Switch Ports": "Switch Ports",
+-  "Downloading Switch Ports catalog": "Switch Portsカタログをダウンロードしています",
+-  "Failed to download Switch Ports catalog": "Switch Ports カタログのダウンロードに失敗しました",
+-  "Resolving port download": "ポートのダウンロードを解決する",
+-  "Failed to resolve port download": "ポートのダウンロードを解決できませんでした",
+-  "Browse ports from this category.": "このカテゴリからポートを参照します。",
++  "Downloading Switch Ports catalog": "Switch Portsカタログをダウンロード中",
++  "Failed to download Switch Ports catalog": "Switch Portsカタログをダウンロードできませんでした",
++  "Resolving port download": "ポートのダウンロード情報を取得中",
++  "Failed to resolve port download": "ポートのダウンロード情報を取得できませんでした",
++  "Browse ports from this category.": "このカテゴリのポートを表示します。",
+   "Install ": "インストール ",
+-  "Destination: ": "目的地: ",
+-  "Only the homebrew port is downloaded. Original game data may still be required.": "Homebrew ポートのみがダウンロードされます。元のゲームデータが引き続き必要になる場合があります。",
+-  "No installable ZIP or NRO release asset was found for this port.": "このポートには、インストール可能な ZIP または NRO リリース アセットが見つかりませんでした。",
+-  "This catalog entry does not point to a GitHub release repository.": "このカタログ エントリは、GitHub リリース リポジトリを指しません。",
+-  "No direct GitHub release is available for this entry.\n\n": "このエントリには直接 GitHub リリースはありません。\n\n",
+-  "No matching release assets were found.": "一致するリリース アセットが見つかりませんでした。",
++  "Destination: ": "保存先: ",
++  "Only the homebrew port is downloaded. Original game data may still be required.": "Homebrewポートのみダウンロードされます。別途、オリジナルのゲームデータが必要な場合があります。",
++  "No installable ZIP or NRO release asset was found for this port.": "このポートには、インストール可能なZIPまたはNROファイルが見つかりませんでした。",
++  "This catalog entry does not point to a GitHub release repository.": "このカタログ項目には、GitHubリリースのリポジトリが指定されていません。",
++  "No direct GitHub release is available for this entry.\n\n": "この項目には、直接ダウンロードできるGitHubリリースがありません。\n\n",
++  "No matching release assets were found.": "該当するリリースファイルが見つかりませんでした。",
+   "Theme": "テーマ",
+   "Language": "言語",
+   "translation_info": [
+@@ -1032,16 +1078,22 @@
+   "System BCAT": "システム BCAT",
+   "Data Type": "データタイプ",
+   "Backup": "バックアップ",
+-  "Backup the selected save(s) to a location of your choice.": "選択したゲームのセーブデータをSDカードまたはPCにバックアップします。",
++  "Backup the selected save(s) to a location of your choice.": [
++    "選択したゲームのセーブデータをSDカードまたはPCにバックアップします。"
++  ],
+   "Backup to...": "名前指定バックアップ",
+-  "Backup the selected save(s) to a location of your choice, and set the name of the backup.": "選択したゲームのセーブデータを\n任意の名前でバックアップします。",
++  "Backup the selected save(s) to a location of your choice, and set the name of the backup.": [
++    "選択したゲームのセーブデータを\n任意の名前でバックアップします。"
++  ],
+   "save_backuprestore_info": [
+     "選択したゲームのセーブデータを復元します。\n",
+     "「復元時に自動バックアップ」が有効の場合、復元前に既存データが自動バックアップされます。\n",
+     "自動でバックアップされたデータは\n\"Auto\"という文字を含み表示されます。"
+   ],
+   "Auto backup on restore": "復元時に自動バックアップ",
+-  "If enabled, when restoring a save, the current save will first be backed up.": "このオプションを有効にするとセーブ復元時に既存データが先に自動バックアップされます。",
++  "If enabled, when restoring a save, the current save will first be backed up.": [
++    "このオプションを有効にするとセーブ復元時に既存データが先に自動バックアップされます。"
++  ],
+   "Compress backup": "圧縮してバックアップ",
+   "save_backup_compress_info": [
+     "このオプションを有効にするとZIP形でバックアップされます。\n",
+@@ -1086,7 +1138,7 @@
+   "USB 3.0 Super Speed": "USB 3.0 (Super Speed)",
+   "Mount Creator": "マウントオプション作成",
+   "Type": "プロトコル",
+-  "Select the type of the forwarder.": "フォワーダーの種類を選択します。",
++  "Select the type of the forwarder.": "接続方式を選択します。",
+   "URL": "URL",
+   "Set the URL of the application": "URLを入力します。",
+   "Optional: Set the port of the server. If left empty, the default port for the protocol will be used.": [
+@@ -1099,17 +1151,25 @@
+   "Optional: Set the username of the application": "選択事項: ユーザー名を設定します。",
+   "Optional: Set the password of the application": "選択事項: パスワードを設定します。",
+   "Dump path": "ダンプパス",
+-  "Optional: Set the dump path used when exporting games and saves.": "選択事項: ゲームやセーブデータを抽出する際のダンプパスを指定します。",
++  "Optional: Set the dump path used when exporting games and saves.": [
++    "選択事項: ゲームやセーブデータを抽出する際のダンプパスを指定します。"
++  ],
+   "Read only": "読み取り専用",
+   "mount_readonly_info": "読み取り専用でマウントします。\n抽出オプションが表示されません。",
+   "No stat file": "ファイル情報確認",
+-  "filecheck_disable_info": "ファイルブラウザが各ファイルのサイズや更新日時を確認しなくなり閲覧パフォーマンスが向上します。",
++  "filecheck_disable_info": [
++    "ファイルブラウザが各ファイルのサイズや更新日時を確認しなくなり閲覧パフォーマンスが向上します。"
++  ],
+   "No stat dir": "フォルダー情報確認",
+-  "dircheck_disable_info": "ファイルブラウザがフォルダー内のファイル数やフォルダー数を確認しなくなり閲覧パフォーマンスが向上します。",
++  "dircheck_disable_info": [
++    "ファイルブラウザがフォルダー内のファイル数やフォルダー数を確認しなくなり閲覧パフォーマンスが向上します。"
++  ],
+   "FS hidden": "ファイルブラウザ非表示",
+   "Hide the mount from being visible in the file browser.": "マウントをファイルブラウザから表示されないようにします。",
+   "Export hidden": "抽出を非表示",
+-  "Hide the mount from being visible as a export option for games and saves.": "ゲームやセーブデータを抽出オプションに表示しないようにします。",
++  "Hide the mount from being visible as a export option for games and saves.": [
++    "ゲームやセーブデータを抽出オプションに表示しないようにします。"
++  ],
+   "Save": "保存",
+   "Mount entry saved. Restart Sphaira to apply changes.": "マウント設定を保存しました、Sphairaを再起動してください。",
+   "Saves the mount entry.\n\nNOTE: You must restart Sphaira for changes to take effect!": [
+@@ -1138,17 +1198,26 @@
+   ],
+   "Section #": "セクション #",
+   "by ": "作成者：",
+-  "Default install folder: ": "デフォルトのインストールフォルダー：",
++  "Default install folder: ": "デフォルトのインストール先：",
+   "Wi-Fi %.0f%%": "Wi-Fi %.0f%%",
+   "CPU Cores": "CPUコア",
+-  "3 (Default)": "3（既定）",
+-  "4 (Advanced)": "4（上級）",
+-  "4 CPU Cores\n\nCore 3 is shared with system services. Only enable this for homebrew that manages thread affinity correctly; unrestricted use can cause system lag or instability.": "CPU 4コア\n\nコア3はシステムサービスと共有されます。スレッドアフィニティを正しく管理するHomebrewでのみ有効にしてください。無制限に使用すると、システムの遅延や不安定化を招く可能性があります。",
++  "3 (Default)": "3 (基本)",
++  "4 (Advanced)": "4 (高度な)",
++  "4 CPU Cores\n\nCore 3 is shared with system services. Only enable this for homebrew that manages thread affinity correctly; unrestricted use can cause system lag or instability.": [
++    "CPUパフォーマンス拡張\n\n",
++    "\n\n\nCore0~Core3の4つのCPUコアをすべて有効にします。\n",
++    "Core3はSwitchのシステムサービスでも使用されるため、一部のHomebrewでは",
++    "動作が遅くなったり、不安定になったりする場合があります。\n",
++    "スレッドを適切に管理するHomebrewでのみ使用することを推奨します。"
++  ],
+   "Failed to launch homebrew": "Homebrewを起動できませんでした",
+-  "Three cores reserves core 3 for system services. Four cores should only be used by homebrew that manages thread affinity correctly.": "3コアではコア3をシステムサービス用に予約します。4コアは、スレッドアフィニティを正しく管理するHomebrewでのみ使用してください。",
++  "Three cores reserves core 3 for system services. Four cores should only be used by homebrew that manages thread affinity correctly.": [
++    "3コア(Core0~Core2)使用時は\nCore3がシステム用に確保されます。\n",
++    "4コアモードはスレッドを適切に\n管理するHomebrewでのみ使用してください。"
++  ],
+   "Add to Homebrew Search Paths": "Homebrew検索パスに追加",
+   "Delete Homebrew Search Paths": "Homebrew検索パスを削除",
+-  "Remove Homebrew Search Path?": "Homebrew検索パスを削除しますか？",
++  "Remove Homebrew Search Path?": "Homebrew検索パスを削除しますか?",
+   "Homebrew search path added.": "Homebrew検索パスを追加しました。",
+   "Homebrew search path removed.": "Homebrew検索パスを削除しました。",
+   "Failed to add Homebrew search path": "Homebrew検索パスを追加できませんでした",
+diff --git a/assets/romfs/i18n/ko.json b/assets/romfs/i18n/ko.json
+index dd26e05..686a8cf 100644
+--- a/assets/romfs/i18n/ko.json
++++ b/assets/romfs/i18n/ko.json
+@@ -163,6 +163,7 @@
+   "Change the export options.": "추출 옵션을 변경합니다.",
+   "Install Options": "설치 옵션",
+   "System memory": "본체 저장 메모리",
++  "Nand memory": "낸드 저장소",
+   "microSD card": "SD 카드",
+   "Data Management": "데이터 관리",
+   "Storage": "저장 공간",
+@@ -173,12 +174,18 @@
+   "Base game": "게임 본편",
+   "Update data": "업데이트 데이터",
+   "DLC": "추가 콘텐츠",
+-  "SD + System": "SD + 본체",
++  "SD + System": "SD 카드 + 본체",
+   "Only list games that have content installed on the selected storage.": "선택한 저장 공간에 설치된 게임만 표시합니다.",
+-  "Rebuild cache": "캐시 다시 만들기",
+-  "Looks for new or removed games. Sizes are only recalculated for games whose content has changed.": "추가되거나 삭제된 게임을 확인합니다. 용량은 내용이 변경된 게임에 대해서만 다시 계산합니다.",
++  "Rebuild cache": "캐시 리빌드",
++  "Looks for new or removed games. Sizes are only recalculated for games whose content has changed.": [
++    "추가되거나 삭제된 게임을 확인합니다.\n",
++    "용량은 내용이 변경된 게임에 대해서만 다시 계산합니다."
++  ],
+   "Discards the saved sizes and measures every game again from scratch.": "저장된 용량을 삭제하고 모든 게임을 처음부터 다시 계산합니다.",
+-  "See how much space each game uses on the microSD card and in system memory. Games are listed largest first, so it's easy to find what to remove.": "각 게임이 SD 카드와 본체 저장 메모리에서 사용 중인 용량을 표시합니다. 용량이 큰 순서로 정렬되어 삭제할 게임을 쉽게 찾을 수 있습니다.",
++  "See how much space each game uses on the microSD card and in system memory. Games are listed largest first, so it's easy to find what to remove.": [
++    "각 게임이 SD 카드와 본체 저장 메모리에서 사용 중인 용량을 표시합니다\n",
++    "용량이 큰 순서로 정렬되어 삭제할 게임을 쉽게 찾을 수 있습니다."
++  ],
+   "Enable sysmmc": "시스낸드 활성화",
+   "Enables installing whilst in sysMMC mode.": "시스낸드로의 설치를 활성화합니다.",
+   "Enable emummc": "에뮤낸드 활성화",
+@@ -260,13 +267,14 @@
+     "해당 옵션의 사용을 권장하지 않습니다."
+   ],
+   "Export Options": "추출 옵션",
+-  "Fix export filenames": "파일명 변경",
+-  "fix_export_filenames_info": [
+-    "추출 파일에 영문명을 적용합니다.",
+-    "없을 경우 Title ID가 적용됩니다.\n",
+-    "현지화 이름 및 유니코드를 지원하는 경우, 해당 옵션을 비활성화하세요."
+-  ],
+-    "Created nested folder": "게임 이름 폴더 생성",
++  "Export path": "추출 경로",
++  "Enter export path...": "추출 경로 입력...",
++  "dump_path_info": [
++    "추출에 사용할 기본 폴더를 설정합니다.\n",
++    "예시: /backup/dumps\n",
++    "내보낸 모든 파일은 이 폴더 안에 저장됩니다."
++  ],
++  "Created nested folder": "게임 이름 폴더 생성",
+   "game_folder_info": "게임 이름의 폴더를 생성합니다.\n\n활성화: name/name.xci\n\n비활성화: name.xci",
+   "Append folder with .xci": "폴더명에 확장자 추가",
+   "xci_folder_info": [
+@@ -433,11 +441,20 @@
+     "전송・설치・백업 장치로 사용합니다."
+   ],
+   "HDD write protect": "HDD 쓰기 방지",
++  "Show system files": "시스템 파일 표시",
++  "hdd_show_system_files_info": [
++    "NTFS 전용. $Recycle.Bin처럼 Windows에서 시스템 파일로 설정한 항목을 표시합니다. ",
++    "필요한 경우가 아니면 이 옵션을 끄세요."
++  ],
++  "Mount hibernated NTFS": "최대 절전 상태의 NTFS 연결",
++  "hdd_ignore_hibernation_info": [
++    "NTFS 전용. Windows의 빠른 시작으로 완전히 종료되지 않은 드라이브를 강제로 연결합니다. ",
++    "경고: 해당 드라이브에서 작업 중이던 Windows 데이터가 손실될 수 있습니다."
++  ],
+   "Makes the connected HDD read-only.": "연결된 장치를 읽기 전용으로 설정합니다.",
+   "Installing is disabled, enable now?": "설치가 비활성화되었습니다, 활성화하시겠습니까?",
+   "WARNING: Installing apps will lead to a ban!": "경고: 시스낸드에 설치 시 밴됩니다!",
+   "Installing enabled!": "설치 활성화!",
+-  "microSD card (/dumps/)": "SD 카드 (sdmc:/dumps/)",
+   "USB export to PC (usb_export.py)": "PC로 내보내기 (usb_export.py)",
+   "USB transfer (Switch 2 Switch)": "USB 전송 (Switch 2 Switch)",
+   "/dev/null (Speed Test)": "/dev/null (Speed Test)",
+@@ -600,6 +617,8 @@
+   "Create Forwarder": "바로가기 생성",
+   "36-bit (Default)": "36-bit (기본)",
+   "39-bit": "39-bit",
++  "32-bit": "32-bit",
++  "32-bit (no alias)": "32-bit (별칭 없음)",
+   "The title and icon must be non-empty!": "제목과 아이콘은 비워둘 수 없습니다!",
+   "Name": "이름",
+   "Set the name of the application": "이름을 설정합니다.",
+@@ -984,6 +1003,11 @@
+     "각 사용자의 세이브 데이터를 확인합니다.\n데이터를 백업・복원 가능합니다.\n",
+     "참고: 시스템 백업은 실험적 기능입니다."
+   ],
++  "Download themes from themezer.net. Themes are downloaded to /themes/sphaira\nTo install the themes, NXThemesInstaller needs to be installed (can be downloaded via the AppStore).": [
++    "themezer.net에서 테마를 다운로드합니다.\n",
++    "테마는 /themes/sphaira에 다운로드됩니다.\n",
++    "테마를 설치하려면 NXThemesInstaller가 설치되어 있어야 합니다(AppStore에서 다운로드할 수 있습니다)."
++  ],
+   "Download releases directly from GitHub. Custom entries can be added to /config/sphaira/github": [
+     "직접 최신 항목을 다운로드합니다.\n\n경로: sdmc:/config/sphaira/github"
+   ],
+diff --git a/assets/romfs/i18n/nl.json b/assets/romfs/i18n/nl.json
+index e8dcacc..e608583 100644
+--- a/assets/romfs/i18n/nl.json
++++ b/assets/romfs/i18n/nl.json
+@@ -160,6 +160,7 @@
+   "Change the export options.": "Wijzig de exportopties.",
+   "Install Options": "Opties installeren",
+   "System memory": "Systeemgeheugen",
++  "Nand memory": "NAND",
+   "microSD card": "microSD-kaart",
+   "Data Management": "Gegevensbeheer",
+   "Storage": "Opslag",
+@@ -254,8 +255,9 @@
+     "Het wordt aanbevolen om dit uitgeschakeld te houden."
+   ],
+   "Export Options": "Exportopties",
+-  "Fix export filenames": "Exportbestandsnamen corrigeren",
+-  "fix_export_filenames_info": "Gebruikt de Engelse titel voor exportbestandsnamen en valt terug op de titel-ID als die niet beschikbaar is. Schakel dit uit om gelokaliseerde en Unicode-titels te behouden op bestemmingen die dit ondersteunen.",
++  "Export path": "Exportpad",
++  "Enter export path...": "Voer het exportpad in...",
++  "dump_path_info": "Stelt de basismap voor exports in.\nBijvoorbeeld: /backup/dumps\n\nAlle geëxporteerde bestanden worden in deze map opgeslagen.",
+   "Created nested folder": "Geneste map gemaakt",
+   "game_folder_info": [
+     "Creëert een map met de naam van het spel.",
+@@ -425,11 +427,20 @@
+     "Aangesloten apparaten kunnen worden gebruikt in de FileBrowser, evenals als back-uplocatie bij het dumpen van games en opgeslagen bestanden."
+   ],
+   "HDD write protect": "HDD schrijfbeveiliging",
++  "Show system files": "Systeembestanden tonen",
++  "hdd_show_system_files_info": [
++    "Alleen NTFS. Toont items die Windows als systeembestanden heeft gemarkeerd, zoals $Recycle.Bin. ",
++    "Laat dit uitgeschakeld tenzij je weet wat je doet."
++  ],
++  "Mount hibernated NTFS": "NTFS uit slaapstand koppelen",
++  "hdd_ignore_hibernation_info": [
++    "Alleen NTFS. Koppelt een schijf die Windows in de slaapstand heeft achtergelaten (snel opstarten). ",
++    "WAARSCHUWING: de opgeslagen Windows-sessie op die schijf gaat verloren."
++  ],
+   "Makes the connected HDD read-only.": "Maakt de aangesloten HDD alleen-lezen.",
+   "Installing is disabled, enable now?": "Installeren is uitgeschakeld. Nu inschakelen?",
+   "WARNING: Installing apps will lead to a ban!": "WAARSCHUWING: Het installeren van apps leidt tot een ban!",
+   "Installing enabled!": "Installeren ingeschakeld!",
+-  "microSD card (/dumps/)": "microSD-kaart (/dumps/)",
+   "USB export to PC (usb_export.py)": "USB exporteren naar pc (usb_export.py)",
+   "USB transfer (Switch 2 Switch)": "USB-overdracht (schakelaar 2 schakelaar)",
+   "/dev/null (Speed Test)": "/dev/null (snelheidstest)",
+@@ -584,8 +595,10 @@
+   "Video Capture": "Video-opname",
+   "Profile Selection": "Profielselectie",
+   "Create Forwarder": "Forwarder maken",
+-  "36-bit (Default)": "36-bits (standaard)",
+-  "39-bit": "39-bits",
++  "36-bit (Default)": "36-bit (Standaard)",
++  "39-bit": "39-bit",
++  "32-bit": "32-bit",
++  "32-bit (no alias)": "32-bit (zonder alias)",
+   "The title and icon must be non-empty!": "De titel en het pictogram mogen niet leeg zijn!",
+   "Name": "Naam",
+   "Set the name of the application": "Stel de naam van de applicatie in",
+@@ -966,6 +979,11 @@
+     "Bekijk opgeslagen gegevens voor elke gebruiker. U kunt een back-up maken van opgeslagen bestanden en deze herstellen.\n",
+     "Experimentele ondersteuning voor het maken van back-ups van systeemopslag is mogelijk."
+   ],
++  "Download themes from themezer.net. Themes are downloaded to /themes/sphaira\nTo install the themes, NXThemesInstaller needs to be installed (can be downloaded via the AppStore).": [
++    "Download thema's van themezer.net. ",
++    "Thema's worden gedownload naar /themes/sphaira.",
++    "Om de thema's te installeren, moet NXThemesInstaller geïnstalleerd zijn (kan via de AppStore worden gedownload)."
++  ],
+   "Download releases directly from GitHub. Custom entries can be added to /config/sphaira/github": [
+     "Download releases rechtstreeks vanuit GitHub. Aangepaste vermeldingen kunnen zijn ",
+     "toegevoegd aan /config/sphaira/github"
+diff --git a/assets/romfs/i18n/pt.json b/assets/romfs/i18n/pt.json
+index e5d3bcd..a8efdc0 100644
+--- a/assets/romfs/i18n/pt.json
++++ b/assets/romfs/i18n/pt.json
+@@ -160,6 +160,7 @@
+   "Change the export options.": "Altere as opções de exportação.",
+   "Install Options": "Opções de instalação",
+   "System memory": "Memória do console",
++  "Nand memory": "NAND",
+   "microSD card": "Cartão microSD",
+   "Data Management": "Gerenciamento de dados",
+   "Storage": "Armazenamento",
+@@ -254,8 +255,9 @@
+     "Recomenda-se mantê-lo desativado."
+   ],
+   "Export Options": "Opções de exportação",
+-  "Fix export filenames": "Corrigir nomes dos arquivos exportados",
+-  "fix_export_filenames_info": "Usa o título em inglês nos arquivos exportados e recorre ao ID do título quando ele não está disponível. Desative esta opção para preservar títulos localizados e Unicode em destinos compatíveis.",
++  "Export path": "Caminho de exportação",
++  "Enter export path...": "Introduza o caminho de exportação...",
++  "dump_path_info": "Define a pasta base utilizada para exportações.\nPor exemplo: /backup/dumps\n\nTodos os ficheiros exportados serão guardados nesta pasta.",
+   "Created nested folder": "Criar pastas aninhadas",
+   "game_folder_info": [
+     "Cria uma pasta usando o nome do jogo.",
+@@ -425,11 +427,20 @@
+     "Os dispositivos conectados podem ser usados ​​no FileBrowser, bem como um local de backup ao despejar jogos e salvar."
+   ],
+   "HDD write protect": "HDD proteção contra gravação",
++  "Show system files": "Mostrar ficheiros do sistema",
++  "hdd_show_system_files_info": [
++    "Apenas NTFS. Mostra itens marcados pelo Windows como ficheiros do sistema, como $Recycle.Bin. ",
++    "Mantenha esta opção desativada, a menos que saiba o que está a fazer."
++  ],
++  "Mount hibernated NTFS": "Montar NTFS hibernado",
++  "hdd_ignore_hibernation_info": [
++    "Apenas NTFS. Monta uma unidade deixada pelo Windows em estado de hibernação (arranque rápido). ",
++    "AVISO: a sessão do Windows guardada nessa unidade será perdida."
++  ],
+   "Makes the connected HDD read-only.": "Torna o HDD conectado somente leitura.",
+   "Installing is disabled, enable now?": "A instalação está desativada, ativar agora?",
+   "WARNING: Installing apps will lead to a ban!": "AVISO: A instalação de aplicativos resultará em banimento!",
+   "Installing enabled!": "Instalação habilitada!",
+-  "microSD card (/dumps/)": "Cartão microSD (/dumps/)",
+   "USB export to PC (usb_export.py)": "Exportação USB para PC (usb_export.py)",
+   "USB transfer (Switch 2 Switch)": "Transferência via USB (Switch 2 Switch)",
+   "/dev/null (Speed Test)": "/dev/null (teste de velocidade)",
+@@ -584,8 +595,10 @@
+   "Video Capture": "Captura de vídeo",
+   "Profile Selection": "Seleção de perfil",
+   "Create Forwarder": "Criar forwarder",
+-  "36-bit (Default)": "36 bits (padrão)",
++  "36-bit (Default)": "36 bits (Padrão)",
+   "39-bit": "39 bits",
++  "32-bit": "32 bits",
++  "32-bit (no alias)": "32 bits (sem alias)",
+   "The title and icon must be non-empty!": "O título e o ícone não devem estar vazios!",
+   "Name": "Nome",
+   "Set the name of the application": "Defina o nome do aplicativo",
+@@ -966,6 +979,11 @@
+     "Veja os dados salvos de cada usuário. Você pode fazer backup e restaurar salvamentos.\n",
+     "É possível suporte experimental para backup de salvamentos do sistema."
+   ],
++  "Download themes from themezer.net. Themes are downloaded to /themes/sphaira\nTo install the themes, NXThemesInstaller needs to be installed (can be downloaded via the AppStore).": [
++    "Transfere temas de themezer.net. ",
++    "Os temas são transferidos para /themes/sphaira.",
++    "Para instalar os temas, o NXThemesInstaller tem de estar instalado (pode ser transferido através da AppStore)."
++  ],
+   "Download releases directly from GitHub. Custom entries can be added to /config/sphaira/github": [
+     "Baixe lançamentos diretamente de GitHub. Entradas personalizadas podem ser ",
+     "adicionado a /config/sphaira/github"
+diff --git a/assets/romfs/i18n/ru.json b/assets/romfs/i18n/ru.json
+index 9b17313..ba9abb6 100644
+--- a/assets/romfs/i18n/ru.json
++++ b/assets/romfs/i18n/ru.json
+@@ -160,6 +160,7 @@
+   "Change the export options.": "Измените параметры экспорта.",
+   "Install Options": "Опции установки",
+   "System memory": "NAND",
++  "Nand memory": "NAND",
+   "microSD card": "microSD",
+   "Data Management": "Управление данными",
+   "Storage": "Хранилище",
+@@ -254,8 +255,9 @@
+     "Рекомендуется оставить эту функцию отключенной."
+   ],
+   "Export Options": "Параметры экспорта",
+-  "Fix export filenames": "Исправлять имена файлов экспорта",
+-  "fix_export_filenames_info": "Использует английское название для экспортируемых файлов, а при его отсутствии — ID игры. Отключите эту опцию, чтобы сохранить локализованные названия и Unicode на поддерживаемых устройствах.",
++  "Export path": "Путь экспорта",
++  "Enter export path...": "Введите путь экспорта...",
++  "dump_path_info": "Задаёт базовую папку для экспорта.\nНапример: /backup/dumps\n\nВсе экспортированные файлы будут сохранены в этой папке.",
+   "Created nested folder": "Создать вложенную папку",
+   "game_folder_info": [
+     "Создает папку с названием игры.",
+@@ -426,11 +428,20 @@
+     "Подключенные устройства можно использовать в FileBrowser, а также в качестве резервного хранилища при сбросе игр и сохранений."
+   ],
+   "HDD write protect": "HDD защита от записи",
++  "Show system files": "Показывать системные файлы",
++  "hdd_show_system_files_info": [
++    "Только NTFS. Показывает объекты, отмеченные Windows как системные файлы, например $Recycle.Bin. ",
++    "Не включайте эту настройку, если не уверены в своих действиях."
++  ],
++  "Mount hibernated NTFS": "Подключить NTFS после гибернации",
++  "hdd_ignore_hibernation_info": [
++    "Только NTFS. Подключает диск, оставленный Windows в состоянии гибернации (быстрый запуск). ",
++    "ВНИМАНИЕ: сохранённый на этом диске сеанс Windows будет потерян."
++  ],
+   "Makes the connected HDD read-only.": "Делает подключенный HDD доступным только для чтения.",
+   "Installing is disabled, enable now?": "Установка отключена, включить сейчас?",
+   "WARNING: Installing apps will lead to a ban!": "ВНИМАНИЕ: Установка приложений приведет к бану!",
+   "Installing enabled!": "Установка включена!",
+-  "microSD card (/dumps/)": "microSD (/dumps/)",
+   "USB export to PC (usb_export.py)": "USB экспорт на ПК (usb_export.py)",
+   "USB transfer (Switch 2 Switch)": "Передача по USB (Switch 2 Switch)",
+   "/dev/null (Speed Test)": "/dev/null (тест скорости)",
+@@ -587,6 +598,8 @@
+   "Create Forwarder": "Создать форвардер",
+   "36-bit (Default)": "36-битный (по умолчанию)",
+   "39-bit": "39-битный",
++  "32-bit": "32-битный",
++  "32-bit (no alias)": "32-битный (без псевдонима)",
+   "The title and icon must be non-empty!": "Заголовок и иконка должны быть непустыми!",
+   "Name": "Имя",
+   "Set the name of the application": "Установите имя приложения",
+@@ -967,6 +980,11 @@
+     "Просмотр данных сохранения для каждого пользователя. Вы можете создавать резервные копии и восстанавливать сохранения.\n",
+     "Возможна экспериментальная поддержка резервного копирования системных сохранений."
+   ],
++  "Download themes from themezer.net. Themes are downloaded to /themes/sphaira\nTo install the themes, NXThemesInstaller needs to be installed (can be downloaded via the AppStore).": [
++    "Загружайте темы с themezer.net. ",
++    "Темы загружаются в /themes/sphaira.",
++    "Для установки тем необходимо установить NXThemesInstaller (его можно загрузить через AppStore)."
++  ],
+   "Download releases directly from GitHub. Custom entries can be added to /config/sphaira/github": [
+     "Загружает релизы напрямую с GitHub. Пользовательские записи можно добавить в каталог /config/sphaira/github"
+   ],
+diff --git a/assets/romfs/i18n/se.json b/assets/romfs/i18n/se.json
+index 59ce85e..1ef5d70 100644
+--- a/assets/romfs/i18n/se.json
++++ b/assets/romfs/i18n/se.json
+@@ -160,6 +160,7 @@
+   "Change the export options.": "Ändra exportalternativen.",
+   "Install Options": "Installationsalternativ",
+   "System memory": "Systemminne",
++  "Nand memory": "NAND",
+   "microSD card": "microSD-kort",
+   "Data Management": "Datahantering",
+   "Storage": "Lagring",
+@@ -254,8 +255,9 @@
+     "Det rekommenderas att hålla detta inaktiverat."
+   ],
+   "Export Options": "Exportalternativ",
+-  "Fix export filenames": "Korrigera exportfilnamn",
+-  "fix_export_filenames_info": "Använder den engelska titeln för exportfilnamn och använder titel-ID om den saknas. Inaktivera detta för att behålla lokaliserade titlar och Unicode på mål som stöder dem.",
++  "Export path": "Exportsökväg",
++  "Enter export path...": "Ange exportsökväg...",
++  "dump_path_info": "Anger basmappen som används för exporter.\nTill exempel: /backup/dumps\n\nAlla exporterade filer sparas i den här mappen.",
+   "Created nested folder": "Skapat kapslad mapp",
+   "game_folder_info": [
+     "Skapar en mapp med namnet på spelet.",
+@@ -425,11 +427,20 @@
+     "Anslutna enheter kan användas i FileBrowser, såväl som en säkerhetskopia när du dumpar spel och sparar."
+   ],
+   "HDD write protect": "HDD skrivskydd",
++  "Show system files": "Visa systemfiler",
++  "hdd_show_system_files_info": [
++    "Endast NTFS. Visar objekt som Windows har markerat som systemfiler, till exempel $Recycle.Bin. ",
++    "Lämna detta avstängt om du inte vet vad du gör."
++  ],
++  "Mount hibernated NTFS": "Montera NTFS i viloläge",
++  "hdd_ignore_hibernation_info": [
++    "Endast NTFS. Monterar en enhet som Windows lämnade i viloläge (snabbstart). ",
++    "VARNING: den sparade Windows-sessionen på enheten går förlorad."
++  ],
+   "Makes the connected HDD read-only.": "Gör den anslutna HDD skrivskyddad.",
+   "Installing is disabled, enable now?": "Installation är inaktiverat, aktivera nu?",
+   "WARNING: Installing apps will lead to a ban!": "VARNING: Installation av appar kommer att leda till ett förbud!",
+   "Installing enabled!": "Installation aktiverad!",
+-  "microSD card (/dumps/)": "microSD-kort (/dumps/)",
+   "USB export to PC (usb_export.py)": "USB export till PC (usb_export.py)",
+   "USB transfer (Switch 2 Switch)": "USB överföring (Switch 2 Switch)",
+   "/dev/null (Speed Test)": "/dev/null (Hastighetstest)",
+@@ -584,8 +595,10 @@
+   "Video Capture": "Videoinspelning",
+   "Profile Selection": "Profilval",
+   "Create Forwarder": "Skapa forwarder",
+-  "36-bit (Default)": "36-bitars (standard)",
++  "36-bit (Default)": "36-bitars (Standard)",
+   "39-bit": "39-bitars",
++  "32-bit": "32-bitars",
++  "32-bit (no alias)": "32-bitars (utan alias)",
+   "The title and icon must be non-empty!": "Titeln och ikonen måste vara tomma!",
+   "Name": "Namn",
+   "Set the name of the application": "Ange namnet på programmet",
+@@ -968,6 +981,11 @@
+     "Visa sparadata för varje användare. Du kan säkerhetskopiera och återställa sparade filer.\n",
+     "Experimentellt stöd för säkerhetskopiering av systembesparingar är möjligt."
+   ],
++  "Download themes from themezer.net. Themes are downloaded to /themes/sphaira\nTo install the themes, NXThemesInstaller needs to be installed (can be downloaded via the AppStore).": [
++    "Ladda ner teman från themezer.net. ",
++    "Teman laddas ner till /themes/sphaira.",
++    "För att installera teman måste NXThemesInstaller vara installerat (kan laddas ner via AppStore)."
++  ],
+   "Download releases directly from GitHub. Custom entries can be added to /config/sphaira/github": [
+     "Ladda ner versioner direkt från GitHub. Anpassade poster kan vara ",
+     "läggs till /config/sphaira/github"
+diff --git a/assets/romfs/i18n/uk.json b/assets/romfs/i18n/uk.json
+index e01f863..29a7425 100644
+--- a/assets/romfs/i18n/uk.json
++++ b/assets/romfs/i18n/uk.json
+@@ -160,6 +160,7 @@
+   "Change the export options.": "Змініть параметри експорту.",
+   "Install Options": "Опції встановлення",
+   "System memory": "NAND",
++  "Nand memory": "NAND",
+   "microSD card": "microSD",
+   "Data Management": "Керування даними",
+   "Storage": "Сховище",
+@@ -254,8 +255,9 @@
+     "Рекомендовано залишати це вимкненим."
+   ],
+   "Export Options": "Параметри експорту",
+-  "Fix export filenames": "Виправляти назви файлів експорту",
+-  "fix_export_filenames_info": "Використовує англійську назву для експортованих файлів, а за її відсутності — ID гри. Вимкніть цю опцію, щоб зберегти локалізовані назви та Unicode на підтримуваних пристроях.",
++  "Export path": "Шлях експорту",
++  "Enter export path...": "Введіть шлях експорту...",
++  "dump_path_info": "Встановлює базову папку для експорту.\nНаприклад: /backup/dumps\n\nУсі експортовані файли будуть збережені в цій папці.",
+   "Created nested folder": "Створено вкладену теку",
+   "game_folder_info": [
+     "Створює папку з назвою гри.",
+@@ -425,11 +427,20 @@
+     "Connected devices can be used in the FileBrowser, as well as a backup location when dumping games and saves."
+   ],
+   "HDD write protect": "HDD захист від запису",
++  "Show system files": "Показувати системні файли",
++  "hdd_show_system_files_info": [
++    "Лише NTFS. Показує об’єкти, позначені Windows як системні файли, наприклад $Recycle.Bin. ",
++    "Не вмикайте цю функцію, якщо не впевнені у своїх діях."
++  ],
++  "Mount hibernated NTFS": "Підключити NTFS після гібернації",
++  "hdd_ignore_hibernation_info": [
++    "Лише NTFS. Підключає диск, залишений Windows у стані гібернації (швидкий запуск). ",
++    "УВАГА: збережений на цьому диску сеанс Windows буде втрачено."
++  ],
+   "Makes the connected HDD read-only.": "Робить підключений HDD доступним лише для читання.",
+   "Installing is disabled, enable now?": "Встановлення вимкнено, увімкнути зараз?",
+   "WARNING: Installing apps will lead to a ban!": "УВАГА: встановлення додатків призведе до блокування!",
+   "Installing enabled!": "Встановлення включено!",
+-  "microSD card (/dumps/)": "SD-карта (/dumps/)",
+   "USB export to PC (usb_export.py)": "Експорт USB на ПК (usb_export.py)",
+   "USB transfer (Switch 2 Switch)": "Передача USB (Switch <-> Switch)",
+   "/dev/null (Speed Test)": "Тест швидкості (/dev/null)",
+@@ -586,6 +597,8 @@
+   "Create Forwarder": "Створити форвардер",
+   "36-bit (Default)": "36-розрядний (за замовчуванням)",
+   "39-bit": "39-розрядний",
++  "32-bit": "32-розрядний",
++  "32-bit (no alias)": "32-розрядний (без псевдоніма)",
+   "The title and icon must be non-empty!": "Заголовок і значок повинні бути непорожніми!",
+   "Name": "Ім'я",
+   "Set the name of the application": "Встановіть назву програми",
+@@ -968,6 +981,11 @@
+     "Перегляньте дані збереження для кожного користувача. Ви можете створювати резервні копії та відновлювати збереження.\n",
+     "Можлива експериментальна підтримка резервного копіювання збережених систем."
+   ],
++  "Download themes from themezer.net. Themes are downloaded to /themes/sphaira\nTo install the themes, NXThemesInstaller needs to be installed (can be downloaded via the AppStore).": [
++    "Завантажуйте теми з themezer.net. ",
++    "Теми завантажуються до /themes/sphaira.",
++    "Для встановлення тем необхідно встановити NXThemesInstaller (його можна завантажити через AppStore)."
++  ],
+   "Download releases directly from GitHub. Custom entries can be added to /config/sphaira/github": [
+     "Завантажуйте випуски безпосередньо з GitHub. Користувацькі записи можуть бути ",
+     "додано до /config/sphaira/github"
+diff --git a/assets/romfs/i18n/vi.json b/assets/romfs/i18n/vi.json
+index aceb948..74e6365 100644
+--- a/assets/romfs/i18n/vi.json
++++ b/assets/romfs/i18n/vi.json
+@@ -160,6 +160,7 @@
+   "Change the export options.": "Thay đổi tùy chọn xuất.",
+   "Install Options": "Tùy chọn cài đặt",
+   "System memory": "Bộ nhớ máy",
++  "Nand memory": "Bộ nhớ máy",
+   "microSD card": "Thẻ nhớ",
+   "Data Management": "Quản lý dữ liệu",
+   "Storage": "Bộ nhớ",
+@@ -254,8 +255,9 @@
+     "Nên tắt tính năng này."
+   ],
+   "Export Options": "Tùy chọn xuất",
+-  "Fix export filenames": "Sửa tên tệp xuất",
+-  "fix_export_filenames_info": "Dùng tên tiếng Anh cho tệp xuất và dùng ID tựa game khi không có tên tiếng Anh. Tắt tùy chọn này để giữ tên bản địa hóa và Unicode trên các đích hỗ trợ.",
++  "Export path": "Đường dẫn xuất",
++  "Enter export path...": "Nhập đường dẫn xuất...",
++  "dump_path_info": "Đặt thư mục cơ sở được sử dụng để xuất.\nVí dụ: /backup/dumps\n\nTất cả các tệp đã xuất sẽ được lưu trong thư mục này.",
+   "Created nested folder": "Đã tạo thư mục lồng nhau",
+   "game_folder_info": [
+     "Tạo một thư mục sử dụng tên của trò chơi.",
+@@ -425,11 +427,20 @@
+     "Các thiết bị được kết nối có thể được sử dụng trong FileBrowser, cũng như một vị trí dự phòng khi kết xuất và lưu trò chơi."
+   ],
+   "HDD write protect": "HDD bảo vệ ghi",
++  "Show system files": "Hiển thị tệp hệ thống",
++  "hdd_show_system_files_info": [
++    "Chỉ dành cho NTFS. Hiển thị các mục được Windows đánh dấu là tệp hệ thống, chẳng hạn như $Recycle.Bin. ",
++    "Hãy tắt tùy chọn này nếu bạn không hiểu rõ tác dụng của nó."
++  ],
++  "Mount hibernated NTFS": "Gắn NTFS đang ngủ đông",
++  "hdd_ignore_hibernation_info": [
++    "Chỉ dành cho NTFS. Gắn ổ đĩa được Windows để lại trong trạng thái ngủ đông (khởi động nhanh). ",
++    "CẢNH BÁO: phiên Windows đã lưu trên ổ đĩa đó sẽ bị mất."
++  ],
+   "Makes the connected HDD read-only.": "Làm cho HDD được kết nối ở chế độ chỉ đọc.",
+   "Installing is disabled, enable now?": "Cài đặt bị vô hiệu hóa, kích hoạt bây giờ?",
+   "WARNING: Installing apps will lead to a ban!": "CẢNH BÁO: Cài đặt ứng dụng sẽ dẫn đến lệnh cấm!",
+   "Installing enabled!": "Đã kích hoạt cài đặt!",
+-  "microSD card (/dumps/)": "Thẻ microSD (/dumps/)",
+   "USB export to PC (usb_export.py)": "Xuất USB sang PC (usb_export.py)",
+   "USB transfer (Switch 2 Switch)": "Chuyển USB (Công tắc 2)",
+   "/dev/null (Speed Test)": "/dev/null (Kiểm tra tốc độ)",
+@@ -586,6 +597,8 @@
+   "Create Forwarder": "Tạo forwarder",
+   "36-bit (Default)": "36-bit (Mặc định)",
+   "39-bit": "39-bit",
++  "32-bit": "32-bit",
++  "32-bit (no alias)": "32-bit (không bí danh)",
+   "The title and icon must be non-empty!": "Tiêu đề và biểu tượng không được để trống!",
+   "Name": "Tên",
+   "Set the name of the application": "Đặt tên của ứng dụng",
+@@ -968,6 +981,11 @@
+     "Xem lưu dữ liệu cho mỗi người dùng. Bạn có thể sao lưu và khôi phục các bản lưu.\n",
+     "Có thể hỗ trợ thử nghiệm việc sao lưu hệ thống."
+   ],
++  "Download themes from themezer.net. Themes are downloaded to /themes/sphaira\nTo install the themes, NXThemesInstaller needs to be installed (can be downloaded via the AppStore).": [
++    "Tải chủ đề từ themezer.net. ",
++    "Các chủ đề được tải xuống /themes/sphaira.",
++    "Để cài đặt chủ đề, cần cài đặt NXThemesInstaller (có thể tải xuống qua AppStore)."
++  ],
+   "Download releases directly from GitHub. Custom entries can be added to /config/sphaira/github": [
+     "Tải xuống các bản phát hành trực tiếp từ GitHub. Các mục tùy chỉnh có thể được ",
+     "đã thêm vào /config/sphaira/github"
+diff --git a/assets/romfs/i18n/zh-Hans.json b/assets/romfs/i18n/zh-Hans.json
+index d51a7c6..ee4ca24 100644
+--- a/assets/romfs/i18n/zh-Hans.json
++++ b/assets/romfs/i18n/zh-Hans.json
+@@ -157,6 +157,7 @@
+   "Change the export options.": "更改导出选项。",
+   "Install Options": "安装选项",
+   "System memory": "主机内存",
++  "Nand memory": "主机内存",
+   "microSD card": "SD卡",
+   "Data Management": "数据管理",
+   "Storage": "存储空间",
+@@ -245,8 +246,9 @@
+     "建议保持禁用状态。"
+   ],
+   "Export Options": "导出选项",
+-  "Fix export filenames": "修正导出文件名",
+-  "fix_export_filenames_info": "导出文件名使用英文标题；若没有英文标题则回退到标题 ID。如果目标设备支持本地化及 Unicode 标题，可关闭此选项以保留这些标题。",
++  "Export path": "导出路径",
++  "Enter export path...": "输入导出路径...",
++  "dump_path_info": "设置用于导出的基础文件夹。\n例如：/backup/dumps\n\n所有导出的文件都将保存在此文件夹中。",
+   "Created nested folder": "已创建嵌套文件夹",
+   "game_folder_info": [
+     "使用游戏名称创建文件夹。\n",
+@@ -420,7 +422,6 @@
+   "Installing is disabled, enable now?": "安装功能已禁用，现在启用吗？",
+   "WARNING: Installing apps will lead to a ban!": "警告：安装应用程序将导致封禁！",
+   "Installing enabled!": "已启用安装！",
+-  "microSD card (/dumps/)": "microSD卡（/dumps/）",
+   "USB export to PC (usb_export.py)": "USB 导出到 PC (usb_export.py)",
+   "USB transfer (Switch 2 Switch)": "USB传输（Switch对Switch）",
+   "/dev/null (Speed Test)": "/dev/null（速度测试）",
+@@ -577,6 +578,8 @@
+   "Create Forwarder": "创建前端启动器",
+   "36-bit (Default)": "36 位（默认）",
+   "39-bit": "39位",
++  "32-bit": "32位",
++  "32-bit (no alias)": "32位（无别名）",
+   "The title and icon must be non-empty!": "标题和图标必须非空！",
+   "Name": "名称",
+   "Set the name of the application": "设置应用程序的名称",
+@@ -944,6 +947,11 @@
+   "View all installed games. In this menu you can launch, backup, create savedata and much more.": "查看所有已安装的游戏。在此菜单中，您可以启动、备份、创建存档等操作。",
+   "Browse files on you SD Card. You can move, copy, delete, extract zip, create zip, upload and much more.\n\nA connected USB/HDD can be opened by mounting it in the advanced options.": "浏览您的SD卡文件。您可以移动、复制、删除、解压zip、创建zip、上传等更多操作。\n\n连接的USB/HDD可以通过在高级选项中挂载来打开。",
+   "View save data for each user. You can backup and restore saves.\n\nExperimental support for backing up system saves is possible.": "查看每个用户的存档数据。您可以备份和还原存档。\n\n可能支持备份系统存档（实验性功能）。",
++  "Download themes from themezer.net. Themes are downloaded to /themes/sphaira\nTo install the themes, NXThemesInstaller needs to be installed (can be downloaded via the AppStore).": [
++    "从themezer.net下载主题。 ",
++    "主题将下载到/themes/sphaira。",
++    "要安装主题，需要先安装NXThemesInstaller（可通过AppStore下载）。"
++  ],
+   "Download releases directly from GitHub. Custom entries can be added to /config/sphaira/github": "直接从GitHub下载发布版本。自定义条目可以添加到 /config/sphaira/github",
+   "Install apps via FTP.": "通过FTP安装应用。",
+   "MTP Install": "通过 MTP 安装",
+diff --git a/assets/romfs/i18n/zh-Hant.json b/assets/romfs/i18n/zh-Hant.json
+index 8e5ee4e..83345cf 100644
+--- a/assets/romfs/i18n/zh-Hant.json
++++ b/assets/romfs/i18n/zh-Hant.json
+@@ -157,6 +157,7 @@
+   "Change the export options.": "更改匯出選項。",
+   "Install Options": "安裝選項",
+   "System memory": "系統記憶體",
++  "Nand memory": "系統記憶體",
+   "microSD card": "microSD 卡",
+   "Data Management": "資料管理",
+   "Storage": "儲存空間",
+@@ -245,8 +246,9 @@
+     "建議保持停用此選項。"
+   ],
+   "Export Options": "匯出選項",
+-  "Fix export filenames": "修正匯出檔名",
+-  "fix_export_filenames_info": "匯出檔名使用英文標題；若沒有英文標題則回退到標題 ID。如果目標裝置支援本地化及 Unicode 標題，可關閉此選項以保留這些標題。",
++  "Export path": "匯出路徑",
++  "Enter export path...": "輸入匯出路徑...",
++  "dump_path_info": "設定用於匯出的基礎資料夾。\n例如：/backup/dumps\n\n所有匯出的檔案都會儲存在此資料夾中。",
+   "Created nested folder": "已建立巢狀資料夾",
+   "game_folder_info": [
+     "使用遊戲名稱建立資料夾。",
+@@ -422,7 +424,6 @@
+   "Installing is disabled, enable now?": "安裝功能已停用，要現在啟用嗎？",
+   "WARNING: Installing apps will lead to a ban!": "警告：安裝未授權的應用程式會導致主機被 Ban！",
+   "Installing enabled!": "安裝功能已啟用！",
+-  "microSD card (/dumps/)": "microSD 卡 (/dumps/)",
+   "USB export to PC (usb_export.py)": "USB 匯出至電腦 (usb_export.py)",
+   "USB transfer (Switch 2 Switch)": "USB 傳輸 (Switch 對 Switch)",
+   "/dev/null (Speed Test)": "/dev/null (速度測試)",
+@@ -579,6 +580,8 @@
+   "Create Forwarder": "建立前導程式",
+   "36-bit (Default)": "36 位元（預設）",
+   "39-bit": "39位",
++  "32-bit": "32位",
++  "32-bit (no alias)": "32位（無別名）",
+   "The title and icon must be non-empty!": "標題和圖示必須非空！",
+   "Name": "名稱",
+   "Set the name of the application": "設定應用程式名稱",
+@@ -944,6 +947,11 @@
+   "View all installed games. In this menu you can launch, backup, create savedata and much more.": "檢視所有已安裝的遊戲。您可以在此選單中啟動、備份、建立存檔等。",
+   "Browse files on you SD Card. You can move, copy, delete, extract zip, create zip, upload and much more.\n\nA connected USB/HDD can be opened by mounting it in the advanced options.": "瀏覽 SD 卡上的檔案。您可以移動、複製、刪除、解壓縮 zip、建立 zip、上傳等。\n\n連接的 USB/HDD 可透過進階選項中的掛載功能開啟。",
+   "View save data for each user. You can backup and restore saves.\n\nExperimental support for backing up system saves is possible.": "檢視每位使用者的存檔資料。您可以備份和還原存檔。\n\n支援實驗性的系統存檔備份功能。",
++  "Download themes from themezer.net. Themes are downloaded to /themes/sphaira\nTo install the themes, NXThemesInstaller needs to be installed (can be downloaded via the AppStore).": [
++    "從themezer.net下載主題。 ",
++    "主題將下載至/themes/sphaira。",
++    "若要安裝主題，需要先安裝NXThemesInstaller（可透過AppStore下載）。"
++  ],
+   "Download releases directly from GitHub. Custom entries can be added to /config/sphaira/github": "直接從 GitHub 下載發行版本。可將自訂項目新增至 /config/sphaira/github",
+   "Install apps via FTP.": "透過 FTP 安裝應用程式。",
+   "MTP Install": "MTP 安裝",
