@@ -1,29 +1,17 @@
 {
     "changelog": {
         "22.5.0": [
-            "Hekate & Nyx + ATLAS: 1.3.0 → 1.3.1",
-            "Hocate 기능 추가 및 커스터마이징, 크레딧 수정, 8GB 램 모드 프로세스 변경.",
-            "TegraExplorer: 파일 탐색기에서 파일 및 폴더 이름 정렬 방식을 자연순으로 변경.",
-            "",
-            "Atmosphère",
-            "Exosphere: 파일 교체가 아닌 설정 값 교체 방식으로 40MB 메모리 패치 변경.",
-            "",
-            "Horizon-OC & loader.kip: 2.5.0.rev6 → 2.5.1.rev6 + Benchmark-Toolbox 2.0.0",
-            "GPU DVFS 및 클럭 관련 문제 수정, 최대 설정 가능 클럭 3400 Mhz 상향, 툴박스 기본 패키지 추가.",
-            "",
-            "Ultrahand-Overlay & Extra Setting+ 1.1.3 → 1.1.4",
-            "40MB 메모리 패치, 8GB RAM 패치 방식 변경.",
-            "",
-            "sphaira 1.0.0 → 1.0.7",
-            "릴리즈 노트 참고.",
-            "",
-            "System Modules & Homebrew 업데이트",
-            "SaltyNX 1.9.2 → 1.9.3, sys-con 1.6.3 → 1.7.0, DBI 895 → 905"
-        ]
+            "공지사항",
+            "오래된 바로가기 제거 후 재생성 필요.",
+            "RAM, MEMORY 패치 시 특정 게임 실행 오류, 크래시 발생 가능성 있음.",
+            "상세 업데이트 내용은 업데이트 후 헤카테 릴리즈 노트 확인 요망."
+        ],
+        "23.0.0": ""
     },
     "cfws": {
         "asap": {
-            "stable": "https://raw.githubusercontent.com/Yorunokyujitsu/ASAP-NX/main/output/ASAP.zip"
+            "stable": "https://raw.githubusercontent.com/Yorunokyujitsu/ASAP-NX/main/output/ASAP.zip",
+            "temporary": "https://www.dropbox.com/scl/fi/0v5xoenpf6nh3aj7v24t2/ASAP-Temp.zip?rlkey=0649mpqdjq7xkz09pu7kyebix&dl=1"
         },
         "android": {
             "22.2 TV": "https://www.dropbox.com/scl/fi/tah21kpujq9kixgukpes8/Android_tv.zip?rlkey=7d2t3k5e3rwzdg2t4j17f7yso&dl=1",
@@ -39,6 +27,7 @@
         }
     },
     "firmwares": {
+        "23.0.0": "https://github.com/THZoria/NX_Firmware/releases/download/23.0.0/Firmware.23.0.0.zip",
         "22.5.0": "https://github.com/THZoria/NX_Firmware/releases/download/22.5.0/Firmware.22.5.0.zip",
         "22.1.0": "https://github.com/THZoria/NX_Firmware/releases/download/22.1.0/Firmware.22.1.0.zip",
         "22.0.0": "https://github.com/THZoria/NX_Firmware/releases/download/22.0.0/Firmware.22.0.0.zip",
