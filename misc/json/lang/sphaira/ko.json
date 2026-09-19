@@ -1004,6 +1004,10 @@
     "각 사용자의 세이브 데이터를 확인합니다.\n데이터를 백업・복원 가능합니다.\n",
     "참고: 시스템 백업은 실험적 기능입니다."
   ],
+  "Browse the screenshots and clips saved on the console. Captures can be viewed and deleted from here.": [
+    "저장된 스크린샷과 동영상을 둘러봅니다.\n",
+    "파일을 확인・삭제・공유할 수 있습니다."
+  ],
   "Download themes from themezer.net. Themes are downloaded to /themes/sphaira\nTo install the themes, NXThemesInstaller needs to be installed (can be downloaded via the AppStore).": [
     "themezer.net에서 테마를 다운로드합니다.\n",
     "테마는 /themes/sphaira에 다운로드됩니다.\n",
@@ -1253,8 +1257,8 @@
   "Failed to delete one or more files": "하나 이상의 파일을 삭제하지 못했습니다",
   "Delete %zd file(s)?": "%zd개의 파일을 삭제할까요?",
   "Permanently deletes the selected capture(s).": "선택한 항목을 완전히 삭제합니다.",
-  "Browse from phone": "휴대폰에서 보기",
-  "Serves the album over the network, so that it can be browsed from a phone.": "앨범을 네트워크로 공유하여 휴대폰에서 볼 수 있게 합니다.",
+  "Browse from phone": "PC・휴대폰에서 보기",
+  "Serves the album over the network, so that it can be browsed from a phone.": "네트워크로 공유하여 PC 혹은 휴대폰에서 앨범을 열람합니다.",
   "The album is only shared whilst this screen is open.": "이 화면이 열려 있는 동안에만 공유됩니다.",
   "Open this address on a phone or PC": "휴대폰이나 PC에서 이 주소를 여세요",
   "PIN": "PIN",
@@ -1268,5 +1272,96 @@
   "Album updated": "앨범이 업데이트되었습니다",
   "Game": "게임",
   "Shows only the captures taken in one game.": "한 게임에서 찍은 항목만 표시합니다.",
-  "Looks for captures taken, or deleted, since this menu was opened.": "이 메뉴를 연 후 촬영하거나 삭제한 항목을 확인합니다."
+  "Looks for captures taken, or deleted, since this menu was opened.": "이 메뉴를 연 후 촬영하거나 삭제한\n항목을 확인합니다.",
+  "Require PIN": "PIN 요청",
+  "album_web_pin_info": [
+    "해당 옵션을 켜면 휴대폰에서 열람 시\n본체에 표시된 PIN을 입력해야 합니다.\n",
+    "끄면 공유하는 동안 같은 네트워크의\n누구나 앨범을 확인할 수 있습니다."
+  ],
+  "Album share PIN": "앨범 공유 PIN",
+  "Serves the album on this port.": "설정된 포트로 앨범을 공유합니다.",
+  "Browse": "서버 시작",
+  "Starts the server and shows the address and the QR code.": "서버를 시작하고 주소와 QR 코드를 표시합니다.",
+  "Ownfoil": "Ownfoil",
+  "Browse and install titles from a self-hosted Ownfoil server.\n\nInternet connection required.": [
+    "호스팅한 Ownfoil 서버에서 타이틀을\n찾아보고 설치합니다.\n\n네트워크 연결이 필요합니다."
+  ],
+  "No Ownfoil servers saved.\n\nPress X to add one by hand, or search the network below.": [
+    "저장된 Ownfoil 서버가 없습니다,  를 입력하여 추가하거나 서버를 검색하세요."
+  ],
+  "Full screen": "전체 화면",
+  "Change the options every install on this console uses.": "이 콘솔의 모든 설치에 사용되는 옵션을 변경합니다.",
+  "Which of the versions the shop holds to install.": "스토어에 있는 버전 중 설치할 버전을 선택합니다.",
+  "Add-on content": "추가 콘텐츠",
+  "Download and install what is chosen above.": "위에서 선택한 항목을 다운로드하고 설치합니다.",
+  "This add-on is already installed.": "이 추가 콘텐츠는 이미 설치되어 있습니다.",
+  "Nothing to install: the console already has this version or a newer one, and no add-on is ticked. An older update can be installed by turning on Allow downgrade in Install options.": [
+    "설치할 항목이 없습니다. 콘솔에 이미 이 버전 또는 더 최신 버전이 설치되어 있고 추가 콘텐츠도 선택되지 않았습니다. 설치 옵션에서 다운그레이드 허용을 활성화하면 이전 업데이트를 설치할 수 있습니다."
+  ],
+  "The shop didn't say how to download this": "스토어에서 이 항목의 다운로드 방법을 제공하지 않았습니다",
+  "Downgrade": "다운그레이드",
+  "Show": "표시",
+  "Connecting to ": " 연결 중",
+  "Local": "로컬",
+  "Remote": "원격",
+  "Searching the network...": "네트워크 검색 중...",
+  "Discover local servers": "로컬 서버 검색",
+  "This shop is public. Set up a login anyway?": "이 스토어는 공개되어 있습니다. 그래도 로그인 정보를 설정할까요?",
+  "This shop is private. Set up a login now?": "이 스토어는 비공개입니다. 지금 로그인 정보를 설정할까요?",
+  ": connected via remote address": ": 원격 주소로 연결됨",
+  ": connected via local network": ": 로컬 네트워크로 연결됨",
+  "This account has no shop access": "이 계정에는 스토어 접근 권한이 없습니다",
+  "Page %ld / %ld": "페이지 %ld / %ld",
+  "%ld titles": "%ld개 타이틀",
+  "Name or id": "이름 또는 ID",
+  "Add server": "서버 추가",
+  "Add a server by hand, for one the network search can't reach.": "네트워크 검색으로 찾을 수 없는 서버를 직접 추가합니다.",
+  "Edit server": "서버 편집",
+  "Change the selected server's name, addresses or login.": "선택한 서버의 이름, 주소 또는 로그인\n정보를 변경합니다.",
+  "Delete server": "서버 삭제",
+  "Forget the selected server.": "선택한 서버를 목록에서 제거합니다.",
+  "Banner": "배너",
+  "Detail": "상세",
+  "Change how titles are shown. Also cycled with -.": "타이틀 표시 방식을 변경합니다. - 버튼으로도 전환할 수 있습니다.",
+  "Per page": "페이지당",
+  "How many titles the shop sends per page. Fewer is quicker to open.": [
+    "스토어에서 페이지당 불러오는 타이틀 수입니다. 적을수록 더 빠르게 열립니다."
+  ],
+  "What the shop orders the catalog by.": "스토어에서 카탈로그를 정렬할 기준을 설정합니다.",
+  "Which way that order runs.": "정렬 방향을 설정합니다.",
+  "Servers list": "서버 목록",
+  "Return to the server list.": "서버 목록으로 돌아갑니다.",
+  "Clear cache": "캐시 삭제",
+  "Remove all cached artwork from the SD card?": "SD 카드에서 캐시된 이미지를 모두 삭제할까요?",
+  "Failed to clear the cache": "캐시를 삭제하지 못했습니다",
+  "Cache cleared": "캐시를 삭제했습니다",
+  "Remove all cached shop artwork from the SD card.": "SD 카드에서 캐시된 스토어 이미지를\n모두 삭제합니다.",
+  "Delete ": " 을/를 삭제하시겠습니까",
+  "Could not parse the server's response": "서버 응답을 처리할 수 없습니다",
+  "This does not look like an Ownfoil server": "Ownfoil 서버가 아닌 것 같습니다",
+  "Could not reach the server": "서버에 연결할 수 없습니다",
+  "Incorrect username or password": "사용자 이름 또는 비밀번호가 올바르지 않습니다",
+  "Server returned an error": "서버에서 오류를 반환했습니다",
+  "The server rejected the request": "서버에서 요청을 거부했습니다",
+  "Unexpected response from the server": "서버에서 예상하지 못한 응답을 반환했습니다",
+  "The shop has no details for this title": "스토어에 이 타이틀의 상세 정보가 없습니다",
+  "Ownfoil Server": "Ownfoil 서버",
+  "Set the display name of the server.\n\nReplaced by the name the server reports once it has been connected to.": [
+    "서버에 표시할 이름을 설정합니다.\n\n연결된 후에는 서버에서 제공하는\n이름으로 변경됩니다."
+  ],
+  "Local address": "로컬 주소",
+  "Address used to reach the server on the local network, e.g. 192.168.1.50:8465.\n\nAt least one of Local address or Remote address must be set.": [
+    "로컬 네트워크에서 서버에 연결할 때\n사용하는 주소입니다.\n",
+    "예시: 192.168.1.50:8465.\n\n로컬 주소 또는 원격 주소 중 하나 이상을 설정해야 합니다."
+  ],
+  "Remote address": "원격 주소",
+  "Address used to reach the server remotely, e.g. myshop.example.com.\n\nAt least one of Local address or Remote address must be set.": [
+    "원격으로 서버에 연결할 때 사용하는\n주소입니다.\n",
+    "예시: myshop.example.com.\n\n로컬 주소 또는 원격 주소 중 하나 이상을 설정해야 합니다."
+  ],
+  "Optional: username used to log in to the server.": "선택 사항: 서버 로그인에 사용할\n사용자 이름입니다.",
+  "Optional: password used to log in to the server.": "선택 사항: 서버 로그인에 사용할\n비밀번호입니다.",
+  "Ownfoil server saved.": "Ownfoil 서버를 저장했습니다.",
+  "Saves the Ownfoil server entry.": "Ownfoil 서버 항목을 저장합니다.",
+  "Name and at least one of Local/Remote address must be set!": "이름과 로컬/원격 주소 중 하나 이상을\n설정해야 합니다!"
 }

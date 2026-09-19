@@ -6,14 +6,14 @@ current_nyx=1.9.3
 
 [latest_version]
 supported_hos=23.0.0
-tester_version=0917
+tester_version=0919
 ldr_kip_version=2.5.1.rev6
 
 hekate=6.5.3
 nyx=1.9.3
 atmosphere=1.12.0
 atlas=1.4.0
-missioncontrol=0.15.2.temp
+missioncontrol=0.15.2
 nx_fancontrol=1.0.4+r1
 ovlloader=2.0.3
 saltynx=1.9.3
@@ -31,9 +31,8 @@ asap_updater=1.0.5
 amiibogenerator=2.2.1
 benchmark_toolbox=2.0.0
 daybreak=1.0.2
-dbi=905
+dbi=912
 linkalho=2.0.2
 reboot_to_payload=1.0.0
 sphaira=1.0.8
-tinfoil=20.0.v2
 ovlreloader=1.0.1

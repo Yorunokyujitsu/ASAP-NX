@@ -194,7 +194,6 @@ for entry in "${REPOS[@]}"; do
 
   print_title "[BUILD] ${dest}"
 
-  rm -rf /tmp/ultrahand-libnx
   git clone --recurse-submodules https://github.com/ppkantorski/libnx.git /tmp/ultrahand-libnx
   make -C /tmp/ultrahand-libnx install -j"$(nproc)"
 
@@ -215,10 +214,8 @@ for entry in "${REPOS[@]}"; do
 
   print_title "[BUILD] ${dest}"
 
-  rm -rf /tmp/sphaira-newlib /tmp/sphaira-libnx
   git clone --branch iosupport https://github.com/R-YaTian/newlib.git /tmp/sphaira-newlib
   git clone --recurse-submodules https://github.com/switchbrew/libnx.git /tmp/sphaira-libnx
-
   (
     cd /tmp/sphaira-newlib
     bash ./build-libgloss-local.sh
@@ -233,7 +230,6 @@ for entry in "${REPOS[@]}"; do
   break
 done
 
-# Atmosphere requires hexkyz/libnx.
 for entry in "${REPOS[@]}"; do
   repo_info "$entry"
 
@@ -244,8 +240,7 @@ for entry in "${REPOS[@]}"; do
 
   print_title "[BUILD] ${dest}"
 
-  rm -rf /tmp/atmosphere-libnx
-  git clone --recurse-submodules https://github.com/hexkyz/libnx.git /tmp/atmosphere-libnx
+  git clone --recurse-submodules https://github.com/switchbrew/libnx.git /tmp/atmosphere-libnx
   make -C /tmp/atmosphere-libnx install -j"$(nproc)"
 
   if [[ "${ENABLE_CUSTOM:-0}" == "1" ]]; then

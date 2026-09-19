@@ -1,16 +1,17 @@
 diff --git a/assets/romfs/i18n/de.json b/assets/romfs/i18n/de.json
-index c3e15f4..3a00e7c 100644
+index c3e15f4..d853d17 100644
 --- a/assets/romfs/i18n/de.json
 +++ b/assets/romfs/i18n/de.json
-@@ -160,6 +160,7 @@
-   "Change the export options.": "Ändern Sie die Exportoptionen.",
+@@ -161,6 +161,8 @@
    "Install Options": "Installationsoptionen",
    "System memory": "NAND Systemspeicher",
-+  "Nand memory": "NAND",
    "microSD card": "SD-Karte",
++  "eMMC": "eMMC",
++  "emuMMC": "emuMMC",
    "Data Management": "Datenverwaltung",
    "Storage": "Speicher",
-@@ -254,8 +255,9 @@
+   "Storage Options": "Speicheroptionen",
+@@ -254,8 +256,9 @@
      "Es wird empfohlen, dies deaktiviert zu lassen."
    ],
    "Export Options": "Exportoptionen",
@@ -18,11 +19,11 @@ index c3e15f4..3a00e7c 100644
 -  "fix_export_filenames_info": "Verwendet den englischen Titel für Exportdateinamen und greift auf die Titel-ID zurück, wenn keiner verfügbar ist. Deaktivieren Sie diese Option, um lokalisierte und Unicode-Titel auf kompatiblen Zielen beizubehalten.",
 +  "Export path": "Exportpfad",
 +  "Enter export path...": "Exportpfad eingeben...",
-+  "dump_path_info": "Legt den Basisordner für Exporte fest.\nZum Beispiel: /backup/dumps\n\nAlle exportierten Dateien werden in diesem Ordner gespeichert.",
++  "dump_path_info": "Legt den Basisordner für Exporte fest.\nZum Beispiel: /dumps\n\nAlle exportierten Dateien werden in diesem Ordner gespeichert.",
    "Created nested folder": "Verschachtelten Ordner erstellt",
    "game_folder_info": [
      "Erstellt einen Ordner mit dem Namen des Spiels.",
-@@ -439,7 +441,6 @@
+@@ -439,7 +442,6 @@
    "Installing is disabled, enable now?": "Die Installation ist deaktiviert. Jetzt aktivieren?",
    "WARNING: Installing apps will lead to a ban!": "ACHTUNG: Die Installation von Apps führt zu einem Verbot!",
    "Installing enabled!": "Installation aktiviert!",
@@ -30,7 +31,7 @@ index c3e15f4..3a00e7c 100644
    "USB export to PC (usb_export.py)": "USB-Export auf PC (usb_export.py)",
    "USB transfer (Switch 2 Switch)": "USB-Transfer (Switch zu Switch)",
    "/dev/null (Speed Test)": "/dev/null (Speed-Test)",
-@@ -596,6 +597,8 @@
+@@ -596,6 +598,8 @@
    "Create Forwarder": "Forwarder erstellen",
    "36-bit (Default)": "36-Bit (Standard)",
    "39-bit": "39-Bit",
@@ -39,10 +40,14 @@ index c3e15f4..3a00e7c 100644
    "The title and icon must be non-empty!": "Der Titel und das Symbol dürfen nicht leer sein!",
    "Name": "Name",
    "Set the name of the application": "Legen Sie den Namen der Anwendung fest",
-@@ -976,6 +979,11 @@
+@@ -976,6 +980,15 @@
      "Speicherdaten für jeden Benutzer anzeigen. Sie können Spielstände sichern und wiederherstellen.\n",
      "Eine experimentelle Unterstützung für die Sicherung von Systemspeicherungen ist möglich."
    ],
++  "Browse the screenshots and clips saved on the console. Captures can be viewed and deleted from here.": [
++    "Durchsuche die auf der Konsole gespeicherten Screenshots und Clips.\n",
++    "Aufnahmen können hier angesehen und gelöscht werden."
++  ],
 +  "Download themes from themezer.net. Themes are downloaded to /themes/sphaira\nTo install the themes, NXThemesInstaller needs to be installed (can be downloaded via the AppStore).": [
 +    "Lade Themes von themezer.net herunter. ",
 +    "Themes werden nach /themes/sphaira heruntergeladen.",
@@ -51,19 +56,143 @@ index c3e15f4..3a00e7c 100644
    "Download releases directly from GitHub. Custom entries can be added to /config/sphaira/github": [
      "Laden Sie Veröffentlichungen direkt von GitHub herunter. Benutzerdefinierte Einträge können sein ",
      "zu /config/sphaira/github hinzugefügt"
+@@ -1205,5 +1218,121 @@
+   "Homebrew search path removed.": "Homebrew-Suchpfad entfernt.",
+   "Failed to add Homebrew search path": "Homebrew-Suchpfad konnte nicht hinzugefügt werden",
+   "Failed to remove Homebrew search path": "Homebrew-Suchpfad konnte nicht entfernt werden",
+-  "Screen Off": "Bildschirm aus"
++  "Screen Off": "Bildschirm aus",
++  "View": "Ansehen",
++  "Album Options": "Album-Optionen",
++  "Date": "Datum",
++  "Screenshot": "Screenshot",
++  "Video": "Video",
++  "Videos": "Videos",
++  "Video playback is not supported": "Videowiedergabe wird nicht unterstützt",
++  "Failed to open the album": "Album konnte nicht geöffnet werden",
++  "Failed to delete one or more files": "Eine oder mehrere Dateien konnten nicht gelöscht werden",
++  "Delete %zd file(s)?": "%zd Datei(en) löschen?",
++  "Permanently deletes the selected capture(s).": "Löscht die ausgewählten Aufnahmen endgültig.",
++  "Browse from phone": "Vom Handy aus durchsuchen",
++  "Serves the album over the network, so that it can be browsed from a phone.": "Stellt das Album im Netzwerk bereit, damit es vom Handy aus durchsucht werden kann.",
++  "The album is only shared whilst this screen is open.": "Das Album wird nur geteilt, solange dieser Bildschirm geöffnet ist.",
++  "Open this address on a phone or PC": "Diese Adresse auf einem Handy oder PC öffnen",
++  "PIN": "PIN",
++  "Requests": "Anfragen",
++  "Waiting for a connection": "Warte auf eine Verbindung",
++  "No network connection": "Keine Netzwerkverbindung",
++  "Failed to start the server": "Server konnte nicht gestartet werden",
++  "Something else may already be using the port.": "Möglicherweise wird der Port bereits verwendet.",
++  "Scan to open the album": "Zum Öffnen des Albums scannen",
++  "Too many wrong PINs, close and re-open to try again": "Zu viele falsche PINs, schließen und erneut öffnen",
++  "Album updated": "Album aktualisiert",
++  "Game": "Spiel",
++  "Shows only the captures taken in one game.": "Zeigt nur die Aufnahmen aus einem Spiel.",
++  "Looks for captures taken, or deleted, since this menu was opened.": "Sucht nach Aufnahmen, die seit dem Öffnen dieses Menüs erstellt oder gelöscht wurden.",
++  "Require PIN": "PIN verlangen",
++  "album_web_pin_info": [
++    "Wenn aktiviert, wird beim Durchsuchen des Albums vom Handy aus die auf der Konsole angezeigte PIN verlangt.\n",
++    "Bleibt dies aus, kann jeder im selben Netzwerk das Album öffnen, solange es geteilt wird."
++  ],
++  "Album share PIN": "PIN für Album-Freigabe",
++  "Serves the album on this port.": "Stellt das Album auf diesem Port bereit.",
++  "Browse": "Durchsuchen",
++  "Starts the server and shows the address and the QR code.": "Startet den Server und zeigt die Adresse und den QR-Code.",
++  "Ownfoil": "Ownfoil",
++  "Browse and install titles from a self-hosted Ownfoil server.\n\nInternet connection required.": [
++    "Titel von einem selbst gehosteten Ownfoil-Server durchsuchen und installieren.\n\nInternetverbindung erforderlich."
++  ],
++  "No Ownfoil servers saved.\n\nPress X to add one by hand, or search the network below.": [
++    "Keine Ownfoil-Server gespeichert.\n\nDrücke X, um einen manuell hinzuzufügen, oder suche unten im Netzwerk."
++  ],
++  "Full screen": "Vollbild",
++  "Change the options every install on this console uses.": "Ändere die Optionen, die bei jeder Installation auf dieser Konsole verwendet werden.",
++  "Which of the versions the shop holds to install.": "Wähle aus, welche der im Shop verfügbaren Versionen installiert werden soll.",
++  "Add-on content": "Zusatzinhalte",
++  "Download and install what is chosen above.": "Lade die oben ausgewählten Inhalte herunter und installiere sie.",
++  "This add-on is already installed.": "Dieser Zusatzinhalt ist bereits installiert.",
++  "Nothing to install: the console already has this version or a newer one, and no add-on is ticked. An older update can be installed by turning on Allow downgrade in Install options.": [
++    "Nichts zu installieren: Auf der Konsole ist bereits diese oder eine neuere Version installiert und es wurde kein Zusatzinhalt ausgewählt. Ein älteres Update kann installiert werden, indem in den Installationsoptionen „Downgrade erlauben“ aktiviert wird."
++  ],
++  "The shop didn't say how to download this": "Der Shop hat keine Download-Informationen dafür angegeben",
++  "Downgrade": "Downgrade",
++  "Show": "Anzeigen",
++  "Connecting to ": "Verbindung zu ",
++  "Local": "Lokal",
++  "Remote": "Remote",
++  "Searching the network...": "Netzwerk wird durchsucht...",
++  "Discover local servers": "Lokale Server suchen",
++  "This shop is public. Set up a login anyway?": "Dieser Shop ist öffentlich. Trotzdem eine Anmeldung einrichten?",
++  "This shop is private. Set up a login now?": "Dieser Shop ist privat. Jetzt eine Anmeldung einrichten?",
++  ": connected via remote address": ": über Remote-Adresse verbunden",
++  ": connected via local network": ": über lokales Netzwerk verbunden",
++  "This account has no shop access": "Dieses Konto hat keinen Zugriff auf den Shop",
++  "Page %ld / %ld": "Seite %ld / %ld",
++  "%ld titles": "%ld Titel",
++  "Name or id": "Name oder ID",
++  "Add server": "Server hinzufügen",
++  "Add a server by hand, for one the network search can't reach.": "Füge einen Server manuell hinzu, den die Netzwerksuche nicht erreichen kann.",
++  "Edit server": "Server bearbeiten",
++  "Change the selected server's name, addresses or login.": "Ändere Name, Adressen oder Anmeldedaten des ausgewählten Servers.",
++  "Delete server": "Server löschen",
++  "Forget the selected server.": "Entferne den ausgewählten Server.",
++  "Banner": "Banner",
++  "Detail": "Details",
++  "Change how titles are shown. Also cycled with -.": "Ändere die Darstellung der Titel. Kann auch mit - umgeschaltet werden.",
++  "Per page": "Pro Seite",
++  "How many titles the shop sends per page. Fewer is quicker to open.": [
++    "Legt fest, wie viele Titel der Shop pro Seite sendet. Weniger Titel werden schneller geladen."
++  ],
++  "What the shop orders the catalog by.": "Legt fest, wonach der Shop den Katalog sortiert.",
++  "Which way that order runs.": "Legt die Sortierrichtung fest.",
++  "Servers list": "Serverliste",
++  "Return to the server list.": "Zur Serverliste zurückkehren.",
++  "Clear cache": "Cache leeren",
++  "Remove all cached artwork from the SD card?": "Alle zwischengespeicherten Bilder von der SD-Karte entfernen?",
++  "Failed to clear the cache": "Cache konnte nicht geleert werden",
++  "Cache cleared": "Cache geleert",
++  "Remove all cached shop artwork from the SD card.": "Alle zwischengespeicherten Shop-Bilder von der SD-Karte entfernen.",
++  "Delete ": "Löschen ",
++  "Could not parse the server's response": "Die Serverantwort konnte nicht verarbeitet werden",
++  "This does not look like an Ownfoil server": "Dies scheint kein Ownfoil-Server zu sein",
++  "Could not reach the server": "Der Server konnte nicht erreicht werden",
++  "Incorrect username or password": "Benutzername oder Passwort ist falsch",
++  "Server returned an error": "Der Server hat einen Fehler zurückgegeben",
++  "The server rejected the request": "Der Server hat die Anfrage abgelehnt",
++  "Unexpected response from the server": "Unerwartete Antwort vom Server",
++  "The shop has no details for this title": "Der Shop hat keine Details zu diesem Titel",
++  "Ownfoil Server": "Ownfoil-Server",
++  "Set the display name of the server.\n\nReplaced by the name the server reports once it has been connected to.": [
++    "Lege den Anzeigenamen des Servers fest.\n\nNach der Verbindung wird er durch den vom Server gemeldeten Namen ersetzt."
++  ],
++  "Local address": "Lokale Adresse",
++  "Address used to reach the server on the local network, e.g. 192.168.1.50:8465.\n\nAt least one of Local address or Remote address must be set.": [
++    "Adresse zum Erreichen des Servers im lokalen Netzwerk, z. B. 192.168.1.50:8465.\n\nMindestens eine lokale oder Remote-Adresse muss angegeben werden."
++  ],
++  "Remote address": "Remote-Adresse",
++  "Address used to reach the server remotely, e.g. myshop.example.com.\n\nAt least one of Local address or Remote address must be set.": [
++    "Adresse zum Erreichen des Servers aus der Ferne, z. B. myshop.example.com.\n\nMindestens eine lokale oder Remote-Adresse muss angegeben werden."
++  ],
++  "Optional: username used to log in to the server.": "Optional: Benutzername für die Anmeldung am Server.",
++  "Optional: password used to log in to the server.": "Optional: Passwort für die Anmeldung am Server.",
++  "Ownfoil server saved.": "Ownfoil-Server gespeichert.",
++  "Saves the Ownfoil server entry.": "Speichert den Ownfoil-Servereintrag.",
++  "Name and at least one of Local/Remote address must be set!": "Name und mindestens eine lokale oder Remote-Adresse müssen angegeben werden!"
+ }
 diff --git a/assets/romfs/i18n/en.json b/assets/romfs/i18n/en.json
-index 79a9a06..be96317 100644
+index 79a9a06..9309f5b 100644
 --- a/assets/romfs/i18n/en.json
 +++ b/assets/romfs/i18n/en.json
-@@ -159,6 +159,7 @@
-   "Change the export options.": "Change the export options.",
+@@ -160,6 +160,8 @@
    "Install Options": "Install Options",
    "System memory": "System memory",
-+  "Nand memory": "NAND",
    "microSD card": "microSD card",
++  "eMMC": "eMMC",
++  "emuMMC": "emuMMC",
    "Data Management": "Data Management",
    "Storage": "Storage",
-@@ -254,8 +255,9 @@
+   "Storage Options": "Storage Options",
+@@ -254,8 +256,9 @@
      "It is recommended to keep this disabled."
    ],
    "Export Options": "Export Options",
@@ -71,11 +200,11 @@ index 79a9a06..be96317 100644
 -  "fix_export_filenames_info": "Uses the English title for export filenames and falls back to the Title ID when unavailable. Disable this to preserve localized and Unicode titles on destinations that support them.",
 +  "Export path": "Export path",
 +  "Enter export path...": "Enter export path...",
-+  "dump_path_info": "Sets the base folder used for exports.\nFor example, /backup/dumps\n\nAll exported files will be saved inside this folder.",
++  "dump_path_info": "Sets the base folder used for exports.\nFor example, /dumps\n\nAll exported files will be saved inside this folder.",
    "Created nested folder": "Created nested folder",
    "game_folder_info": [
      "Creates a folder using the name of the game.",
-@@ -439,7 +441,6 @@
+@@ -439,7 +442,6 @@
    "Installing is disabled, enable now?": "Installing is disabled, enable now?",
    "WARNING: Installing apps will lead to a ban!": "WARNING: Installing apps will lead to a ban!",
    "Installing enabled!": "Installing enabled!",
@@ -83,7 +212,37 @@ index 79a9a06..be96317 100644
    "USB export to PC (usb_export.py)": "USB export to PC (usb_export.py)",
    "USB transfer (Switch 2 Switch)": "USB transfer (Switch 2 Switch)",
    "/dev/null (Speed Test)": "/dev/null (Speed Test)",
-@@ -594,8 +595,10 @@
+@@ -591,11 +593,40 @@
+   "NRO Icon": "NRO Icon",
+   "ROM Artwork": "ROM Artwork",
+   "Screenshots": "Screenshots",
++  "View": "View",
++  "Album Options": "Album Options",
++  "Date": "Date",
++  "Screenshot": "Screenshot",
++  "Video": "Video",
++  "Videos": "Videos",
++  "Video playback is not supported": "Video playback is not supported",
++  "Failed to open the album": "Failed to open the album",
++  "Failed to delete one or more files": "Failed to delete one or more files",
++  "Delete %zd file(s)?": "Delete %zd file(s)?",
++  "Permanently deletes the selected capture(s).": "Permanently deletes the selected capture(s).",
++  "Browse from phone": "Browse from phone",
++  "Serves the album over the network, so that it can be browsed from a phone.": "Serves the album over the network, so that it can be browsed from a phone.",
++  "The album is only shared whilst this screen is open.": "The album is only shared whilst this screen is open.",
++  "Open this address on a phone or PC": "Open this address on a phone or PC",
++  "PIN": "PIN",
++  "Requests": "Requests",
++  "Waiting for a connection": "Waiting for a connection",
++  "No network connection": "No network connection",
++  "Failed to start the server": "Failed to start the server",
++  "Something else may already be using the port.": "Something else may already be using the port.",
++  "Scan to open the album": "Scan to open the album",
++  "Too many wrong PINs, close and re-open to try again": "Too many wrong PINs, close and re-open to try again",
++  "Album updated": "Album updated",
++  "Game": "Game",
++  "Shows only the captures taken in one game.": "Shows only the captures taken in one game.",
++  "Looks for captures taken, or deleted, since this menu was opened.": "Looks for captures taken, or deleted, since this menu was opened.",
    "Video Capture": "Video Capture",
    "Profile Selection": "Profile Selection",
    "Create Forwarder": "Create Forwarder",
@@ -96,10 +255,14 @@ index 79a9a06..be96317 100644
    "The title and icon must be non-empty!": "The title and icon must be non-empty!",
    "Name": "Name",
    "Set the name of the application": "Set the name of the application",
-@@ -978,6 +981,11 @@
+@@ -978,6 +1009,15 @@
      "View save data for each user. You can backup and restore saves.\n",
      "Experimental support for backing up system saves is possible."
    ],
++  "Browse the screenshots and clips saved on the console. Captures can be viewed and deleted from here.": [
++    "Browse the screenshots and clips saved on the console. \n",
++    "Captures can be viewed and deleted from here."
++  ],
 +  "Download themes from themezer.net. Themes are downloaded to /themes/sphaira\nTo install the themes, NXThemesInstaller needs to be installed (can be downloaded via the AppStore).": [
 +    "Download themes from themezer.net. ",
 +    "Themes are downloaded to /themes/sphaira",
@@ -108,19 +271,116 @@ index 79a9a06..be96317 100644
    "Download releases directly from GitHub. Custom entries can be added to /config/sphaira/github": [
      "Download releases directly from GitHub. Custom entries can be ",
      "added to /config/sphaira/github"
+@@ -1207,5 +1247,94 @@
+   "Homebrew search path removed.": "Homebrew search path removed.",
+   "Failed to add Homebrew search path": "Failed to add Homebrew search path",
+   "Failed to remove Homebrew search path": "Failed to remove Homebrew search path",
+-  "Screen Off": "Screen Off"
++  "Screen Off": "Screen Off",
++  "Require PIN": "Require PIN",
++  "album_web_pin_info": [
++    "If enabled, browsing the album from a phone asks for the PIN shown on the console.\n",
++    "Leaving this off means anyone on the same network can open the album whilst it is being shared."
++  ],
++  "Album share PIN": "Album share PIN",
++  "Serves the album on this port.": "Serves the album on this port.",
++  "Browse": "Browse",
++  "Starts the server and shows the address and the QR code.": "Starts the server and shows the address and the QR code.",
++  "Ownfoil": "Ownfoil",
++  "Browse and install titles from a self-hosted Ownfoil server.\n\nInternet connection required.": [
++    "Browse and install titles from a self-hosted Ownfoil server.\n\nInternet connection required."
++  ],
++  "No Ownfoil servers saved.\n\nPress X to add one by hand, or search the network below.": [
++    "No Ownfoil servers saved.\n\nPress X to add one by hand, or search the network below."
++  ],
++  "Full screen": "Full screen",
++  "Change the options every install on this console uses.": "Change the options every install on this console uses.",
++  "Which of the versions the shop holds to install.": "Which of the versions the shop holds to install.",
++  "Add-on content": "Add-on content",
++  "Download and install what is chosen above.": "Download and install what is chosen above.",
++  "This add-on is already installed.": "This add-on is already installed.",
++  "Nothing to install: the console already has this version or a newer one, and no add-on is ticked. An older update can be installed by turning on Allow downgrade in Install options.": [
++    "Nothing to install: the console already has this version or a newer one, and no add-on is ticked. An older update can be installed by turning on Allow downgrade in Install options."
++  ],
++  "The shop didn't say how to download this": "The shop didn't say how to download this",
++  "Downgrade": "Downgrade",
++  "Show": "Show",
++  "Connecting to ": "Connecting to ",
++  "Local": "Local",
++  "Remote": "Remote",
++  "Searching the network...": "Searching the network...",
++  "Discover local servers": "Discover local servers",
++  "This shop is public. Set up a login anyway?": "This shop is public. Set up a login anyway?",
++  "This shop is private. Set up a login now?": "This shop is private. Set up a login now?",
++  ": connected via remote address": ": connected via remote address",
++  ": connected via local network": ": connected via local network",
++  "This account has no shop access": "This account has no shop access",
++  "Page %ld / %ld": "Page %ld / %ld",
++  "%ld titles": "%ld titles",
++  "Name or id": "Name or id",
++  "Add server": "Add server",
++  "Add a server by hand, for one the network search can't reach.": "Add a server by hand, for one the network search can't reach.",
++  "Edit server": "Edit server",
++  "Change the selected server's name, addresses or login.": "Change the selected server's name, addresses or login.",
++  "Delete server": "Delete server",
++  "Forget the selected server.": "Forget the selected server.",
++  "Banner": "Banner",
++  "Detail": "Detail",
++  "Change how titles are shown. Also cycled with -.": "Change how titles are shown. Also cycled with -.",
++  "Per page": "Per page",
++  "How many titles the shop sends per page. Fewer is quicker to open.": [
++    "How many titles the shop sends per page. Fewer is quicker to open."
++  ],
++  "What the shop orders the catalog by.": "What the shop orders the catalog by.",
++  "Which way that order runs.": "Which way that order runs.",
++  "Servers list": "Servers list",
++  "Return to the server list.": "Return to the server list.",
++  "Clear cache": "Clear cache",
++  "Remove all cached artwork from the SD card?": "Remove all cached artwork from the SD card?",
++  "Failed to clear the cache": "Failed to clear the cache",
++  "Cache cleared": "Cache cleared",
++  "Remove all cached shop artwork from the SD card.": "Remove all cached shop artwork from the SD card.",
++  "Delete ": "Delete ",
++  "Could not parse the server's response": "Could not parse the server's response",
++  "This does not look like an Ownfoil server": "This does not look like an Ownfoil server",
++  "Could not reach the server": "Could not reach the server",
++  "Incorrect username or password": "Incorrect username or password",
++  "Server returned an error": "Server returned an error",
++  "The server rejected the request": "The server rejected the request",
++  "Unexpected response from the server": "Unexpected response from the server",
++  "The shop has no details for this title": "The shop has no details for this title",
++  "Ownfoil Server": "Ownfoil Server",
++  "Set the display name of the server.\n\nReplaced by the name the server reports once it has been connected to.": [
++    "Set the display name of the server.\n\nReplaced by the name the server reports once it has been connected to."
++  ],
++  "Local address": "Local address",
++  "Address used to reach the server on the local network, e.g. 192.168.1.50:8465.\n\nAt least one of Local address or Remote address must be set.": [
++    "Address used to reach the server on the local network, e.g. 192.168.1.50:8465.\n\nAt least one of Local address or Remote address must be set."
++  ],
++  "Remote address": "Remote address",
++  "Address used to reach the server remotely, e.g. myshop.example.com.\n\nAt least one of Local address or Remote address must be set.": [
++    "Address used to reach the server remotely, e.g. myshop.example.com.\n\nAt least one of Local address or Remote address must be set."
++  ],
++  "Optional: username used to log in to the server.": "Optional: username used to log in to the server.",
++  "Optional: password used to log in to the server.": "Optional: password used to log in to the server.",
++  "Ownfoil server saved.": "Ownfoil server saved.",
++  "Saves the Ownfoil server entry.": "Saves the Ownfoil server entry.",
++  "Name and at least one of Local/Remote address must be set!": "Name and at least one of Local/Remote address must be set!"
+ }
 diff --git a/assets/romfs/i18n/es.json b/assets/romfs/i18n/es.json
-index a62a59e..7dbb178 100644
+index a62a59e..5b4b448 100644
 --- a/assets/romfs/i18n/es.json
 +++ b/assets/romfs/i18n/es.json
-@@ -159,6 +159,7 @@
-   "Change the export options.": "Cambia las opciones de exportación.",
+@@ -160,6 +160,8 @@
    "Install Options": "Opciones de Instalación",
    "System memory": "Memoria del sistema",
-+  "Nand memory": "",
    "microSD card": "Tarjeta microSD",
++  "eMMC": "eMMC",
++  "emuMMC": "emuMMC",
    "Data Management": "Gestión de datos",
    "Storage": "Almacenamiento",
-@@ -255,8 +256,9 @@
+   "Storage Options": "Opciones de almacenamiento",
+@@ -255,8 +257,9 @@
      "Se recomienda dejarlo deshabilitado."
    ],
    "Export Options": "Opciones de Exportación",
@@ -128,11 +388,11 @@ index a62a59e..7dbb178 100644
 -  "fix_export_filenames_info": "Usa el título en inglés para los archivos exportados y recurre al ID del título cuando no está disponible. Desactiva esta opción para conservar títulos localizados y Unicode en destinos compatibles.",
 +  "Export path": "Ruta de exportación",
 +  "Enter export path...": "Introduce la ruta de exportación...",
-+  "dump_path_info": "Establece la carpeta base utilizada para las exportaciones.\nPor ejemplo: /backup/dumps\n\nTodos los archivos exportados se guardarán en esta carpeta.",
++  "dump_path_info": "Establece la carpeta base utilizada para las exportaciones.\nPor ejemplo: /dumps\n\nTodos los archivos exportados se guardarán en esta carpeta.",
    "Created nested folder": "Carpeta anidada creada",
    "game_folder_info": [
      "Crea una carpeta usando el nombre del juego.",
-@@ -426,11 +428,20 @@
+@@ -426,11 +429,20 @@
      "Los dispositivos conectados pueden usarse en el Explorador de Archivos, así como ubicación de respaldo al dumpear juegos y partidas."
    ],
    "HDD write protect": "Protección de escritura HDD",
@@ -154,7 +414,7 @@ index a62a59e..7dbb178 100644
    "USB export to PC (usb_export.py)": "Exportar por USB al PC (usb_export.py)",
    "USB transfer (Switch 2 Switch)": "Transferencia USB (Switch a Switch)",
    "/dev/null (Speed Test)": "/dev/null (Prueba de velocidad)",
-@@ -585,8 +596,10 @@
+@@ -585,8 +597,10 @@
    "Video Capture": "Captura de vídeo",
    "Profile Selection": "Selección de perfil",
    "Create Forwarder": "Crear forwarder",
@@ -166,10 +426,14 @@ index a62a59e..7dbb178 100644
    "The title and icon must be non-empty!": "¡El título y el ícono no deben estar vacíos!",
    "Name": "Nombre",
    "Set the name of the application": "Establecer el nombre de la aplicación",
-@@ -969,6 +982,11 @@
+@@ -969,6 +983,15 @@
      "Ver datos guardados por usuario. Puedes respaldar y restaurar saves.\n",
      "Es posible un soporte experimental para respaldar saves del sistema."
    ],
++  "Browse the screenshots and clips saved on the console. Captures can be viewed and deleted from here.": [
++    "Explora las capturas de pantalla y los clips guardados en la consola.\n",
++    "Desde aquí puedes ver y eliminar las capturas."
++  ],
 +  "Download themes from themezer.net. Themes are downloaded to /themes/sphaira\nTo install the themes, NXThemesInstaller needs to be installed (can be downloaded via the AppStore).": [
 +    "Descarga temas de themezer.net. ",
 +    "Los temas se descargan en /themes/sphaira.",
@@ -178,19 +442,143 @@ index a62a59e..7dbb178 100644
    "Download releases directly from GitHub. Custom entries can be added to /config/sphaira/github": [
      "Descargar lanzamientos directamente desde GitHub. Entradas personalizadas pueden ",
      "agregarse en /config/sphaira/github"
+@@ -1198,5 +1221,121 @@
+   "Homebrew search path removed.": "Ruta de búsqueda de Homebrew eliminada.",
+   "Failed to add Homebrew search path": "No se pudo añadir la ruta de búsqueda de Homebrew",
+   "Failed to remove Homebrew search path": "No se pudo eliminar la ruta de búsqueda de Homebrew",
+-  "Screen Off": "Apagar pantalla"
++  "Screen Off": "Apagar pantalla",
++  "View": "Ver",
++  "Album Options": "Opciones del álbum",
++  "Date": "Fecha",
++  "Screenshot": "Captura de pantalla",
++  "Video": "Vídeo",
++  "Videos": "Vídeos",
++  "Video playback is not supported": "La reproducción de vídeo no es compatible",
++  "Failed to open the album": "Error al abrir el álbum",
++  "Failed to delete one or more files": "Error al eliminar uno o más archivos",
++  "Delete %zd file(s)?": "¿Eliminar %zd archivo(s)?",
++  "Permanently deletes the selected capture(s).": "Elimina permanentemente las capturas seleccionadas.",
++  "Browse from phone": "Explorar desde el móvil",
++  "Serves the album over the network, so that it can be browsed from a phone.": "Comparte el álbum en la red para poder explorarlo desde el móvil.",
++  "The album is only shared whilst this screen is open.": "El álbum solo se comparte mientras esta pantalla está abierta.",
++  "Open this address on a phone or PC": "Abre esta dirección en un móvil o PC",
++  "PIN": "PIN",
++  "Requests": "Peticiones",
++  "Waiting for a connection": "Esperando una conexión",
++  "No network connection": "Sin conexión de red",
++  "Failed to start the server": "Error al iniciar el servidor",
++  "Something else may already be using the port.": "Puede que algo más esté usando el puerto.",
++  "Scan to open the album": "Escanea para abrir el álbum",
++  "Too many wrong PINs, close and re-open to try again": "Demasiados PIN incorrectos, cierra y vuelve a abrir",
++  "Album updated": "Álbum actualizado",
++  "Game": "Juego",
++  "Shows only the captures taken in one game.": "Muestra solo las capturas hechas en un juego.",
++  "Looks for captures taken, or deleted, since this menu was opened.": "Busca capturas hechas o eliminadas desde que se abrió este menú.",
++  "Require PIN": "Solicitar PIN",
++  "album_web_pin_info": [
++    "Si se activa, explorar el álbum desde el móvil pedirá el PIN que se muestra en la consola.\n",
++    "Si se deja desactivado, cualquiera en la misma red puede abrir el álbum mientras se comparte."
++  ],
++  "Album share PIN": "PIN para compartir el álbum",
++  "Serves the album on this port.": "Comparte el álbum en este puerto.",
++  "Browse": "Explorar",
++  "Starts the server and shows the address and the QR code.": "Inicia el servidor y muestra la dirección y el código QR.",
++  "Ownfoil": "Ownfoil",
++  "Browse and install titles from a self-hosted Ownfoil server.\n\nInternet connection required.": [
++    "Explora e instala títulos desde un servidor Ownfoil alojado por ti.\n\nSe requiere conexión a Internet."
++  ],
++  "No Ownfoil servers saved.\n\nPress X to add one by hand, or search the network below.": [
++    "No hay servidores Ownfoil guardados.\n\nPulsa X para añadir uno manualmente o busca en la red a continuación."
++  ],
++  "Full screen": "Pantalla completa",
++  "Change the options every install on this console uses.": "Cambia las opciones que se usan en cada instalación de esta consola.",
++  "Which of the versions the shop holds to install.": "Elige qué versión disponible en la tienda quieres instalar.",
++  "Add-on content": "Contenido adicional",
++  "Download and install what is chosen above.": "Descarga e instala lo seleccionado arriba.",
++  "This add-on is already installed.": "Este contenido adicional ya está instalado.",
++  "Nothing to install: the console already has this version or a newer one, and no add-on is ticked. An older update can be installed by turning on Allow downgrade in Install options.": [
++    "No hay nada que instalar: la consola ya tiene esta versión o una más reciente y no se ha seleccionado ningún contenido adicional. Puedes instalar una actualización anterior activando Permitir downgrade en las opciones de instalación."
++  ],
++  "The shop didn't say how to download this": "La tienda no indicó cómo descargar esto",
++  "Downgrade": "Downgrade",
++  "Show": "Mostrar",
++  "Connecting to ": "Conectando a ",
++  "Local": "Local",
++  "Remote": "Remoto",
++  "Searching the network...": "Buscando en la red...",
++  "Discover local servers": "Buscar servidores locales",
++  "This shop is public. Set up a login anyway?": "Esta tienda es pública. ¿Configurar un inicio de sesión de todos modos?",
++  "This shop is private. Set up a login now?": "Esta tienda es privada. ¿Configurar un inicio de sesión ahora?",
++  ": connected via remote address": ": conectado mediante dirección remota",
++  ": connected via local network": ": conectado mediante la red local",
++  "This account has no shop access": "Esta cuenta no tiene acceso a la tienda",
++  "Page %ld / %ld": "Página %ld / %ld",
++  "%ld titles": "%ld títulos",
++  "Name or id": "Nombre o ID",
++  "Add server": "Añadir servidor",
++  "Add a server by hand, for one the network search can't reach.": "Añade manualmente un servidor al que no pueda acceder la búsqueda de red.",
++  "Edit server": "Editar servidor",
++  "Change the selected server's name, addresses or login.": "Cambia el nombre, las direcciones o el inicio de sesión del servidor seleccionado.",
++  "Delete server": "Eliminar servidor",
++  "Forget the selected server.": "Olvida el servidor seleccionado.",
++  "Banner": "Banner",
++  "Detail": "Detalle",
++  "Change how titles are shown. Also cycled with -.": "Cambia cómo se muestran los títulos. También puedes alternar con -.",
++  "Per page": "Por página",
++  "How many titles the shop sends per page. Fewer is quicker to open.": [
++    "Cuántos títulos envía la tienda por página. Cuantos menos haya, más rápido se abrirá."
++  ],
++  "What the shop orders the catalog by.": "Indica cómo ordena la tienda el catálogo.",
++  "Which way that order runs.": "Indica la dirección del orden.",
++  "Servers list": "Lista de servidores",
++  "Return to the server list.": "Volver a la lista de servidores.",
++  "Clear cache": "Borrar caché",
++  "Remove all cached artwork from the SD card?": "¿Eliminar de la tarjeta SD todas las imágenes almacenadas en caché?",
++  "Failed to clear the cache": "No se pudo borrar la caché",
++  "Cache cleared": "Caché borrada",
++  "Remove all cached shop artwork from the SD card.": "Elimina de la tarjeta SD todas las imágenes de la tienda almacenadas en caché.",
++  "Delete ": "Eliminar ",
++  "Could not parse the server's response": "No se pudo procesar la respuesta del servidor",
++  "This does not look like an Ownfoil server": "Esto no parece un servidor Ownfoil",
++  "Could not reach the server": "No se pudo conectar con el servidor",
++  "Incorrect username or password": "Nombre de usuario o contraseña incorrectos",
++  "Server returned an error": "El servidor devolvió un error",
++  "The server rejected the request": "El servidor rechazó la solicitud",
++  "Unexpected response from the server": "Respuesta inesperada del servidor",
++  "The shop has no details for this title": "La tienda no tiene detalles de este título",
++  "Ownfoil Server": "Servidor Ownfoil",
++  "Set the display name of the server.\n\nReplaced by the name the server reports once it has been connected to.": [
++    "Establece el nombre mostrado del servidor.\n\nSe sustituirá por el nombre que indique el servidor una vez conectado."
++  ],
++  "Local address": "Dirección local",
++  "Address used to reach the server on the local network, e.g. 192.168.1.50:8465.\n\nAt least one of Local address or Remote address must be set.": [
++    "Dirección usada para acceder al servidor desde la red local, p. ej. 192.168.1.50:8465.\n\nDebes establecer al menos una dirección local o remota."
++  ],
++  "Remote address": "Dirección remota",
++  "Address used to reach the server remotely, e.g. myshop.example.com.\n\nAt least one of Local address or Remote address must be set.": [
++    "Dirección usada para acceder al servidor de forma remota, p. ej. myshop.example.com.\n\nDebes establecer al menos una dirección local o remota."
++  ],
++  "Optional: username used to log in to the server.": "Opcional: nombre de usuario para iniciar sesión en el servidor.",
++  "Optional: password used to log in to the server.": "Opcional: contraseña para iniciar sesión en el servidor.",
++  "Ownfoil server saved.": "Servidor Ownfoil guardado.",
++  "Saves the Ownfoil server entry.": "Guarda la entrada del servidor Ownfoil.",
++  "Name and at least one of Local/Remote address must be set!": "¡Debes establecer el nombre y al menos una dirección local o remota!"
+ }
 diff --git a/assets/romfs/i18n/fr.json b/assets/romfs/i18n/fr.json
-index f05ce2d..ba8465d 100644
+index f05ce2d..005bf87 100644
 --- a/assets/romfs/i18n/fr.json
 +++ b/assets/romfs/i18n/fr.json
-@@ -160,6 +160,7 @@
-   "Change the export options.": "Modifiez les options d'exportation.",
+@@ -161,6 +161,8 @@
    "Install Options": "Options d'Installation",
    "System memory": "Mémoire système",
-+  "Nand memory": "NAND",
    "microSD card": "Carte microSD",
++  "eMMC": "eMMC",
++  "emuMMC": "emuMMC",
    "Data Management": "Gestion des données",
    "Storage": "Stockage",
-@@ -254,8 +255,9 @@
+   "Storage Options": "Options de stockage",
+@@ -254,8 +256,9 @@
      "Il est recommandé de garder cette option désactivée."
    ],
    "Export Options": "Options d'exportation",
@@ -198,11 +586,11 @@ index f05ce2d..ba8465d 100644
 -  "fix_export_filenames_info": "Utilise le titre anglais pour les fichiers exportés et l'identifiant du titre s'il n'est pas disponible. Désactivez cette option pour conserver les titres localisés et Unicode sur les destinations compatibles.",
 +  "Export path": "Chemin d’exportation",
 +  "Enter export path...": "Saisissez le chemin d’exportation...",
-+  "dump_path_info": "Définit le dossier de base utilisé pour les exportations.\nPar exemple : /backup/dumps\n\nTous les fichiers exportés seront enregistrés dans ce dossier.",
++  "dump_path_info": "Définit le dossier de base utilisé pour les exportations.\nPar exemple : /dumps\n\nTous les fichiers exportés seront enregistrés dans ce dossier.",
    "Created nested folder": "Créer un dossier imbriqué",
    "game_folder_info": [
      "Crée un dossier en utilisant le nom du jeu.",
-@@ -425,13 +427,22 @@
+@@ -425,13 +428,22 @@
      "Les appareils connectés peuvent être utilisés dans FileBrowser, ainsi qu'un emplacement de sauvegarde lors du dumping de jeux et de sauvegardes."
    ],
    "HDD write protect": "Protection en écriture HDD",
@@ -227,7 +615,7 @@ index f05ce2d..ba8465d 100644
    "/dev/null (Speed Test)": "/dev/null (test de vitesse)",
    "Waiting for USB connection...": "En attente de connexion USB...",
    "USB connected, sending file list": "USB connecté, envoi de la liste des fichiers",
-@@ -584,8 +595,10 @@
+@@ -584,8 +596,10 @@
    "Video Capture": "Capture vidéo",
    "Profile Selection": "Sélection de profil",
    "Create Forwarder": "Créer le forwarder",
@@ -239,10 +627,14 @@ index f05ce2d..ba8465d 100644
    "The title and icon must be non-empty!": "Le titre et l'icône ne doivent pas être vides !",
    "Name": "Nom",
    "Set the name of the application": "Définir le nom de l'application",
-@@ -966,6 +979,11 @@
+@@ -966,6 +980,15 @@
      "Afficher les données de sauvegarde pour chaque utilisateur. Vous pouvez sauvegarder et restaurer des sauvegardes.\n",
      "Une prise en charge expérimentale de la sauvegarde des sauvegardes du système est possible."
    ],
++  "Browse the screenshots and clips saved on the console. Captures can be viewed and deleted from here.": [
++    "Parcourez les captures d’écran et les clips enregistrés sur la console.\n",
++    "Vous pouvez afficher et supprimer les captures ici."
++  ],
 +  "Download themes from themezer.net. Themes are downloaded to /themes/sphaira\nTo install the themes, NXThemesInstaller needs to be installed (can be downloaded via the AppStore).": [
 +    "Téléchargez des thèmes depuis themezer.net. ",
 +    "Les thèmes sont téléchargés dans /themes/sphaira.",
@@ -251,19 +643,143 @@ index f05ce2d..ba8465d 100644
    "Download releases directly from GitHub. Custom entries can be added to /config/sphaira/github": [
      "Téléchargez les versions directement depuis GitHub. Les entrées personnalisées peuvent être ",
      "ajouté à /config/sphaira/github"
+@@ -1195,5 +1218,121 @@
+   "Homebrew search path removed.": "Chemin de recherche Homebrew supprimé.",
+   "Failed to add Homebrew search path": "Impossible d'ajouter le chemin de recherche Homebrew",
+   "Failed to remove Homebrew search path": "Impossible de supprimer le chemin de recherche Homebrew",
+-  "Screen Off": "Éteindre l'écran"
++  "Screen Off": "Éteindre l'écran",
++  "View": "Voir",
++  "Album Options": "Options de l'album",
++  "Date": "Date",
++  "Screenshot": "Capture d'écran",
++  "Video": "Vidéo",
++  "Videos": "Vidéos",
++  "Video playback is not supported": "La lecture vidéo n'est pas prise en charge",
++  "Failed to open the album": "Échec de l'ouverture de l'album",
++  "Failed to delete one or more files": "Échec de la suppression d'un ou plusieurs fichiers",
++  "Delete %zd file(s)?": "Supprimer %zd fichier(s) ?",
++  "Permanently deletes the selected capture(s).": "Supprime définitivement les captures sélectionnées.",
++  "Browse from phone": "Parcourir depuis un téléphone",
++  "Serves the album over the network, so that it can be browsed from a phone.": "Partage l'album sur le réseau pour le parcourir depuis un téléphone.",
++  "The album is only shared whilst this screen is open.": "L'album n'est partagé que tant que cet écran est ouvert.",
++  "Open this address on a phone or PC": "Ouvrez cette adresse sur un téléphone ou un PC",
++  "PIN": "Code PIN",
++  "Requests": "Requêtes",
++  "Waiting for a connection": "En attente d'une connexion",
++  "No network connection": "Aucune connexion réseau",
++  "Failed to start the server": "Échec du démarrage du serveur",
++  "Something else may already be using the port.": "Le port est peut-être déjà utilisé.",
++  "Scan to open the album": "Scannez pour ouvrir l'album",
++  "Too many wrong PINs, close and re-open to try again": "Trop de codes PIN erronés, fermez et rouvrez pour réessayer",
++  "Album updated": "Album mis à jour",
++  "Game": "Jeu",
++  "Shows only the captures taken in one game.": "Affiche uniquement les captures prises dans un jeu.",
++  "Looks for captures taken, or deleted, since this menu was opened.": "Recherche les captures prises ou supprimées depuis l'ouverture de ce menu.",
++  "Require PIN": "Exiger un code PIN",
++  "album_web_pin_info": [
++    "Si activé, parcourir l'album depuis un téléphone demande le code PIN affiché sur la console.\n",
++    "Si cette option reste désactivée, n'importe qui sur le même réseau peut ouvrir l'album pendant qu'il est partagé."
++  ],
++  "Album share PIN": "Code PIN du partage de l'album",
++  "Serves the album on this port.": "Partage l'album sur ce port.",
++  "Browse": "Parcourir",
++  "Starts the server and shows the address and the QR code.": "Démarre le serveur et affiche l'adresse et le QR code.",
++  "Ownfoil": "Ownfoil",
++  "Browse and install titles from a self-hosted Ownfoil server.\n\nInternet connection required.": [
++    "Parcourez et installez des titres depuis un serveur Ownfoil auto-hébergé.\n\nConnexion Internet requise."
++  ],
++  "No Ownfoil servers saved.\n\nPress X to add one by hand, or search the network below.": [
++    "Aucun serveur Ownfoil enregistré.\n\nAppuyez sur X pour en ajouter un manuellement ou recherchez-en un sur le réseau ci-dessous."
++  ],
++  "Full screen": "Plein écran",
++  "Change the options every install on this console uses.": "Modifiez les options utilisées pour chaque installation sur cette console.",
++  "Which of the versions the shop holds to install.": "Choisissez la version disponible dans la boutique à installer.",
++  "Add-on content": "Contenu additionnel",
++  "Download and install what is chosen above.": "Télécharge et installe ce qui est sélectionné ci-dessus.",
++  "This add-on is already installed.": "Ce contenu additionnel est déjà installé.",
++  "Nothing to install: the console already has this version or a newer one, and no add-on is ticked. An older update can be installed by turning on Allow downgrade in Install options.": [
++    "Rien à installer : la console possède déjà cette version ou une version plus récente, et aucun contenu additionnel n'est sélectionné. Une mise à jour plus ancienne peut être installée en activant Autoriser le downgrade dans les options d'installation."
++  ],
++  "The shop didn't say how to download this": "La boutique n'a pas indiqué comment télécharger ceci",
++  "Downgrade": "Downgrade",
++  "Show": "Afficher",
++  "Connecting to ": "Connexion à ",
++  "Local": "Local",
++  "Remote": "Distant",
++  "Searching the network...": "Recherche sur le réseau...",
++  "Discover local servers": "Rechercher les serveurs locaux",
++  "This shop is public. Set up a login anyway?": "Cette boutique est publique. Configurer quand même une connexion ?",
++  "This shop is private. Set up a login now?": "Cette boutique est privée. Configurer une connexion maintenant ?",
++  ": connected via remote address": ": connecté via l'adresse distante",
++  ": connected via local network": ": connecté via le réseau local",
++  "This account has no shop access": "Ce compte n'a pas accès à la boutique",
++  "Page %ld / %ld": "Page %ld / %ld",
++  "%ld titles": "%ld titres",
++  "Name or id": "Nom ou ID",
++  "Add server": "Ajouter un serveur",
++  "Add a server by hand, for one the network search can't reach.": "Ajoutez manuellement un serveur que la recherche réseau ne peut pas atteindre.",
++  "Edit server": "Modifier le serveur",
++  "Change the selected server's name, addresses or login.": "Modifiez le nom, les adresses ou les identifiants du serveur sélectionné.",
++  "Delete server": "Supprimer le serveur",
++  "Forget the selected server.": "Oublier le serveur sélectionné.",
++  "Banner": "Bannière",
++  "Detail": "Détails",
++  "Change how titles are shown. Also cycled with -.": "Modifiez l'affichage des titres. Peut aussi être changé avec -.",
++  "Per page": "Par page",
++  "How many titles the shop sends per page. Fewer is quicker to open.": [
++    "Nombre de titres envoyés par la boutique par page. Un nombre plus faible permet un chargement plus rapide."
++  ],
++  "What the shop orders the catalog by.": "Définit le critère utilisé par la boutique pour trier le catalogue.",
++  "Which way that order runs.": "Définit le sens du tri.",
++  "Servers list": "Liste des serveurs",
++  "Return to the server list.": "Retourner à la liste des serveurs.",
++  "Clear cache": "Vider le cache",
++  "Remove all cached artwork from the SD card?": "Supprimer toutes les images mises en cache de la carte SD ?",
++  "Failed to clear the cache": "Impossible de vider le cache",
++  "Cache cleared": "Cache vidé",
++  "Remove all cached shop artwork from the SD card.": "Supprime toutes les images de la boutique mises en cache sur la carte SD.",
++  "Delete ": "Supprimer ",
++  "Could not parse the server's response": "Impossible d'analyser la réponse du serveur",
++  "This does not look like an Ownfoil server": "Ce serveur ne semble pas être un serveur Ownfoil",
++  "Could not reach the server": "Impossible de joindre le serveur",
++  "Incorrect username or password": "Nom d'utilisateur ou mot de passe incorrect",
++  "Server returned an error": "Le serveur a renvoyé une erreur",
++  "The server rejected the request": "Le serveur a rejeté la requête",
++  "Unexpected response from the server": "Réponse inattendue du serveur",
++  "The shop has no details for this title": "La boutique ne dispose d'aucun détail pour ce titre",
++  "Ownfoil Server": "Serveur Ownfoil",
++  "Set the display name of the server.\n\nReplaced by the name the server reports once it has been connected to.": [
++    "Définissez le nom d'affichage du serveur.\n\nIl sera remplacé par le nom indiqué par le serveur après la connexion."
++  ],
++  "Local address": "Adresse locale",
++  "Address used to reach the server on the local network, e.g. 192.168.1.50:8465.\n\nAt least one of Local address or Remote address must be set.": [
++    "Adresse utilisée pour joindre le serveur sur le réseau local, par ex. 192.168.1.50:8465.\n\nAu moins une adresse locale ou distante doit être définie."
++  ],
++  "Remote address": "Adresse distante",
++  "Address used to reach the server remotely, e.g. myshop.example.com.\n\nAt least one of Local address or Remote address must be set.": [
++    "Adresse utilisée pour joindre le serveur à distance, par ex. myshop.example.com.\n\nAu moins une adresse locale ou distante doit être définie."
++  ],
++  "Optional: username used to log in to the server.": "Facultatif : nom d'utilisateur utilisé pour se connecter au serveur.",
++  "Optional: password used to log in to the server.": "Facultatif : mot de passe utilisé pour se connecter au serveur.",
++  "Ownfoil server saved.": "Serveur Ownfoil enregistré.",
++  "Saves the Ownfoil server entry.": "Enregistre l'entrée du serveur Ownfoil.",
++  "Name and at least one of Local/Remote address must be set!": "Le nom et au moins une adresse locale ou distante doivent être définis !"
+ }
 diff --git a/assets/romfs/i18n/it.json b/assets/romfs/i18n/it.json
-index b59ab10..2232dae 100644
+index b59ab10..f05e894 100644
 --- a/assets/romfs/i18n/it.json
 +++ b/assets/romfs/i18n/it.json
-@@ -160,6 +160,7 @@
-   "Change the export options.": "Modifica le opzioni di esportazione.",
+@@ -161,6 +161,8 @@
    "Install Options": "Opzioni di installazione",
    "System memory": "Memoria di sistema",
-+  "Nand memory": "NAND",
    "microSD card": "Scheda microSD",
++  "eMMC": "eMMC",
++  "emuMMC": "emuMMC",
    "Data Management": "Gestione dati",
    "Storage": "Memoria",
-@@ -254,8 +255,9 @@
+   "Storage Options": "Opzioni memoria",
+@@ -254,8 +256,9 @@
      "Si consiglia di mantenerlo disabilitato."
    ],
    "Export Options": "Opzioni di esportazione",
@@ -271,11 +787,11 @@ index b59ab10..2232dae 100644
 -  "fix_export_filenames_info": "Usa il titolo inglese per i file esportati e, se non disponibile, usa l'ID titolo. Disattiva questa opzione per mantenere i titoli localizzati e Unicode sulle destinazioni compatibili.",
 +  "Export path": "Percorso di esportazione",
 +  "Enter export path...": "Inserisci il percorso di esportazione...",
-+  "dump_path_info": "Imposta la cartella di base utilizzata per le esportazioni.\nAd esempio: /backup/dumps\n\nTutti i file esportati verranno salvati in questa cartella.",
++  "dump_path_info": "Imposta la cartella di base utilizzata per le esportazioni.\nAd esempio: /dumps\n\nTutti i file esportati verranno salvati in questa cartella.",
    "Created nested folder": "Cartella nidificata creata",
    "game_folder_info": [
      "Crea una cartella utilizzando il nome del gioco.",
-@@ -425,11 +427,20 @@
+@@ -425,11 +428,20 @@
      "I dispositivi collegati possono essere utilizzati nel FileBrowser, nonché come posizione di backup durante il dump di giochi e salvataggi."
    ],
    "HDD write protect": "HDD protezione da scrittura",
@@ -297,7 +813,7 @@ index b59ab10..2232dae 100644
    "USB export to PC (usb_export.py)": "USB esporta su PC (usb_export.py)",
    "USB transfer (Switch 2 Switch)": "Trasferimento USB (Interruttore 2 Interruttore)",
    "/dev/null (Speed Test)": "/dev/null (prova di velocità)",
-@@ -584,8 +595,10 @@
+@@ -584,8 +596,10 @@
    "Video Capture": "Acquisizione video",
    "Profile Selection": "Selezione del profilo",
    "Create Forwarder": "Crea forwarder",
@@ -309,10 +825,14 @@ index b59ab10..2232dae 100644
    "The title and icon must be non-empty!": "Il titolo e l'icona non devono essere vuoti!",
    "Name": "Nome",
    "Set the name of the application": "Imposta il nome dell'applicazione",
-@@ -966,6 +979,11 @@
+@@ -966,6 +980,15 @@
      "Visualizza i dati di salvataggio per ciascun utente. È possibile eseguire il backup e ripristinare i salvataggi.\n",
      "È possibile il supporto sperimentale per il backup dei salvataggi di sistema."
    ],
++  "Browse the screenshots and clips saved on the console. Captures can be viewed and deleted from here.": [
++    "Sfoglia gli screenshot e i clip salvati sulla console.\n",
++    "Da qui puoi visualizzare ed eliminare le catture."
++  ],
 +  "Download themes from themezer.net. Themes are downloaded to /themes/sphaira\nTo install the themes, NXThemesInstaller needs to be installed (can be downloaded via the AppStore).": [
 +    "Scarica temi da themezer.net. ",
 +    "I temi vengono scaricati in /themes/sphaira.",
@@ -321,8 +841,131 @@ index b59ab10..2232dae 100644
    "Download releases directly from GitHub. Custom entries can be added to /config/sphaira/github": [
      "Scarica le versioni direttamente da GitHub. Le voci personalizzate possono essere ",
      "aggiunto a /config/sphaira/github"
+@@ -1195,5 +1218,121 @@
+   "Homebrew search path removed.": "Percorso di ricerca Homebrew rimosso.",
+   "Failed to add Homebrew search path": "Impossibile aggiungere il percorso di ricerca Homebrew",
+   "Failed to remove Homebrew search path": "Impossibile rimuovere il percorso di ricerca Homebrew",
+-  "Screen Off": "Spegni schermo"
++  "Screen Off": "Spegni schermo",
++  "View": "Visualizza",
++  "Album Options": "Opzioni album",
++  "Date": "Data",
++  "Screenshot": "Schermata",
++  "Video": "Video",
++  "Videos": "Video",
++  "Video playback is not supported": "La riproduzione video non è supportata",
++  "Failed to open the album": "Impossibile aprire l'album",
++  "Failed to delete one or more files": "Impossibile eliminare uno o più file",
++  "Delete %zd file(s)?": "Eliminare %zd file?",
++  "Permanently deletes the selected capture(s).": "Elimina definitivamente le acquisizioni selezionate.",
++  "Browse from phone": "Sfoglia dal telefono",
++  "Serves the album over the network, so that it can be browsed from a phone.": "Condivide l'album in rete, così da poterlo sfogliare dal telefono.",
++  "The album is only shared whilst this screen is open.": "L'album è condiviso solo finché questa schermata è aperta.",
++  "Open this address on a phone or PC": "Apri questo indirizzo su un telefono o un PC",
++  "PIN": "PIN",
++  "Requests": "Richieste",
++  "Waiting for a connection": "In attesa di una connessione",
++  "No network connection": "Nessuna connessione di rete",
++  "Failed to start the server": "Impossibile avviare il server",
++  "Something else may already be using the port.": "Qualcos'altro potrebbe già usare la porta.",
++  "Scan to open the album": "Scansiona per aprire l'album",
++  "Too many wrong PINs, close and re-open to try again": "Troppi PIN errati, chiudi e riapri per riprovare",
++  "Album updated": "Album aggiornato",
++  "Game": "Gioco",
++  "Shows only the captures taken in one game.": "Mostra solo le acquisizioni fatte in un gioco.",
++  "Looks for captures taken, or deleted, since this menu was opened.": "Cerca le acquisizioni fatte o eliminate da quando è stato aperto questo menu.",
++  "Require PIN": "Richiedi PIN",
++  "album_web_pin_info": [
++    "Se attivo, sfogliare l'album dal telefono richiede il PIN mostrato sulla console.\n",
++    "Lasciandolo disattivato, chiunque sulla stessa rete può aprire l'album mentre è condiviso."
++  ],
++  "Album share PIN": "PIN condivisione album",
++  "Serves the album on this port.": "Condivide l'album su questa porta.",
++  "Browse": "Sfoglia",
++  "Starts the server and shows the address and the QR code.": "Avvia il server e mostra l'indirizzo e il codice QR.",
++  "Ownfoil": "Ownfoil",
++  "Browse and install titles from a self-hosted Ownfoil server.\n\nInternet connection required.": [
++    "Sfoglia e installa titoli da un server Ownfoil ospitato autonomamente.\n\nÈ richiesta una connessione Internet."
++  ],
++  "No Ownfoil servers saved.\n\nPress X to add one by hand, or search the network below.": [
++    "Nessun server Ownfoil salvato.\n\nPremi X per aggiungerne uno manualmente oppure cerca nella rete qui sotto."
++  ],
++  "Full screen": "Schermo intero",
++  "Change the options every install on this console uses.": "Modifica le opzioni utilizzate per ogni installazione su questa console.",
++  "Which of the versions the shop holds to install.": "Scegli quale versione disponibile nello shop installare.",
++  "Add-on content": "Contenuto aggiuntivo",
++  "Download and install what is chosen above.": "Scarica e installa quanto selezionato sopra.",
++  "This add-on is already installed.": "Questo contenuto aggiuntivo è già installato.",
++  "Nothing to install: the console already has this version or a newer one, and no add-on is ticked. An older update can be installed by turning on Allow downgrade in Install options.": [
++    "Niente da installare: sulla console è già presente questa versione o una più recente e non è selezionato alcun contenuto aggiuntivo. È possibile installare un aggiornamento precedente attivando Consenti downgrade nelle opzioni di installazione."
++  ],
++  "The shop didn't say how to download this": "Lo shop non ha indicato come scaricare questo contenuto",
++  "Downgrade": "Downgrade",
++  "Show": "Mostra",
++  "Connecting to ": "Connessione a ",
++  "Local": "Locale",
++  "Remote": "Remoto",
++  "Searching the network...": "Ricerca nella rete...",
++  "Discover local servers": "Cerca server locali",
++  "This shop is public. Set up a login anyway?": "Questo shop è pubblico. Configurare comunque un accesso?",
++  "This shop is private. Set up a login now?": "Questo shop è privato. Configurare subito un accesso?",
++  ": connected via remote address": ": connesso tramite indirizzo remoto",
++  ": connected via local network": ": connesso tramite rete locale",
++  "This account has no shop access": "Questo account non ha accesso allo shop",
++  "Page %ld / %ld": "Pagina %ld / %ld",
++  "%ld titles": "%ld titoli",
++  "Name or id": "Nome o ID",
++  "Add server": "Aggiungi server",
++  "Add a server by hand, for one the network search can't reach.": "Aggiungi manualmente un server che la ricerca di rete non riesce a raggiungere.",
++  "Edit server": "Modifica server",
++  "Change the selected server's name, addresses or login.": "Modifica il nome, gli indirizzi o le credenziali del server selezionato.",
++  "Delete server": "Elimina server",
++  "Forget the selected server.": "Rimuovi il server selezionato.",
++  "Banner": "Banner",
++  "Detail": "Dettaglio",
++  "Change how titles are shown. Also cycled with -.": "Modifica il modo in cui vengono mostrati i titoli. Puoi anche cambiare con -.",
++  "Per page": "Per pagina",
++  "How many titles the shop sends per page. Fewer is quicker to open.": [
++    "Numero di titoli inviati dallo shop per pagina. Un numero inferiore rende l'apertura più rapida."
++  ],
++  "What the shop orders the catalog by.": "Imposta il criterio con cui lo shop ordina il catalogo.",
++  "Which way that order runs.": "Imposta la direzione dell'ordinamento.",
++  "Servers list": "Elenco server",
++  "Return to the server list.": "Torna all'elenco dei server.",
++  "Clear cache": "Svuota cache",
++  "Remove all cached artwork from the SD card?": "Rimuovere tutte le immagini memorizzate nella cache dalla scheda SD?",
++  "Failed to clear the cache": "Impossibile svuotare la cache",
++  "Cache cleared": "Cache svuotata",
++  "Remove all cached shop artwork from the SD card.": "Rimuove dalla scheda SD tutte le immagini dello shop memorizzate nella cache.",
++  "Delete ": "Elimina ",
++  "Could not parse the server's response": "Impossibile elaborare la risposta del server",
++  "This does not look like an Ownfoil server": "Questo non sembra essere un server Ownfoil",
++  "Could not reach the server": "Impossibile raggiungere il server",
++  "Incorrect username or password": "Nome utente o password errati",
++  "Server returned an error": "Il server ha restituito un errore",
++  "The server rejected the request": "Il server ha rifiutato la richiesta",
++  "Unexpected response from the server": "Risposta inattesa dal server",
++  "The shop has no details for this title": "Lo shop non dispone di dettagli per questo titolo",
++  "Ownfoil Server": "Server Ownfoil",
++  "Set the display name of the server.\n\nReplaced by the name the server reports once it has been connected to.": [
++    "Imposta il nome visualizzato del server.\n\nDopo la connessione verrà sostituito dal nome comunicato dal server."
++  ],
++  "Local address": "Indirizzo locale",
++  "Address used to reach the server on the local network, e.g. 192.168.1.50:8465.\n\nAt least one of Local address or Remote address must be set.": [
++    "Indirizzo usato per raggiungere il server sulla rete locale, ad es. 192.168.1.50:8465.\n\nÈ necessario impostare almeno un indirizzo locale o remoto."
++  ],
++  "Remote address": "Indirizzo remoto",
++  "Address used to reach the server remotely, e.g. myshop.example.com.\n\nAt least one of Local address or Remote address must be set.": [
++    "Indirizzo usato per raggiungere il server da remoto, ad es. myshop.example.com.\n\nÈ necessario impostare almeno un indirizzo locale o remoto."
++  ],
++  "Optional: username used to log in to the server.": "Facoltativo: nome utente usato per accedere al server.",
++  "Optional: password used to log in to the server.": "Facoltativo: password usata per accedere al server.",
++  "Ownfoil server saved.": "Server Ownfoil salvato.",
++  "Saves the Ownfoil server entry.": "Salva la voce del server Ownfoil.",
++  "Name and at least one of Local/Remote address must be set!": "È necessario impostare il nome e almeno un indirizzo locale o remoto!"
+ }
 diff --git a/assets/romfs/i18n/ja.json b/assets/romfs/i18n/ja.json
-index 41ccc9f..4a295d8 100644
+index 41ccc9f..ae845a7 100644
 --- a/assets/romfs/i18n/ja.json
 +++ b/assets/romfs/i18n/ja.json
 @@ -1,7 +1,7 @@
@@ -425,7 +1068,7 @@ index 41ccc9f..4a295d8 100644
    "Slow": "遅く",
    "Normal": "普通",
    "Fast": "速く",
-@@ -157,12 +157,13 @@
+@@ -157,35 +157,45 @@
    "Set the menu that appears on the left tab.": "左側タブに表示されるメニューを\n指定します。",
    "Set right-side menu": "右側メニュー設定",
    "Set the menu that appears on the right tab.": "右側タブに表示されるメニューを\n指定します。",
@@ -437,11 +1080,12 @@ index 41ccc9f..4a295d8 100644
    "Change the export options.": "抽出の設定を変更します。",
    "Install Options": "インストール設定",
    "System memory": "本体保存メモリー",
-+  "Nand memory": "本体メモリー",
    "microSD card": "SDカード",
++  "eMMC": "eMMC",
++  "emuMMC": "emuMMC",
    "Data Management": "データ管理",
    "Storage": "ストレージ",
-@@ -170,22 +171,30 @@
+   "Storage Options": "ストレージ設定",
    "Calculating...": "計算中...",
    "Other": "その他",
    "Free": "空き容量",
@@ -478,7 +1122,7 @@ index 41ccc9f..4a295d8 100644
    "Skip if already installed": "インストール済みをスキップ",
    "Skips installing titles / ncas if they're already installed.": "既にインストールされているNCAを\nスキップします。",
    "Ticket only": "チケットのみインストール",
-@@ -256,8 +265,9 @@
+@@ -256,8 +266,9 @@
      "このオプションは推奨されません。"
    ],
    "Export Options": "抽出設定",
@@ -486,11 +1130,11 @@ index 41ccc9f..4a295d8 100644
 -  "fix_export_filenames_info": "エクスポートファイル名には英語タイトルを使用し、存在しない場合はタイトルIDを使用します。対応する保存先でローカライズ名やUnicode名を維持するには、このオプションを無効にしてください。",
 +  "Export path": "抽出先",
 +  "Enter export path...": "抽出先を入力...",
-+  "dump_path_info": "抽出に使用する基本フォルダーを設定します。\n例: /backup/dumps\n\n抽出されたすべてのファイルはこのフォルダー内に保存されます。",
++  "dump_path_info": "抽出に使用する基本フォルダーを設定します。\n例: /dumps\n\n抽出されたすべてのファイルはこのフォルダー内に保存されます。",
    "Created nested folder": "ゲーム名のフォルダーを作成",
    "game_folder_info": "ゲーム名のフォルダーを作成します。\n\nオン: name/name.xci\nオフ: name.xci",
    "Append folder with .xci": ".xciをフォルダ名に追加",
-@@ -268,9 +278,13 @@
+@@ -268,9 +279,13 @@
      "一部のデバイスではフォルダー名とファイル名が一致しないと正常に動作しない場合があります。"
    ],
    "Trim XCI": "XCIをトリム",
@@ -506,7 +1150,7 @@ index 41ccc9f..4a295d8 100644
    "Converts personalised ticket to a fake common ticket.": "パーソナライズされたチケットを\n偽のチケットに変換します。",
    "NSZ level": "NSZレベル",
    "compress_level_info": [
-@@ -314,9 +328,13 @@
+@@ -314,9 +329,13 @@
      "オフにした場合、下のオプションの設定が必要です。"
    ],
    "User": "ユーザー",
@@ -522,7 +1166,7 @@ index 41ccc9f..4a295d8 100644
    "Show album": "アルバム",
    "Shows the microSD card album folder.": [
      "- FTP\n名前: album_nand・album_sd\n",
-@@ -417,15 +435,24 @@
+@@ -417,15 +436,24 @@
      "デバイスはファイルブラウザから確認でき、転送・インストール・バックアップ用のデバイスとして使用できます。"
    ],
    "HDD write protect": "HDDへの書き込みを保護",
@@ -550,7 +1194,7 @@ index 41ccc9f..4a295d8 100644
    "USB connected, sending file list": "接続されました、ファイルリスト送信します",
    "Sent file list, waiting for command...": "ファイルリストを送信しました、入力を待っています",
    "waiting for usb connection...": "USBの接続を待っています",
-@@ -435,10 +462,10 @@
+@@ -435,10 +463,10 @@
    "Select export location": "抽出先を選択",
    "Please launch MTP install menu before trying to install": "インストールする前にMTPインストールメニューを起動してください。",
    "Album": "アルバム",
@@ -563,7 +1207,7 @@ index 41ccc9f..4a295d8 100644
    "Creating Program": "Program作成中",
    "Creating Control": "Control作成中",
    "Creating Meta": "Meta作成中",
-@@ -468,10 +495,10 @@
+@@ -468,10 +496,10 @@
    "Misc": "その他",
    "Updated": "アップデート順",
    "Title": "タイトル",
@@ -578,7 +1222,7 @@ index 41ccc9f..4a295d8 100644
    "Downloads": "ダウンロード順",
    "Size": "サイズ順",
    "Alphabetical": "アルファベット順",
-@@ -501,7 +528,7 @@
+@@ -501,7 +529,7 @@
    "Launch": "起動",
    "Remove": "削除",
    "Completely remove ": "を削除しますか",
@@ -587,7 +1231,7 @@ index 41ccc9f..4a295d8 100644
    "Info": "情報",
    "AppStore Options": "AppStore設定",
    "Descending": "降順",
-@@ -515,170 +542,175 @@
+@@ -515,170 +543,175 @@
    "Layout": "レイアウト",
    "Search": "検索",
    "Enter title name...": "タイトル名を入力してください...",
@@ -879,7 +1523,7 @@ index 41ccc9f..4a295d8 100644
    "All fields must be non-empty!": "すべての項目を入力する必要があります!",
    "Open": "開く",
    "Empty...": "このフォルダーは空です。",
-@@ -713,7 +745,7 @@
+@@ -713,7 +746,7 @@
    "Mount": "マウント",
    "Sort By": "並べ替え",
    "Sort Options": "並べ替え",
@@ -888,7 +1532,7 @@ index 41ccc9f..4a295d8 100644
    "Folders First": "フォルダーを優先表示",
    "Hidden Last": "非表示ファイルを最後に表示",
    "Cut": "切り取り",
-@@ -815,17 +847,19 @@
+@@ -815,17 +848,19 @@
    "Display Version: %s": "表示バージョン: %s",
    "Not Installed": "未インストール",
    "Update Available": "アップデートあり",
@@ -912,7 +1556,7 @@ index 41ccc9f..4a295d8 100644
    "Verify NCA 256 hash": "NCA256ハッシュ検証",
    "NCA hash missmatch!": "NCAハッシュが一致しません!",
    "NCA hash valid.": "NCAハッシュは有効です!",
-@@ -892,10 +926,14 @@
+@@ -892,10 +927,14 @@
    "Shows all hidden homebrew.": "非表示されたアプリケーションをすべて表示します。",
    "Test": "テスト",
    "Hide": "非表示",
@@ -929,7 +1573,7 @@ index 41ccc9f..4a295d8 100644
    "hb_remove_info": [
      "Homebrewを完全に削除します。\n",
      "作成されたフォルダーやファイルは残るため、必要に応じてファイルブラウザから削除してください。"
-@@ -919,7 +957,7 @@
+@@ -919,7 +958,7 @@
    "Bright group": "明るいグループ",
    "Dim group": "薄暗いグループ",
    "Normal image": "通常画像",
@@ -938,7 +1582,7 @@ index 41ccc9f..4a295d8 100644
    "Controller": "コントローラー",
    "Rotation": "回転",
    "Colour": "色",
-@@ -940,8 +978,12 @@
+@@ -940,8 +979,12 @@
      "Homebrewを管理します。\n",
      "起動・非表示・NROの確認・削除や\nホーム画面へのショートカット作成など\nさまざまな機能を利用できます。"
    ],
@@ -953,18 +1597,27 @@ index 41ccc9f..4a295d8 100644
    "Browse files on you SD Card. You can move, copy, delete, extract zip, create zip, upload and much more.\n\nA connected USB/HDD can be opened by mounting it in the advanced options.": [
      "SDカード内のファイルを確認できます。\n",
      "移動・コピー・削除・圧縮・解凍・アップロードなど、幅広い操作に対応しています。\n",
-@@ -951,7 +993,9 @@
+@@ -951,7 +994,18 @@
      "各ユーザーのセーブを確認します。\nバックアップ・復元が可能です。\n",
      "参考: システムセーブのバックアップは実験的機能です。"
    ],
 -  "Download releases directly from GitHub. Custom entries can be added to /config/sphaira/github": "GitHubから直接リリースをダウンロードします。\n\nカスタム項目は sdmc:/config/sphaira/github に追加できます。",
++  "Browse the screenshots and clips saved on the console. Captures can be viewed and deleted from here.": [
++    "本体に保存されているスクリーンショットや動画を閲覧します。\n",
++    "ここからキャプチャーを表示したり削除したりできます。"
++  ],
++  "Download themes from themezer.net. Themes are downloaded to /themes/sphaira\nTo install the themes, NXThemesInstaller needs to be installed (can be downloaded via the AppStore).": [
++    "themezer.netからテーマをダウンロードします。\n",
++    "テーマは /themes/sphaira にダウンロードされます。\n",
++    "テーマをインストールするには、NXThemesInstallerがインストールされている必要があります(AppStoreからダウンロードできます)。"
++  ],
 +  "Download releases directly from GitHub. Custom entries can be added to /config/sphaira/github": [
 +    "GitHubから直接リリースをダウンロードします。\n\nカスタム項目は sdmc:/config/sphaira/github に追加できます。"
 +  ],
    "Install apps via FTP.": "ゲームのインストールができます。",
    "MTP Install": "MTPインストール",
    "Install apps via MTP.": "ゲームのインストールができます。",
-@@ -962,7 +1006,9 @@
+@@ -962,7 +1016,9 @@
      "メニューを終了せずにゲームカードを取り出してそのまま新しいカードに入れ替えることができます。"
    ],
    "IRS (Infrared Joycon Camera)": "Joy-Con IR カメラ",
@@ -975,7 +1628,7 @@ index 41ccc9f..4a295d8 100644
    "Update avaliable: ": "アップデート可能: ",
    "Download via the Network options!": "ネットワーク設定からダウンロードしました!",
    "Menu": "メニュー",
-@@ -994,20 +1040,20 @@
+@@ -994,20 +1050,20 @@
      "FTP・MTP・HDD・NXlinkのトグルを\n切り替えできます。\n",
      "Sphairaのアップデートがある時は\nこのメニューから更新できます。"
    ],
@@ -1008,7 +1661,7 @@ index 41ccc9f..4a295d8 100644
    "Theme": "テーマ",
    "Language": "言語",
    "translation_info": [
-@@ -1032,16 +1078,22 @@
+@@ -1032,16 +1088,22 @@
    "System BCAT": "システム BCAT",
    "Data Type": "データタイプ",
    "Backup": "バックアップ",
@@ -1034,7 +1687,7 @@ index 41ccc9f..4a295d8 100644
    "Compress backup": "圧縮してバックアップ",
    "save_backup_compress_info": [
      "このオプションを有効にするとZIP形でバックアップされます。\n",
-@@ -1086,7 +1138,7 @@
+@@ -1086,7 +1148,7 @@
    "USB 3.0 Super Speed": "USB 3.0 (Super Speed)",
    "Mount Creator": "マウントオプション作成",
    "Type": "プロトコル",
@@ -1043,7 +1696,7 @@ index 41ccc9f..4a295d8 100644
    "URL": "URL",
    "Set the URL of the application": "URLを入力します。",
    "Optional: Set the port of the server. If left empty, the default port for the protocol will be used.": [
-@@ -1099,17 +1151,25 @@
+@@ -1099,17 +1161,25 @@
    "Optional: Set the username of the application": "選択事項: ユーザー名を設定します。",
    "Optional: Set the password of the application": "選択事項: パスワードを設定します。",
    "Dump path": "ダンプパス",
@@ -1073,7 +1726,7 @@ index 41ccc9f..4a295d8 100644
    "Save": "保存",
    "Mount entry saved. Restart Sphaira to apply changes.": "マウント設定を保存しました、Sphairaを再起動してください。",
    "Saves the mount entry.\n\nNOTE: You must restart Sphaira for changes to take effect!": [
-@@ -1138,17 +1198,26 @@
+@@ -1138,20 +1208,147 @@
    ],
    "Section #": "セクション #",
    "by ": "作成者：",
@@ -1106,19 +1759,142 @@ index 41ccc9f..4a295d8 100644
    "Homebrew search path added.": "Homebrew検索パスを追加しました。",
    "Homebrew search path removed.": "Homebrew検索パスを削除しました。",
    "Failed to add Homebrew search path": "Homebrew検索パスを追加できませんでした",
+   "Failed to remove Homebrew search path": "Homebrew検索パスを削除できませんでした",
+-  "Screen Off": "画面オフ"
++  "Screen Off": "画面オフ",
++  "View": "表示",
++  "Album Options": "アルバム設定",
++  "Date": "日付順",
++  "Screenshot": "スクリーンショット",
++  "Video": "動画",
++  "Videos": "動画",
++  "Video playback is not supported": "動画の再生には対応していません",
++  "Failed to open the album": "アルバムを開けませんでした",
++  "Failed to delete one or more files": "1つ以上のファイルを削除できませんでした",
++  "Delete %zd file(s)?": "%zd 件のファイルを削除しますか？",
++  "Permanently deletes the selected capture(s).": "選択したデータを完全に削除します。",
++  "Browse from phone": "スマホから見る",
++  "Serves the album over the network, so that it can be browsed from a phone.": "アルバムをネットワークで共有し、スマホから見られるようにします。",
++  "The album is only shared whilst this screen is open.": "この画面を開いている間だけ共有されます。",
++  "Open this address on a phone or PC": "スマホやPCでこのアドレスを開いてください",
++  "PIN": "PINコード",
++  "Requests": "リクエスト",
++  "Waiting for a connection": "接続を待っています",
++  "No network connection": "ネットワークに接続されていません",
++  "Failed to start the server": "サーバーを開始できませんでした",
++  "Something else may already be using the port.": "ポートが既に使用されている可能性があります。",
++  "Scan to open the album": "スキャンしてアルバムを開く",
++  "Too many wrong PINs, close and re-open to try again": "PINの入力を間違えすぎました。閉じてから開き直してください",
++  "Album updated": "アルバムを更新しました",
++  "Game": "ソフト",
++  "Shows only the captures taken in one game.": "1つのソフトで撮影したデータだけを表示します。",
++  "Looks for captures taken, or deleted, since this menu was opened.": "このメニューを開いてから撮影・削除されたデータを確認します。",
++  "Require PIN": "PINコードを要求",
++  "album_web_pin_info": [
++    "有効にすると、スマホからアルバムを見るときに本体に表示されたPINコードの入力を求めます。\n",
++    "無効のままだと、共有している間は同じネットワーク上の誰でもアルバムを開けます。"
++  ],
++  "Album share PIN": "アルバム共有のPINコード",
++  "Serves the album on this port.": "このポートでアルバムを共有します。",
++  "Browse": "見る",
++  "Starts the server and shows the address and the QR code.": "サーバーを起動し、アドレスとQRコードを表示します。",
++    "Ownfoil": "Ownfoil",
++  "Browse and install titles from a self-hosted Ownfoil server.\n\nInternet connection required.": [
++    "ホストしたOwnfoilサーバーからタイトルを\n閲覧してインストールします。\n\nネットワーク接続が必要です。"
++  ],
++  "No Ownfoil servers saved.\n\nPress X to add one by hand, or search the network below.": [
++    "保存されたOwnfoilサーバーがありません。 を押して追加するか、サーバーを検索してください。"
++  ],
++  "Full screen": "全画面",
++  "Change the options every install on this console uses.": "この本体でのすべてのインストールに使用する設定を変更します。",
++  "Which of the versions the shop holds to install.": "ストアにあるバージョンからインストールするものを選択します。",
++  "Add-on content": "追加コンテンツ",
++  "Download and install what is chosen above.": "上で選択した項目をダウンロードしてインストールします。",
++  "This add-on is already installed.": "この追加コンテンツはすでにインストールされています。",
++  "Nothing to install: the console already has this version or a newer one, and no add-on is ticked. An older update can be installed by turning on Allow downgrade in Install options.": [
++    "インストールする項目がありません。本体にはすでにこのバージョンまたは新しいバージョンがインストールされており、追加コンテンツも選択されていません。インストール設定でダウングレードを許可すると、以前のアップデートをインストールできます。"
++  ],
++  "The shop didn't say how to download this": "ストアからこの項目のダウンロード方法が提供されていません",
++  "Downgrade": "ダウングレード",
++  "Show": "表示",
++  "Connecting to ": " 接続中",
++  "Local": "ローカル",
++  "Remote": "リモート",
++  "Searching the network...": "ネットワークを検索中...",
++  "Discover local servers": "ローカルサーバーを検索",
++  "This shop is public. Set up a login anyway?": "このストアは公開されています。それでもログイン情報を設定しますか？",
++  "This shop is private. Set up a login now?": "このストアは非公開です。今すぐログイン情報を設定しますか？",
++  ": connected via remote address": ": リモートアドレスで接続済み",
++  ": connected via local network": ": ローカルネットワークで接続済み",
++  "This account has no shop access": "このアカウントにはストアへのアクセス権がありません",
++  "Page %ld / %ld": "ページ %ld / %ld",
++  "%ld titles": "%ld タイトル",
++  "Name or id": "名前またはID",
++  "Add server": "サーバーを追加",
++  "Add a server by hand, for one the network search can't reach.": "ネットワーク検索で見つからないサーバーを手動で追加します。",
++  "Edit server": "サーバーを編集",
++  "Change the selected server's name, addresses or login.": "選択したサーバーの名前、アドレス、ログイン\n情報を変更します。",
++  "Delete server": "サーバーを削除",
++  "Forget the selected server.": "選択したサーバーを一覧から削除します。",
++  "Banner": "バナー",
++  "Detail": "詳細",
++  "Change how titles are shown. Also cycled with -.": "タイトルの表示方法を変更します。- ボタンでも切り替えられます。",
++  "Per page": "1ページあたり",
++  "How many titles the shop sends per page. Fewer is quicker to open.": [
++    "ストアから1ページあたりに読み込むタイトル数です。少ないほど素早く開けます。"
++  ],
++  "What the shop orders the catalog by.": "ストアでカタログを並べ替える基準を設定します。",
++  "Which way that order runs.": "並べ替えの方向を設定します。",
++  "Servers list": "サーバー一覧",
++  "Return to the server list.": "サーバー一覧に戻ります。",
++  "Clear cache": "キャッシュを削除",
++  "Remove all cached artwork from the SD card?": "SDカードからキャッシュされた画像をすべて削除しますか？",
++  "Failed to clear the cache": "キャッシュを削除できませんでした",
++  "Cache cleared": "キャッシュを削除しました",
++  "Remove all cached shop artwork from the SD card.": "SDカードからキャッシュされたストア画像を\nすべて削除します。",
++  "Delete ": "を削除しますか",
++  "Could not parse the server's response": "サーバーの応答を処理できません",
++  "This does not look like an Ownfoil server": "Ownfoilサーバーではないようです",
++  "Could not reach the server": "サーバーに接続できません",
++  "Incorrect username or password": "ユーザー名またはパスワードが正しくありません",
++  "Server returned an error": "サーバーからエラーが返されました",
++  "The server rejected the request": "サーバーがリクエストを拒否しました",
++  "Unexpected response from the server": "サーバーから予期しない応答が返されました",
++  "The shop has no details for this title": "ストアにこのタイトルの詳細情報がありません",
++  "Ownfoil Server": "Ownfoilサーバー",
++  "Set the display name of the server.\n\nReplaced by the name the server reports once it has been connected to.": [
++    "サーバーに表示する名前を設定します。\n\n接続後はサーバーから提供された\n名前に変更されます。"
++  ],
++  "Local address": "ローカルアドレス",
++  "Address used to reach the server on the local network, e.g. 192.168.1.50:8465.\n\nAt least one of Local address or Remote address must be set.": [
++    "ローカルネットワークからサーバーに接続する際に\n使用するアドレスです。\n",
++    "例: 192.168.1.50:8465.\n\nローカルアドレスまたはリモートアドレスのいずれかを設定する必要があります。"
++  ],
++  "Remote address": "リモートアドレス",
++  "Address used to reach the server remotely, e.g. myshop.example.com.\n\nAt least one of Local address or Remote address must be set.": [
++    "リモートからサーバーに接続する際に使用する\nアドレスです。\n",
++    "例: myshop.example.com.\n\nローカルアドレスまたはリモートアドレスのいずれかを設定する必要があります。"
++  ],
++  "Optional: username used to log in to the server.": "任意: サーバーへのログインに使用する\nユーザー名です。",
++  "Optional: password used to log in to the server.": "任意: サーバーへのログインに使用する\nパスワードです。",
++  "Ownfoil server saved.": "Ownfoilサーバーを保存しました。",
++  "Saves the Ownfoil server entry.": "Ownfoilサーバーの項目を保存します。",
++  "Name and at least one of Local/Remote address must be set!": "名前とローカル/リモートアドレスのいずれかを\n設定する必要があります！"
+ }
 diff --git a/assets/romfs/i18n/ko.json b/assets/romfs/i18n/ko.json
-index dd26e05..686a8cf 100644
+index dd26e05..06673c9 100644
 --- a/assets/romfs/i18n/ko.json
 +++ b/assets/romfs/i18n/ko.json
-@@ -163,6 +163,7 @@
-   "Change the export options.": "추출 옵션을 변경합니다.",
+@@ -164,6 +164,8 @@
    "Install Options": "설치 옵션",
    "System memory": "본체 저장 메모리",
-+  "Nand memory": "낸드 저장소",
    "microSD card": "SD 카드",
++  "eMMC": "시스낸드",
++  "emuMMC": "에뮤낸드",
    "Data Management": "데이터 관리",
    "Storage": "저장 공간",
-@@ -173,12 +174,18 @@
+   "Storage Options": "저장 공간 설정",
+@@ -173,12 +175,18 @@
    "Base game": "게임 본편",
    "Update data": "업데이트 데이터",
    "DLC": "추가 콘텐츠",
@@ -1141,7 +1917,7 @@ index dd26e05..686a8cf 100644
    "Enable sysmmc": "시스낸드 활성화",
    "Enables installing whilst in sysMMC mode.": "시스낸드로의 설치를 활성화합니다.",
    "Enable emummc": "에뮤낸드 활성화",
-@@ -260,13 +267,14 @@
+@@ -260,13 +268,14 @@
      "해당 옵션의 사용을 권장하지 않습니다."
    ],
    "Export Options": "추출 옵션",
@@ -1156,14 +1932,14 @@ index dd26e05..686a8cf 100644
 +  "Enter export path...": "추출 경로 입력...",
 +  "dump_path_info": [
 +    "추출에 사용할 기본 폴더를 설정합니다.\n",
-+    "예시: /backup/dumps\n",
++    "예시: /dumps\n",
 +    "내보낸 모든 파일은 이 폴더 안에 저장됩니다."
 +  ],
 +  "Created nested folder": "게임 이름 폴더 생성",
    "game_folder_info": "게임 이름의 폴더를 생성합니다.\n\n활성화: name/name.xci\n\n비활성화: name.xci",
    "Append folder with .xci": "폴더명에 확장자 추가",
    "xci_folder_info": [
-@@ -433,11 +441,20 @@
+@@ -433,11 +442,20 @@
      "전송・설치・백업 장치로 사용합니다."
    ],
    "HDD write protect": "HDD 쓰기 방지",
@@ -1185,7 +1961,7 @@ index dd26e05..686a8cf 100644
    "USB export to PC (usb_export.py)": "PC로 내보내기 (usb_export.py)",
    "USB transfer (Switch 2 Switch)": "USB 전송 (Switch 2 Switch)",
    "/dev/null (Speed Test)": "/dev/null (Speed Test)",
-@@ -600,6 +617,8 @@
+@@ -600,6 +618,8 @@
    "Create Forwarder": "바로가기 생성",
    "36-bit (Default)": "36-bit (기본)",
    "39-bit": "39-bit",
@@ -1194,10 +1970,14 @@ index dd26e05..686a8cf 100644
    "The title and icon must be non-empty!": "제목과 아이콘은 비워둘 수 없습니다!",
    "Name": "이름",
    "Set the name of the application": "이름을 설정합니다.",
-@@ -984,6 +1003,11 @@
+@@ -984,6 +1004,15 @@
      "각 사용자의 세이브 데이터를 확인합니다.\n데이터를 백업・복원 가능합니다.\n",
      "참고: 시스템 백업은 실험적 기능입니다."
    ],
++  "Browse the screenshots and clips saved on the console. Captures can be viewed and deleted from here.": [
++    "저장된 스크린샷과 동영상을 둘러봅니다.\n",
++    "파일을 확인・삭제・공유할 수 있습니다."
++  ],
 +  "Download themes from themezer.net. Themes are downloaded to /themes/sphaira\nTo install the themes, NXThemesInstaller needs to be installed (can be downloaded via the AppStore).": [
 +    "themezer.net에서 테마를 다운로드합니다.\n",
 +    "테마는 /themes/sphaira에 다운로드됩니다.\n",
@@ -1206,19 +1986,145 @@ index dd26e05..686a8cf 100644
    "Download releases directly from GitHub. Custom entries can be added to /config/sphaira/github": [
      "직접 최신 항목을 다운로드합니다.\n\n경로: sdmc:/config/sphaira/github"
    ],
+@@ -1216,5 +1245,123 @@
+   "Homebrew search path removed.": "Homebrew 검색 경로를 제거했습니다.",
+   "Failed to add Homebrew search path": "Homebrew 검색 경로를 추가하지 못했습니다",
+   "Failed to remove Homebrew search path": "Homebrew 검색 경로를 제거하지 못했습니다",
+-  "Screen Off": "화면 끄기"
++  "Screen Off": "화면 끄기",
++  "View": "보기",
++  "Album Options": "앨범 옵션",
++  "Date": "날짜순",
++  "Screenshot": "스크린샷",
++  "Video": "동영상",
++  "Videos": "동영상",
++  "Video playback is not supported": "동영상 재생은 지원하지 않습니다",
++  "Failed to open the album": "앨범을 열지 못했습니다",
++  "Failed to delete one or more files": "하나 이상의 파일을 삭제하지 못했습니다",
++  "Delete %zd file(s)?": "%zd개의 파일을 삭제할까요?",
++  "Permanently deletes the selected capture(s).": "선택한 항목을 완전히 삭제합니다.",
++  "Browse from phone": "PC・휴대폰에서 보기",
++  "Serves the album over the network, so that it can be browsed from a phone.": "네트워크로 공유하여 PC 혹은 휴대폰에서 앨범을 열람합니다.",
++  "The album is only shared whilst this screen is open.": "이 화면이 열려 있는 동안에만 공유됩니다.",
++  "Open this address on a phone or PC": "휴대폰이나 PC에서 이 주소를 여세요",
++  "PIN": "PIN",
++  "Requests": "요청",
++  "Waiting for a connection": "연결을 기다리는 중",
++  "No network connection": "네트워크에 연결되어 있지 않습니다",
++  "Failed to start the server": "서버를 시작하지 못했습니다",
++  "Something else may already be using the port.": "다른 곳에서 이미 포트를 사용 중일 수 있습니다.",
++  "Scan to open the album": "스캔하여 앨범 열기",
++  "Too many wrong PINs, close and re-open to try again": "PIN을 너무 많이 틀렸습니다. 닫았다가 다시 여세요",
++  "Album updated": "앨범이 업데이트되었습니다",
++  "Game": "게임",
++  "Shows only the captures taken in one game.": "한 게임에서 찍은 항목만 표시합니다.",
++  "Looks for captures taken, or deleted, since this menu was opened.": "이 메뉴를 연 후 촬영하거나 삭제한\n항목을 확인합니다.",
++  "Require PIN": "PIN 요청",
++  "album_web_pin_info": [
++    "해당 옵션을 켜면 휴대폰에서 열람 시\n본체에 표시된 PIN을 입력해야 합니다.\n",
++    "끄면 공유하는 동안 같은 네트워크의\n누구나 앨범을 확인할 수 있습니다."
++  ],
++  "Album share PIN": "앨범 공유 PIN",
++  "Serves the album on this port.": "설정된 포트로 앨범을 공유합니다.",
++  "Browse": "서버 시작",
++  "Starts the server and shows the address and the QR code.": "서버를 시작하고 주소와 QR 코드를 표시합니다.",
++  "Ownfoil": "Ownfoil",
++  "Browse and install titles from a self-hosted Ownfoil server.\n\nInternet connection required.": [
++    "호스팅한 Ownfoil 서버에서 타이틀을\n찾아보고 설치합니다.\n\n네트워크 연결이 필요합니다."
++  ],
++  "No Ownfoil servers saved.\n\nPress X to add one by hand, or search the network below.": [
++    "저장된 Ownfoil 서버가 없습니다,  를 입력하여 추가하거나 서버를 검색하세요."
++  ],
++  "Full screen": "전체 화면",
++  "Change the options every install on this console uses.": "이 콘솔의 모든 설치에 사용되는 옵션을 변경합니다.",
++  "Which of the versions the shop holds to install.": "스토어에 있는 버전 중 설치할 버전을 선택합니다.",
++  "Add-on content": "추가 콘텐츠",
++  "Download and install what is chosen above.": "위에서 선택한 항목을 다운로드하고 설치합니다.",
++  "This add-on is already installed.": "이 추가 콘텐츠는 이미 설치되어 있습니다.",
++  "Nothing to install: the console already has this version or a newer one, and no add-on is ticked. An older update can be installed by turning on Allow downgrade in Install options.": [
++    "설치할 항목이 없습니다. 콘솔에 이미 이 버전 또는 더 최신 버전이 설치되어 있고 추가 콘텐츠도 선택되지 않았습니다. 설치 옵션에서 다운그레이드 허용을 활성화하면 이전 업데이트를 설치할 수 있습니다."
++  ],
++  "The shop didn't say how to download this": "스토어에서 이 항목의 다운로드 방법을 제공하지 않았습니다",
++  "Downgrade": "다운그레이드",
++  "Show": "표시",
++  "Connecting to ": " 연결 중",
++  "Local": "로컬",
++  "Remote": "원격",
++  "Searching the network...": "네트워크 검색 중...",
++  "Discover local servers": "로컬 서버 검색",
++  "This shop is public. Set up a login anyway?": "이 스토어는 공개되어 있습니다. 그래도 로그인 정보를 설정할까요?",
++  "This shop is private. Set up a login now?": "이 스토어는 비공개입니다. 지금 로그인 정보를 설정할까요?",
++  ": connected via remote address": ": 원격 주소로 연결됨",
++  ": connected via local network": ": 로컬 네트워크로 연결됨",
++  "This account has no shop access": "이 계정에는 스토어 접근 권한이 없습니다",
++  "Page %ld / %ld": "페이지 %ld / %ld",
++  "%ld titles": "%ld개 타이틀",
++  "Name or id": "이름 또는 ID",
++  "Add server": "서버 추가",
++  "Add a server by hand, for one the network search can't reach.": "네트워크 검색으로 찾을 수 없는 서버를 직접 추가합니다.",
++  "Edit server": "서버 편집",
++  "Change the selected server's name, addresses or login.": "선택한 서버의 이름, 주소 또는 로그인\n정보를 변경합니다.",
++  "Delete server": "서버 삭제",
++  "Forget the selected server.": "선택한 서버를 목록에서 제거합니다.",
++  "Banner": "배너",
++  "Detail": "상세",
++  "Change how titles are shown. Also cycled with -.": "타이틀 표시 방식을 변경합니다. - 버튼으로도 전환할 수 있습니다.",
++  "Per page": "페이지당",
++  "How many titles the shop sends per page. Fewer is quicker to open.": [
++    "스토어에서 페이지당 불러오는 타이틀 수입니다. 적을수록 더 빠르게 열립니다."
++  ],
++  "What the shop orders the catalog by.": "스토어에서 카탈로그를 정렬할 기준을 설정합니다.",
++  "Which way that order runs.": "정렬 방향을 설정합니다.",
++  "Servers list": "서버 목록",
++  "Return to the server list.": "서버 목록으로 돌아갑니다.",
++  "Clear cache": "캐시 삭제",
++  "Remove all cached artwork from the SD card?": "SD 카드에서 캐시된 이미지를 모두 삭제할까요?",
++  "Failed to clear the cache": "캐시를 삭제하지 못했습니다",
++  "Cache cleared": "캐시를 삭제했습니다",
++  "Remove all cached shop artwork from the SD card.": "SD 카드에서 캐시된 스토어 이미지를\n모두 삭제합니다.",
++  "Delete ": " 을/를 삭제하시겠습니까",
++  "Could not parse the server's response": "서버 응답을 처리할 수 없습니다",
++  "This does not look like an Ownfoil server": "Ownfoil 서버가 아닌 것 같습니다",
++  "Could not reach the server": "서버에 연결할 수 없습니다",
++  "Incorrect username or password": "사용자 이름 또는 비밀번호가 올바르지 않습니다",
++  "Server returned an error": "서버에서 오류를 반환했습니다",
++  "The server rejected the request": "서버에서 요청을 거부했습니다",
++  "Unexpected response from the server": "서버에서 예상하지 못한 응답을 반환했습니다",
++  "The shop has no details for this title": "스토어에 이 타이틀의 상세 정보가 없습니다",
++  "Ownfoil Server": "Ownfoil 서버",
++  "Set the display name of the server.\n\nReplaced by the name the server reports once it has been connected to.": [
++    "서버에 표시할 이름을 설정합니다.\n\n연결된 후에는 서버에서 제공하는\n이름으로 변경됩니다."
++  ],
++  "Local address": "로컬 주소",
++  "Address used to reach the server on the local network, e.g. 192.168.1.50:8465.\n\nAt least one of Local address or Remote address must be set.": [
++    "로컬 네트워크에서 서버에 연결할 때\n사용하는 주소입니다.\n",
++    "예시: 192.168.1.50:8465.\n\n로컬 주소 또는 원격 주소 중 하나 이상을 설정해야 합니다."
++  ],
++  "Remote address": "원격 주소",
++  "Address used to reach the server remotely, e.g. myshop.example.com.\n\nAt least one of Local address or Remote address must be set.": [
++    "원격으로 서버에 연결할 때 사용하는\n주소입니다.\n",
++    "예시: myshop.example.com.\n\n로컬 주소 또는 원격 주소 중 하나 이상을 설정해야 합니다."
++  ],
++  "Optional: username used to log in to the server.": "선택 사항: 서버 로그인에 사용할\n사용자 이름입니다.",
++  "Optional: password used to log in to the server.": "선택 사항: 서버 로그인에 사용할\n비밀번호입니다.",
++  "Ownfoil server saved.": "Ownfoil 서버를 저장했습니다.",
++  "Saves the Ownfoil server entry.": "Ownfoil 서버 항목을 저장합니다.",
++  "Name and at least one of Local/Remote address must be set!": "이름과 로컬/원격 주소 중 하나 이상을\n설정해야 합니다!"
+ }
 diff --git a/assets/romfs/i18n/nl.json b/assets/romfs/i18n/nl.json
-index e8dcacc..e608583 100644
+index e8dcacc..ae8363a 100644
 --- a/assets/romfs/i18n/nl.json
 +++ b/assets/romfs/i18n/nl.json
-@@ -160,6 +160,7 @@
-   "Change the export options.": "Wijzig de exportopties.",
+@@ -161,6 +161,8 @@
    "Install Options": "Opties installeren",
    "System memory": "Systeemgeheugen",
-+  "Nand memory": "NAND",
    "microSD card": "microSD-kaart",
++  "eMMC": "eMMC",
++  "emuMMC": "emuMMC",
    "Data Management": "Gegevensbeheer",
    "Storage": "Opslag",
-@@ -254,8 +255,9 @@
+   "Storage Options": "Opslagopties",
+@@ -254,8 +256,9 @@
      "Het wordt aanbevolen om dit uitgeschakeld te houden."
    ],
    "Export Options": "Exportopties",
@@ -1226,11 +2132,11 @@ index e8dcacc..e608583 100644
 -  "fix_export_filenames_info": "Gebruikt de Engelse titel voor exportbestandsnamen en valt terug op de titel-ID als die niet beschikbaar is. Schakel dit uit om gelokaliseerde en Unicode-titels te behouden op bestemmingen die dit ondersteunen.",
 +  "Export path": "Exportpad",
 +  "Enter export path...": "Voer het exportpad in...",
-+  "dump_path_info": "Stelt de basismap voor exports in.\nBijvoorbeeld: /backup/dumps\n\nAlle geëxporteerde bestanden worden in deze map opgeslagen.",
++  "dump_path_info": "Stelt de basismap voor exports in.\nBijvoorbeeld: /dumps\n\nAlle geëxporteerde bestanden worden in deze map opgeslagen.",
    "Created nested folder": "Geneste map gemaakt",
    "game_folder_info": [
      "Creëert een map met de naam van het spel.",
-@@ -425,11 +427,20 @@
+@@ -425,11 +428,20 @@
      "Aangesloten apparaten kunnen worden gebruikt in de FileBrowser, evenals als back-uplocatie bij het dumpen van games en opgeslagen bestanden."
    ],
    "HDD write protect": "HDD schrijfbeveiliging",
@@ -1252,7 +2158,7 @@ index e8dcacc..e608583 100644
    "USB export to PC (usb_export.py)": "USB exporteren naar pc (usb_export.py)",
    "USB transfer (Switch 2 Switch)": "USB-overdracht (schakelaar 2 schakelaar)",
    "/dev/null (Speed Test)": "/dev/null (snelheidstest)",
-@@ -584,8 +595,10 @@
+@@ -584,8 +596,10 @@
    "Video Capture": "Video-opname",
    "Profile Selection": "Profielselectie",
    "Create Forwarder": "Forwarder maken",
@@ -1265,10 +2171,14 @@ index e8dcacc..e608583 100644
    "The title and icon must be non-empty!": "De titel en het pictogram mogen niet leeg zijn!",
    "Name": "Naam",
    "Set the name of the application": "Stel de naam van de applicatie in",
-@@ -966,6 +979,11 @@
+@@ -966,6 +980,15 @@
      "Bekijk opgeslagen gegevens voor elke gebruiker. U kunt een back-up maken van opgeslagen bestanden en deze herstellen.\n",
      "Experimentele ondersteuning voor het maken van back-ups van systeemopslag is mogelijk."
    ],
++  "Browse the screenshots and clips saved on the console. Captures can be viewed and deleted from here.": [
++    "Blader door de schermafbeeldingen en clips die op de console zijn opgeslagen.\n",
++    "Je kunt opnamen hier bekijken en verwijderen."
++  ],
 +  "Download themes from themezer.net. Themes are downloaded to /themes/sphaira\nTo install the themes, NXThemesInstaller needs to be installed (can be downloaded via the AppStore).": [
 +    "Download thema's van themezer.net. ",
 +    "Thema's worden gedownload naar /themes/sphaira.",
@@ -1277,19 +2187,143 @@ index e8dcacc..e608583 100644
    "Download releases directly from GitHub. Custom entries can be added to /config/sphaira/github": [
      "Download releases rechtstreeks vanuit GitHub. Aangepaste vermeldingen kunnen zijn ",
      "toegevoegd aan /config/sphaira/github"
+@@ -1195,5 +1218,121 @@
+   "Homebrew search path removed.": "Homebrew-zoekpad verwijderd.",
+   "Failed to add Homebrew search path": "Homebrew-zoekpad kon niet worden toegevoegd",
+   "Failed to remove Homebrew search path": "Homebrew-zoekpad kon niet worden verwijderd",
+-  "Screen Off": "Scherm uit"
++  "Screen Off": "Scherm uit",
++  "View": "Bekijken",
++  "Album Options": "Albumopties",
++  "Date": "Datum",
++  "Screenshot": "Schermafbeelding",
++  "Video": "Video",
++  "Videos": "Video's",
++  "Video playback is not supported": "Video afspelen wordt niet ondersteund",
++  "Failed to open the album": "Kan het album niet openen",
++  "Failed to delete one or more files": "Kan een of meer bestanden niet verwijderen",
++  "Delete %zd file(s)?": "%zd bestand(en) verwijderen?",
++  "Permanently deletes the selected capture(s).": "Verwijdert de geselecteerde opnames definitief.",
++  "Browse from phone": "Bekijken op telefoon",
++  "Serves the album over the network, so that it can be browsed from a phone.": "Deelt het album via het netwerk, zodat het op een telefoon bekeken kan worden.",
++  "The album is only shared whilst this screen is open.": "Het album wordt alleen gedeeld zolang dit scherm open is.",
++  "Open this address on a phone or PC": "Open dit adres op een telefoon of pc",
++  "PIN": "Pincode",
++  "Requests": "Verzoeken",
++  "Waiting for a connection": "Wachten op een verbinding",
++  "No network connection": "Geen netwerkverbinding",
++  "Failed to start the server": "Kan de server niet starten",
++  "Something else may already be using the port.": "Mogelijk gebruikt iets anders de poort al.",
++  "Scan to open the album": "Scan om het album te openen",
++  "Too many wrong PINs, close and re-open to try again": "Te veel foute pincodes, sluit en open opnieuw",
++  "Album updated": "Album bijgewerkt",
++  "Game": "Game",
++  "Shows only the captures taken in one game.": "Toont alleen de opnames uit één game.",
++  "Looks for captures taken, or deleted, since this menu was opened.": "Zoekt naar opnames die zijn gemaakt of verwijderd sinds dit menu is geopend.",
++  "Require PIN": "Pincode vereisen",
++  "album_web_pin_info": [
++    "Als dit aanstaat, vraagt het bekijken van het album op een telefoon om de pincode die op de console staat.\n",
++    "Staat dit uit, dan kan iedereen in hetzelfde netwerk het album openen zolang het gedeeld wordt."
++  ],
++  "Album share PIN": "Pincode voor albumdelen",
++  "Serves the album on this port.": "Deelt het album op deze poort.",
++  "Browse": "Bladeren",
++  "Starts the server and shows the address and the QR code.": "Start de server en toont het adres en de QR-code.",
++  "Ownfoil": "Ownfoil",
++  "Browse and install titles from a self-hosted Ownfoil server.\n\nInternet connection required.": [
++    "Blader door titels en installeer ze vanaf een zelfgehoste Ownfoil-server.\n\nInternetverbinding vereist."
++  ],
++  "No Ownfoil servers saved.\n\nPress X to add one by hand, or search the network below.": [
++    "Geen Ownfoil-servers opgeslagen.\n\nDruk op X om er handmatig een toe te voegen of zoek hieronder op het netwerk."
++  ],
++  "Full screen": "Volledig scherm",
++  "Change the options every install on this console uses.": "Wijzig de opties die voor elke installatie op deze console worden gebruikt.",
++  "Which of the versions the shop holds to install.": "Kies welke versie uit de shop moet worden geïnstalleerd.",
++  "Add-on content": "Aanvullende content",
++  "Download and install what is chosen above.": "Download en installeer wat hierboven is geselecteerd.",
++  "This add-on is already installed.": "Deze aanvullende content is al geïnstalleerd.",
++  "Nothing to install: the console already has this version or a newer one, and no add-on is ticked. An older update can be installed by turning on Allow downgrade in Install options.": [
++    "Niets te installeren: de console heeft deze versie of een nieuwere al en er is geen aanvullende content geselecteerd. Een oudere update kan worden geïnstalleerd door Downgrade toestaan in de installatieopties in te schakelen."
++  ],
++  "The shop didn't say how to download this": "De shop heeft niet aangegeven hoe dit moet worden gedownload",
++  "Downgrade": "Downgrade",
++  "Show": "Tonen",
++  "Connecting to ": "Verbinden met ",
++  "Local": "Lokaal",
++  "Remote": "Extern",
++  "Searching the network...": "Netwerk doorzoeken...",
++  "Discover local servers": "Lokale servers zoeken",
++  "This shop is public. Set up a login anyway?": "Deze shop is openbaar. Toch een aanmelding instellen?",
++  "This shop is private. Set up a login now?": "Deze shop is privé. Nu een aanmelding instellen?",
++  ": connected via remote address": ": verbonden via extern adres",
++  ": connected via local network": ": verbonden via lokaal netwerk",
++  "This account has no shop access": "Dit account heeft geen toegang tot de shop",
++  "Page %ld / %ld": "Pagina %ld / %ld",
++  "%ld titles": "%ld titels",
++  "Name or id": "Naam of ID",
++  "Add server": "Server toevoegen",
++  "Add a server by hand, for one the network search can't reach.": "Voeg handmatig een server toe die niet via de netwerkzoekfunctie kan worden gevonden.",
++  "Edit server": "Server bewerken",
++  "Change the selected server's name, addresses or login.": "Wijzig de naam, adressen of aanmeldgegevens van de geselecteerde server.",
++  "Delete server": "Server verwijderen",
++  "Forget the selected server.": "Verwijder de geselecteerde server.",
++  "Banner": "Banner",
++  "Detail": "Details",
++  "Change how titles are shown. Also cycled with -.": "Wijzig hoe titels worden weergegeven. Kan ook met - worden gewisseld.",
++  "Per page": "Per pagina",
++  "How many titles the shop sends per page. Fewer is quicker to open.": [
++    "Hoeveel titels de shop per pagina verstuurt. Minder titels laden sneller."
++  ],
++  "What the shop orders the catalog by.": "Bepaalt waarop de shop de catalogus sorteert.",
++  "Which way that order runs.": "Bepaalt de sorteerrichting.",
++  "Servers list": "Serverlijst",
++  "Return to the server list.": "Terug naar de serverlijst.",
++  "Clear cache": "Cache wissen",
++  "Remove all cached artwork from the SD card?": "Alle gecachte afbeeldingen van de SD-kaart verwijderen?",
++  "Failed to clear the cache": "Cache kon niet worden gewist",
++  "Cache cleared": "Cache gewist",
++  "Remove all cached shop artwork from the SD card.": "Verwijder alle gecachte shopafbeeldingen van de SD-kaart.",
++  "Delete ": "Verwijderen ",
++  "Could not parse the server's response": "De serverreactie kon niet worden verwerkt",
++  "This does not look like an Ownfoil server": "Dit lijkt geen Ownfoil-server te zijn",
++  "Could not reach the server": "De server kon niet worden bereikt",
++  "Incorrect username or password": "Onjuiste gebruikersnaam of wachtwoord",
++  "Server returned an error": "De server heeft een fout geretourneerd",
++  "The server rejected the request": "De server heeft het verzoek geweigerd",
++  "Unexpected response from the server": "Onverwachte reactie van de server",
++  "The shop has no details for this title": "De shop heeft geen details voor deze titel",
++  "Ownfoil Server": "Ownfoil-server",
++  "Set the display name of the server.\n\nReplaced by the name the server reports once it has been connected to.": [
++    "Stel de weergavenaam van de server in.\n\nNa verbinding wordt deze vervangen door de naam die de server doorgeeft."
++  ],
++  "Local address": "Lokaal adres",
++  "Address used to reach the server on the local network, e.g. 192.168.1.50:8465.\n\nAt least one of Local address or Remote address must be set.": [
++    "Adres waarmee de server via het lokale netwerk wordt bereikt, bijv. 192.168.1.50:8465.\n\nEr moet minstens een lokaal of extern adres worden ingesteld."
++  ],
++  "Remote address": "Extern adres",
++  "Address used to reach the server remotely, e.g. myshop.example.com.\n\nAt least one of Local address or Remote address must be set.": [
++    "Adres waarmee de server op afstand wordt bereikt, bijv. myshop.example.com.\n\nEr moet minstens een lokaal of extern adres worden ingesteld."
++  ],
++  "Optional: username used to log in to the server.": "Optioneel: gebruikersnaam om bij de server aan te melden.",
++  "Optional: password used to log in to the server.": "Optioneel: wachtwoord om bij de server aan te melden.",
++  "Ownfoil server saved.": "Ownfoil-server opgeslagen.",
++  "Saves the Ownfoil server entry.": "Slaat de Ownfoil-serververmelding op.",
++  "Name and at least one of Local/Remote address must be set!": "Naam en minstens één lokaal of extern adres moeten worden ingesteld!"
+ }
 diff --git a/assets/romfs/i18n/pt.json b/assets/romfs/i18n/pt.json
-index e5d3bcd..a8efdc0 100644
+index e5d3bcd..d1c2e89 100644
 --- a/assets/romfs/i18n/pt.json
 +++ b/assets/romfs/i18n/pt.json
-@@ -160,6 +160,7 @@
-   "Change the export options.": "Altere as opções de exportação.",
+@@ -161,6 +161,8 @@
    "Install Options": "Opções de instalação",
    "System memory": "Memória do console",
-+  "Nand memory": "NAND",
    "microSD card": "Cartão microSD",
++  "eMMC": "eMMC",
++  "emuMMC": "emuMMC",
    "Data Management": "Gerenciamento de dados",
    "Storage": "Armazenamento",
-@@ -254,8 +255,9 @@
+   "Storage Options": "Opções de armazenamento",
+@@ -254,8 +256,9 @@
      "Recomenda-se mantê-lo desativado."
    ],
    "Export Options": "Opções de exportação",
@@ -1297,11 +2331,11 @@ index e5d3bcd..a8efdc0 100644
 -  "fix_export_filenames_info": "Usa o título em inglês nos arquivos exportados e recorre ao ID do título quando ele não está disponível. Desative esta opção para preservar títulos localizados e Unicode em destinos compatíveis.",
 +  "Export path": "Caminho de exportação",
 +  "Enter export path...": "Introduza o caminho de exportação...",
-+  "dump_path_info": "Define a pasta base utilizada para exportações.\nPor exemplo: /backup/dumps\n\nTodos os ficheiros exportados serão guardados nesta pasta.",
++  "dump_path_info": "Define a pasta base utilizada para exportações.\nPor exemplo: /dumps\n\nTodos os ficheiros exportados serão guardados nesta pasta.",
    "Created nested folder": "Criar pastas aninhadas",
    "game_folder_info": [
      "Cria uma pasta usando o nome do jogo.",
-@@ -425,11 +427,20 @@
+@@ -425,11 +428,20 @@
      "Os dispositivos conectados podem ser usados ​​no FileBrowser, bem como um local de backup ao despejar jogos e salvar."
    ],
    "HDD write protect": "HDD proteção contra gravação",
@@ -1323,7 +2357,7 @@ index e5d3bcd..a8efdc0 100644
    "USB export to PC (usb_export.py)": "Exportação USB para PC (usb_export.py)",
    "USB transfer (Switch 2 Switch)": "Transferência via USB (Switch 2 Switch)",
    "/dev/null (Speed Test)": "/dev/null (teste de velocidade)",
-@@ -584,8 +595,10 @@
+@@ -584,8 +596,10 @@
    "Video Capture": "Captura de vídeo",
    "Profile Selection": "Seleção de perfil",
    "Create Forwarder": "Criar forwarder",
@@ -1335,10 +2369,14 @@ index e5d3bcd..a8efdc0 100644
    "The title and icon must be non-empty!": "O título e o ícone não devem estar vazios!",
    "Name": "Nome",
    "Set the name of the application": "Defina o nome do aplicativo",
-@@ -966,6 +979,11 @@
+@@ -966,6 +980,15 @@
      "Veja os dados salvos de cada usuário. Você pode fazer backup e restaurar salvamentos.\n",
      "É possível suporte experimental para backup de salvamentos do sistema."
    ],
++  "Browse the screenshots and clips saved on the console. Captures can be viewed and deleted from here.": [
++    "Navegue pelas capturas de ecrã e pelos clipes guardados na consola.\n",
++    "Aqui, pode ver e eliminar as capturas."
++  ],
 +  "Download themes from themezer.net. Themes are downloaded to /themes/sphaira\nTo install the themes, NXThemesInstaller needs to be installed (can be downloaded via the AppStore).": [
 +    "Transfere temas de themezer.net. ",
 +    "Os temas são transferidos para /themes/sphaira.",
@@ -1347,19 +2385,143 @@ index e5d3bcd..a8efdc0 100644
    "Download releases directly from GitHub. Custom entries can be added to /config/sphaira/github": [
      "Baixe lançamentos diretamente de GitHub. Entradas personalizadas podem ser ",
      "adicionado a /config/sphaira/github"
+@@ -1195,5 +1218,121 @@
+   "Homebrew search path removed.": "Caminho de pesquisa Homebrew removido.",
+   "Failed to add Homebrew search path": "Não foi possível adicionar o caminho de pesquisa Homebrew",
+   "Failed to remove Homebrew search path": "Não foi possível remover o caminho de pesquisa Homebrew",
+-  "Screen Off": "Desligar tela"
++  "Screen Off": "Desligar tela",
++  "View": "Ver",
++  "Album Options": "Opções do álbum",
++  "Date": "Data",
++  "Screenshot": "Captura de tela",
++  "Video": "Vídeo",
++  "Videos": "Vídeos",
++  "Video playback is not supported": "A reprodução de vídeo não é suportada",
++  "Failed to open the album": "Falha ao abrir o álbum",
++  "Failed to delete one or more files": "Falha ao apagar um ou mais arquivos",
++  "Delete %zd file(s)?": "Apagar %zd arquivo(s)?",
++  "Permanently deletes the selected capture(s).": "Apaga permanentemente as capturas selecionadas.",
++  "Browse from phone": "Navegar pelo celular",
++  "Serves the album over the network, so that it can be browsed from a phone.": "Compartilha o álbum na rede para que ele possa ser visto pelo celular.",
++  "The album is only shared whilst this screen is open.": "O álbum só é compartilhado enquanto esta tela estiver aberta.",
++  "Open this address on a phone or PC": "Abra este endereço em um celular ou PC",
++  "PIN": "PIN",
++  "Requests": "Requisições",
++  "Waiting for a connection": "Aguardando uma conexão",
++  "No network connection": "Sem conexão de rede",
++  "Failed to start the server": "Falha ao iniciar o servidor",
++  "Something else may already be using the port.": "Algo mais pode já estar usando a porta.",
++  "Scan to open the album": "Escaneie para abrir o álbum",
++  "Too many wrong PINs, close and re-open to try again": "PINs incorretos demais, feche e abra novamente",
++  "Album updated": "Álbum atualizado",
++  "Game": "Jogo",
++  "Shows only the captures taken in one game.": "Mostra apenas as capturas feitas em um jogo.",
++  "Looks for captures taken, or deleted, since this menu was opened.": "Procura por capturas feitas ou apagadas desde que este menu foi aberto.",
++  "Require PIN": "Exigir PIN",
++  "album_web_pin_info": [
++    "Se ativado, navegar pelo álbum no celular pede o PIN mostrado no console.\n",
++    "Deixando desativado, qualquer pessoa na mesma rede pode abrir o álbum enquanto ele está sendo compartilhado."
++  ],
++  "Album share PIN": "PIN do compartilhamento do álbum",
++  "Serves the album on this port.": "Compartilha o álbum nesta porta.",
++  "Browse": "Navegar",
++  "Starts the server and shows the address and the QR code.": "Inicia o servidor e mostra o endereço e o código QR.",
++  "Ownfoil": "Ownfoil",
++  "Browse and install titles from a self-hosted Ownfoil server.\n\nInternet connection required.": [
++    "Navegue e instale títulos a partir de um servidor Ownfoil autoalojado.\n\nÉ necessária uma ligação à Internet."
++  ],
++  "No Ownfoil servers saved.\n\nPress X to add one by hand, or search the network below.": [
++    "Não existem servidores Ownfoil guardados.\n\nPrima X para adicionar um manualmente ou pesquise a rede abaixo."
++  ],
++  "Full screen": "Ecrã inteiro",
++  "Change the options every install on this console uses.": "Altere as opções utilizadas em todas as instalações nesta consola.",
++  "Which of the versions the shop holds to install.": "Escolha qual das versões disponíveis na loja instalar.",
++  "Add-on content": "Conteúdo adicional",
++  "Download and install what is chosen above.": "Transfira e instale o que foi selecionado acima.",
++  "This add-on is already installed.": "Este conteúdo adicional já está instalado.",
++  "Nothing to install: the console already has this version or a newer one, and no add-on is ticked. An older update can be installed by turning on Allow downgrade in Install options.": [
++    "Nada para instalar: a consola já possui esta versão ou uma mais recente e não foi selecionado nenhum conteúdo adicional. Pode instalar uma atualização mais antiga ativando Permitir downgrade nas opções de instalação."
++  ],
++  "The shop didn't say how to download this": "A loja não indicou como transferir este conteúdo",
++  "Downgrade": "Downgrade",
++  "Show": "Mostrar",
++  "Connecting to ": "A ligar a ",
++  "Local": "Local",
++  "Remote": "Remoto",
++  "Searching the network...": "A pesquisar na rede...",
++  "Discover local servers": "Procurar servidores locais",
++  "This shop is public. Set up a login anyway?": "Esta loja é pública. Configurar um início de sessão mesmo assim?",
++  "This shop is private. Set up a login now?": "Esta loja é privada. Configurar um início de sessão agora?",
++  ": connected via remote address": ": ligado através do endereço remoto",
++  ": connected via local network": ": ligado através da rede local",
++  "This account has no shop access": "Esta conta não tem acesso à loja",
++  "Page %ld / %ld": "Página %ld / %ld",
++  "%ld titles": "%ld títulos",
++  "Name or id": "Nome ou ID",
++  "Add server": "Adicionar servidor",
++  "Add a server by hand, for one the network search can't reach.": "Adicione manualmente um servidor que a pesquisa de rede não consegue alcançar.",
++  "Edit server": "Editar servidor",
++  "Change the selected server's name, addresses or login.": "Altere o nome, os endereços ou os dados de início de sessão do servidor selecionado.",
++  "Delete server": "Eliminar servidor",
++  "Forget the selected server.": "Remova o servidor selecionado.",
++  "Banner": "Banner",
++  "Detail": "Detalhes",
++  "Change how titles are shown. Also cycled with -.": "Altere a forma como os títulos são apresentados. Também pode alternar com -.",
++  "Per page": "Por página",
++  "How many titles the shop sends per page. Fewer is quicker to open.": [
++    "Número de títulos enviados pela loja por página. Menos títulos tornam a abertura mais rápida."
++  ],
++  "What the shop orders the catalog by.": "Define o critério utilizado pela loja para ordenar o catálogo.",
++  "Which way that order runs.": "Define a direção da ordenação.",
++  "Servers list": "Lista de servidores",
++  "Return to the server list.": "Voltar à lista de servidores.",
++  "Clear cache": "Limpar cache",
++  "Remove all cached artwork from the SD card?": "Remover todas as imagens em cache do cartão SD?",
++  "Failed to clear the cache": "Não foi possível limpar a cache",
++  "Cache cleared": "Cache limpa",
++  "Remove all cached shop artwork from the SD card.": "Remove todas as imagens da loja em cache do cartão SD.",
++  "Delete ": "Eliminar ",
++  "Could not parse the server's response": "Não foi possível processar a resposta do servidor",
++  "This does not look like an Ownfoil server": "Este não parece ser um servidor Ownfoil",
++  "Could not reach the server": "Não foi possível aceder ao servidor",
++  "Incorrect username or password": "Nome de utilizador ou palavra-passe incorretos",
++  "Server returned an error": "O servidor devolveu um erro",
++  "The server rejected the request": "O servidor rejeitou o pedido",
++  "Unexpected response from the server": "Resposta inesperada do servidor",
++  "The shop has no details for this title": "A loja não possui detalhes sobre este título",
++  "Ownfoil Server": "Servidor Ownfoil",
++  "Set the display name of the server.\n\nReplaced by the name the server reports once it has been connected to.": [
++    "Defina o nome de apresentação do servidor.\n\nDepois da ligação, será substituído pelo nome comunicado pelo servidor."
++  ],
++  "Local address": "Endereço local",
++  "Address used to reach the server on the local network, e.g. 192.168.1.50:8465.\n\nAt least one of Local address or Remote address must be set.": [
++    "Endereço utilizado para aceder ao servidor na rede local, por exemplo 192.168.1.50:8465.\n\nÉ necessário definir pelo menos um endereço local ou remoto."
++  ],
++  "Remote address": "Endereço remoto",
++  "Address used to reach the server remotely, e.g. myshop.example.com.\n\nAt least one of Local address or Remote address must be set.": [
++    "Endereço utilizado para aceder remotamente ao servidor, por exemplo myshop.example.com.\n\nÉ necessário definir pelo menos um endereço local ou remoto."
++  ],
++  "Optional: username used to log in to the server.": "Opcional: nome de utilizador utilizado para iniciar sessão no servidor.",
++  "Optional: password used to log in to the server.": "Opcional: palavra-passe utilizada para iniciar sessão no servidor.",
++  "Ownfoil server saved.": "Servidor Ownfoil guardado.",
++  "Saves the Ownfoil server entry.": "Guarda a entrada do servidor Ownfoil.",
++  "Name and at least one of Local/Remote address must be set!": "O nome e pelo menos um endereço local ou remoto têm de ser definidos!"
+ }
 diff --git a/assets/romfs/i18n/ru.json b/assets/romfs/i18n/ru.json
-index 9b17313..ba9abb6 100644
+index 9b17313..003f2d8 100644
 --- a/assets/romfs/i18n/ru.json
 +++ b/assets/romfs/i18n/ru.json
-@@ -160,6 +160,7 @@
-   "Change the export options.": "Измените параметры экспорта.",
+@@ -161,6 +161,8 @@
    "Install Options": "Опции установки",
    "System memory": "NAND",
-+  "Nand memory": "NAND",
    "microSD card": "microSD",
++  "eMMC": "eMMC",
++  "emuMMC": "emuMMC",
    "Data Management": "Управление данными",
    "Storage": "Хранилище",
-@@ -254,8 +255,9 @@
+   "Storage Options": "Настройки хранилища",
+@@ -254,8 +256,9 @@
      "Рекомендуется оставить эту функцию отключенной."
    ],
    "Export Options": "Параметры экспорта",
@@ -1367,11 +2529,11 @@ index 9b17313..ba9abb6 100644
 -  "fix_export_filenames_info": "Использует английское название для экспортируемых файлов, а при его отсутствии — ID игры. Отключите эту опцию, чтобы сохранить локализованные названия и Unicode на поддерживаемых устройствах.",
 +  "Export path": "Путь экспорта",
 +  "Enter export path...": "Введите путь экспорта...",
-+  "dump_path_info": "Задаёт базовую папку для экспорта.\nНапример: /backup/dumps\n\nВсе экспортированные файлы будут сохранены в этой папке.",
++  "dump_path_info": "Задаёт базовую папку для экспорта.\nНапример: /dumps\n\nВсе экспортированные файлы будут сохранены в этой папке.",
    "Created nested folder": "Создать вложенную папку",
    "game_folder_info": [
      "Создает папку с названием игры.",
-@@ -426,11 +428,20 @@
+@@ -426,11 +429,20 @@
      "Подключенные устройства можно использовать в FileBrowser, а также в качестве резервного хранилища при сбросе игр и сохранений."
    ],
    "HDD write protect": "HDD защита от записи",
@@ -1393,7 +2555,7 @@ index 9b17313..ba9abb6 100644
    "USB export to PC (usb_export.py)": "USB экспорт на ПК (usb_export.py)",
    "USB transfer (Switch 2 Switch)": "Передача по USB (Switch 2 Switch)",
    "/dev/null (Speed Test)": "/dev/null (тест скорости)",
-@@ -587,6 +598,8 @@
+@@ -587,6 +599,8 @@
    "Create Forwarder": "Создать форвардер",
    "36-bit (Default)": "36-битный (по умолчанию)",
    "39-bit": "39-битный",
@@ -1402,10 +2564,14 @@ index 9b17313..ba9abb6 100644
    "The title and icon must be non-empty!": "Заголовок и иконка должны быть непустыми!",
    "Name": "Имя",
    "Set the name of the application": "Установите имя приложения",
-@@ -967,6 +980,11 @@
+@@ -967,6 +981,15 @@
      "Просмотр данных сохранения для каждого пользователя. Вы можете создавать резервные копии и восстанавливать сохранения.\n",
      "Возможна экспериментальная поддержка резервного копирования системных сохранений."
    ],
++  "Browse the screenshots and clips saved on the console. Captures can be viewed and deleted from here.": [
++    "Просматривайте снимки экрана и видеоклипы, сохранённые на консоли.\n",
++    "Здесь можно просматривать и удалять записи."
++  ],
 +  "Download themes from themezer.net. Themes are downloaded to /themes/sphaira\nTo install the themes, NXThemesInstaller needs to be installed (can be downloaded via the AppStore).": [
 +    "Загружайте темы с themezer.net. ",
 +    "Темы загружаются в /themes/sphaira.",
@@ -1414,19 +2580,143 @@ index 9b17313..ba9abb6 100644
    "Download releases directly from GitHub. Custom entries can be added to /config/sphaira/github": [
      "Загружает релизы напрямую с GitHub. Пользовательские записи можно добавить в каталог /config/sphaira/github"
    ],
+@@ -1195,5 +1218,121 @@
+   "Homebrew search path removed.": "Путь поиска Homebrew удалён.",
+   "Failed to add Homebrew search path": "Не удалось добавить путь поиска Homebrew",
+   "Failed to remove Homebrew search path": "Не удалось удалить путь поиска Homebrew",
+-  "Screen Off": "Выключить экран"
++  "Screen Off": "Выключить экран",
++  "View": "Просмотр",
++  "Album Options": "Опции альбома",
++  "Date": "По дате",
++  "Screenshot": "Скриншот",
++  "Video": "Видео",
++  "Videos": "Видео",
++  "Video playback is not supported": "Воспроизведение видео не поддерживается",
++  "Failed to open the album": "Не удалось открыть альбом",
++  "Failed to delete one or more files": "Не удалось удалить один или несколько файлов",
++  "Delete %zd file(s)?": "Удалить %zd файл(ов)?",
++  "Permanently deletes the selected capture(s).": "Безвозвратно удаляет выбранные снимки.",
++  "Browse from phone": "Просмотр с телефона",
++  "Serves the album over the network, so that it can be browsed from a phone.": "Открывает доступ к альбому по сети, чтобы просматривать его с телефона.",
++  "The album is only shared whilst this screen is open.": "Альбом доступен только пока открыт этот экран.",
++  "Open this address on a phone or PC": "Откройте этот адрес на телефоне или ПК",
++  "PIN": "PIN-код",
++  "Requests": "Запросы",
++  "Waiting for a connection": "Ожидание подключения",
++  "No network connection": "Нет подключения к сети",
++  "Failed to start the server": "Не удалось запустить сервер",
++  "Something else may already be using the port.": "Возможно, порт уже занят.",
++  "Scan to open the album": "Отсканируйте, чтобы открыть альбом",
++  "Too many wrong PINs, close and re-open to try again": "Слишком много неверных PIN-кодов, закройте и откройте снова",
++  "Album updated": "Альбом обновлён",
++  "Game": "Игра",
++  "Shows only the captures taken in one game.": "Показывает только снимки из одной игры.",
++  "Looks for captures taken, or deleted, since this menu was opened.": "Ищет снимки, сделанные или удалённые с момента открытия меню.",
++  "Require PIN": "Запрашивать PIN-код",
++  "album_web_pin_info": [
++    "Если включено, для просмотра альбома с телефона потребуется PIN-код, показанный на консоли.\n",
++    "Если оставить выключенным, альбом сможет открыть любой в той же сети, пока он открыт для доступа."
++  ],
++  "Album share PIN": "PIN-код для доступа к альбому",
++  "Serves the album on this port.": "Открывает доступ к альбому на этом порту.",
++  "Browse": "Обзор",
++  "Starts the server and shows the address and the QR code.": "Запускает сервер и показывает адрес и QR-код.",
++  "Ownfoil": "Ownfoil",
++  "Browse and install titles from a self-hosted Ownfoil server.\n\nInternet connection required.": [
++    "Просматривайте и устанавливайте игры с собственного сервера Ownfoil.\n\nТребуется подключение к Интернету."
++  ],
++  "No Ownfoil servers saved.\n\nPress X to add one by hand, or search the network below.": [
++    "Нет сохранённых серверов Ownfoil.\n\nНажмите X, чтобы добавить сервер вручную, или выполните поиск в сети ниже."
++  ],
++  "Full screen": "Полный экран",
++  "Change the options every install on this console uses.": "Измените параметры, используемые при каждой установке на этой консоли.",
++  "Which of the versions the shop holds to install.": "Выберите версию из доступных в магазине для установки.",
++  "Add-on content": "Дополнительный контент",
++  "Download and install what is chosen above.": "Загрузить и установить выбранное выше.",
++  "This add-on is already installed.": "Этот дополнительный контент уже установлен.",
++  "Nothing to install: the console already has this version or a newer one, and no add-on is ticked. An older update can be installed by turning on Allow downgrade in Install options.": [
++    "Нечего устанавливать: на консоли уже установлена эта или более новая версия, а дополнительный контент не выбран. Более старое обновление можно установить, включив «Разрешить понижение версии» в параметрах установки."
++  ],
++  "The shop didn't say how to download this": "Магазин не указал способ загрузки",
++  "Downgrade": "Понижение версии",
++  "Show": "Показать",
++  "Connecting to ": "Подключение к ",
++  "Local": "Локальный",
++  "Remote": "Удалённый",
++  "Searching the network...": "Поиск в сети...",
++  "Discover local servers": "Найти локальные серверы",
++  "This shop is public. Set up a login anyway?": "Этот магазин общедоступный. Всё равно настроить вход?",
++  "This shop is private. Set up a login now?": "Этот магазин закрытый. Настроить вход сейчас?",
++  ": connected via remote address": ": подключено через удалённый адрес",
++  ": connected via local network": ": подключено через локальную сеть",
++  "This account has no shop access": "У этой учётной записи нет доступа к магазину",
++  "Page %ld / %ld": "Страница %ld / %ld",
++  "%ld titles": "%ld игр",
++  "Name or id": "Имя или ID",
++  "Add server": "Добавить сервер",
++  "Add a server by hand, for one the network search can't reach.": "Добавьте вручную сервер, который не удаётся найти через поиск в сети.",
++  "Edit server": "Изменить сервер",
++  "Change the selected server's name, addresses or login.": "Измените имя, адреса или данные входа выбранного сервера.",
++  "Delete server": "Удалить сервер",
++  "Forget the selected server.": "Удалить выбранный сервер из списка.",
++  "Banner": "Баннер",
++  "Detail": "Подробно",
++  "Change how titles are shown. Also cycled with -.": "Измените способ отображения игр. Также переключается кнопкой -.",
++  "Per page": "На странице",
++  "How many titles the shop sends per page. Fewer is quicker to open.": [
++    "Количество игр, отправляемых магазином на одной странице. Чем меньше, тем быстрее загрузка."
++  ],
++  "What the shop orders the catalog by.": "Параметр сортировки каталога магазином.",
++  "Which way that order runs.": "Направление сортировки.",
++  "Servers list": "Список серверов",
++  "Return to the server list.": "Вернуться к списку серверов.",
++  "Clear cache": "Очистить кэш",
++  "Remove all cached artwork from the SD card?": "Удалить все кэшированные изображения с SD-карты?",
++  "Failed to clear the cache": "Не удалось очистить кэш",
++  "Cache cleared": "Кэш очищен",
++  "Remove all cached shop artwork from the SD card.": "Удалить все кэшированные изображения магазина с SD-карты.",
++  "Delete ": "Удалить ",
++  "Could not parse the server's response": "Не удалось обработать ответ сервера",
++  "This does not look like an Ownfoil server": "Похоже, это не сервер Ownfoil",
++  "Could not reach the server": "Не удалось подключиться к серверу",
++  "Incorrect username or password": "Неверное имя пользователя или пароль",
++  "Server returned an error": "Сервер вернул ошибку",
++  "The server rejected the request": "Сервер отклонил запрос",
++  "Unexpected response from the server": "Неожиданный ответ сервера",
++  "The shop has no details for this title": "В магазине нет сведений об этой игре",
++  "Ownfoil Server": "Сервер Ownfoil",
++  "Set the display name of the server.\n\nReplaced by the name the server reports once it has been connected to.": [
++    "Задайте отображаемое имя сервера.\n\nПосле подключения оно будет заменено именем, указанным сервером."
++  ],
++  "Local address": "Локальный адрес",
++  "Address used to reach the server on the local network, e.g. 192.168.1.50:8465.\n\nAt least one of Local address or Remote address must be set.": [
++    "Адрес для подключения к серверу в локальной сети, например 192.168.1.50:8465.\n\nНеобходимо указать хотя бы локальный или удалённый адрес."
++  ],
++  "Remote address": "Удалённый адрес",
++  "Address used to reach the server remotely, e.g. myshop.example.com.\n\nAt least one of Local address or Remote address must be set.": [
++    "Адрес для удалённого подключения к серверу, например myshop.example.com.\n\nНеобходимо указать хотя бы локальный или удалённый адрес."
++  ],
++  "Optional: username used to log in to the server.": "Необязательно: имя пользователя для входа на сервер.",
++  "Optional: password used to log in to the server.": "Необязательно: пароль для входа на сервер.",
++  "Ownfoil server saved.": "Сервер Ownfoil сохранён.",
++  "Saves the Ownfoil server entry.": "Сохраняет запись сервера Ownfoil.",
++  "Name and at least one of Local/Remote address must be set!": "Необходимо указать имя и хотя бы локальный или удалённый адрес!"
+ }
 diff --git a/assets/romfs/i18n/se.json b/assets/romfs/i18n/se.json
-index 59ce85e..1ef5d70 100644
+index 59ce85e..f27c9b3 100644
 --- a/assets/romfs/i18n/se.json
 +++ b/assets/romfs/i18n/se.json
-@@ -160,6 +160,7 @@
-   "Change the export options.": "Ändra exportalternativen.",
+@@ -161,6 +161,8 @@
    "Install Options": "Installationsalternativ",
    "System memory": "Systemminne",
-+  "Nand memory": "NAND",
    "microSD card": "microSD-kort",
++  "eMMC": "eMMC",
++  "emuMMC": "emuMMC",
    "Data Management": "Datahantering",
    "Storage": "Lagring",
-@@ -254,8 +255,9 @@
+   "Storage Options": "Lagringsalternativ",
+@@ -254,8 +256,9 @@
      "Det rekommenderas att hålla detta inaktiverat."
    ],
    "Export Options": "Exportalternativ",
@@ -1434,11 +2724,11 @@ index 59ce85e..1ef5d70 100644
 -  "fix_export_filenames_info": "Använder den engelska titeln för exportfilnamn och använder titel-ID om den saknas. Inaktivera detta för att behålla lokaliserade titlar och Unicode på mål som stöder dem.",
 +  "Export path": "Exportsökväg",
 +  "Enter export path...": "Ange exportsökväg...",
-+  "dump_path_info": "Anger basmappen som används för exporter.\nTill exempel: /backup/dumps\n\nAlla exporterade filer sparas i den här mappen.",
++  "dump_path_info": "Anger basmappen som används för exporter.\nTill exempel: /dumps\n\nAlla exporterade filer sparas i den här mappen.",
    "Created nested folder": "Skapat kapslad mapp",
    "game_folder_info": [
      "Skapar en mapp med namnet på spelet.",
-@@ -425,11 +427,20 @@
+@@ -425,11 +428,20 @@
      "Anslutna enheter kan användas i FileBrowser, såväl som en säkerhetskopia när du dumpar spel och sparar."
    ],
    "HDD write protect": "HDD skrivskydd",
@@ -1460,7 +2750,7 @@ index 59ce85e..1ef5d70 100644
    "USB export to PC (usb_export.py)": "USB export till PC (usb_export.py)",
    "USB transfer (Switch 2 Switch)": "USB överföring (Switch 2 Switch)",
    "/dev/null (Speed Test)": "/dev/null (Hastighetstest)",
-@@ -584,8 +595,10 @@
+@@ -584,8 +596,10 @@
    "Video Capture": "Videoinspelning",
    "Profile Selection": "Profilval",
    "Create Forwarder": "Skapa forwarder",
@@ -1472,10 +2762,14 @@ index 59ce85e..1ef5d70 100644
    "The title and icon must be non-empty!": "Titeln och ikonen måste vara tomma!",
    "Name": "Namn",
    "Set the name of the application": "Ange namnet på programmet",
-@@ -968,6 +981,11 @@
+@@ -968,6 +982,15 @@
      "Visa sparadata för varje användare. Du kan säkerhetskopiera och återställa sparade filer.\n",
      "Experimentellt stöd för säkerhetskopiering av systembesparingar är möjligt."
    ],
++  "Browse the screenshots and clips saved on the console. Captures can be viewed and deleted from here.": [
++    "Bläddra bland skärmbilder och videoklipp som sparats på konsolen.\n",
++    "Här kan du visa och radera inspelningar."
++  ],
 +  "Download themes from themezer.net. Themes are downloaded to /themes/sphaira\nTo install the themes, NXThemesInstaller needs to be installed (can be downloaded via the AppStore).": [
 +    "Ladda ner teman från themezer.net. ",
 +    "Teman laddas ner till /themes/sphaira.",
@@ -1484,19 +2778,143 @@ index 59ce85e..1ef5d70 100644
    "Download releases directly from GitHub. Custom entries can be added to /config/sphaira/github": [
      "Ladda ner versioner direkt från GitHub. Anpassade poster kan vara ",
      "läggs till /config/sphaira/github"
+@@ -1197,5 +1220,121 @@
+   "Homebrew search path removed.": "Homebrew-sökvägen har tagits bort.",
+   "Failed to add Homebrew search path": "Det gick inte att lägga till Homebrew-sökvägen",
+   "Failed to remove Homebrew search path": "Det gick inte att ta bort Homebrew-sökvägen",
+-  "Screen Off": "Skärm av"
++  "Screen Off": "Skärm av",
++  "View": "Visa",
++  "Album Options": "Albumalternativ",
++  "Date": "Datum",
++  "Screenshot": "Skärmdump",
++  "Video": "Video",
++  "Videos": "Videor",
++  "Video playback is not supported": "Videouppspelning stöds inte",
++  "Failed to open the album": "Det gick inte att öppna albumet",
++  "Failed to delete one or more files": "Det gick inte att radera en eller flera filer",
++  "Delete %zd file(s)?": "Radera %zd fil(er)?",
++  "Permanently deletes the selected capture(s).": "Raderar de valda bilderna permanent.",
++  "Browse from phone": "Bläddra från telefonen",
++  "Serves the album over the network, so that it can be browsed from a phone.": "Delar albumet över nätverket så att det kan bläddras från en telefon.",
++  "The album is only shared whilst this screen is open.": "Albumet delas bara medan den här skärmen är öppen.",
++  "Open this address on a phone or PC": "Öppna den här adressen på en telefon eller dator",
++  "PIN": "PIN-kod",
++  "Requests": "Förfrågningar",
++  "Waiting for a connection": "Väntar på en anslutning",
++  "No network connection": "Ingen nätverksanslutning",
++  "Failed to start the server": "Det gick inte att starta servern",
++  "Something else may already be using the port.": "Något annat kanske redan använder porten.",
++  "Scan to open the album": "Skanna för att öppna albumet",
++  "Too many wrong PINs, close and re-open to try again": "För många felaktiga PIN-koder, stäng och öppna igen",
++  "Album updated": "Albumet uppdaterat",
++  "Game": "Spel",
++  "Shows only the captures taken in one game.": "Visar bara bilder tagna i ett spel.",
++  "Looks for captures taken, or deleted, since this menu was opened.": "Söker efter bilder som tagits eller raderats sedan menyn öppnades.",
++  "Require PIN": "Kräv PIN-kod",
++  "album_web_pin_info": [
++    "Om detta är på frågar albumet efter PIN-koden som visas på konsolen när det bläddras från en telefon.\n",
++    "Om det är av kan vem som helst i samma nätverk öppna albumet medan det delas."
++  ],
++  "Album share PIN": "PIN-kod för albumdelning",
++  "Serves the album on this port.": "Delar albumet på den här porten.",
++  "Browse": "Bläddra",
++  "Starts the server and shows the address and the QR code.": "Startar servern och visar adressen och QR-koden.",
++  "Ownfoil": "Ownfoil",
++  "Browse and install titles from a self-hosted Ownfoil server.\n\nInternet connection required.": [
++    "Bläddra bland och installera titlar från en egenhostad Ownfoil-server.\n\nInternetanslutning krävs."
++  ],
++  "No Ownfoil servers saved.\n\nPress X to add one by hand, or search the network below.": [
++    "Inga Ownfoil-servrar har sparats.\n\nTryck på X för att lägga till en manuellt eller sök i nätverket nedan."
++  ],
++  "Full screen": "Helskärm",
++  "Change the options every install on this console uses.": "Ändra alternativen som används vid varje installation på den här konsolen.",
++  "Which of the versions the shop holds to install.": "Välj vilken av butikens tillgängliga versioner som ska installeras.",
++  "Add-on content": "Tilläggsinnehåll",
++  "Download and install what is chosen above.": "Ladda ner och installera det som valts ovan.",
++  "This add-on is already installed.": "Det här tilläggsinnehållet är redan installerat.",
++  "Nothing to install: the console already has this version or a newer one, and no add-on is ticked. An older update can be installed by turning on Allow downgrade in Install options.": [
++    "Inget att installera: konsolen har redan den här versionen eller en nyare, och inget tilläggsinnehåll har valts. En äldre uppdatering kan installeras genom att aktivera Tillåt nedgradering i installationsalternativen."
++  ],
++  "The shop didn't say how to download this": "Butiken angav inte hur detta ska laddas ner",
++  "Downgrade": "Nedgradering",
++  "Show": "Visa",
++  "Connecting to ": "Ansluter till ",
++  "Local": "Lokal",
++  "Remote": "Fjärr",
++  "Searching the network...": "Söker i nätverket...",
++  "Discover local servers": "Sök efter lokala servrar",
++  "This shop is public. Set up a login anyway?": "Den här butiken är offentlig. Vill du ändå konfigurera inloggning?",
++  "This shop is private. Set up a login now?": "Den här butiken är privat. Vill du konfigurera inloggning nu?",
++  ": connected via remote address": ": ansluten via fjärradress",
++  ": connected via local network": ": ansluten via lokalt nätverk",
++  "This account has no shop access": "Det här kontot har ingen åtkomst till butiken",
++  "Page %ld / %ld": "Sida %ld / %ld",
++  "%ld titles": "%ld titlar",
++  "Name or id": "Namn eller ID",
++  "Add server": "Lägg till server",
++  "Add a server by hand, for one the network search can't reach.": "Lägg till en server manuellt om nätverkssökningen inte kan hitta den.",
++  "Edit server": "Redigera server",
++  "Change the selected server's name, addresses or login.": "Ändra den valda serverns namn, adresser eller inloggning.",
++  "Delete server": "Ta bort server",
++  "Forget the selected server.": "Glöm den valda servern.",
++  "Banner": "Banner",
++  "Detail": "Detaljer",
++  "Change how titles are shown. Also cycled with -.": "Ändra hur titlar visas. Kan även växlas med -.",
++  "Per page": "Per sida",
++  "How many titles the shop sends per page. Fewer is quicker to open.": [
++    "Hur många titlar butiken skickar per sida. Färre titlar gör sidan snabbare att öppna."
++  ],
++  "What the shop orders the catalog by.": "Anger vad butiken sorterar katalogen efter.",
++  "Which way that order runs.": "Anger sorteringsriktningen.",
++  "Servers list": "Serverlista",
++  "Return to the server list.": "Återgå till serverlistan.",
++  "Clear cache": "Rensa cache",
++  "Remove all cached artwork from the SD card?": "Ta bort alla cachade bilder från SD-kortet?",
++  "Failed to clear the cache": "Det gick inte att rensa cachen",
++  "Cache cleared": "Cachen har rensats",
++  "Remove all cached shop artwork from the SD card.": "Ta bort alla cachade butiksbilder från SD-kortet.",
++  "Delete ": "Ta bort ",
++  "Could not parse the server's response": "Det gick inte att tolka serverns svar",
++  "This does not look like an Ownfoil server": "Det här verkar inte vara en Ownfoil-server",
++  "Could not reach the server": "Det gick inte att nå servern",
++  "Incorrect username or password": "Felaktigt användarnamn eller lösenord",
++  "Server returned an error": "Servern returnerade ett fel",
++  "The server rejected the request": "Servern avvisade begäran",
++  "Unexpected response from the server": "Oväntat svar från servern",
++  "The shop has no details for this title": "Butiken har inga detaljer om den här titeln",
++  "Ownfoil Server": "Ownfoil-server",
++  "Set the display name of the server.\n\nReplaced by the name the server reports once it has been connected to.": [
++    "Ange serverns visningsnamn.\n\nEfter anslutning ersätts det med namnet som servern rapporterar."
++  ],
++  "Local address": "Lokal adress",
++  "Address used to reach the server on the local network, e.g. 192.168.1.50:8465.\n\nAt least one of Local address or Remote address must be set.": [
++    "Adress som används för att nå servern på det lokala nätverket, t.ex. 192.168.1.50:8465.\n\nMinst en lokal adress eller fjärradress måste anges."
++  ],
++  "Remote address": "Fjärradress",
++  "Address used to reach the server remotely, e.g. myshop.example.com.\n\nAt least one of Local address or Remote address must be set.": [
++    "Adress som används för att nå servern på distans, t.ex. myshop.example.com.\n\nMinst en lokal adress eller fjärradress måste anges."
++  ],
++  "Optional: username used to log in to the server.": "Valfritt: användarnamn som används för att logga in på servern.",
++  "Optional: password used to log in to the server.": "Valfritt: lösenord som används för att logga in på servern.",
++  "Ownfoil server saved.": "Ownfoil-servern har sparats.",
++  "Saves the Ownfoil server entry.": "Sparar Ownfoil-serverposten.",
++  "Name and at least one of Local/Remote address must be set!": "Namn och minst en lokal adress eller fjärradress måste anges!"
+ }
 diff --git a/assets/romfs/i18n/uk.json b/assets/romfs/i18n/uk.json
-index e01f863..29a7425 100644
+index e01f863..54a15cc 100644
 --- a/assets/romfs/i18n/uk.json
 +++ b/assets/romfs/i18n/uk.json
-@@ -160,6 +160,7 @@
-   "Change the export options.": "Змініть параметри експорту.",
+@@ -161,6 +161,8 @@
    "Install Options": "Опції встановлення",
    "System memory": "NAND",
-+  "Nand memory": "NAND",
    "microSD card": "microSD",
++  "eMMC": "eMMC",
++  "emuMMC": "emuMMC",
    "Data Management": "Керування даними",
    "Storage": "Сховище",
-@@ -254,8 +255,9 @@
+   "Storage Options": "Параметри сховища",
+@@ -254,8 +256,9 @@
      "Рекомендовано залишати це вимкненим."
    ],
    "Export Options": "Параметри експорту",
@@ -1504,11 +2922,11 @@ index e01f863..29a7425 100644
 -  "fix_export_filenames_info": "Використовує англійську назву для експортованих файлів, а за її відсутності — ID гри. Вимкніть цю опцію, щоб зберегти локалізовані назви та Unicode на підтримуваних пристроях.",
 +  "Export path": "Шлях експорту",
 +  "Enter export path...": "Введіть шлях експорту...",
-+  "dump_path_info": "Встановлює базову папку для експорту.\nНаприклад: /backup/dumps\n\nУсі експортовані файли будуть збережені в цій папці.",
++  "dump_path_info": "Встановлює базову папку для експорту.\nНаприклад: /dumps\n\nУсі експортовані файли будуть збережені в цій папці.",
    "Created nested folder": "Створено вкладену теку",
    "game_folder_info": [
      "Створює папку з назвою гри.",
-@@ -425,11 +427,20 @@
+@@ -425,11 +428,20 @@
      "Connected devices can be used in the FileBrowser, as well as a backup location when dumping games and saves."
    ],
    "HDD write protect": "HDD захист від запису",
@@ -1530,7 +2948,7 @@ index e01f863..29a7425 100644
    "USB export to PC (usb_export.py)": "Експорт USB на ПК (usb_export.py)",
    "USB transfer (Switch 2 Switch)": "Передача USB (Switch <-> Switch)",
    "/dev/null (Speed Test)": "Тест швидкості (/dev/null)",
-@@ -586,6 +597,8 @@
+@@ -586,6 +598,8 @@
    "Create Forwarder": "Створити форвардер",
    "36-bit (Default)": "36-розрядний (за замовчуванням)",
    "39-bit": "39-розрядний",
@@ -1539,10 +2957,14 @@ index e01f863..29a7425 100644
    "The title and icon must be non-empty!": "Заголовок і значок повинні бути непорожніми!",
    "Name": "Ім'я",
    "Set the name of the application": "Встановіть назву програми",
-@@ -968,6 +981,11 @@
+@@ -968,6 +982,15 @@
      "Перегляньте дані збереження для кожного користувача. Ви можете створювати резервні копії та відновлювати збереження.\n",
      "Можлива експериментальна підтримка резервного копіювання збережених систем."
    ],
++  "Browse the screenshots and clips saved on the console. Captures can be viewed and deleted from here.": [
++    "Переглядайте знімки екрана та відеокліпи, збережені на консолі.\n",
++    "Тут можна переглядати й видаляти збережені матеріали."
++  ],
 +  "Download themes from themezer.net. Themes are downloaded to /themes/sphaira\nTo install the themes, NXThemesInstaller needs to be installed (can be downloaded via the AppStore).": [
 +    "Завантажуйте теми з themezer.net. ",
 +    "Теми завантажуються до /themes/sphaira.",
@@ -1551,19 +2973,143 @@ index e01f863..29a7425 100644
    "Download releases directly from GitHub. Custom entries can be added to /config/sphaira/github": [
      "Завантажуйте випуски безпосередньо з GitHub. Користувацькі записи можуть бути ",
      "додано до /config/sphaira/github"
+@@ -1197,5 +1220,121 @@
+   "Homebrew search path removed.": "Шлях пошуку Homebrew видалено.",
+   "Failed to add Homebrew search path": "Не вдалося додати шлях пошуку Homebrew",
+   "Failed to remove Homebrew search path": "Не вдалося видалити шлях пошуку Homebrew",
+-  "Screen Off": "Вимкнути екран"
++  "Screen Off": "Вимкнути екран",
++  "View": "Перегляд",
++  "Album Options": "Опції альбому",
++  "Date": "За датою",
++  "Screenshot": "Скріншот",
++  "Video": "Відео",
++  "Videos": "Відео",
++  "Video playback is not supported": "Відтворення відео не підтримується",
++  "Failed to open the album": "Не вдалося відкрити альбом",
++  "Failed to delete one or more files": "Не вдалося видалити один або кілька файлів",
++  "Delete %zd file(s)?": "Видалити %zd файл(ів)?",
++  "Permanently deletes the selected capture(s).": "Безповоротно видаляє вибрані знімки.",
++  "Browse from phone": "Перегляд із телефона",
++  "Serves the album over the network, so that it can be browsed from a phone.": "Відкриває доступ до альбому в мережі, щоб переглядати його з телефона.",
++  "The album is only shared whilst this screen is open.": "Альбом доступний лише поки відкрито цей екран.",
++  "Open this address on a phone or PC": "Відкрийте цю адресу на телефоні або ПК",
++  "PIN": "PIN-код",
++  "Requests": "Запити",
++  "Waiting for a connection": "Очікування підключення",
++  "No network connection": "Немає підключення до мережі",
++  "Failed to start the server": "Не вдалося запустити сервер",
++  "Something else may already be using the port.": "Можливо, порт уже зайнятий.",
++  "Scan to open the album": "Скануйте, щоб відкрити альбом",
++  "Too many wrong PINs, close and re-open to try again": "Забагато невірних PIN-кодів, закрийте та відкрийте знову",
++  "Album updated": "Альбом оновлено",
++  "Game": "Гра",
++  "Shows only the captures taken in one game.": "Показує лише знімки з однієї гри.",
++  "Looks for captures taken, or deleted, since this menu was opened.": "Шукає знімки, зроблені або видалені з моменту відкриття меню.",
++  "Require PIN": "Запитувати PIN-код",
++  "album_web_pin_info": [
++    "Якщо увімкнено, для перегляду альбому з телефона потрібно ввести PIN-код, показаний на консолі.\n",
++    "Якщо вимкнено, альбом зможе відкрити будь-хто в тій самій мережі, поки він у спільному доступі."
++  ],
++  "Album share PIN": "PIN-код для доступу до альбому",
++  "Serves the album on this port.": "Відкриває доступ до альбому на цьому порту.",
++  "Browse": "Огляд",
++  "Starts the server and shows the address and the QR code.": "Запускає сервер і показує адресу та QR-код.",
++  "Ownfoil": "Ownfoil",
++  "Browse and install titles from a self-hosted Ownfoil server.\n\nInternet connection required.": [
++    "Переглядайте та встановлюйте ігри з власного сервера Ownfoil.\n\nПотрібне підключення до Інтернету."
++  ],
++  "No Ownfoil servers saved.\n\nPress X to add one by hand, or search the network below.": [
++    "Немає збережених серверів Ownfoil.\n\nНатисніть X, щоб додати сервер вручну, або виконайте пошук у мережі нижче."
++  ],
++  "Full screen": "Повний екран",
++  "Change the options every install on this console uses.": "Змініть параметри, які використовуються для кожного встановлення на цій консолі.",
++  "Which of the versions the shop holds to install.": "Виберіть версію з доступних у магазині для встановлення.",
++  "Add-on content": "Додатковий вміст",
++  "Download and install what is chosen above.": "Завантажити та встановити вибране вище.",
++  "This add-on is already installed.": "Цей додатковий вміст уже встановлено.",
++  "Nothing to install: the console already has this version or a newer one, and no add-on is ticked. An older update can be installed by turning on Allow downgrade in Install options.": [
++    "Немає чого встановлювати: на консолі вже встановлено цю або новішу версію, а додатковий вміст не вибрано. Старіше оновлення можна встановити, увімкнувши «Дозволити пониження версії» в параметрах встановлення."
++  ],
++  "The shop didn't say how to download this": "Магазин не вказав спосіб завантаження",
++  "Downgrade": "Пониження версії",
++  "Show": "Показати",
++  "Connecting to ": "Підключення до ",
++  "Local": "Локальний",
++  "Remote": "Віддалений",
++  "Searching the network...": "Пошук у мережі...",
++  "Discover local servers": "Знайти локальні сервери",
++  "This shop is public. Set up a login anyway?": "Цей магазин загальнодоступний. Усе одно налаштувати вхід?",
++  "This shop is private. Set up a login now?": "Цей магазин приватний. Налаштувати вхід зараз?",
++  ": connected via remote address": ": підключено через віддалену адресу",
++  ": connected via local network": ": підключено через локальну мережу",
++  "This account has no shop access": "Цей обліковий запис не має доступу до магазину",
++  "Page %ld / %ld": "Сторінка %ld / %ld",
++  "%ld titles": "%ld ігор",
++  "Name or id": "Назва або ID",
++  "Add server": "Додати сервер",
++  "Add a server by hand, for one the network search can't reach.": "Додайте вручну сервер, який неможливо знайти через пошук у мережі.",
++  "Edit server": "Редагувати сервер",
++  "Change the selected server's name, addresses or login.": "Змініть назву, адреси або дані входу вибраного сервера.",
++  "Delete server": "Видалити сервер",
++  "Forget the selected server.": "Видалити вибраний сервер зі списку.",
++  "Banner": "Банер",
++  "Detail": "Докладно",
++  "Change how titles are shown. Also cycled with -.": "Змініть спосіб відображення ігор. Також перемикається кнопкою -.",
++  "Per page": "На сторінці",
++  "How many titles the shop sends per page. Fewer is quicker to open.": [
++    "Кількість ігор, які магазин надсилає на одній сторінці. Менша кількість завантажується швидше."
++  ],
++  "What the shop orders the catalog by.": "Визначає критерій сортування каталогу магазином.",
++  "Which way that order runs.": "Визначає напрямок сортування.",
++  "Servers list": "Список серверів",
++  "Return to the server list.": "Повернутися до списку серверів.",
++  "Clear cache": "Очистити кеш",
++  "Remove all cached artwork from the SD card?": "Видалити всі кешовані зображення з SD-карти?",
++  "Failed to clear the cache": "Не вдалося очистити кеш",
++  "Cache cleared": "Кеш очищено",
++  "Remove all cached shop artwork from the SD card.": "Видалити всі кешовані зображення магазину з SD-карти.",
++  "Delete ": "Видалити ",
++  "Could not parse the server's response": "Не вдалося обробити відповідь сервера",
++  "This does not look like an Ownfoil server": "Схоже, це не сервер Ownfoil",
++  "Could not reach the server": "Не вдалося підключитися до сервера",
++  "Incorrect username or password": "Неправильне ім'я користувача або пароль",
++  "Server returned an error": "Сервер повернув помилку",
++  "The server rejected the request": "Сервер відхилив запит",
++  "Unexpected response from the server": "Неочікувана відповідь сервера",
++  "The shop has no details for this title": "У магазині немає відомостей про цю гру",
++  "Ownfoil Server": "Сервер Ownfoil",
++  "Set the display name of the server.\n\nReplaced by the name the server reports once it has been connected to.": [
++    "Задайте відображувану назву сервера.\n\nПісля підключення її буде замінено назвою, яку повідомляє сервер."
++  ],
++  "Local address": "Локальна адреса",
++  "Address used to reach the server on the local network, e.g. 192.168.1.50:8465.\n\nAt least one of Local address or Remote address must be set.": [
++    "Адреса для підключення до сервера в локальній мережі, наприклад 192.168.1.50:8465.\n\nПотрібно вказати принаймні локальну або віддалену адресу."
++  ],
++  "Remote address": "Віддалена адреса",
++  "Address used to reach the server remotely, e.g. myshop.example.com.\n\nAt least one of Local address or Remote address must be set.": [
++    "Адреса для віддаленого підключення до сервера, наприклад myshop.example.com.\n\nПотрібно вказати принаймні локальну або віддалену адресу."
++  ],
++  "Optional: username used to log in to the server.": "Необов'язково: ім'я користувача для входу на сервер.",
++  "Optional: password used to log in to the server.": "Необов'язково: пароль для входу на сервер.",
++  "Ownfoil server saved.": "Сервер Ownfoil збережено.",
++  "Saves the Ownfoil server entry.": "Зберігає запис сервера Ownfoil.",
++  "Name and at least one of Local/Remote address must be set!": "Потрібно вказати назву та принаймні локальну або віддалену адресу!"
+ }
 diff --git a/assets/romfs/i18n/vi.json b/assets/romfs/i18n/vi.json
-index aceb948..74e6365 100644
+index aceb948..af269f7 100644
 --- a/assets/romfs/i18n/vi.json
 +++ b/assets/romfs/i18n/vi.json
-@@ -160,6 +160,7 @@
-   "Change the export options.": "Thay đổi tùy chọn xuất.",
+@@ -161,6 +161,8 @@
    "Install Options": "Tùy chọn cài đặt",
    "System memory": "Bộ nhớ máy",
-+  "Nand memory": "Bộ nhớ máy",
    "microSD card": "Thẻ nhớ",
++  "eMMC": "eMMC",
++  "emuMMC": "emuMMC",
    "Data Management": "Quản lý dữ liệu",
    "Storage": "Bộ nhớ",
-@@ -254,8 +255,9 @@
+   "Storage Options": "Tuỳ chọn bộ nhớ",
+@@ -254,8 +256,9 @@
      "Nên tắt tính năng này."
    ],
    "Export Options": "Tùy chọn xuất",
@@ -1571,11 +3117,11 @@ index aceb948..74e6365 100644
 -  "fix_export_filenames_info": "Dùng tên tiếng Anh cho tệp xuất và dùng ID tựa game khi không có tên tiếng Anh. Tắt tùy chọn này để giữ tên bản địa hóa và Unicode trên các đích hỗ trợ.",
 +  "Export path": "Đường dẫn xuất",
 +  "Enter export path...": "Nhập đường dẫn xuất...",
-+  "dump_path_info": "Đặt thư mục cơ sở được sử dụng để xuất.\nVí dụ: /backup/dumps\n\nTất cả các tệp đã xuất sẽ được lưu trong thư mục này.",
++  "dump_path_info": "Đặt thư mục cơ sở được sử dụng để xuất.\nVí dụ: /dumps\n\nTất cả các tệp đã xuất sẽ được lưu trong thư mục này.",
    "Created nested folder": "Đã tạo thư mục lồng nhau",
    "game_folder_info": [
      "Tạo một thư mục sử dụng tên của trò chơi.",
-@@ -425,11 +427,20 @@
+@@ -425,11 +428,20 @@
      "Các thiết bị được kết nối có thể được sử dụng trong FileBrowser, cũng như một vị trí dự phòng khi kết xuất và lưu trò chơi."
    ],
    "HDD write protect": "HDD bảo vệ ghi",
@@ -1597,7 +3143,7 @@ index aceb948..74e6365 100644
    "USB export to PC (usb_export.py)": "Xuất USB sang PC (usb_export.py)",
    "USB transfer (Switch 2 Switch)": "Chuyển USB (Công tắc 2)",
    "/dev/null (Speed Test)": "/dev/null (Kiểm tra tốc độ)",
-@@ -586,6 +597,8 @@
+@@ -586,6 +598,8 @@
    "Create Forwarder": "Tạo forwarder",
    "36-bit (Default)": "36-bit (Mặc định)",
    "39-bit": "39-bit",
@@ -1606,10 +3152,14 @@ index aceb948..74e6365 100644
    "The title and icon must be non-empty!": "Tiêu đề và biểu tượng không được để trống!",
    "Name": "Tên",
    "Set the name of the application": "Đặt tên của ứng dụng",
-@@ -968,6 +981,11 @@
+@@ -968,6 +982,15 @@
      "Xem lưu dữ liệu cho mỗi người dùng. Bạn có thể sao lưu và khôi phục các bản lưu.\n",
      "Có thể hỗ trợ thử nghiệm việc sao lưu hệ thống."
    ],
++  "Browse the screenshots and clips saved on the console. Captures can be viewed and deleted from here.": [
++    "Duyệt ảnh chụp màn hình và clip được lưu trên máy.\n",
++    "Bạn có thể xem và xóa các nội dung đã chụp tại đây."
++  ],
 +  "Download themes from themezer.net. Themes are downloaded to /themes/sphaira\nTo install the themes, NXThemesInstaller needs to be installed (can be downloaded via the AppStore).": [
 +    "Tải chủ đề từ themezer.net. ",
 +    "Các chủ đề được tải xuống /themes/sphaira.",
@@ -1618,19 +3168,143 @@ index aceb948..74e6365 100644
    "Download releases directly from GitHub. Custom entries can be added to /config/sphaira/github": [
      "Tải xuống các bản phát hành trực tiếp từ GitHub. Các mục tùy chỉnh có thể được ",
      "đã thêm vào /config/sphaira/github"
+@@ -1197,5 +1220,121 @@
+   "Homebrew search path removed.": "Đã xóa đường dẫn tìm kiếm Homebrew.",
+   "Failed to add Homebrew search path": "Không thể thêm đường dẫn tìm kiếm Homebrew",
+   "Failed to remove Homebrew search path": "Không thể xóa đường dẫn tìm kiếm Homebrew",
+-  "Screen Off": "Tắt màn hình"
++  "Screen Off": "Tắt màn hình",
++  "View": "Xem",
++  "Album Options": "Tuỳ chọn album",
++  "Date": "Ngày",
++  "Screenshot": "Ảnh chụp màn hình",
++  "Video": "Video",
++  "Videos": "Video",
++  "Video playback is not supported": "Không hỗ trợ phát video",
++  "Failed to open the album": "Không thể mở album",
++  "Failed to delete one or more files": "Không thể xoá một hoặc nhiều tệp",
++  "Delete %zd file(s)?": "Xoá %zd tệp?",
++  "Permanently deletes the selected capture(s).": "Xoá vĩnh viễn các mục đã chọn.",
++  "Browse from phone": "Xem từ điện thoại",
++  "Serves the album over the network, so that it can be browsed from a phone.": "Chia sẻ album qua mạng để có thể xem từ điện thoại.",
++  "The album is only shared whilst this screen is open.": "Album chỉ được chia sẻ khi màn hình này đang mở.",
++  "Open this address on a phone or PC": "Mở địa chỉ này trên điện thoại hoặc PC",
++  "PIN": "Mã PIN",
++  "Requests": "Yêu cầu",
++  "Waiting for a connection": "Đang chờ kết nối",
++  "No network connection": "Không có kết nối mạng",
++  "Failed to start the server": "Không thể khởi động máy chủ",
++  "Something else may already be using the port.": "Có thể thứ gì đó đang dùng cổng này.",
++  "Scan to open the album": "Quét để mở album",
++  "Too many wrong PINs, close and re-open to try again": "Sai mã PIN quá nhiều lần, hãy đóng và mở lại",
++  "Album updated": "Đã cập nhật album",
++  "Game": "Trò chơi",
++  "Shows only the captures taken in one game.": "Chỉ hiện các mục được chụp trong một trò chơi.",
++  "Looks for captures taken, or deleted, since this menu was opened.": "Tìm các mục đã chụp hoặc xoá kể từ khi mở menu này.",
++  "Require PIN": "Yêu cầu mã PIN",
++  "album_web_pin_info": [
++    "Nếu bật, xem album từ điện thoại sẽ hỏi mã PIN hiển thị trên máy.\n",
++    "Nếu tắt, bất kỳ ai trong cùng mạng đều có thể mở album khi đang chia sẻ."
++  ],
++  "Album share PIN": "Mã PIN chia sẻ album",
++  "Serves the album on this port.": "Chia sẻ album trên cổng này.",
++  "Browse": "Duyệt",
++  "Starts the server and shows the address and the QR code.": "Khởi động máy chủ và hiển thị địa chỉ cùng mã QR.",
++  "Ownfoil": "Ownfoil",
++  "Browse and install titles from a self-hosted Ownfoil server.\n\nInternet connection required.": [
++    "Duyệt và cài đặt trò chơi từ máy chủ Ownfoil tự lưu trữ.\n\nCần có kết nối Internet."
++  ],
++  "No Ownfoil servers saved.\n\nPress X to add one by hand, or search the network below.": [
++    "Chưa lưu máy chủ Ownfoil nào.\n\nNhấn X để thêm thủ công hoặc tìm kiếm trong mạng bên dưới."
++  ],
++  "Full screen": "Toàn màn hình",
++  "Change the options every install on this console uses.": "Thay đổi các tùy chọn được sử dụng cho mọi lần cài đặt trên máy này.",
++  "Which of the versions the shop holds to install.": "Chọn phiên bản có sẵn trong cửa hàng để cài đặt.",
++  "Add-on content": "Nội dung bổ sung",
++  "Download and install what is chosen above.": "Tải xuống và cài đặt nội dung đã chọn ở trên.",
++  "This add-on is already installed.": "Nội dung bổ sung này đã được cài đặt.",
++  "Nothing to install: the console already has this version or a newer one, and no add-on is ticked. An older update can be installed by turning on Allow downgrade in Install options.": [
++    "Không có gì để cài đặt: máy đã có phiên bản này hoặc phiên bản mới hơn và không có nội dung bổ sung nào được chọn. Có thể cài đặt bản cập nhật cũ hơn bằng cách bật Cho phép hạ phiên bản trong Tùy chọn cài đặt."
++  ],
++  "The shop didn't say how to download this": "Cửa hàng không cung cấp cách tải nội dung này",
++  "Downgrade": "Hạ phiên bản",
++  "Show": "Hiển thị",
++  "Connecting to ": "Đang kết nối tới ",
++  "Local": "Cục bộ",
++  "Remote": "Từ xa",
++  "Searching the network...": "Đang tìm kiếm trong mạng...",
++  "Discover local servers": "Tìm máy chủ cục bộ",
++  "This shop is public. Set up a login anyway?": "Cửa hàng này là công khai. Vẫn thiết lập đăng nhập?",
++  "This shop is private. Set up a login now?": "Cửa hàng này là riêng tư. Thiết lập đăng nhập ngay?",
++  ": connected via remote address": ": đã kết nối qua địa chỉ từ xa",
++  ": connected via local network": ": đã kết nối qua mạng cục bộ",
++  "This account has no shop access": "Tài khoản này không có quyền truy cập cửa hàng",
++  "Page %ld / %ld": "Trang %ld / %ld",
++  "%ld titles": "%ld trò chơi",
++  "Name or id": "Tên hoặc ID",
++  "Add server": "Thêm máy chủ",
++  "Add a server by hand, for one the network search can't reach.": "Thêm thủ công máy chủ mà tìm kiếm mạng không thể truy cập.",
++  "Edit server": "Sửa máy chủ",
++  "Change the selected server's name, addresses or login.": "Thay đổi tên, địa chỉ hoặc thông tin đăng nhập của máy chủ đã chọn.",
++  "Delete server": "Xóa máy chủ",
++  "Forget the selected server.": "Xóa máy chủ đã chọn khỏi danh sách.",
++  "Banner": "Biểu ngữ",
++  "Detail": "Chi tiết",
++  "Change how titles are shown. Also cycled with -.": "Thay đổi cách hiển thị trò chơi. Cũng có thể chuyển bằng -.",
++  "Per page": "Mỗi trang",
++  "How many titles the shop sends per page. Fewer is quicker to open.": [
++    "Số lượng trò chơi cửa hàng gửi trên mỗi trang. Số lượng ít hơn sẽ mở nhanh hơn."
++  ],
++  "What the shop orders the catalog by.": "Tiêu chí cửa hàng dùng để sắp xếp danh mục.",
++  "Which way that order runs.": "Hướng sắp xếp.",
++  "Servers list": "Danh sách máy chủ",
++  "Return to the server list.": "Quay lại danh sách máy chủ.",
++  "Clear cache": "Xóa bộ nhớ đệm",
++  "Remove all cached artwork from the SD card?": "Xóa tất cả hình ảnh đã lưu trong bộ nhớ đệm khỏi thẻ SD?",
++  "Failed to clear the cache": "Không thể xóa bộ nhớ đệm",
++  "Cache cleared": "Đã xóa bộ nhớ đệm",
++  "Remove all cached shop artwork from the SD card.": "Xóa tất cả hình ảnh cửa hàng đã lưu trong bộ nhớ đệm khỏi thẻ SD.",
++  "Delete ": "Xóa ",
++  "Could not parse the server's response": "Không thể xử lý phản hồi của máy chủ",
++  "This does not look like an Ownfoil server": "Đây có vẻ không phải là máy chủ Ownfoil",
++  "Could not reach the server": "Không thể kết nối tới máy chủ",
++  "Incorrect username or password": "Tên người dùng hoặc mật khẩu không chính xác",
++  "Server returned an error": "Máy chủ trả về lỗi",
++  "The server rejected the request": "Máy chủ đã từ chối yêu cầu",
++  "Unexpected response from the server": "Phản hồi không mong đợi từ máy chủ",
++  "The shop has no details for this title": "Cửa hàng không có thông tin chi tiết cho trò chơi này",
++  "Ownfoil Server": "Máy chủ Ownfoil",
++  "Set the display name of the server.\n\nReplaced by the name the server reports once it has been connected to.": [
++    "Đặt tên hiển thị của máy chủ.\n\nSau khi kết nối, tên này sẽ được thay thế bằng tên do máy chủ cung cấp."
++  ],
++  "Local address": "Địa chỉ cục bộ",
++  "Address used to reach the server on the local network, e.g. 192.168.1.50:8465.\n\nAt least one of Local address or Remote address must be set.": [
++    "Địa chỉ dùng để truy cập máy chủ trong mạng cục bộ, ví dụ 192.168.1.50:8465.\n\nPhải thiết lập ít nhất một trong hai địa chỉ cục bộ hoặc địa chỉ từ xa."
++  ],
++  "Remote address": "Địa chỉ từ xa",
++  "Address used to reach the server remotely, e.g. myshop.example.com.\n\nAt least one of Local address or Remote address must be set.": [
++    "Địa chỉ dùng để truy cập máy chủ từ xa, ví dụ myshop.example.com.\n\nPhải thiết lập ít nhất một trong hai địa chỉ cục bộ hoặc địa chỉ từ xa."
++  ],
++  "Optional: username used to log in to the server.": "Tùy chọn: tên người dùng dùng để đăng nhập vào máy chủ.",
++  "Optional: password used to log in to the server.": "Tùy chọn: mật khẩu dùng để đăng nhập vào máy chủ.",
++  "Ownfoil server saved.": "Đã lưu máy chủ Ownfoil.",
++  "Saves the Ownfoil server entry.": "Lưu mục máy chủ Ownfoil.",
++  "Name and at least one of Local/Remote address must be set!": "Phải thiết lập tên và ít nhất một địa chỉ cục bộ hoặc từ xa!"
+ }
 diff --git a/assets/romfs/i18n/zh-Hans.json b/assets/romfs/i18n/zh-Hans.json
-index d51a7c6..ee4ca24 100644
+index d51a7c6..3650e65 100644
 --- a/assets/romfs/i18n/zh-Hans.json
 +++ b/assets/romfs/i18n/zh-Hans.json
-@@ -157,6 +157,7 @@
-   "Change the export options.": "更改导出选项。",
+@@ -158,6 +158,8 @@
    "Install Options": "安装选项",
    "System memory": "主机内存",
-+  "Nand memory": "主机内存",
    "microSD card": "SD卡",
++  "eMMC": "eMMC",
++  "emuMMC": "emuMMC",
    "Data Management": "数据管理",
    "Storage": "存储空间",
-@@ -245,8 +246,9 @@
+   "Storage Options": "存储选项",
+@@ -245,8 +247,9 @@
      "建议保持禁用状态。"
    ],
    "Export Options": "导出选项",
@@ -1638,11 +3312,11 @@ index d51a7c6..ee4ca24 100644
 -  "fix_export_filenames_info": "导出文件名使用英文标题；若没有英文标题则回退到标题 ID。如果目标设备支持本地化及 Unicode 标题，可关闭此选项以保留这些标题。",
 +  "Export path": "导出路径",
 +  "Enter export path...": "输入导出路径...",
-+  "dump_path_info": "设置用于导出的基础文件夹。\n例如：/backup/dumps\n\n所有导出的文件都将保存在此文件夹中。",
++  "dump_path_info": "设置用于导出的基础文件夹。\n例如：/dumps\n\n所有导出的文件都将保存在此文件夹中。",
    "Created nested folder": "已创建嵌套文件夹",
    "game_folder_info": [
      "使用游戏名称创建文件夹。\n",
-@@ -420,7 +422,6 @@
+@@ -420,7 +423,6 @@
    "Installing is disabled, enable now?": "安装功能已禁用，现在启用吗？",
    "WARNING: Installing apps will lead to a ban!": "警告：安装应用程序将导致封禁！",
    "Installing enabled!": "已启用安装！",
@@ -1650,7 +3324,7 @@ index d51a7c6..ee4ca24 100644
    "USB export to PC (usb_export.py)": "USB 导出到 PC (usb_export.py)",
    "USB transfer (Switch 2 Switch)": "USB传输（Switch对Switch）",
    "/dev/null (Speed Test)": "/dev/null（速度测试）",
-@@ -577,6 +578,8 @@
+@@ -577,6 +579,8 @@
    "Create Forwarder": "创建前端启动器",
    "36-bit (Default)": "36 位（默认）",
    "39-bit": "39位",
@@ -1659,10 +3333,14 @@ index d51a7c6..ee4ca24 100644
    "The title and icon must be non-empty!": "标题和图标必须非空！",
    "Name": "名称",
    "Set the name of the application": "设置应用程序的名称",
-@@ -944,6 +947,11 @@
+@@ -944,6 +948,15 @@
    "View all installed games. In this menu you can launch, backup, create savedata and much more.": "查看所有已安装的游戏。在此菜单中，您可以启动、备份、创建存档等操作。",
    "Browse files on you SD Card. You can move, copy, delete, extract zip, create zip, upload and much more.\n\nA connected USB/HDD can be opened by mounting it in the advanced options.": "浏览您的SD卡文件。您可以移动、复制、删除、解压zip、创建zip、上传等更多操作。\n\n连接的USB/HDD可以通过在高级选项中挂载来打开。",
    "View save data for each user. You can backup and restore saves.\n\nExperimental support for backing up system saves is possible.": "查看每个用户的存档数据。您可以备份和还原存档。\n\n可能支持备份系统存档（实验性功能）。",
++  "Browse the screenshots and clips saved on the console. Captures can be viewed and deleted from here.": [
++    "浏览保存在主机上的截图和视频片段。\n",
++    "你可以在此查看和删除捕捉内容。"
++  ],
 +  "Download themes from themezer.net. Themes are downloaded to /themes/sphaira\nTo install the themes, NXThemesInstaller needs to be installed (can be downloaded via the AppStore).": [
 +    "从themezer.net下载主题。 ",
 +    "主题将下载到/themes/sphaira。",
@@ -1671,19 +3349,143 @@ index d51a7c6..ee4ca24 100644
    "Download releases directly from GitHub. Custom entries can be added to /config/sphaira/github": "直接从GitHub下载发布版本。自定义条目可以添加到 /config/sphaira/github",
    "Install apps via FTP.": "通过FTP安装应用。",
    "MTP Install": "通过 MTP 安装",
+@@ -1141,5 +1154,121 @@
+   "Homebrew search path removed.": "已移除 Homebrew 搜索路径。",
+   "Failed to add Homebrew search path": "无法添加 Homebrew 搜索路径",
+   "Failed to remove Homebrew search path": "无法移除 Homebrew 搜索路径",
+-  "Screen Off": "关闭屏幕"
++  "Screen Off": "关闭屏幕",
++  "View": "查看",
++  "Album Options": "相册选项",
++  "Date": "按日期",
++  "Screenshot": "截图",
++  "Video": "视频",
++  "Videos": "视频",
++  "Video playback is not supported": "不支持视频播放",
++  "Failed to open the album": "无法打开相册",
++  "Failed to delete one or more files": "无法删除一个或多个文件",
++  "Delete %zd file(s)?": "删除 %zd 个文件？",
++  "Permanently deletes the selected capture(s).": "永久删除所选的内容。",
++  "Browse from phone": "用手机浏览",
++  "Serves the album over the network, so that it can be browsed from a phone.": "通过网络共享相册，以便用手机浏览。",
++  "The album is only shared whilst this screen is open.": "仅在此页面打开时共享相册。",
++  "Open this address on a phone or PC": "在手机或电脑上打开此地址",
++  "PIN": "PIN 码",
++  "Requests": "请求数",
++  "Waiting for a connection": "等待连接",
++  "No network connection": "无网络连接",
++  "Failed to start the server": "无法启动服务器",
++  "Something else may already be using the port.": "该端口可能已被占用。",
++  "Scan to open the album": "扫码打开相册",
++  "Too many wrong PINs, close and re-open to try again": "PIN 码错误次数过多，请关闭后重新打开",
++  "Album updated": "相册已更新",
++  "Game": "游戏",
++  "Shows only the captures taken in one game.": "仅显示在某个游戏中拍摄的内容。",
++  "Looks for captures taken, or deleted, since this menu was opened.": "查找自打开此菜单以来拍摄或删除的内容。",
++  "Require PIN": "需要 PIN 码",
++  "album_web_pin_info": [
++    "启用后，用手机浏览相册时需要输入主机上显示的 PIN 码。\n",
++    "保持关闭时，共享期间同一网络中的任何人都可以打开相册。"
++  ],
++  "Album share PIN": "相册共享 PIN 码",
++  "Serves the album on this port.": "在此端口上共享相册。",
++  "Browse": "浏览",
++  "Starts the server and shows the address and the QR code.": "启动服务器并显示地址和二维码。",
++  "Ownfoil": "Ownfoil",
++  "Browse and install titles from a self-hosted Ownfoil server.\n\nInternet connection required.": [
++    "浏览并安装来自自托管 Ownfoil 服务器的游戏。\n\n需要互联网连接。"
++  ],
++  "No Ownfoil servers saved.\n\nPress X to add one by hand, or search the network below.": [
++    "未保存任何 Ownfoil 服务器。\n\n按 X 手动添加服务器，或在下方搜索本地网络。"
++  ],
++  "Full screen": "全屏",
++  "Change the options every install on this console uses.": "更改此主机每次安装时使用的选项。",
++  "Which of the versions the shop holds to install.": "选择要安装的商店版本。",
++  "Add-on content": "追加内容",
++  "Download and install what is chosen above.": "下载并安装上方选择的内容。",
++  "This add-on is already installed.": "此追加内容已安装。",
++  "Nothing to install: the console already has this version or a newer one, and no add-on is ticked. An older update can be installed by turning on Allow downgrade in Install options.": [
++    "没有可安装的内容：主机已安装此版本或更新版本，且未选择任何追加内容。可在安装选项中启用“允许降级”来安装较旧的更新。"
++  ],
++  "The shop didn't say how to download this": "商店未提供此内容的下载方式",
++  "Downgrade": "降级",
++  "Show": "显示",
++  "Connecting to ": "正在连接到 ",
++  "Local": "本地",
++  "Remote": "远程",
++  "Searching the network...": "正在搜索网络...",
++  "Discover local servers": "搜索本地服务器",
++  "This shop is public. Set up a login anyway?": "此商店为公开商店。仍要设置登录信息吗？",
++  "This shop is private. Set up a login now?": "此商店为私有商店。现在设置登录信息吗？",
++  ": connected via remote address": ": 已通过远程地址连接",
++  ": connected via local network": ": 已通过本地网络连接",
++  "This account has no shop access": "此账户无权访问商店",
++  "Page %ld / %ld": "第 %ld / %ld 页",
++  "%ld titles": "%ld 个游戏",
++  "Name or id": "名称或 ID",
++  "Add server": "添加服务器",
++  "Add a server by hand, for one the network search can't reach.": "手动添加网络搜索无法发现的服务器。",
++  "Edit server": "编辑服务器",
++  "Change the selected server's name, addresses or login.": "更改所选服务器的名称、地址或登录信息。",
++  "Delete server": "删除服务器",
++  "Forget the selected server.": "移除所选服务器。",
++  "Banner": "横幅",
++  "Detail": "详细信息",
++  "Change how titles are shown. Also cycled with -.": "更改游戏的显示方式。也可使用 - 切换。",
++  "Per page": "每页数量",
++  "How many titles the shop sends per page. Fewer is quicker to open.": [
++    "商店每页发送的游戏数量。数量越少，打开速度越快。"
++  ],
++  "What the shop orders the catalog by.": "设置商店对目录进行排序的依据。",
++  "Which way that order runs.": "设置排序方向。",
++  "Servers list": "服务器列表",
++  "Return to the server list.": "返回服务器列表。",
++  "Clear cache": "清除缓存",
++  "Remove all cached artwork from the SD card?": "从 SD 卡中删除所有已缓存的图片？",
++  "Failed to clear the cache": "清除缓存失败",
++  "Cache cleared": "缓存已清除",
++  "Remove all cached shop artwork from the SD card.": "从 SD 卡中删除所有已缓存的商店图片。",
++  "Delete ": "删除 ",
++  "Could not parse the server's response": "无法解析服务器响应",
++  "This does not look like an Ownfoil server": "这似乎不是 Ownfoil 服务器",
++  "Could not reach the server": "无法连接到服务器",
++  "Incorrect username or password": "用户名或密码错误",
++  "Server returned an error": "服务器返回错误",
++  "The server rejected the request": "服务器拒绝了请求",
++  "Unexpected response from the server": "服务器返回了意外响应",
++  "The shop has no details for this title": "商店没有此游戏的详细信息",
++  "Ownfoil Server": "Ownfoil 服务器",
++  "Set the display name of the server.\n\nReplaced by the name the server reports once it has been connected to.": [
++    "设置服务器的显示名称。\n\n连接成功后，将替换为服务器返回的名称。"
++  ],
++  "Local address": "本地地址",
++  "Address used to reach the server on the local network, e.g. 192.168.1.50:8465.\n\nAt least one of Local address or Remote address must be set.": [
++    "用于通过本地网络连接服务器的地址，例如 192.168.1.50:8465。\n\n必须至少设置本地地址或远程地址中的一个。"
++  ],
++  "Remote address": "远程地址",
++  "Address used to reach the server remotely, e.g. myshop.example.com.\n\nAt least one of Local address or Remote address must be set.": [
++    "用于远程连接服务器的地址，例如 myshop.example.com。\n\n必须至少设置本地地址或远程地址中的一个。"
++  ],
++  "Optional: username used to log in to the server.": "可选：用于登录服务器的用户名。",
++  "Optional: password used to log in to the server.": "可选：用于登录服务器的密码。",
++  "Ownfoil server saved.": "Ownfoil 服务器已保存。",
++  "Saves the Ownfoil server entry.": "保存 Ownfoil 服务器条目。",
++  "Name and at least one of Local/Remote address must be set!": "必须设置名称以及至少一个本地或远程地址！"
+ }
 diff --git a/assets/romfs/i18n/zh-Hant.json b/assets/romfs/i18n/zh-Hant.json
-index 8e5ee4e..83345cf 100644
+index 8e5ee4e..b0ce313 100644
 --- a/assets/romfs/i18n/zh-Hant.json
 +++ b/assets/romfs/i18n/zh-Hant.json
-@@ -157,6 +157,7 @@
-   "Change the export options.": "更改匯出選項。",
+@@ -158,6 +158,8 @@
    "Install Options": "安裝選項",
    "System memory": "系統記憶體",
-+  "Nand memory": "系統記憶體",
    "microSD card": "microSD 卡",
++  "eMMC": "eMMC",
++  "emuMMC": "emuMMC",
    "Data Management": "資料管理",
    "Storage": "儲存空間",
-@@ -245,8 +246,9 @@
+   "Storage Options": "儲存選項",
+@@ -245,8 +247,9 @@
      "建議保持停用此選項。"
    ],
    "Export Options": "匯出選項",
@@ -1691,11 +3493,11 @@ index 8e5ee4e..83345cf 100644
 -  "fix_export_filenames_info": "匯出檔名使用英文標題；若沒有英文標題則回退到標題 ID。如果目標裝置支援本地化及 Unicode 標題，可關閉此選項以保留這些標題。",
 +  "Export path": "匯出路徑",
 +  "Enter export path...": "輸入匯出路徑...",
-+  "dump_path_info": "設定用於匯出的基礎資料夾。\n例如：/backup/dumps\n\n所有匯出的檔案都會儲存在此資料夾中。",
++  "dump_path_info": "設定用於匯出的基礎資料夾。\n例如：/dumps\n\n所有匯出的檔案都會儲存在此資料夾中。",
    "Created nested folder": "已建立巢狀資料夾",
    "game_folder_info": [
      "使用遊戲名稱建立資料夾。",
-@@ -422,7 +424,6 @@
+@@ -422,7 +425,6 @@
    "Installing is disabled, enable now?": "安裝功能已停用，要現在啟用嗎？",
    "WARNING: Installing apps will lead to a ban!": "警告：安裝未授權的應用程式會導致主機被 Ban！",
    "Installing enabled!": "安裝功能已啟用！",
@@ -1703,7 +3505,7 @@ index 8e5ee4e..83345cf 100644
    "USB export to PC (usb_export.py)": "USB 匯出至電腦 (usb_export.py)",
    "USB transfer (Switch 2 Switch)": "USB 傳輸 (Switch 對 Switch)",
    "/dev/null (Speed Test)": "/dev/null (速度測試)",
-@@ -579,6 +580,8 @@
+@@ -579,6 +581,8 @@
    "Create Forwarder": "建立前導程式",
    "36-bit (Default)": "36 位元（預設）",
    "39-bit": "39位",
@@ -1712,10 +3514,14 @@ index 8e5ee4e..83345cf 100644
    "The title and icon must be non-empty!": "標題和圖示必須非空！",
    "Name": "名稱",
    "Set the name of the application": "設定應用程式名稱",
-@@ -944,6 +947,11 @@
+@@ -944,6 +948,15 @@
    "View all installed games. In this menu you can launch, backup, create savedata and much more.": "檢視所有已安裝的遊戲。您可以在此選單中啟動、備份、建立存檔等。",
    "Browse files on you SD Card. You can move, copy, delete, extract zip, create zip, upload and much more.\n\nA connected USB/HDD can be opened by mounting it in the advanced options.": "瀏覽 SD 卡上的檔案。您可以移動、複製、刪除、解壓縮 zip、建立 zip、上傳等。\n\n連接的 USB/HDD 可透過進階選項中的掛載功能開啟。",
    "View save data for each user. You can backup and restore saves.\n\nExperimental support for backing up system saves is possible.": "檢視每位使用者的存檔資料。您可以備份和還原存檔。\n\n支援實驗性的系統存檔備份功能。",
++  "Browse the screenshots and clips saved on the console. Captures can be viewed and deleted from here.": [
++    "瀏覽儲存在主機上的截圖和影片片段。\n",
++    "你可以在此查看和刪除擷取內容。"
++  ],
 +  "Download themes from themezer.net. Themes are downloaded to /themes/sphaira\nTo install the themes, NXThemesInstaller needs to be installed (can be downloaded via the AppStore).": [
 +    "從themezer.net下載主題。 ",
 +    "主題將下載至/themes/sphaira。",
@@ -1724,3 +3530,126 @@ index 8e5ee4e..83345cf 100644
    "Download releases directly from GitHub. Custom entries can be added to /config/sphaira/github": "直接從 GitHub 下載發行版本。可將自訂項目新增至 /config/sphaira/github",
    "Install apps via FTP.": "透過 FTP 安裝應用程式。",
    "MTP Install": "MTP 安裝",
+@@ -1142,5 +1155,121 @@
+   "Homebrew search path removed.": "已移除 Homebrew 搜尋路徑。",
+   "Failed to add Homebrew search path": "無法新增 Homebrew 搜尋路徑",
+   "Failed to remove Homebrew search path": "無法移除 Homebrew 搜尋路徑",
+-  "Screen Off": "關閉螢幕"
++  "Screen Off": "關閉螢幕",
++  "View": "檢視",
++  "Album Options": "相簿選項",
++  "Date": "依日期",
++  "Screenshot": "截圖",
++  "Video": "影片",
++  "Videos": "影片",
++  "Video playback is not supported": "不支援影片播放",
++  "Failed to open the album": "無法開啟相簿",
++  "Failed to delete one or more files": "無法刪除一個或多個檔案",
++  "Delete %zd file(s)?": "刪除 %zd 個檔案？",
++  "Permanently deletes the selected capture(s).": "永久刪除所選的項目。",
++  "Browse from phone": "用手機瀏覽",
++  "Serves the album over the network, so that it can be browsed from a phone.": "透過網路分享相簿，以便用手機瀏覽。",
++  "The album is only shared whilst this screen is open.": "僅在此畫面開啟時分享相簿。",
++  "Open this address on a phone or PC": "在手機或電腦上開啟此位址",
++  "PIN": "PIN 碼",
++  "Requests": "請求數",
++  "Waiting for a connection": "等待連線",
++  "No network connection": "沒有網路連線",
++  "Failed to start the server": "無法啟動伺服器",
++  "Something else may already be using the port.": "該連接埠可能已被使用。",
++  "Scan to open the album": "掃碼開啟相簿",
++  "Too many wrong PINs, close and re-open to try again": "PIN 碼錯誤次數過多，請關閉後重新開啟",
++  "Album updated": "相簿已更新",
++  "Game": "遊戲",
++  "Shows only the captures taken in one game.": "僅顯示在某個遊戲中拍攝的項目。",
++  "Looks for captures taken, or deleted, since this menu was opened.": "尋找自開啟此選單以來拍攝或刪除的項目。",
++  "Require PIN": "需要 PIN 碼",
++  "album_web_pin_info": [
++    "啟用後，用手機瀏覽相簿時需要輸入主機上顯示的 PIN 碼。\n",
++    "保持關閉時，分享期間同一網路中的任何人都可以開啟相簿。"
++  ],
++  "Album share PIN": "相簿分享 PIN 碼",
++  "Serves the album on this port.": "在此連接埠上分享相簿。",
++  "Browse": "瀏覽",
++  "Starts the server and shows the address and the QR code.": "啟動伺服器並顯示位址和 QR 碼。",
++  "Ownfoil": "Ownfoil",
++  "Browse and install titles from a self-hosted Ownfoil server.\n\nInternet connection required.": [
++    "瀏覽並安裝來自自行託管 Ownfoil 伺服器的遊戲。\n\n需要網際網路連線。"
++  ],
++  "No Ownfoil servers saved.\n\nPress X to add one by hand, or search the network below.": [
++    "尚未儲存任何 Ownfoil 伺服器。\n\n按 X 手動新增伺服器，或在下方搜尋區域網路。"
++  ],
++  "Full screen": "全螢幕",
++  "Change the options every install on this console uses.": "變更此主機每次安裝時使用的選項。",
++  "Which of the versions the shop holds to install.": "選擇要安裝的商店版本。",
++  "Add-on content": "追加內容",
++  "Download and install what is chosen above.": "下載並安裝上方選擇的內容。",
++  "This add-on is already installed.": "此追加內容已安裝。",
++  "Nothing to install: the console already has this version or a newer one, and no add-on is ticked. An older update can be installed by turning on Allow downgrade in Install options.": [
++    "沒有可安裝的內容：主機已安裝此版本或更新版本，且未選擇任何追加內容。可在安裝選項中啟用「允許降級」來安裝較舊的更新。"
++  ],
++  "The shop didn't say how to download this": "商店未提供此內容的下載方式",
++  "Downgrade": "降級",
++  "Show": "顯示",
++  "Connecting to ": "正在連線至 ",
++  "Local": "本機",
++  "Remote": "遠端",
++  "Searching the network...": "正在搜尋網路...",
++  "Discover local servers": "搜尋本機伺服器",
++  "This shop is public. Set up a login anyway?": "此商店為公開商店。仍要設定登入資訊嗎？",
++  "This shop is private. Set up a login now?": "此商店為私人商店。現在設定登入資訊嗎？",
++  ": connected via remote address": ": 已透過遠端位址連線",
++  ": connected via local network": ": 已透過區域網路連線",
++  "This account has no shop access": "此帳號無權存取商店",
++  "Page %ld / %ld": "第 %ld / %ld 頁",
++  "%ld titles": "%ld 個遊戲",
++  "Name or id": "名稱或 ID",
++  "Add server": "新增伺服器",
++  "Add a server by hand, for one the network search can't reach.": "手動新增網路搜尋無法找到的伺服器。",
++  "Edit server": "編輯伺服器",
++  "Change the selected server's name, addresses or login.": "變更所選伺服器的名稱、位址或登入資訊。",
++  "Delete server": "刪除伺服器",
++  "Forget the selected server.": "移除所選伺服器。",
++  "Banner": "橫幅",
++  "Detail": "詳細資訊",
++  "Change how titles are shown. Also cycled with -.": "變更遊戲的顯示方式。也可使用 - 切換。",
++  "Per page": "每頁數量",
++  "How many titles the shop sends per page. Fewer is quicker to open.": [
++    "商店每頁傳送的遊戲數量。數量越少，開啟速度越快。"
++  ],
++  "What the shop orders the catalog by.": "設定商店排序目錄時使用的依據。",
++  "Which way that order runs.": "設定排序方向。",
++  "Servers list": "伺服器清單",
++  "Return to the server list.": "返回伺服器清單。",
++  "Clear cache": "清除快取",
++  "Remove all cached artwork from the SD card?": "從 SD 卡中刪除所有已快取的圖片？",
++  "Failed to clear the cache": "清除快取失敗",
++  "Cache cleared": "快取已清除",
++  "Remove all cached shop artwork from the SD card.": "從 SD 卡中刪除所有已快取的商店圖片。",
++  "Delete ": "刪除 ",
++  "Could not parse the server's response": "無法解析伺服器回應",
++  "This does not look like an Ownfoil server": "這似乎不是 Ownfoil 伺服器",
++  "Could not reach the server": "無法連線至伺服器",
++  "Incorrect username or password": "使用者名稱或密碼錯誤",
++  "Server returned an error": "伺服器傳回錯誤",
++  "The server rejected the request": "伺服器拒絕了要求",
++  "Unexpected response from the server": "伺服器傳回了非預期的回應",
++  "The shop has no details for this title": "商店沒有此遊戲的詳細資訊",
++  "Ownfoil Server": "Ownfoil 伺服器",
++  "Set the display name of the server.\n\nReplaced by the name the server reports once it has been connected to.": [
++    "設定伺服器的顯示名稱。\n\n連線成功後，將替換為伺服器回報的名稱。"
++  ],
++  "Local address": "本機位址",
++  "Address used to reach the server on the local network, e.g. 192.168.1.50:8465.\n\nAt least one of Local address or Remote address must be set.": [
++    "用於透過區域網路連線伺服器的位址，例如 192.168.1.50:8465。\n\n必須至少設定本機位址或遠端位址其中之一。"
++  ],
++  "Remote address": "遠端位址",
++  "Address used to reach the server remotely, e.g. myshop.example.com.\n\nAt least one of Local address or Remote address must be set.": [
++    "用於從遠端連線伺服器的位址，例如 myshop.example.com。\n\n必須至少設定本機位址或遠端位址其中之一。"
++  ],
++  "Optional: username used to log in to the server.": "選填：用於登入伺服器的使用者名稱。",
++  "Optional: password used to log in to the server.": "選填：用於登入伺服器的密碼。",
++  "Ownfoil server saved.": "Ownfoil 伺服器已儲存。",
++  "Saves the Ownfoil server entry.": "儲存 Ownfoil 伺服器項目。",
++  "Name and at least one of Local/Remote address must be set!": "必須設定名稱以及至少一個本機或遠端位址！"
+ }

@@ -994,6 +994,15 @@
     "各ユーザーのセーブを確認します。\nバックアップ・復元が可能です。\n",
     "参考: システムセーブのバックアップは実験的機能です。"
   ],
+  "Browse the screenshots and clips saved on the console. Captures can be viewed and deleted from here.": [
+    "本体に保存されているスクリーンショットや動画を閲覧します。\n",
+    "ここからキャプチャーを表示したり削除したりできます。"
+  ],
+  "Download themes from themezer.net. Themes are downloaded to /themes/sphaira\nTo install the themes, NXThemesInstaller needs to be installed (can be downloaded via the AppStore).": [
+    "themezer.netからテーマをダウンロードします。\n",
+    "テーマは /themes/sphaira にダウンロードされます。\n",
+    "テーマをインストールするには、NXThemesInstallerがインストールされている必要があります(AppStoreからダウンロードできます)。"
+  ],
   "Download releases directly from GitHub. Custom entries can be added to /config/sphaira/github": [
     "GitHubから直接リリースをダウンロードします。\n\nカスタム項目は sdmc:/config/sphaira/github に追加できます。"
   ],
@@ -1250,5 +1259,96 @@
   "Album updated": "アルバムを更新しました",
   "Game": "ソフト",
   "Shows only the captures taken in one game.": "1つのソフトで撮影したデータだけを表示します。",
-  "Looks for captures taken, or deleted, since this menu was opened.": "このメニューを開いてから撮影・削除されたデータを確認します。"
+  "Looks for captures taken, or deleted, since this menu was opened.": "このメニューを開いてから撮影・削除されたデータを確認します。",
+  "Require PIN": "PINコードを要求",
+  "album_web_pin_info": [
+    "有効にすると、スマホからアルバムを見るときに本体に表示されたPINコードの入力を求めます。\n",
+    "無効のままだと、共有している間は同じネットワーク上の誰でもアルバムを開けます。"
+  ],
+  "Album share PIN": "アルバム共有のPINコード",
+  "Serves the album on this port.": "このポートでアルバムを共有します。",
+  "Browse": "見る",
+  "Starts the server and shows the address and the QR code.": "サーバーを起動し、アドレスとQRコードを表示します。",
+    "Ownfoil": "Ownfoil",
+  "Browse and install titles from a self-hosted Ownfoil server.\n\nInternet connection required.": [
+    "ホストしたOwnfoilサーバーからタイトルを\n閲覧してインストールします。\n\nネットワーク接続が必要です。"
+  ],
+  "No Ownfoil servers saved.\n\nPress X to add one by hand, or search the network below.": [
+    "保存されたOwnfoilサーバーがありません。 を押して追加するか、サーバーを検索してください。"
+  ],
+  "Full screen": "全画面",
+  "Change the options every install on this console uses.": "この本体でのすべてのインストールに使用する設定を変更します。",
+  "Which of the versions the shop holds to install.": "ストアにあるバージョンからインストールするものを選択します。",
+  "Add-on content": "追加コンテンツ",
+  "Download and install what is chosen above.": "上で選択した項目をダウンロードしてインストールします。",
+  "This add-on is already installed.": "この追加コンテンツはすでにインストールされています。",
+  "Nothing to install: the console already has this version or a newer one, and no add-on is ticked. An older update can be installed by turning on Allow downgrade in Install options.": [
+    "インストールする項目がありません。本体にはすでにこのバージョンまたは新しいバージョンがインストールされており、追加コンテンツも選択されていません。インストール設定でダウングレードを許可すると、以前のアップデートをインストールできます。"
+  ],
+  "The shop didn't say how to download this": "ストアからこの項目のダウンロード方法が提供されていません",
+  "Downgrade": "ダウングレード",
+  "Show": "表示",
+  "Connecting to ": " 接続中",
+  "Local": "ローカル",
+  "Remote": "リモート",
+  "Searching the network...": "ネットワークを検索中...",
+  "Discover local servers": "ローカルサーバーを検索",
+  "This shop is public. Set up a login anyway?": "このストアは公開されています。それでもログイン情報を設定しますか？",
+  "This shop is private. Set up a login now?": "このストアは非公開です。今すぐログイン情報を設定しますか？",
+  ": connected via remote address": ": リモートアドレスで接続済み",
+  ": connected via local network": ": ローカルネットワークで接続済み",
+  "This account has no shop access": "このアカウントにはストアへのアクセス権がありません",
+  "Page %ld / %ld": "ページ %ld / %ld",
+  "%ld titles": "%ld タイトル",
+  "Name or id": "名前またはID",
+  "Add server": "サーバーを追加",
+  "Add a server by hand, for one the network search can't reach.": "ネットワーク検索で見つからないサーバーを手動で追加します。",
+  "Edit server": "サーバーを編集",
+  "Change the selected server's name, addresses or login.": "選択したサーバーの名前、アドレス、ログイン\n情報を変更します。",
+  "Delete server": "サーバーを削除",
+  "Forget the selected server.": "選択したサーバーを一覧から削除します。",
+  "Banner": "バナー",
+  "Detail": "詳細",
+  "Change how titles are shown. Also cycled with -.": "タイトルの表示方法を変更します。- ボタンでも切り替えられます。",
+  "Per page": "1ページあたり",
+  "How many titles the shop sends per page. Fewer is quicker to open.": [
+    "ストアから1ページあたりに読み込むタイトル数です。少ないほど素早く開けます。"
+  ],
+  "What the shop orders the catalog by.": "ストアでカタログを並べ替える基準を設定します。",
+  "Which way that order runs.": "並べ替えの方向を設定します。",
+  "Servers list": "サーバー一覧",
+  "Return to the server list.": "サーバー一覧に戻ります。",
+  "Clear cache": "キャッシュを削除",
+  "Remove all cached artwork from the SD card?": "SDカードからキャッシュされた画像をすべて削除しますか？",
+  "Failed to clear the cache": "キャッシュを削除できませんでした",
+  "Cache cleared": "キャッシュを削除しました",
+  "Remove all cached shop artwork from the SD card.": "SDカードからキャッシュされたストア画像を\nすべて削除します。",
+  "Delete ": "を削除しますか",
+  "Could not parse the server's response": "サーバーの応答を処理できません",
+  "This does not look like an Ownfoil server": "Ownfoilサーバーではないようです",
+  "Could not reach the server": "サーバーに接続できません",
+  "Incorrect username or password": "ユーザー名またはパスワードが正しくありません",
+  "Server returned an error": "サーバーからエラーが返されました",
+  "The server rejected the request": "サーバーがリクエストを拒否しました",
+  "Unexpected response from the server": "サーバーから予期しない応答が返されました",
+  "The shop has no details for this title": "ストアにこのタイトルの詳細情報がありません",
+  "Ownfoil Server": "Ownfoilサーバー",
+  "Set the display name of the server.\n\nReplaced by the name the server reports once it has been connected to.": [
+    "サーバーに表示する名前を設定します。\n\n接続後はサーバーから提供された\n名前に変更されます。"
+  ],
+  "Local address": "ローカルアドレス",
+  "Address used to reach the server on the local network, e.g. 192.168.1.50:8465.\n\nAt least one of Local address or Remote address must be set.": [
+    "ローカルネットワークからサーバーに接続する際に\n使用するアドレスです。\n",
+    "例: 192.168.1.50:8465.\n\nローカルアドレスまたはリモートアドレスのいずれかを設定する必要があります。"
+  ],
+  "Remote address": "リモートアドレス",
+  "Address used to reach the server remotely, e.g. myshop.example.com.\n\nAt least one of Local address or Remote address must be set.": [
+    "リモートからサーバーに接続する際に使用する\nアドレスです。\n",
+    "例: myshop.example.com.\n\nローカルアドレスまたはリモートアドレスのいずれかを設定する必要があります。"
+  ],
+  "Optional: username used to log in to the server.": "任意: サーバーへのログインに使用する\nユーザー名です。",
+  "Optional: password used to log in to the server.": "任意: サーバーへのログインに使用する\nパスワードです。",
+  "Ownfoil server saved.": "Ownfoilサーバーを保存しました。",
+  "Saves the Ownfoil server entry.": "Ownfoilサーバーの項目を保存します。",
+  "Name and at least one of Local/Remote address must be set!": "名前とローカル/リモートアドレスのいずれかを\n設定する必要があります！"
 }
