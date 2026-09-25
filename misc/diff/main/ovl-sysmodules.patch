@@ -1,5 +1,20 @@
+diff --git a/Makefile b/Makefile
+index 8cb87d7..927af9a 100644
+--- a/Makefile
++++ b/Makefile
+@@ -68,8 +68,8 @@ CFLAGS := -Wall -O3 -ffunction-sections -fdata-sections -flto -fuse-linker-plugi
+ CFLAGS += $(INCLUDE) -D__SWITCH__ -DAPP_VERSION="\"$(APP_VERSION)\"" -DVERSION="\"$(APP_VERSION)\"" -D_FORTIFY_SOURCE=2
+ 
+ # Enable appearance overriding
+-UI_OVERRIDE_PATH := /config/sys-modules/
+-CFLAGS += -DUI_OVERRIDE_PATH="\"$(UI_OVERRIDE_PATH)\""
++#UI_OVERRIDE_PATH := /config/sys-modules/
++#CFLAGS += -DUI_OVERRIDE_PATH="\"$(UI_OVERRIDE_PATH)\""
+ 
+ # Exception wrap utilization (for smaller compilation size)
+ CFLAGS += -DUSE_EXCEPTION_WRAP=1
 diff --git a/source/gui_main.cpp b/source/gui_main.cpp
-index ed354a2..274c332 100644
+index ed354a2..1823ede 100644
 --- a/source/gui_main.cpp
 +++ b/source/gui_main.cpp
 @@ -321,7 +321,7 @@ GuiMain::GuiMain() {
