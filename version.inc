@@ -1,19 +1,19 @@
 [ASAP]
-supported_hos=22.5.0
+supported_hos=23.0.0
 current_version=
-current_hekate=6.5.3
-current_nyx=1.9.3
+current_hekate=6.5.4
+current_nyx=1.9.4
 
 [latest_version]
-supported_hos=22.5.0
-tester_version=0830
+supported_hos=23.0.0
+tester_version=0926
 ldr_kip_version=2.5.1.rev6
 
-hekate=6.5.3
-nyx=1.9.3
-atmosphere=1.11.2
-atlas=1.3.1
-missioncontrol=0.15.2
+hekate=6.5.4
+nyx=1.9.4
+atmosphere=1.12.0
+atlas=1.4.0
+missioncontrol=0.15.3
 nx_fancontrol=1.0.4+r1
 ovlloader=2.0.3
 saltynx=1.9.3
@@ -30,10 +30,9 @@ horizon_oc=2.5.1.rev6
 asap_updater=1.0.5
 amiibogenerator=2.2.1
 benchmark_toolbox=2.0.0
-daybreak=1.0.1
-dbi=905
+daybreak=1.0.2
+dbi=912
 linkalho=2.0.2
 reboot_to_payload=1.0.0
-sphaira=1.0.7
-tinfoil=20.0.v2
+sphaira=1.0.8
 ovlreloader=1.0.1
