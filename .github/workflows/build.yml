@@ -3,6 +3,10 @@ name: ASAP Build
 on:
   workflow_dispatch:
     inputs:
+      enable_latest_libnx:
+        description: "Latest libnx"
+        required: false
+        default: "1"
       enable_main_build:
         description: "Main Build"
         required: false
@@ -50,7 +54,7 @@ jobs:
           curl wget libzstd-dev \
           p7zip p7zip-full \
           php-cli php-gd php-mbstring \
-          libfreetype6-dev
+          libfreetype6-dev texinfo
 
           if command -v 7z >/dev/null; then
             echo "[OK] 7z found: $(command -v 7z)"
@@ -63,6 +67,24 @@ jobs:
           fi
 
           pip3 install --no-cache-dir --break-system-packages numpy pillow zstandard
+
+      - name: Install latest libnx
+        if: ${{ github.event.inputs.enable_latest_libnx == '1' }}
+        shell: bash
+        run: |
+          set -e
+
+          echo "[INFO] Installing latest libnx..."
+
+          git clone --depth 1 https://github.com/switchbrew/libnx.git /tmp/libnx
+          cd /tmp/libnx
+
+          echo "[INFO] libnx commit: $(git rev-parse --short HEAD)"
+
+          make -j"$(nproc)"
+          make install
+
+          echo "[OK] Latest libnx installed"
 
       - name: Set 7z password
         shell: bash

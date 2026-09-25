@@ -37,7 +37,7 @@ OVLLDR_URL="$(gh_release_tag ppkantorski nx-ovlloader v2.0.3 nx-ovlloader.zip)"
 DBI_KO_URL="$(gh_release_latest Yorunokyujitsu DBIPatcher DBI_ko.zip)"
 DBI_EN_URL="$(gh_release_latest Yorunokyujitsu DBIPatcher DBI_en.zip)"
 SALTYNX_URL="$(gh_release_latest masagrator SaltyNX SaltyNX.zip)"
-TINFOIL_URL="https://tinfoil.media/repo/Tinfoil%20Applet%20Mode%20%5B20.0%5D%5Bv2%5D.zip"
+# TINFOIL_URL="https://tinfoil.media/repo/Tinfoil%20Applet%20Mode%20%5B20.0%5D%5Bv2%5D.zip"
 AMIIBO_GEN_URL="$(gh_release_latest yusufakg AmiiboGenerator AmiiboGenerator.nro)"
 # SPHAIRA_URL="$(gh_release_latest Yorunokyujitsu sphaira sphaira.nro)"
 
@@ -86,8 +86,7 @@ package_asap() {
   mkdir -p "${DIST_DIR}"/bootloader/{payloads,sys,res}
   mkdir -p "${DIST_DIR}"/config/{ftpsrv,ultrahand/sounds,ultrahand/assets/notifications}
   mkdir -p "${DIST_DIR}"/switch/{.packages/.offload/ram_expansion,AmiiboGenerator}
-  mkdir -p "${DIST_DIR}"/switch/{ASAP-Updater,Benchmark-Toolbox,DBI,linkalho,sphaira,tinfoil/themes/ASAP_Custom}
-  mkdir -p "${DIST_DIR}/warmboot_mariko"
+  mkdir -p "${DIST_DIR}"/switch/{ASAP-Updater,Benchmark-Toolbox,DBI,linkalho,sphaira}
 
   # Downloads ZIP
   download 5 -o "${DIST_DIR}/hekate.zip"              "${HEKATE_URL}"
@@ -96,7 +95,7 @@ package_asap() {
   download 5 -o "${DIST_DIR}/ovlloader.zip"           "${OVLLDR_URL}"
   download 5 -o "${DIST_DIR}/saltynx.zip"             "${SALTYNX_URL}"
   download 5 -o "${DIST_DIR}/sys-con.zip"             "${SYSCON_URL}"
-  download 5 -o "${DIST_DIR}/tinfoil.zip"             "${TINFOIL_URL}"
+  # download 5 -o "${DIST_DIR}/tinfoil.zip"             "${TINFOIL_URL}"
   download 5 -o "${DIST_DIR}/switch/DBI/DBI.zip"      "${DBI_KO_URL}"
 
   # Download file
@@ -111,7 +110,7 @@ package_asap() {
   unzip -o "${DIST_DIR}/emuiibo.zip" -d "${DIST_DIR}"
   unzip -o "${DIST_DIR}/saltynx.zip" -d "${DIST_DIR}"
   unzip -o "${DIST_DIR}/sys-con.zip" -x "*switch/sys-con.nro" -d "${DIST_DIR}"
-  unzip -o "${DIST_DIR}/tinfoil.zip" -x "*icon*.db" -d "${DIST_DIR}"
+  # unzip -o "${DIST_DIR}/tinfoil.zip" -x "*icon*.db" -d "${DIST_DIR}"
 
   # Remove download zip files
   rm -f "${DIST_DIR}/switch/DBI/DBI.zip"
@@ -120,7 +119,7 @@ package_asap() {
   # Config inis
   install -D -m 0644 /dev/null "${DIST_DIR}/atmosphere/config/exosphere.ini" && {
     printf '[exosphere]\ndebugmode=1\ndebugmode_user=0\ndisable_user_exception_handlers=0\n';
-    printf 'enable_40mb_mem_mode=1\nenable_8gb_mem_mode=0\n';
+    printf 'enable_40mb_mem_mode=0\nenable_8gb_mem_mode=0\n';
     printf 'enable_user_pmu_access=0\nblank_prodinfo_sysmmc=0\nblank_prodinfo_emummc=1\n';
     printf 'allow_writing_to_cal_sysmmc=0\nlog_port=0\nlog_baud_rate=115200\nlog_inverted=0\n';
   } > "${DIST_DIR}/atmosphere/config/exosphere.ini"
@@ -160,7 +159,7 @@ package_asap() {
     printf 'skip_nca_hash_verify=0\nskip_rsa_header_fixed_key_verify=1\n';
     printf 'skip_rsa_npdm_fixed_key_verify=0\nlower_system_version=0\n';
     printf '[dump]\npath=/backup/dumps\nappend_folder_with_xci=0\n';
-    printf '[filebrowser]\nignore_read_only=1';
+    printf '[filebrowser]\nignore_read_only=0';
   } > "${DIST_DIR}/config/sphaira/config_.ini"
 
   install -D /dev/null "${DIST_DIR}/config/ultrahand/packages.ini" && {
@@ -177,7 +176,7 @@ package_asap() {
 
   if [[ -f "${DIST_DIR}/config/sys-con/config.ini" ]]; then
     mv "${DIST_DIR}/config/sys-con/config.ini" \
-       "${DIST_DIR}/config/sys-con/config_.ini"
+       "${DIST_DIR}/config/sys-con/config.ini.template"
   fi
 
   if [[ -f "${DIST_DIR}/config/MissionControl/missioncontrol.ini.template" ]]; then
@@ -204,16 +203,16 @@ package_asap() {
   cp -r "${APP_DIR}/uh_pack/"* "${DIST_DIR}/switch/.packages"
   cp -r "${APP_DIR}/Ultrahand-Overlay/common/audio_mastervolume" "${DIST_DIR}/atmosphere/exefs_patches"
   cp -r "${MISC_DIR}/tools/aeskey" "${DIST_DIR}/backup/keys/PartialAesKeyCrack"
-  #cp -r "${MISC_DIR}/cache" "${DIST_DIR}/warmboot_mariko"
+  cp -r "${MISC_DIR}/cache" "${DIST_DIR}/warmboot_mariko"
 
   cp -f -T "${MISC_DIR}/mod/hwfly_toolbox.bin" "${DIST_DIR}/atmosphere/contents/010B6ECF3B30D000/tools/htb"
   cp -f -T "${MISC_DIR}/mod/instinct_toolbox.bin" "${DIST_DIR}/atmosphere/contents/010B6ECF3B30D000/tools/itb"
   cp -f -T "${MISC_DIR}/mod/picofly_toolbox.bin" "${DIST_DIR}/atmosphere/contents/010B6ECF3B30D000/tools/ptb"
-  cp -f -T "${MISC_DIR}/ini/cleanup.ini" "${DIST_DIR}/atmosphere/contents/010B6ECF3B30D000/clup"
   cp -f -T "${MISC_DIR}/ini/update.ini" "${DIST_DIR}/atmosphere/contents/010B6ECF3B30D000/upd"
 
   cp -f "${APP_DIR}/Ultrahand-Overlay/sounds/"*.wav "${DIST_DIR}/config/ultrahand/sounds"
 
+  cp "${MISC_DIR}/ini/note.ini" "${DIST_DIR}/release_note.txt"
   cp "${MISC_DIR}/tools/img_converter/hekate_res/background.bmp" "${DIST_DIR}/bootloader/res/asap.bmp"
   cp "${TOP_DIR}/version.inc" "${DIST_DIR}/atmosphere/config"
   cp "${APP_DIR}/HOC_Patch/exosphere/out/nintendo_nx_arm64_armv8a/release/exosphere.bin" "${DIST_DIR}/atmosphere/config/exosphere.bin"
@@ -241,26 +240,24 @@ package_asap() {
   cp "${APP_DIR}/linkalho/linkalho.nro" "${DIST_DIR}/switch/linkalho"
   cp "${APP_DIR}/Horizon-OC/Source/Benchmark-Toolbox/Benchmark-Toolbox.nro" "${DIST_DIR}/switch/Benchmark-Toolbox"
   cp "${APP_DIR}/sphaira/build/Release/sphaira.nro" "${DIST_DIR}/switch/sphaira"
-  #cp "${APP_DIR}/DBIPatcher/dist/DBI.nro" "${DIST_DIR}/switch/DBI/DBI.845.nro"
+  # cp "${APP_DIR}/DBIPatcher/dist/DBI.nro" "${DIST_DIR}/switch/DBI/DBI.845.nro"
   cp "${MISC_DIR}/ini/dbi.ini" "${DIST_DIR}/switch/DBI/dbi.config"
-  cp "${MISC_DIR}/res/icons/logo.png" "${DIST_DIR}/switch/tinfoil/themes/ASAP_Custom"
-  cp "${MISC_DIR}/res/screens/bg.png" "${DIST_DIR}/switch/tinfoil/themes/ASAP_Custom"
-  cp "${MISC_DIR}/json/tinfoil_theme.json" "${DIST_DIR}/switch/tinfoil/themes/ASAP_Custom/settings.json"
-  cp "${MISC_DIR}/json/tinfoil_options.json" "${DIST_DIR}/switch/tinfoil/options.json"
+  # cp "${MISC_DIR}/res/icons/logo.png" "${DIST_DIR}/switch/tinfoil/themes/ASAP_Custom"
+  # cp "${MISC_DIR}/res/screens/bg.png" "${DIST_DIR}/switch/tinfoil/themes/ASAP_Custom"
+  # cp "${MISC_DIR}/json/tinfoil_theme.json" "${DIST_DIR}/switch/tinfoil/themes/ASAP_Custom/settings.json"
+  # cp "${MISC_DIR}/json/tinfoil_options.json" "${DIST_DIR}/switch/tinfoil/options.json"
   cp "${MISC_DIR}/res/misc/hoc.rgba" "${DIST_DIR}/config/ultrahand/assets/notifications/hoc.rgba"
   cp "${MISC_DIR}/res/misc/res.pak" "${DIST_DIR}/bootloader/sys"
   cp "${MISC_DIR}/ini/overlays.ini" "${DIST_DIR}/config/ultrahand"
   cp "${MISC_DIR}/ini/ftpsrv.ini" "${DIST_DIR}/config/ftpsrv/config_.ini"
   cp "${MISC_DIR}/mod/boot.dat" "${DIST_DIR}"
-  cp "${MISC_DIR}/cache/wb_16.bin" "${DIST_DIR}/warmboot_mariko"
-  cp "${MISC_DIR}/cache/wb_17.bin" "${DIST_DIR}/warmboot_mariko"
 
   # Temporary
-  #cp -r "${APP_DIR}/hekate" "${DIST_DIR}"
+  # cp -r "${APP_DIR}/hekate" "${DIST_DIR}"
 
   # ASAP Current version
-  sed -i '/^\[latest_version\]/,/^\[/d' \
-    "${DIST_DIR}/atmosphere/config/version.inc"
+  sed -i '/^\[latest_version\]/,$d' "${DIST_DIR}/atmosphere/config/version.inc"
+  sed -i ':a;/^[[:space:]]*$/{$d;N;ba}' "${DIST_DIR}/atmosphere/config/version.inc"
 
   # Cleanup emuiibo lang.json
   find "${DIST_DIR}/emuiibo/overlay/lang" -maxdepth 1 -type f -name '*.json' \
