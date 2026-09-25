@@ -20,7 +20,7 @@ REPOS=()
 # but skipped during build.
 SKIP_BUILD=(
   # Requires custom libnx
-  "Ultrahand-Overlay"
+  # "Ultrahand-Overlay"
 )
 
 if [[ "${ENABLE_CUSTOM:-0}" == "1" ]]; then
@@ -34,16 +34,16 @@ if [[ "${ENABLE_CUSTOM:-0}" == "1" ]]; then
 
     # Homebrew loader and Sphaira
     "switchbrew/nx-hbloader"
-    "Yorunokyujitsu/sphaira@eacb54b"
+    "Yorunokyujitsu/sphaira@72a94b9"
 
     # System modules and overlays (latest libultrahand 2e4df54)
-    "ppkantorski/Ultrahand-Overlay@8e28b55"
+    "ppkantorski/Ultrahand-Overlay@430c044"
     "ppkantorski/EdiZon-Overlay@91e64f7"
     "masagrator/FPSLocker@7b316c9"
     "ppkantorski/NX-FanControl@acf6d39"
     "ppkantorski/ovl-sysmodules@32f1045"
     "ppkantorski/ReverseNX-RT@748f6be"
-    "ppkantorski/Status-Monitor-Overlay@84fe9cd"
+    "ppkantorski/Status-Monitor-Overlay@b5934cd"
     "Yorunokyujitsu/Horizon-OC@personal" # personal ( 2.5.1: 66cfbe0 ), test ( 3.0.0: 38ab15a )
 
     # Homebrews
