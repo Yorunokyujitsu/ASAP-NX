@@ -1,0 +1,181 @@
+
+================================
+    [1/7] Patch repositories    
+================================
+
+
+Apply: ASAP-Updater.patch...Done
+Apply: EdiZon-Overlay.patch...Done
+Apply: FPSLocker.patch...Done
+Apply: linkalho.patch...Done
+Apply: NX-FanControl.patch...Done
+Apply: nx-hbloader.patch...Done
+Apply: ovl-sysmodules.patch...Done
+Apply: ReverseNX-RT.patch...Done
+Apply: sphaira.patch...Done
+Apply: Status-Monitor-Overlay.patch...Done
+Apply: Ultrahand-Overlay.patch...Done
+
+
+===================================
+    [2/7] Libraries replacement    
+===================================
+
+
+Replace: EdiZon-Overlay/libs/libultrahand
+Replace: NX-FanControl/overlay/lib/libultrahand
+Replace: ovl-sysmodules/libs/libultrahand
+Replace: ReverseNX-RT/Overlay/libs/libultrahand
+Replace: Status-Monitor-Overlay/lib/libultrahand
+Replace: Ultrahand-Overlay/lib/libultrahand
+Replace: Horizon-OC/Source/hoc-clk/overlay/lib/libultrahand
+Replace: linkalho/lib/zipper
+Renamed: TegraExplorer > ATLAS
+Done
+
+
+=============================
+    [3/7] Patch libraries    
+=============================
+
+
+Skip: Atmosphere-libs.patch (target not found)
+Apply: borealis.patch...Done
+Apply: libfancontrol.patch...Done
+Apply: zipper.patch...Done
+
+
+==================================
+    [4/7] Cleanup repositories    
+==================================
+
+
+Deleted: aio-switch-updater
+Deleted: sphaira.json
+Created: dbi.json
+Created: horizon.json
+Created: picofly.json
+Done
+
+
+==================================
+    [5/7] Extract custom files    
+==================================
+
+
+Extracted: ASAP-UI.ttf
+Extracted: CascadiaMono-Custom.ttf
+Extracted: NotoSansKR-Custom.ttf
+Extracted: fichiercle.bin
+Extracted: repack tools
+Extracted: ASAP-Installer
+Done
+
+
+=================================
+    [6/7] Resource processing    
+=================================
+
+
+Converted: boot_splash_screen_notext.inc
+Converted: boot_splash_screen_text.inc
+Converted: fatal_ams_logo.inc
+Converted: splash.bin
+Converted: logos.c
+Replaced: sphaira icon
+Replaced: ASAP-Updater icon
+Replaced: Horizon-OC icon
+
+=== running font_conv_for_lists.php ===
+Character Convert: Unicode, Decimal NCRs, Url Encoded
+
+=== running scripts/extract_res.py ===
+[extract] ubuntu_mono.bin        → size: 14700 bytes
+[preview] font ubuntu_mono       → 95 pngs
+[extract] gap_1.bin              → size: 148 bytes
+[extract] interui_20.bin         → size: 16000 bytes
+[preview] font interui_20        → 95 pngs
+[extract] gap_2.bin              → size: 128 bytes
+[extract] interui_30.bin         → size: 33330 bytes
+[preview] font interui_30        → 95 pngs
+[extract] gap_3.bin              → size: 206 bytes
+[extract] hekate_symbol_20.bin   → size: 17860 bytes
+[preview] font hekate_symbol_20  → 50 pngs
+[extract] gap_4.bin              → size: 60 bytes
+[extract] hekate_symbol_30.bin   → size: 38580 bytes
+[preview] font hekate_symbol_30  → 50 pngs
+[extract] gap_5.bin              → size: 76 bytes
+[extract] hekate_logo.bin        → size: 58672 bytes
+[preview] image hekate_logo.png  → saved
+[extract] gap_6.bin              → size: 208 bytes
+[extract] ctcaer_logo.bin        → size: 44688 bytes
+[preview] image ctcaer_logo.png  → saved
+[extract] gap_7.bin              → size: 112 bytes
+[extract] hekate_symbol_120.bin  → size: 49440 bytes
+[preview] font hekate_symbol_120 → 4 pngs
+[extract] tail.bin               → size: 131296 bytes
+[DONE] extract completed (8 segments, 7 gaps)
+
+=== running scripts/rewrite_src.py ===
+[rewrite-src] hekate_symbol_120.bin → size: 273480 bytes
+[rewrite-src] interui_20.bin        → size: 724980 bytes
+[rewrite-src] interui_30.bin        → size: 1340640 bytes
+[rewrite-src] ubuntu_mono.bin       → size: 629550 bytes
+[rewrite-src] hekate_logo.bin       → size: 58672 bytes
+[DONE] rewrite_src completed (5 entries)
+
+=== running scripts/repack_res.py ===
+[repack] ubuntu_mono.bin                          @ 0x0 (629550 bytes)
+[repack] gap_1.bin                                @ 0x99b2e (148 bytes)
+[repack] interui_20.bin                           @ 0x99bc2 (724980 bytes)
+[repack] gap_2.bin                                @ 0x14abb6 (128 bytes)
+[repack] interui_30.bin                           @ 0x14ac36 (1340640 bytes)
+[repack] gap_3.bin                                @ 0x292116 (206 bytes)
+[repack] hekate_symbol_20.bin                     @ 0x2921e4 (17860 bytes)
+[repack] gap_4.bin                                @ 0x2967a8 (60 bytes)
+[repack] hekate_symbol_30.bin                     @ 0x2967e4 (38580 bytes)
+[repack] gap_5.bin                                @ 0x29fe98 (76 bytes)
+[repack] hekate_logo.bin                          @ 0x29fee4 (58672 bytes)
+[repack] gap_6.bin                                @ 0x2ae414 (208 bytes)
+[repack] ctcaer_logo.bin                          @ 0x2ae4e4 (44688 bytes)
+[repack] gap_7.bin                                @ 0x2b9374 (112 bytes)
+[repack] hekate_symbol_120.bin                    @ 0x2b93e4 (273480 bytes)
+[repack] tail.bin                                 @ 0x2fc02c (131296 bytes)
+[DONE] repackaging res.pak (3260684 bytes)
+
+=== running scripts/rewrite_c.py ===
+[rewrite] hekate_symbol_120.c → offset: 0x2B93E4
+[rewrite] interui_20.c        → offset: 0x99BC2
+[rewrite] interui_30.c        → offset: 0x14AC36
+[rewrite] ubuntu_mono.c       → offset: 0x0
+[DONE] rewrite completed
+
+=== running scripts/append_res.py ===
+[INFO] base res.pak      =  offset: 0x31C10C, size: 3260684 bytes
+[append] empty_entry     →  offset: 0x31C10C, size: 211968 bytes
+[append] asap_update     →  offset: 0x34FD0C, size: 211968 bytes
+[append] ofw_entry       →  offset: 0x38390C, size: 211968 bytes
+[append] cfw_entry       →  offset: 0x3B750C, size: 211968 bytes
+[append] fusee_entry     →  offset: 0x3EB10C, size: 211968 bytes
+[append] android_entry   →  offset: 0x41ED0C, size: 211968 bytes
+[append] lakka_entry     →  offset: 0x45290C, size: 211968 bytes
+[append] ubuntu_entry    →  offset: 0x48650C, size: 211968 bytes
+[append] user_profile    →  offset: 0x4BA10C, size: 760384 bytes
+[append] background      →  offset: 0x573B4C, size: 3686400 bytes
+[append] fichiercle.bin  →  offset: 0x8F7B4C, size: 110487 bytes
+[INFO] res.pak updated   →  offset: 0x912AE3, size: 9513699 bytes
+[DONE] generated asap_custom.h
+Done
+
+
+=====================
+    [7/7] Patches    
+=====================
+
+
+Duplicated: hekate > hekate_8GB
+Patching: loader.c
+Hekate: supported 8GB DRAM Mode
+Duplicated: exosphere and stratosphere
+Atmosphere: supported horizon-oc
+Done
