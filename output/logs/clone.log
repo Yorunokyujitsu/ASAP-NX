@@ -1,0 +1,68 @@
+
+==========================
+    Clone repositories    
+==========================
+
+[CLONE] hekate - Yorunokyujitsu
+  branch    : custom (bbdabe64)
+
+[CLONE] Atmosphere - Yorunokyujitsu
+  branch    : custom (bcc7c50fe)
+
+[CLONE] nx-hbloader - switchbrew
+  branch    : default (82b9512)
+
+[CLONE] sphaira - Yorunokyujitsu
+  branch    : commit (72a94b9)
+
+[CLONE] Ultrahand-Overlay - ppkantorski
+  branch    : commit (430c0442)
+  submodule : libultrahand (856ddbd)
+
+[CLONE] EdiZon-Overlay - ppkantorski
+  branch    : commit (91e64f7)
+  submodule : libultrahand (0706ee3)
+
+[CLONE] FPSLocker - masagrator
+  branch    : commit (7b316c9)
+
+[CLONE] NX-FanControl - ppkantorski
+  branch    : commit (acf6d39)
+  submodule : libfancontrol (2cb987c)
+  submodule : libultrahand (69b6815)
+
+[CLONE] ovl-sysmodules - ppkantorski
+  branch    : commit (32f1045)
+  submodule : libultrahand (35fdeb4)
+
+[CLONE] ReverseNX-RT - ppkantorski
+  branch    : commit (748f6be)
+  submodule : Atmosphere-libs (82f1553)
+  submodule : libultrahand (0706ee3)
+
+[CLONE] Status-Monitor-Overlay - ppkantorski
+  branch    : commit (b5934cd)
+  submodule : Atmosphere-libs (6e2c09c)
+  submodule : libultrahand (856ddbd)
+
+[CLONE] Horizon-OC - Yorunokyujitsu
+  branch    : personal (4c9eecb7)
+  submodule : libultrahand (f7ab6c9)
+
+[CLONE] aio-switch-updater - HamletDuFromage
+  branch    : commit (3d38eaa)
+  submodule : TegraExplorer (26f992d)
+  submodule : borealis (25651d2)
+  rename    : ASAP-Updater
+
+[CLONE] linkalho - impeeza
+  branch    : commit (a34e7b0)
+  submodule : borealis (25651d2)
+
+[SKIP] local project: HOC_Patch
+
+[SKIP] local project: hekate_8GB
+
+[SKIP] local project: LockPick
+
+Done
