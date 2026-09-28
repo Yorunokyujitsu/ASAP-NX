@@ -362,7 +362,7 @@ index 531ec22..437b3a9 100644
  		if (!nacp_decompress(appControlData)) {
  			free(appControlData);
 diff --git a/source/main.cpp b/source/main.cpp
-index 1862712..dcbefd1 100644
+index 1862712..5b016b4 100644
 --- a/source/main.cpp
 +++ b/source/main.cpp
 @@ -289,7 +289,7 @@ public:
