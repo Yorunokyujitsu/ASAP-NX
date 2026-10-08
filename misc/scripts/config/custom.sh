@@ -185,7 +185,8 @@ echo
 # atmosphere
 #safe_rm \
 #  "${APP_DIR}/Atmosphere/stratosphere/loader/source/ldr_embedded_am_patches.inc" \
-#  "${APP_DIR}/Atmosphere/stratosphere/loader/source/ldr_embedded_usb_patches.inc"
+#  "${APP_DIR}/Atmosphere/stratosphere/loader/source/ldr_embedded_usb_patches.inc" \
+#  "${APP_DIR}/Atmosphere/stratosphere/loader/source/ldr_embedded_web_patches.inc"
 #echo "Deleted: embedded patches inc"
 
 # aio-switch-updater
