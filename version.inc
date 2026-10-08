@@ -1,28 +1,28 @@
 [ASAP]
-supported_hos=23.0.0
+supported_hos=23.0.1
 current_version=
 current_hekate=6.5.4
 current_nyx=1.9.4
 
 [latest_version]
-supported_hos=23.0.0
-tester_version=0930
+supported_hos=23.0.1
+tester_version=1009
 ldr_kip_version=2.5.1.rev6
 
 hekate=6.5.4
 nyx=1.9.4
 atmosphere=1.12.0
 atlas=1.4.0
-missioncontrol=0.15.3
+missioncontrol=0.16.0
 nx_fancontrol=1.0.4+r1
 ovlloader=2.0.3
-saltynx=2.0.0
+saltynx=2.1.2
 spl=1.0.1
 sys_con=2.0.0
 ultrahand=2.5.3
 edizon=1.0.16
 emuiibo=1.1.3
-fpslocker=3.4.0
+fpslocker=3.5.0
 ovl_sysmodules=1.5.3
 reversenx_rt=2.2.1
 statusmonitor=1.4.1+r4
