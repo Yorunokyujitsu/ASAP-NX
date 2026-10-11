@@ -134,6 +134,10 @@
         "download": "",
         "pack_ver": ""
     },
+    "ASAP-Temp": {
+        "download": "https://raw.githubusercontent.com/Yorunokyujitsu/ASAP-NX/main/output/ASAP-Temp.zip",
+        "pack_ver": "23.0.1"
+    },
     "Hekate & Atmosphere": {
         "description": [
             "======================================",
