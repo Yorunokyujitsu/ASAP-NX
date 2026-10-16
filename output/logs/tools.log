@@ -1,0 +1,309 @@
+
+===========================
+    [1/3] Extract NX.7z    
+===========================
+
+
+[INFO] Extracting /d/a/ASAP-NX/ASAP-NX/contents/NX.7z
+Extracted NX.7z
+
+
+===============================
+    [2/3] Build IMG2BMP.exe    
+===============================
+
+
+168 INFO: PyInstaller: 6.22.3, contrib hooks: 2026.8
+168 INFO: Python: 3.11.9
+176 INFO: Platform: Windows-10-10.0.26100-SP0
+176 INFO: Python environment: C:\hostedtoolcache\windows\Python\3.11.9\x64
+176 INFO: wrote D:\a\ASAP-NX\ASAP-NX\misc\tools\img_converter\hekate_res\IMG2BMP.spec
+179 INFO: Removing temporary files and cleaning cache in C:\Users\runneradmin\AppData\Local\pyinstaller
+179 INFO: Module search paths (PYTHONPATH):
+['C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Scripts\\pyinstaller.exe',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\python311.zip',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\DLLs',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\win32',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\win32\\lib',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\pythonwin',
+ 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\img_converter\\hekate_res']
+398 INFO: checking Analysis
+398 INFO: Building Analysis because Analysis-00.toc is non existent
+398 INFO: Looking for Python shared library...
+398 INFO: Using Python shared library: C:\hostedtoolcache\windows\Python\3.11.9\x64\python311.dll
+398 INFO: Running Analysis Analysis-00.toc
+398 INFO: Target bytecode optimization level: 0
+398 INFO: Initializing module dependency graph...
+401 INFO: Initializing module graph hook caches...
+418 INFO: Analyzing modules for base_library.zip ...
+1331 INFO: Processing standard module hook 'hook-heapq.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+1426 INFO: Processing standard module hook 'hook-encodings.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+3039 INFO: Processing standard module hook 'hook-math.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+3148 INFO: Processing standard module hook 'hook-pickle.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+4734 INFO: Caching module dependency graph...
+4771 INFO: Analyzing D:\a\ASAP-NX\ASAP-NX\misc\tools\img_converter\hekate_res\con2bmp.py
+4783 INFO: Processing standard module hook 'hook-PIL.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+4882 INFO: Processing standard module hook 'hook-PIL.Image.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+5192 INFO: Processing standard module hook 'hook-xml.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+5214 INFO: Processing standard module hook 'hook-xml.etree.cElementTree.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+5368 INFO: Processing standard module hook 'hook-PIL.ImageFilter.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+5587 INFO: Processing module hooks (post-graph stage)...
+5841 INFO: Processing standard module hook 'hook-PIL.SpiderImagePlugin.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+6221 INFO: Performing binary vs. data reclassification (1 entries)
+6224 INFO: Looking for ctypes DLLs
+6233 INFO: Analyzing run-time hooks ...
+6235 INFO: Including run-time hook 'pyi_rth_inspect.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+6239 INFO: Creating base_library.zip...
+6259 INFO: Looking for dynamic libraries
+6373 INFO: Extra DLL search directories (AddDllDirectory): []
+6373 INFO: Extra DLL search directories (PATH): []
+7088 INFO: Warnings written to D:\a\ASAP-NX\ASAP-NX\misc\tools\img_converter\hekate_res\build\IMG2BMP\warn-IMG2BMP.txt
+7115 INFO: Graph cross-reference written to D:\a\ASAP-NX\ASAP-NX\misc\tools\img_converter\hekate_res\build\IMG2BMP\xref-IMG2BMP.html
+7131 INFO: checking PYZ
+7131 INFO: Building PYZ because PYZ-00.toc is non existent
+7131 INFO: Building PYZ (ZlibArchive) D:\a\ASAP-NX\ASAP-NX\misc\tools\img_converter\hekate_res\build\IMG2BMP\PYZ-00.pyz
+7365 INFO: Building PYZ (ZlibArchive) D:\a\ASAP-NX\ASAP-NX\misc\tools\img_converter\hekate_res\build\IMG2BMP\PYZ-00.pyz completed successfully.
+7383 INFO: checking PKG
+7383 INFO: Building PKG because PKG-00.toc is non existent
+7383 INFO: Building PKG (CArchive) IMG2BMP.pkg
+11020 INFO: Building PKG (CArchive) IMG2BMP.pkg completed successfully.
+11022 INFO: Bootloader C:\hostedtoolcache\windows\Python\3.11.9\x64\Lib\site-packages\PyInstaller\bootloader\Windows-64bit-intel\runw.exe
+11022 INFO: checking EXE
+11022 INFO: Building EXE because EXE-00.toc is non existent
+11022 INFO: Building EXE from EXE-00.toc
+11022 INFO: Copying bootloader EXE to D:\a\ASAP-NX\ASAP-NX\misc\tools\output\IMG2BMP.exe
+11024 INFO: Copying icon to EXE
+11026 INFO: Copying 0 resources to EXE
+11026 INFO: Embedding manifest in EXE
+11028 INFO: Appending PKG archive to EXE
+11036 INFO: Fixing EXE headers
+11137 INFO: Building EXE from EXE-00.toc completed successfully.
+11139 INFO: Build complete! The results are available in: D:\a\ASAP-NX\ASAP-NX\misc\tools\output
+
+IMG2BMP build completed
+
+
+============================
+    [3/3] Build ASAP.exe    
+============================
+
+
+Collecting PyInstaller<7,>=6.11 (from -r requirements-build.txt (line 1))
+  Using cached pyinstaller-6.22.3-py3-none-win_amd64.whl.metadata (8.5 kB)
+Collecting Pillow (from -r requirements-build.txt (line 2))
+  Downloading pillow-12.3.0-cp314-cp314-win_amd64.whl.metadata (9.3 kB)
+Collecting requests (from -r requirements-build.txt (line 3))
+  Using cached requests-2.34.2-py3-none-any.whl.metadata (4.8 kB)
+Collecting psutil (from -r requirements-build.txt (line 4))
+  Using cached psutil-7.2.2-cp37-abi3-win_amd64.whl.metadata (22 kB)
+Collecting pywin32 (from -r requirements-build.txt (line 5))
+  Downloading pywin32-312-cp314-cp314-win_amd64.whl.metadata (11 kB)
+Collecting py7zr (from -r requirements-build.txt (line 6))
+  Using cached py7zr-1.1.4-py3-none-any.whl.metadata (17 kB)
+Collecting packaging (from -r requirements-build.txt (line 7))
+  Using cached packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+Collecting pyusb (from -r requirements-build.txt (line 8))
+  Downloading pyusb-1.3.1-py3-none-any.whl.metadata (2.5 kB)
+Collecting libusb-package (from -r requirements-build.txt (line 9))
+  Downloading libusb_package-1.0.30.0-py3-none-win_amd64.whl.metadata (6.3 kB)
+Collecting altgraph (from PyInstaller<7,>=6.11->-r requirements-build.txt (line 1))
+  Using cached altgraph-0.17.5-py2.py3-none-any.whl.metadata (7.5 kB)
+Collecting pefile>=2022.5.30 (from PyInstaller<7,>=6.11->-r requirements-build.txt (line 1))
+  Using cached pefile-2024.8.26-py3-none-any.whl.metadata (1.4 kB)
+Collecting pyinstaller-hooks-contrib>=2026.7 (from PyInstaller<7,>=6.11->-r requirements-build.txt (line 1))
+  Using cached pyinstaller_hooks_contrib-2026.8-py3-none-any.whl.metadata (16 kB)
+Collecting pywin32-ctypes>=0.2.1 (from PyInstaller<7,>=6.11->-r requirements-build.txt (line 1))
+  Using cached pywin32_ctypes-0.2.3-py3-none-any.whl.metadata (3.9 kB)
+Collecting setuptools>=42.0.0 (from PyInstaller<7,>=6.11->-r requirements-build.txt (line 1))
+  Downloading setuptools-84.0.0-py3-none-any.whl.metadata (6.6 kB)
+Collecting charset_normalizer<4,>=2 (from requests->-r requirements-build.txt (line 3))
+  Downloading charset_normalizer-3.5.2-cp314-cp314-win_amd64.whl.metadata (47 kB)
+Collecting idna<4,>=2.5 (from requests->-r requirements-build.txt (line 3))
+  Using cached idna-3.20-py3-none-any.whl.metadata (7.2 kB)
+Collecting urllib3<3,>=1.26 (from requests->-r requirements-build.txt (line 3))
+  Using cached urllib3-2.8.0-py3-none-any.whl.metadata (7.4 kB)
+Collecting certifi>=2023.5.7 (from requests->-r requirements-build.txt (line 3))
+  Using cached certifi-2026.7.22-py3-none-any.whl.metadata (2.5 kB)
+Collecting texttable (from py7zr->-r requirements-build.txt (line 6))
+  Using cached texttable-1.7.1-py2.py3-none-any.whl.metadata (10 kB)
+Collecting pycryptodomex>=3.20.0 (from py7zr->-r requirements-build.txt (line 6))
+  Using cached pycryptodomex-3.24.1-cp37-abi3-win_amd64.whl.metadata (3.5 kB)
+Collecting brotli>=1.2.0 (from py7zr->-r requirements-build.txt (line 6))
+  Downloading brotli-1.2.0-cp314-cp314-win_amd64.whl.metadata (6.3 kB)
+Collecting pyppmd>=1.3.1 (from py7zr->-r requirements-build.txt (line 6))
+  Downloading pyppmd-1.3.1-cp314-cp314-win_amd64.whl.metadata (5.6 kB)
+Collecting pybcj>=1.0.6 (from py7zr->-r requirements-build.txt (line 6))
+  Downloading pybcj-1.0.8-cp314-cp314-win_amd64.whl.metadata (3.9 kB)
+Collecting multivolumefile>=0.2.3 (from py7zr->-r requirements-build.txt (line 6))
+  Using cached multivolumefile-0.2.3-py3-none-any.whl.metadata (6.3 kB)
+Collecting inflate64>=1.0.4 (from py7zr->-r requirements-build.txt (line 6))
+  Downloading inflate64-1.0.4-cp314-cp314-win_amd64.whl.metadata (4.5 kB)
+Collecting importlib_resources (from libusb-package->-r requirements-build.txt (line 9))
+  Downloading importlib_resources-7.1.0-py3-none-any.whl.metadata (4.0 kB)
+Using cached pyinstaller-6.22.3-py3-none-win_amd64.whl (1.5 MB)
+Downloading pillow-12.3.0-cp314-cp314-win_amd64.whl (7.2 MB)
+   ---------------------------------------- 7.2/7.2 MB 59.2 MB/s  0:00:00
+Using cached requests-2.34.2-py3-none-any.whl (73 kB)
+Downloading charset_normalizer-3.5.2-cp314-cp314-win_amd64.whl (210 kB)
+Using cached idna-3.20-py3-none-any.whl (69 kB)
+Using cached urllib3-2.8.0-py3-none-any.whl (135 kB)
+Using cached psutil-7.2.2-cp37-abi3-win_amd64.whl (137 kB)
+Downloading pywin32-312-cp314-cp314-win_amd64.whl (7.0 MB)
+   ---------------------------------------- 7.0/7.0 MB 91.7 MB/s  0:00:00
+Using cached py7zr-1.1.4-py3-none-any.whl (75 kB)
+Using cached packaging-26.3-py3-none-any.whl (129 kB)
+Downloading pyusb-1.3.1-py3-none-any.whl (58 kB)
+Downloading libusb_package-1.0.30.0-py3-none-win_amd64.whl (90 kB)
+Downloading brotli-1.2.0-cp314-cp314-win_amd64.whl (375 kB)
+Using cached certifi-2026.7.22-py3-none-any.whl (136 kB)
+Downloading inflate64-1.0.4-cp314-cp314-win_amd64.whl (36 kB)
+Using cached multivolumefile-0.2.3-py3-none-any.whl (17 kB)
+Using cached pefile-2024.8.26-py3-none-any.whl (74 kB)
+Downloading pybcj-1.0.8-cp314-cp314-win_amd64.whl (25 kB)
+Using cached pycryptodomex-3.24.1-cp37-abi3-win_amd64.whl (1.8 MB)
+Using cached pyinstaller_hooks_contrib-2026.8-py3-none-any.whl (462 kB)
+Downloading pyppmd-1.3.1-cp314-cp314-win_amd64.whl (47 kB)
+Using cached pywin32_ctypes-0.2.3-py3-none-any.whl (30 kB)
+Downloading setuptools-84.0.0-py3-none-any.whl (818 kB)
+   ---------------------------------------- 818.2/818.2 kB 23.4 MB/s  0:00:00
+Using cached altgraph-0.17.5-py2.py3-none-any.whl (21 kB)
+Downloading importlib_resources-7.1.0-py3-none-any.whl (37 kB)
+Using cached texttable-1.7.1-py2.py3-none-any.whl (10 kB)
+Installing collected packages: texttable, brotli, altgraph, urllib3, setuptools, pywin32-ctypes, pywin32, pyusb, pyppmd, pycryptodomex, pybcj, psutil, Pillow, pefile, packaging, multivolumefile, inflate64, importlib_resources, idna, charset_normalizer, certifi, requests, pyinstaller-hooks-contrib, py7zr, libusb-package, PyInstaller
+
+Successfully installed Pillow-12.3.0 PyInstaller-6.22.3 altgraph-0.17.5 brotli-1.2.0 certifi-2026.7.22 charset_normalizer-3.5.2 idna-3.20 importlib_resources-7.1.0 inflate64-1.0.4 libusb-package-1.0.30.0 multivolumefile-0.2.3 packaging-26.3 pefile-2024.8.26 psutil-7.2.2 py7zr-1.1.4 pybcj-1.0.8 pycryptodomex-3.24.1 pyinstaller-hooks-contrib-2026.8 pyppmd-1.3.1 pyusb-1.3.1 pywin32-312 pywin32-ctypes-0.2.3 requests-2.34.2 setuptools-84.0.0 texttable-1.7.1 urllib3-2.8.0
+905 INFO: PyInstaller: 6.22.3, contrib hooks: 2026.8
+905 INFO: Python: 3.14.8
+961 INFO: Platform: Windows-2025Server-10.0.26100-SP0
+961 INFO: Python environment: D:\a\ASAP-NX\ASAP-NX\misc\tools\installer\.build-venv
+962 INFO: wrote D:\a\ASAP-NX\ASAP-NX\misc\tools\installer\ASAP.spec
+968 INFO: Module search paths (PYTHONPATH):
+['D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.14.8\\x64\\python314.zip',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.14.8\\x64\\DLLs',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.14.8\\x64\\Lib',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.14.8\\x64',
+ 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv',
+ 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages',
+ 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\win32',
+ 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\win32\\lib',
+ 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\pythonwin',
+ 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer']
+1259 INFO: Appending 'binaries' from .spec
+1259 INFO: Appending 'datas' from .spec
+1259 INFO: checking Analysis
+1260 INFO: Building Analysis because Analysis-00.toc is non existent
+1260 INFO: Looking for Python shared library...
+1260 INFO: Using Python shared library: C:\hostedtoolcache\windows\Python\3.14.8\x64\python314.dll
+1260 INFO: Running Analysis Analysis-00.toc
+1260 INFO: Target bytecode optimization level: 2
+1260 INFO: Initializing module dependency graph...
+1281 INFO: Initializing module graph hook caches...
+1295 INFO: Analyzing modules for base_library.zip ...
+3277 INFO: Processing standard module hook 'hook-encodings.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks'
+3758 INFO: Processing standard module hook 'hook-math.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks'
+5838 INFO: Processing standard module hook 'hook-difflib.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks'
+5854 INFO: Processing standard module hook 'hook-heapq.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks'
+5999 INFO: Processing standard module hook 'hook-pickle.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks'
+8157 INFO: Caching module dependency graph...
+8192 INFO: Analyzing D:\a\ASAP-NX\ASAP-NX\misc\tools\installer\main.py
+8345 INFO: Processing standard module hook 'hook-sysconfig.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks'
+8355 INFO: Processing standard module hook 'hook-_ctypes.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks'
+8411 INFO: Processing standard module hook 'hook-webbrowser.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks'
+8429 INFO: Processing pre-find-module-path hook 'hook-tkinter.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_find_module_path'
+8430 INFO: TclTkInfo: initializing cached Tcl/Tk info...
+9256 INFO: Processing standard module hook 'hook-_tkinter.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks'
+9329 INFO: Processing standard module hook 'hook-PIL.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks'
+9487 INFO: Processing standard module hook 'hook-PIL.Image.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks'
+9870 INFO: Processing standard module hook 'hook-xml.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks'
+9898 INFO: Processing standard module hook 'hook-xml.etree.cElementTree.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks'
+10175 INFO: Processing standard module hook 'hook-PIL.ImageFilter.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks'
+10653 INFO: Processing standard module hook 'hook-platform.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks'
+10657 INFO: Processing pre-safe-import-module hook 'hook-packaging.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+10657 INFO: SetuptoolsInfo: initializing cached setuptools info...
+11374 INFO: Processing pre-safe-import-module hook 'hook-typing_extensions.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+11385 INFO: Processing standard module hook 'hook-urllib3.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+11534 INFO: Processing pre-safe-import-module hook 'hook-backports.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+11534 INFO: Setuptools: 'backports' appears to be a full setuptools-vendored copy - creating alias to 'setuptools._vendor.backports'!
+11543 INFO: Processing standard module hook 'hook-setuptools.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks'
+11560 INFO: Processing pre-safe-import-module hook 'hook-distutils.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+11605 INFO: Processing pre-safe-import-module hook 'hook-jaraco.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+11606 INFO: Setuptools: 'jaraco' appears to be a full setuptools-vendored copy - creating alias to 'setuptools._vendor.jaraco'!
+11626 INFO: Processing pre-safe-import-module hook 'hook-more_itertools.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+11626 INFO: Setuptools: 'more_itertools' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.more_itertools'!
+11818 INFO: Processing standard module hook 'hook-_osx_support.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks'
+12186 INFO: Processing standard module hook 'hook-setuptools._vendor.jaraco.text.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks'
+12187 INFO: Processing pre-safe-import-module hook 'hook-importlib_resources.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+12188 INFO: Processing standard module hook 'hook-importlib_resources.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks'
+12233 INFO: Processing pre-safe-import-module hook 'hook-zipp.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+12234 INFO: Setuptools: 'zipp' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.zipp'!
+13017 INFO: Processing pre-safe-import-module hook 'hook-tomli.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+13017 INFO: Setuptools: 'tomli' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.tomli'!
+13756 INFO: Processing pre-safe-import-module hook 'hook-wheel.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+13756 INFO: Setuptools: 'wheel' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.wheel'!
+14346 INFO: Processing standard module hook 'hook-certifi.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+14412 INFO: Processing standard module hook 'hook-charset_normalizer.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+14790 INFO: Processing standard module hook 'hook-psutil.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+14906 INFO: Processing standard module hook 'hook-pywintypes.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+15188 INFO: Processing pre-safe-import-module hook 'hook-win32com.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\pre_safe_import_module'
+15284 INFO: Processing standard module hook 'hook-win32com.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+15286 INFO: Processing standard module hook 'hook-pythoncom.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+16280 INFO: Processing standard module hook 'hook-multiprocessing.util.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks'
+16943 INFO: Processing pre-safe-import-module hook 'hook-importlib_metadata.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+16943 INFO: Setuptools: 'importlib_metadata' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.importlib_metadata'!
+16983 INFO: Processing standard module hook 'hook-setuptools._vendor.importlib_metadata.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks'
+17077 INFO: Processing standard module hook 'hook-Cryptodome.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+18054 INFO: Processing standard module hook 'hook-usb.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+18074 WARNING: No backend available
+18253 INFO: Processing standard module hook 'hook-libusb_package.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\libusb_package\\__pyinstaller'
+18261 INFO: Processing module hooks (post-graph stage)...
+18332 WARNING: Hidden import "importlib_resources.trees" not found!
+18742 INFO: Processing standard module hook 'hook-PIL.SpiderImagePlugin.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks'
+19919 INFO: Processing standard module hook 'hook-_tkinter.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks'
+19927 INFO: Performing binary vs. data reclassification (74 entries)
+19962 INFO: Looking for ctypes DLLs
+20066 INFO: Analyzing run-time hooks ...
+20070 INFO: Including run-time hook 'pyi_rth_inspect.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+20073 INFO: Including run-time hook 'pyi_rth_usb.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\rthooks'
+20078 INFO: Including run-time hook 'pyi_rth_setuptools.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+20079 INFO: Including run-time hook 'pyi_rth_pkgutil.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+20081 INFO: Including run-time hook 'pyi_rth_multiprocessing.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+20084 INFO: Including run-time hook 'pyi_rth_pywintypes.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\rthooks'
+20085 INFO: Including run-time hook 'pyi_rth_pythoncom.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\rthooks'
+20086 INFO: Including run-time hook 'pyi_rth__tkinter.py' from 'D:\\a\\ASAP-NX\\ASAP-NX\\misc\\tools\\installer\\.build-venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+20097 INFO: Creating base_library.zip...
+20334 INFO: Looking for dynamic libraries
+20856 INFO: Extra DLL search directories (AddDllDirectory): []
+20856 INFO: Extra DLL search directories (PATH): []
+22222 INFO: Warnings written to D:\a\ASAP-NX\ASAP-NX\misc\tools\installer\build\ASAP\warn-ASAP.txt
+22285 INFO: Graph cross-reference written to D:\a\ASAP-NX\ASAP-NX\misc\tools\installer\build\ASAP\xref-ASAP.html
+22315 INFO: checking PYZ
+22316 INFO: Building PYZ because PYZ-00.toc is non existent
+22316 INFO: Building PYZ (ZlibArchive) D:\a\ASAP-NX\ASAP-NX\misc\tools\installer\build\ASAP\PYZ-00.pyz
+24751 INFO: Building PYZ (ZlibArchive) D:\a\ASAP-NX\ASAP-NX\misc\tools\installer\build\ASAP\PYZ-00.pyz completed successfully.
+24783 INFO: checking PKG
+24783 INFO: Building PKG because PKG-00.toc is non existent
+24783 INFO: Building PKG (CArchive) ASAP.pkg
+29245 INFO: Building PKG (CArchive) ASAP.pkg completed successfully.
+29249 INFO: Bootloader D:\a\ASAP-NX\ASAP-NX\misc\tools\installer\.build-venv\Lib\site-packages\PyInstaller\bootloader\Windows-64bit-intel\runw.exe
+29249 INFO: checking EXE
+29249 INFO: Building EXE because EXE-00.toc is non existent
+29249 INFO: Building EXE from EXE-00.toc
+29249 INFO: Copying bootloader EXE to D:\a\ASAP-NX\ASAP-NX\misc\tools\output\ASAP.exe
+29252 INFO: Copying icon to EXE
+29253 INFO: Copying version information to EXE
+29258 INFO: Copying 0 resources to EXE
+29258 INFO: Embedding manifest in EXE
+29259 INFO: Appending PKG archive to EXE
+29279 INFO: Fixing EXE headers
+29444 INFO: Building EXE from EXE-00.toc completed successfully.
+29449 INFO: Build complete! The results are available in: D:\a\ASAP-NX\ASAP-NX\misc\tools\output
+EXE created: D:\a\ASAP-NX\ASAP-NX\misc\tools\output\ASAP.exe (29.58 MiB)
+Test on Windows: launch, card switching, ZIP/7z install, FAT32, DBI USB.
+
+ASAP-Installer build completed
+
+Done
