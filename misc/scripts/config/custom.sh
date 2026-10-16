@@ -185,7 +185,8 @@ echo
 # atmosphere
 #safe_rm \
 #  "${APP_DIR}/Atmosphere/stratosphere/loader/source/ldr_embedded_am_patches.inc" \
-#  "${APP_DIR}/Atmosphere/stratosphere/loader/source/ldr_embedded_usb_patches.inc"
+#  "${APP_DIR}/Atmosphere/stratosphere/loader/source/ldr_embedded_usb_patches.inc" \
+#  "${APP_DIR}/Atmosphere/stratosphere/loader/source/ldr_embedded_web_patches.inc"
 #echo "Deleted: embedded patches inc"
 
 # aio-switch-updater
@@ -321,10 +322,12 @@ if [[ -d "${APP_DIR}/Atmosphere" ]]; then
   cp -a "${APP_DIR}/Atmosphere" "${APP_DIR}/HOC_Patch"
   rm -rf "${APP_DIR}/HOC_Patch/stratosphere/loader/source/oc"
   cp -a "${APP_DIR}/Horizon-OC/Source/Atmosphere/stratosphere/"* "${APP_DIR}/HOC_Patch/stratosphere"
-  cp "${EXO_SRC}/secmon_emc_access_table_data.inc" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
   cp "${EXO_SRC}/secmon_define_emc_access_table.inc" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
-  cp "${EXO_SRC}/secmon_rtc_pmc_access_table_data.inc" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
+  cp "${EXO_SRC}/secmon_emc_access_table_data.inc" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
+  cp "${EXO_SRC}/secmon_define_emc01_access_table.inc" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
+  cp "${EXO_SRC}/secmon_emc01_access_table_data.inc" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
   cp "${EXO_SRC}/secmon_define_rtc_pmc_access_table.inc" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
+  cp "${EXO_SRC}/secmon_rtc_pmc_access_table_data.inc" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
   cp "${EXO_SRC}/secmon_smc_register_access.cpp" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
   cp "${EXO_SRC}/secmon_smc_handler.cpp" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
   cp "${EXO_SRC}/secmon_memory_layout.hpp" "${APP_DIR}/HOC_Patch/libraries/libexosphere/include/exosphere/secmon"

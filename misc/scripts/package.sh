@@ -119,8 +119,7 @@ package_asap() {
   # Config inis
   install -D -m 0644 /dev/null "${DIST_DIR}/atmosphere/config/exosphere.ini" && {
     printf '[exosphere]\ndebugmode=1\ndebugmode_user=0\ndisable_user_exception_handlers=0\n';
-    printf 'enable_40mb_mem_mode=0\nenable_8gb_mem_mode=0\n';
-    printf 'enable_user_pmu_access=0\nblank_prodinfo_sysmmc=0\nblank_prodinfo_emummc=1\n';
+    printf 'enable_mem_mode=0\nenable_user_pmu_access=0\nblank_prodinfo_sysmmc=0\nblank_prodinfo_emummc=1\n';
     printf 'allow_writing_to_cal_sysmmc=0\nlog_port=0\nlog_baud_rate=115200\nlog_inverted=0\n';
   } > "${DIST_DIR}/atmosphere/config/exosphere.ini"
 
