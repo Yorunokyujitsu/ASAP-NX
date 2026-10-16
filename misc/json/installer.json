@@ -15,13 +15,15 @@
             "======================================",
             "           What's Changed ?           ",
             "--------------------------------------\n",
-            "◆ Version: 2.1.1 > 2.2.0           \n",
-            "- Stability improvements.           \n",
+            "◆ Version: 2.2.0 > 3.0.1           \n",
+            "- Added support for Temp packages.    ",
+            "- Added the DBIbackend menu.          ",
+            "- Improved process stability.       \n",
             "======================================"
         ],
         "download": "https://raw.githubusercontent.com/Yorunokyujitsu/ASAP-NX/main/output/tools/ASAP_Installer.zip",
-        "pack_ver": "2.2.0",
-        "sha256": "9a88cbe143d87fa81f0b6a14e1dd228383df2798fe50c9727672e0ba55a828b6"
+        "pack_ver": "3.0.1",
+        "sha256": "4394652914a8d94c0094b4f75c9b00343236f1fba4b172e6dd68ba4726854738"
     },
     "ASAP": {
         "description": [
@@ -83,7 +85,7 @@
             "   - 설치 후 기기 내 릴리즈 노트 확인.",
             "------------------------------------------------------",
             "◆ Custom Firmware & Bootloader\n",
-            " - Atmosphère: 1.12.0\n",
+            " - Atmosphère: 1.12.1\n",
             " - Hekate & Nyx: 6.5.4 & 1.9.4",
             "------------------------------------------------------",
             "◆ Payload\n",
@@ -91,13 +93,13 @@
             "------------------------------------------------------",
             "◆ Patches\n",
             " - built in patch: 23.0.1\n",
-            " - loader.kip: 2.5.1.rev6",
+            " - loader.kip: 2.6.0.rev7",
             "------------------------------------------------------",
             "◆ System modules\n",
             " - MissionControl: 0.16.0\n",
             " - NX-FanControl: 1.0.4+r1\n",
             " - ovlloader: 2.0.3\n",
-            " - SaltyNX: 2.1.2\n",
+            " - SaltyNX: 2.1.3\n",
             " - sphaira-loader: 1.0.1\n",
             " - sys-con: 2.0.0",
             "------------------------------------------------------",
@@ -108,10 +110,10 @@
             " - ovl-sysmodules: 1.5.3\n",
             " - ReverseNX-RT: 2.2.1\n",
             " - Status-Monitor: 1.4.1+r4\n",
-            " - Horizon-OC: 2.5.1.rev6",
+            " - Horizon-OC: 2.6.0.rev7",
             "------------------------------------------------------",
             "◆ Ultrahand Packages\n",
-            " - Extra Setting+: 1.1.4\n",
+            " - Extra Setting+: 1.1.5\n",
             " - Launcher+ & Volume+: 1.0.0\n",
             " - Quick Guide+: 1.1.1",
             "------------------------------------------------------",
@@ -123,7 +125,7 @@
             " - DBI-KR: 912\n",
             " - Linkalho: 2.0.2\n",
             " - reboot to payload: 1.0.0\n",
-            " - Sphaira: 1.0.8-pre\n",
+            " - Sphaira: 1.0.8\n",
             " - Ultrahand-reload: 1.0.1",
             "=============================="
         ],
@@ -132,6 +134,10 @@
         "github_api": "https://api.github.com/repos/Yorunokyujitsu/ASAP-NX/releases/latest",
         "url": "https://github.com/Yorunokyujitsu/ASAP-NX",
         "download": "",
+        "pack_ver": ""
+    },
+    "ASAP-Temp": {
+        "download": "https://raw.githubusercontent.com/Yorunokyujitsu/ASAP-NX/main/output/ASAP-Temp.zip",
         "pack_ver": ""
     },
     "Hekate & Atmosphere": {
@@ -528,7 +534,7 @@
         "github_api": "",
         "url": "https://wiki.switchroot.org/wiki/android/android-14-15",
         "download": "https://www.dropbox.com/scl/fi/tah21kpujq9kixgukpes8/Android_tv.zip?rlkey=7d2t3k5e3rwzdg2t4j17f7yso&dl=1",
-        "pack_ver": "22.2-261006"
+        "pack_ver": "22.2-261013"
     },
     "Android Tablet": {
         "description": [

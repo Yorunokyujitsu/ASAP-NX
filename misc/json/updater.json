@@ -1,17 +1,15 @@
 {
     "changelog": {
-        "22.5.0": [
+        "23.0.1": [
             "공지사항",
             "오래된 바로가기 제거 후 재생성 필요.",
             "RAM, MEMORY 패치 시 특정 게임 실행 오류, 크래시 발생 가능성 있음.",
             "상세 업데이트 내용은 업데이트 후 헤카테 릴리즈 노트 확인 요망."
-        ],
-        "23.0.0": ""
+        ]
     },
     "cfws": {
         "asap": {
-            "stable": "https://raw.githubusercontent.com/Yorunokyujitsu/ASAP-NX/main/output/ASAP.zip",
-            "temporary": "https://www.dropbox.com/scl/fi/d05yv59ni883yt4j76p7w/ASAP-Temp.zip?rlkey=von029t7oirko6lqs5nfv0x3n&dl=1"
+            "stable": "https://raw.githubusercontent.com/Yorunokyujitsu/ASAP-NX/main/output/ASAP.zip"
         },
         "android": {
             "22.2 TV": "https://www.dropbox.com/scl/fi/tah21kpujq9kixgukpes8/Android_tv.zip?rlkey=7d2t3k5e3rwzdg2t4j17f7yso&dl=1",
@@ -27,6 +25,7 @@
         }
     },
     "firmwares": {
+        "23.0.1": "https://github.com/THZoria/NX_Firmware/releases/download/23.0.1/Firmware.23.0.1.zip",
         "23.0.0": "https://github.com/THZoria/NX_Firmware/releases/download/23.0.0/Firmware.23.0.0.zip",
         "22.5.0": "https://github.com/THZoria/NX_Firmware/releases/download/22.5.0/Firmware.22.5.0.zip",
         "22.1.0": "https://github.com/THZoria/NX_Firmware/releases/download/22.1.0/Firmware.22.1.0.zip",
