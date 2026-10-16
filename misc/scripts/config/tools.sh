@@ -75,15 +75,8 @@ ASAP_DIR="${MISC_DIR}/tools/installer"
 
 cd "${ASAP_DIR}"
 
-pyinstaller --clean --noupx -F -w -n ASAP \
-  --version-file=./source/scripts/detail_info.py \
-  --icon "${MISC_DIR}/res/icons/installer_256x256.ico" \
-  --add-data "./source/scripts:./source/scripts" \
-  --add-data "./source/base64:./source/base64" \
-  --add-data "./source/scripts/fat32format.exe:." \
-  --add-data "./LICENSE:./" \
-  --distpath "${MISC_DIR}/tools/output" \
-  ./main.py
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "./build_onefile.ps1" \
+  || { echo "[ERROR] ASAP installer build failed"; exit 1; }
 
 echo
 echo "ASAP-Installer build completed"
