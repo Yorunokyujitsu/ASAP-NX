@@ -71,7 +71,7 @@ index 376b34b..8c6eece 100644
              return "unknown";
      }
 diff --git a/include/hocclk/config.h b/include/hocclk/config.h
-index 8b3700d..82cc57d 100644
+index 8b3700d..7476a50 100644
 --- a/include/hocclk/config.h
 +++ b/include/hocclk/config.h
 @@ -46,12 +46,8 @@ typedef enum {
@@ -332,7 +332,7 @@ index 8b3700d..82cc57d 100644
 +        case KipConfigValue_low_t7_tWTR:
 +            return pretty ? "Low T7 - tWTR" : "low_t7_tWTR";
 +        case KipConfigValue_low_t8_tREFI:
-+            return pretty ? "Low T8 - tREFI" : "low_t7_tREFI";
++            return pretty ? "Low T8 - tREFI" : "low_t8_tREFI";
 +
 +        case KipConfigValue_read_latency_1333:
 +            return pretty ? "1333 Read Latency" : "read_latency_1333";
@@ -403,7 +403,7 @@ index 8b3700d..82cc57d 100644
          case KipCrc32:
              return pretty ? "CRC32" : "crc32";
          case HocClkConfigValue_IsFirstLoad:
-@@ -441,11 +564,14 @@ static inline uint64_t hocclkDefaultConfigValue(HocClkConfigValue val)
+@@ -441,11 +564,15 @@ static inline uint64_t hocclkDefaultConfigValue(HocClkConfigValue val)
          case HocClkConfigValue_UncappedClocks:
          case HocClkConfigValue_OverwriteBoostMode:
          case HocClkConfigValue_BatteryChargeCurrent:
@@ -415,17 +415,17 @@ index 8b3700d..82cc57d 100644
          case HocClkConfigValue_MemoryFrequencyMeasurementMode:
 +        case HocClkConfigValue_MarikoMiddleFreqs:
 +        case HocClkConfigValue_LiveGpuVoltage:
++        case HocClkConfigValue_AutoRAMCPUOverclock:
              return 0ULL;
          case HocClkConfigValue_RamDisplayUnit:
              return (uint64_t)RamDisplayUnit_MHz;
-@@ -456,22 +582,24 @@ static inline uint64_t hocclkDefaultConfigValue(HocClkConfigValue val)
+@@ -456,22 +583,23 @@ static inline uint64_t hocclkDefaultConfigValue(HocClkConfigValue val)
              return 1963ULL;
  
          case HocClkConfigValue_ThermalThrottle:
 -        case HocClkConfigValue_HandheldTDP:
          case HocClkConfigValue_IsFirstLoad:
          case HocClkConfigValue_DVFSMode:
-+        case HocClkConfigValue_AutoRAMCPUOverclock:
              return 1ULL;
 +        case HocClkConfigValue_AutoRamCpuCpuOCFreq:
 +            return 1683000ULL;
@@ -1077,7 +1077,7 @@ index a0b50ef..83365e0 100755
  
          return rootFrame;
 diff --git a/source/modes/Battery.hpp b/source/modes/Battery.hpp
-index 4afaa47..c7f4248 100644
+index 4afaa47..9f55d1b 100644
 --- a/source/modes/Battery.hpp
 +++ b/source/modes/Battery.hpp
 @@ -43,106 +43,106 @@ public:
@@ -2711,7 +2711,7 @@ index 9b817c9..aeb38f9 100644
          return rootFrame;
      }
 diff --git a/source/modes/FPS_Graph.hpp b/source/modes/FPS_Graph.hpp
-index 0c7e0ab..e5780ab 100644
+index 0c7e0ab..4d6f1ee 100644
 --- a/source/modes/FPS_Graph.hpp
 +++ b/source/modes/FPS_Graph.hpp
 @@ -611,7 +611,7 @@ public:
@@ -3185,7 +3185,7 @@ index a33a7d5..061bc0b 100644
                          // Split at DIVIDER_SYMBOL: top half goes on row 1, bottom half on row 2.
                          // If the user's format has no DIVIDER_SYMBOL, fall back to the whole
 diff --git a/source/modes/Misc.hpp b/source/modes/Misc.hpp
-index 3df629b..9d7f0b2 100644
+index 3df629b..5299f77 100644
 --- a/source/modes/Misc.hpp
 +++ b/source/modes/Misc.hpp
 @@ -74,55 +74,55 @@ public:
