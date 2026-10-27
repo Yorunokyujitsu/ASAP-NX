@@ -208,7 +208,7 @@ echo "Deleted: sphaira.json"
 # Create New configs
 install -D /dev/null "${APP_DIR}/sphaira/assets/romfs/github/dbi.json" && {
   printf '{    \n"url": "https://github.com/Yorunokyujitsu/DBIPatcher",\n';
-  printf '    "assets": [\n    {\n      "path": "/switch/DBI/"\n    }\n  ]\n}\n';
+  printf '    "assets": [\n    {\n      "name": "dbi_",\n      "path": "/switch/DBI/"\n    }\n  ]\n}\n';
 } > "${APP_DIR}/sphaira/assets/romfs/github/dbi.json"
 echo "Created: dbi.json"
 
@@ -323,13 +323,13 @@ if [[ -d "${APP_DIR}/Atmosphere" ]]; then
   rm -rf "${APP_DIR}/HOC_Patch/stratosphere/loader/source/oc"
   cp -a "${APP_DIR}/Horizon-OC/Source/Atmosphere/stratosphere/"* "${APP_DIR}/HOC_Patch/stratosphere"
   cp "${EXO_SRC}/secmon_define_emc_access_table.inc" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
-  cp "${EXO_SRC}/secmon_emc_access_table_data.inc" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
   cp "${EXO_SRC}/secmon_define_emc01_access_table.inc" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
-  cp "${EXO_SRC}/secmon_emc01_access_table_data.inc" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
   cp "${EXO_SRC}/secmon_define_rtc_pmc_access_table.inc" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
+  cp "${EXO_SRC}/secmon_emc_access_table_data.inc" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
+  cp "${EXO_SRC}/secmon_emc01_access_table_data.inc" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
   cp "${EXO_SRC}/secmon_rtc_pmc_access_table_data.inc" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
-  cp "${EXO_SRC}/secmon_smc_register_access.cpp" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
   cp "${EXO_SRC}/secmon_smc_handler.cpp" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
+  cp "${EXO_SRC}/secmon_smc_register_access.cpp" "${APP_DIR}/HOC_Patch/exosphere/program/source/smc"
   cp "${EXO_SRC}/secmon_memory_layout.hpp" "${APP_DIR}/HOC_Patch/libraries/libexosphere/include/exosphere/secmon"
   echo "Duplicated: exosphere and stratosphere"
   echo "Atmosphere: supported horizon-oc"
