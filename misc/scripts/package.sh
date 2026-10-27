@@ -239,7 +239,6 @@ package_asap() {
   cp "${APP_DIR}/linkalho/linkalho.nro" "${DIST_DIR}/switch/linkalho"
   cp "${APP_DIR}/Horizon-OC/Source/Benchmark-Toolbox/Benchmark-Toolbox.nro" "${DIST_DIR}/switch/Benchmark-Toolbox"
   cp "${APP_DIR}/sphaira/build/Release/sphaira.nro" "${DIST_DIR}/switch/sphaira"
-  # cp "${APP_DIR}/DBIPatcher/dist/DBI.nro" "${DIST_DIR}/switch/DBI/DBI.845.nro"
   cp "${MISC_DIR}/ini/dbi.ini" "${DIST_DIR}/switch/DBI/dbi.config"
   # cp "${MISC_DIR}/res/icons/logo.png" "${DIST_DIR}/switch/tinfoil/themes/ASAP_Custom"
   # cp "${MISC_DIR}/res/screens/bg.png" "${DIST_DIR}/switch/tinfoil/themes/ASAP_Custom"
