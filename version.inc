@@ -6,7 +6,7 @@ current_nyx=1.9.4
 
 [latest_version]
 supported_hos=23.0.1
-tester_version=1016
+tester_version=1028
 ldr_kip_version=2.6.0.rev7
 
 hekate=6.5.4
@@ -31,7 +31,7 @@ asap_updater=1.0.5
 amiibogenerator=2.2.1
 benchmark_toolbox=2.0.0
 daybreak=1.0.2
-dbi=912
+dbi=921
 linkalho=2.0.2
 reboot_to_payload=1.0.0
 sphaira=1.0.8
