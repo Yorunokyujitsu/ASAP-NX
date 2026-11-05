@@ -6,7 +6,7 @@ current_nyx=1.9.4
 
 [latest_version]
 supported_hos=23.0.1
-tester_version=1028
+tester_version=1105
 ldr_kip_version=2.6.0.rev7
 
 hekate=6.5.4
@@ -16,13 +16,13 @@ atlas=1.4.0
 missioncontrol=0.16.0
 nx_fancontrol=1.0.4+r1
 ovlloader=2.0.3
-saltynx=2.1.3
+saltynx=2.1.4
 spl=1.0.1
 sys_con=2.0.0
 ultrahand=2.5.3
 edizon=1.0.16
 emuiibo=1.1.3
-fpslocker=3.5.0
+fpslocker=3.5.1
 ovl_sysmodules=1.5.3
 reversenx_rt=2.2.1
 statusmonitor=1.4.1+r4
@@ -34,5 +34,5 @@ daybreak=1.0.2
 dbi=921
 linkalho=2.0.2
 reboot_to_payload=1.0.0
-sphaira=1.0.8
+sphaira=1.0.9
 ovlreloader=1.0.1

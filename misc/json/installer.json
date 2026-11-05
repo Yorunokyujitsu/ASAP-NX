@@ -99,14 +99,14 @@
             " - MissionControl: 0.16.0\n",
             " - NX-FanControl: 1.0.4+r1\n",
             " - ovlloader: 2.0.3\n",
-            " - SaltyNX: 2.1.3\n",
+            " - SaltyNX: 2.1.4\n",
             " - sphaira-loader: 1.0.1\n",
             " - sys-con: 2.0.0",
             "------------------------------------------------------",
             " - Ultrahand: 2.5.3\n",
             " - EdiZon: 1.0.16\n",
             " - emuiibo: 1.1.3\n",
-            " - FPSLocker: 3.5.0\n",
+            " - FPSLocker: 3.5.1\n",
             " - ovl-sysmodules: 1.5.3\n",
             " - ReverseNX-RT: 2.2.1\n",
             " - Status-Monitor: 1.4.1+r4\n",
@@ -125,7 +125,7 @@
             " - DBI-KR: 921\n",
             " - Linkalho: 2.0.2\n",
             " - reboot to payload: 1.0.0\n",
-            " - Sphaira: 1.0.8\n",
+            " - Sphaira: 1.0.9\n",
             " - Ultrahand-reload: 1.0.1",
             "=============================="
         ],
@@ -534,7 +534,7 @@
         "github_api": "",
         "url": "https://wiki.switchroot.org/wiki/android/android-14-15",
         "download": "https://www.dropbox.com/scl/fi/tah21kpujq9kixgukpes8/Android_tv.zip?rlkey=7d2t3k5e3rwzdg2t4j17f7yso&dl=1",
-        "pack_ver": "22.2-261027"
+        "pack_ver": "22.2-261103"
     },
     "Android Tablet": {
         "description": [
@@ -569,7 +569,7 @@
         "github_api": "",
         "url": "https://wiki.switchroot.org/wiki/android/android-14-15",
         "download": "https://www.dropbox.com/scl/fi/7cdwxpa17ccyvm6kfh1op/Android_tab.zip?rlkey=ucipv9iedej34xyaym2u7oy22&dl=1",
-        "pack_ver": "22.2-261025"
+        "pack_ver": "22.2-261101"
     },
     "Ubuntu Bionic": {
         "description": [
