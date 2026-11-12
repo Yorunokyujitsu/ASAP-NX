@@ -34,16 +34,16 @@ if [[ "${ENABLE_CUSTOM:-0}" == "1" ]]; then
 
     # Homebrew loader and Sphaira
     "switchbrew/nx-hbloader"
-    "Yorunokyujitsu/sphaira@338348e"
+    "Yorunokyujitsu/sphaira"
 
-    # System modules and overlays (latest libultrahand 2e4df54)
-    "ppkantorski/Ultrahand-Overlay@0c38fda"
+    # System modules and overlays (latest libultrahand f585030)
+    "ppkantorski/Ultrahand-Overlay@35e2fd1"
     "ppkantorski/EdiZon-Overlay@91e64f7"
-    "masagrator/FPSLocker@7a427c0"
+    "masagrator/FPSLocker@adaeb40"
     "ppkantorski/NX-FanControl@acf6d39"
     "ppkantorski/ovl-sysmodules@32f1045"
     "ppkantorski/ReverseNX-RT@748f6be"
-    "ppkantorski/Status-Monitor-Overlay@b5934cd"
+    "ppkantorski/Status-Monitor-Overlay@e515ee1"
     "Yorunokyujitsu/Horizon-OC@personal" # test ( 3.0.0: 38ab15a )
 
     # Homebrews
