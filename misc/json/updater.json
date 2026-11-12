@@ -1,6 +1,6 @@
 {
     "changelog": {
-        "23.0.1": [
+        "23.5.0": [
             "공지사항",
             "오래된 바로가기 제거 후 재생성 필요.",
             "RAM, MEMORY 패치 시 특정 게임 실행 오류, 크래시 발생 가능성 있음.",
@@ -25,6 +25,7 @@
         }
     },
     "firmwares": {
+        "23.5.0": "https://github.com/THZoria/NX_Firmware/releases/download/23.5.0/Firmware.23.5.0.zip",
         "23.0.1": "https://github.com/THZoria/NX_Firmware/releases/download/23.0.1/Firmware.23.0.1.zip",
         "23.0.0": "https://github.com/THZoria/NX_Firmware/releases/download/23.0.0/Firmware.23.0.0.zip",
         "22.5.0": "https://github.com/THZoria/NX_Firmware/releases/download/22.5.0/Firmware.22.5.0.zip",
