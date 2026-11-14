@@ -58,7 +58,7 @@ Final build artifacts and logs are uploaded as GitHub Actions Artifacts.<br><br>
 > **masagrator** - Tools and a [supporting module](https://github.com/masagrator/SaltyNX) for [FPS customization](https://github.com/masagrator/FPSLocker) and [mode switching](https://github.com/masagrator/ReverseNX-RT).<br>
 > **Horizon-OC** - Clock-patched [loader.kip and custom sys-clk, bench tools](https://github.com/Horizon-OC/Horizon-OC).<br>
 > **ppkantorski** - [Overlay menu](https://github.com/ppkantorski/Ultrahand-Overlay), [loader](https://github.com/ppkantorski/nx-ovlloader), and various forked apps [[1]](https://github.com/ppkantorski/nx-ovlreloader), [[2]](https://github.com/ppkantorski/ovl-sysmodules), [[3]](https://github.com/ppkantorski/Status-Monitor-Overlay), [[4]](https://github.com/ppkantorski/ReverseNX-RT).<br>
-> **XorTroll** and **yusufakg** - [Homebrew](https://github.com/yusufakg/AmiiboGenerator) and [system module](https://github.com/XorTroll/emuiibo) for managing virtual amiibo.<br>
+> **XorTroll**, **RandomTask-1** and **yusufakg** - [Homebrew](https://github.com/yusufakg/AmiiboGenerator) and [system module](https://github.com/XorTroll/emuiibo) for managing virtual amiibo.<br>
 > **rdmrocha**, **impeeza** - Tool for managing NNID linking and unlinking.<br>
 > **duckbill**, **Morce3232** and **rashevskyv** - DBI and [translation patch tools](https://github.com/rashevskyv/DBIPatcher).<br>
 > **HamletDuFromage** - Homebrew for [updating CFW, Cheats, L4T, and Firmware](https://github.com/HamletDuFromage/aio-switch-updater).<br>
