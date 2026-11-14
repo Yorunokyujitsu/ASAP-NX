@@ -6,8 +6,8 @@ current_nyx=1.9.5
 
 [latest_version]
 supported_hos=23.5.0
-tester_version=1111
-ldr_kip_version=2.6.0.rev7
+tester_version=1114
+ldr_kip_version=2.6.1.rev7
 
 hekate=6.5.5
 nyx=1.9.5
@@ -21,12 +21,12 @@ spl=1.0.1
 sys_con=2.1.0
 ultrahand=2.5.4
 edizon=1.0.16
-emuiibo=1.1.3
+emuiibo=1.2.0
 fpslocker=3.5.1
 ovl_sysmodules=1.5.3
 reversenx_rt=2.2.1
 statusmonitor=1.4.1+r5
-horizon_oc=2.6.0.rev7
+horizon_oc=2.6.1.rev7
 asap_updater=1.0.5
 amiibogenerator=2.2.1
 benchmark_toolbox=2.0.0
