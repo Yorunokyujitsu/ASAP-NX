@@ -218,11 +218,11 @@ install -D /dev/null "${APP_DIR}/sphaira/assets/romfs/github/horizon.json" && {
 } > "${APP_DIR}/sphaira/assets/romfs/github/horizon.json"
 echo "Created: horizon.json"
 
-install -D /dev/null "${APP_DIR}/sphaira/assets/romfs/github/picofly.json" && {
-  printf '{    \n"url": "https://github.com/abal1000x/usk",\n    "assets": [\n';
+install -D /dev/null "${APP_DIR}/sphaira/assets/romfs/github/usk.json" && {
+  printf '{    \n"url": "https://github.com/rehius/usk",\n    "assets": [\n';
   printf '    {\n      "name": "update",\n      "path": "/update.bin"\n    }\n  ]\n}\n';
-} > "${APP_DIR}/sphaira/assets/romfs/github/picofly.json"
-echo "Created: picofly.json"
+} > "${APP_DIR}/sphaira/assets/romfs/github/usk.json"
+echo "Created: usk.json"
 echo "Done"
 echo
 

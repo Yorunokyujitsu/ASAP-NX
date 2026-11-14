@@ -31,7 +31,6 @@ require_file() {
 }
 
 # URLs"
-EMUIIBO_URL="$(gh_release_latest Yorunokyujitsu emuiibo emuiibo.zip)"
 OVLLDR_URL="$(gh_release_latest ppkantorski nx-ovlloader nx-ovlloader.zip)"
 DBI_KO_URL="$(gh_release_latest Yorunokyujitsu DBIPatcher DBI_ko.zip)"
 DBI_EN_URL="$(gh_release_latest Yorunokyujitsu DBIPatcher DBI_en.zip)"
@@ -41,6 +40,7 @@ AMIIBO_GEN_URL="$(gh_release_latest yusufakg AmiiboGenerator AmiiboGenerator.nro
 # SPHAIRA_URL="$(gh_release_latest Yorunokyujitsu sphaira sphaira.nro)"
 
 # Dynamic name zips URLs
+EMUIIBO_URL="$(gh_dynamic_name Yorunokyujitsu emuiibo '^emuiibo\.zip$')"
 HEKATE_URL="$(gh_dynamic_name CTCaer hekate '^hekate_ctcaer.*\.zip$')"
 HEKATE_8GB_URL="$(gh_dynamic_name CTCaer hekate '^hekate_ctcaer.*__ram8GB\.bin$')"
 MISSIONCON_URL="$(gh_dynamic_name ndeadly MissionControl '^MissionControl.*\.zip$')"
@@ -110,6 +110,27 @@ package_asap() {
   unzip -o "${DIST_DIR}/saltynx.zip" -d "${DIST_DIR}"
   unzip -o "${DIST_DIR}/sys-con.zip" -x "*switch/sys-con.nro" -d "${DIST_DIR}"
   # unzip -o "${DIST_DIR}/tinfoil.zip" -x "*icon*.db" -d "${DIST_DIR}"
+
+  # Record sysmodule versions in toolbox.json.
+  set_toolbox_version() {
+    local file="${DIST_DIR}/atmosphere/contents/$1/toolbox.json"
+    local version="${2#*/releases/download/}"
+
+    [[ "$version" != "$2" && "$version" == */* ]] || {
+      echo "[ERROR] Invalid GitHub release URL: $2" >&2
+      return 1
+    }
+
+    version="${version%%/*}"
+    version="${version#v}"
+    jq --arg version "$version" '.version = $version' "$file" > "${file}.tmp"
+    mv "${file}.tmp" "$file"
+    echo "[INFO] toolbox.json version: $1 ($version)"
+  }
+
+  set_toolbox_version "0100000000000352" "$EMUIIBO_URL"
+  set_toolbox_version "010000000000bd00" "$MISSIONCON_URL"
+  set_toolbox_version "690000000000000D" "$SYSCON_URL"
 
   # Remove download zip files
   rm -f "${DIST_DIR}/switch/DBI/DBI.zip"
@@ -185,6 +206,7 @@ package_asap() {
   touch "${DIST_DIR}/config/ultrahand/ram_4gb.ini"
   touch "${DIST_DIR}/atmosphere/contents/00FF0000636C6BFF/flags/boot2.flag"
   touch "${DIST_DIR}/atmosphere/contents/010B6ECF3B30D000/flag"
+  touch "${DIST_DIR}/SaltySD/flags/nologo.flag"
 
   # Uncompress kip
   KIP_DIR="${APP_DIR}/HOC_Patch/stratosphere/loader/out/nintendo_nx_arm64_armv8a/release"

@@ -36,8 +36,8 @@ if [[ "${ENABLE_CUSTOM:-0}" == "1" ]]; then
     "switchbrew/nx-hbloader"
     "Yorunokyujitsu/sphaira"
 
-    # System modules and overlays (latest libultrahand f585030)
-    "ppkantorski/Ultrahand-Overlay@35e2fd1"
+    # System modules and overlays (latest libultrahand 548e491)
+    "ppkantorski/Ultrahand-Overlay@635dca3"
     "ppkantorski/EdiZon-Overlay@91e64f7"
     "masagrator/FPSLocker@adaeb40"
     "ppkantorski/NX-FanControl@acf6d39"
