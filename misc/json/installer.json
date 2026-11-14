@@ -15,15 +15,13 @@
             "======================================",
             "           What's Changed ?           ",
             "--------------------------------------\n",
-            "◆ Version: 2.2.0 > 3.0.1           \n",
-            "- Added support for Temp packages.    ",
-            "- Added the DBIbackend menu.          ",
-            "- Improved process stability.       \n",
+            "◆ Version: 3.0.1 > 3.0.2           \n",
+            "- Modified version caching behavior.\n",
             "======================================"
         ],
         "download": "https://raw.githubusercontent.com/Yorunokyujitsu/ASAP-NX/main/output/tools/ASAP_Installer.zip",
-        "pack_ver": "3.0.1",
-        "sha256": "4394652914a8d94c0094b4f75c9b00343236f1fba4b172e6dd68ba4726854738"
+        "pack_ver": "3.0.2",
+        "sha256": "cc93bee414b74f06be45139a26420e85c33eff0e5b0e788ad872761ca22325bb"
     },
     "ASAP": {
         "description": [
@@ -93,7 +91,7 @@
             "------------------------------------------------------",
             "◆ Patches\n",
             " - built in patch: 23.5.0\n",
-            " - loader.kip: 2.6.0.rev7",
+            " - loader.kip: 2.6.1.rev7",
             "------------------------------------------------------",
             "◆ System modules\n",
             " - MissionControl: 0.16.1\n",
@@ -105,12 +103,12 @@
             "------------------------------------------------------",
             " - Ultrahand: 2.5.4\n",
             " - EdiZon: 1.0.16\n",
-            " - emuiibo: 1.1.3\n",
+            " - emuiibo: 1.2.0\n",
             " - FPSLocker: 3.5.1\n",
             " - ovl-sysmodules: 1.5.3\n",
             " - ReverseNX-RT: 2.2.1\n",
             " - Status-Monitor: 1.4.1+r5\n",
-            " - Horizon-OC: 2.6.0.rev7",
+            " - Horizon-OC: 2.6.1.rev7",
             "------------------------------------------------------",
             "◆ Ultrahand Packages\n",
             " - Extra Setting+: 1.1.5\n",
